@@ -1,11 +1,11 @@
 <template>
-  <div class="container-fluid mt-3">
+  <div class="home container-fluid">
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-3 p-0 bg-light">
         <Nav />
       </div>
       <div class="col-md-6"></div>
-      <div class="col-md-3"></div>
+      <div class="col-md-3 p-0 bg-light"></div>
     </div>
   </div>
 </template>
@@ -23,3 +23,14 @@
     }
   }
 </script>
+
+<style scoped>
+  .home {
+    overflow: hidden;
+    min-height: 600px;
+    height: 100vh;
+  }
+  .row {
+    height: 100%;
+  }
+</style>
