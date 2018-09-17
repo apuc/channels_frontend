@@ -14,8 +14,6 @@
 </template>
 
 <script>
-    import 'bootstrap-vue'
-
     export default {
         props: {
             id: String,
