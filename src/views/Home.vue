@@ -4,7 +4,9 @@
       <div class="col-md-3 p-0 bg-light">
         <Nav />
       </div>
-      <div class="col-md-6"></div>
+      <div class="col-md-6 p-0">
+        <Chat />
+      </div>
       <div class="col-md-3 p-0 bg-light"></div>
     </div>
   </div>
@@ -12,6 +14,7 @@
 
 <script>
   import Nav from '../components/Nav'
+  import Chat from '../components/Chat'
   export default {
     data() {
       return {
@@ -19,7 +22,8 @@
       }
     },
     components: {
-      Nav
+      Nav,
+      Chat
     }
   }
 </script>

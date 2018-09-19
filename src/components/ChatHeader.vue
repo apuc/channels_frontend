@@ -1,9 +1,14 @@
 <template>
-    <header></header>
+    <header class="bg-light"></header>
 </template>
 
-<script></script>
+<script>
+    export default {}
+</script>
 
 <style scoped>
+    header {
+        min-height: 100px;
+    }
 
 </style>
