@@ -1,8 +1,8 @@
 <template>
   <div class="nav d-flex flex-column">
-    <NavSection title="Собеседники" :isOpen=true :itemsList="users" id="collapse1" />
-    <NavSection title="Группы" :isOpen=false :itemsList="users" id="collapse2" />
-    <NavSection title="Каналы" :isOpen=false :itemsList="users" id="collapse3" />
+    <NavSection :title="$t('Nav.users')" :isOpen=true :itemsList="users" id="collapse1" />
+    <NavSection :title="$t('Nav.channels')" :isOpen=false :itemsList="users" id="collapse2" />
+    <NavSection :title="$t('Nav.groups')" :isOpen=false :itemsList="users" id="collapse3" />
   </div>
 </template>
 

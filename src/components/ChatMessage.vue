@@ -1,5 +1,5 @@
 <template>
-  <b-card class="mb-3" :class="user.id === myId ? 'dirRtl' : '' ">
+    <b-card class="mb-3 chat-message-card" :class="user.id === myId ? 'right-side-message' : '' ">
     <b-media>
       <b-img slot="aside" :src="user.avatar" blank-color="#ccc" width="64" alt="placeholder" />
       <h5 class="mt-0">{{user.name}}</h5>
@@ -27,8 +27,12 @@
 </script>
 
 <style scoped>
-  .dirRtl {
-    direction: rtl;
-    text-align: right;
+  .chat-message-card {
+    min-width: 290px;
+    max-width: 90%;
+    flex-shrink: 0;
+  }
+  .right-side-message {
+    margin-left: auto;
   }
 </style>
