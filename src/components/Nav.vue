@@ -1,27 +1,36 @@
 <template>
-  <div class="nav d-flex flex-column">
-    <NavSection title="Собеседники" :isOpen=true :itemsList="users" id="collapse1" />
-    <NavSection title="Группы" :isOpen=false :itemsList="users" id="collapse2" />
-    <NavSection title="Каналы" :isOpen=false :itemsList="users" id="collapse3" />
+  <div class="nav d-flex flex-column" v-if="!isGroup">
+    <NavSection title="Собеседники" :isOpen=true :itemsList="usersSlugs" id="collapse1" />
+    <NavSection title="Группы" :isOpen=false :itemsList="groupsSlugs" id="collapse2" />
+    <NavSection title="Каналы" :isOpen=false :itemsList="channelsSlugs" id="collapse3" />
+  </div>
+  <div class="nav d-flex flex-column" v-else>
+    <NavSection title="Группы" :isOpen=false :itemsList="channelsSlugs" id="collapse2" />
   </div>
 </template>
 
 <script>
-  import NavSection from './NavSection'
+  import NavSection from './NavSection';
+  import {usersSlugs} from '../users-slugs';
+  import {channelsSlugs} from '../channels-slugs';
+  import {groupsSlugs} from '../groups-slugs';
 
   export default {
+    props: {
+      isGroup: Boolean
+    },
     data() {
       return {
-        users: [
-          {name: 'Вася', link: 'vasya_link'},
-          {name: 'Петя', link: 'petay_link'},
-          {name: 'Андрей', link: 'andrey_link'},
-          {name: 'Дима', link: 'dima_link'}
-        ]
+        usersSlugs,
+        channelsSlugs,
+        groupsSlugs
       }
     },
     components: {
         NavSection
+    },
+    mounted() {
+
     }
   }
 
