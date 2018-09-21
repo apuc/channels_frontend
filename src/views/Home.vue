@@ -2,11 +2,11 @@
   <div class="home container-fluid">
     <div class="row">
       <div class="col-md-3 p-0 bg-light">
-        <Nav :isGroup="false" />
+        <router-view name="navHome"></router-view>
       </div>
 
       <div class="col-md-6 p-0">
-        <Chat />
+        <router-view name="chat"></router-view>
       </div>
 
       <div class="col-md-3 p-0 bg-light">
@@ -19,6 +19,7 @@
 <script>
   import Nav from '../components/Nav'
   import Chat from '../components/Chat'
+
   export default {
     data() {
       return {
@@ -28,7 +29,8 @@
     components: {
       Nav,
       Chat
-    }
+    },
+
   }
 </script>
 

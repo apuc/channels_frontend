@@ -1,8 +1,12 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import MainLayout from './views/layouts/MainLayout'
-import GroupLayout from './views/layouts/GroupLayout'
-import AuthLayout from './views/layouts/AuthLayout'
+import Vue from 'vue';
+import Router from 'vue-router';
+import MainLayout from './views/layouts/MainLayout';
+import GroupLayout from './views/layouts/GroupLayout';
+import AuthLayout from './views/layouts/AuthLayout';
+import NotFoundComponent from './views/NotFoundComponent';
+import Nav from './components/Nav';
+import Chat from './components/Chat';
+
 
 Vue.use(Router);
 
@@ -12,8 +16,10 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'main-layout',
-      component: MainLayout
+      components: {
+        navHome: Nav,
+        chat: Chat
+      }
     },
     {
       path: '/auth',
@@ -22,11 +28,14 @@ export default new Router({
     },
     {
       path: '/:id',
-      component: MainLayout
+      components: {
+        navHome: Nav,
+        chat: Chat
+      },
     },
     {
-      path: '/group/:id',
-      component: GroupLayout
+      path: '*',
+      component: NotFoundComponent
     }
   ],
 })

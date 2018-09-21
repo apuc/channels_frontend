@@ -1,11 +1,8 @@
 <template>
-  <div class="nav d-flex flex-column" v-if="!isGroup">
-    <NavSection title="Собеседники" :isOpen=true :itemsList="usersSlugs" id="collapse1" />
-    <NavSection title="Группы" :isOpen=false :itemsList="groupsSlugs" id="collapse2" />
-    <NavSection title="Каналы" :isOpen=false :itemsList="channelsSlugs" id="collapse3" />
-  </div>
-  <div class="nav d-flex flex-column" v-else>
-    <NavSection title="Группы" :isOpen=false :itemsList="channelsSlugs" id="collapse2" />
+  <div class="nav d-flex flex-column">
+    <NavSection title="Собеседники" :isOpen=false :itemsList="usersSlugs" id="collapse1" />
+    <NavSection title="Каналы" :isOpen=false :itemsList="channelsSlugs" id="collapse2" />
+    <GroupNavSection title="Группы" :isOpen=true :itemsList="groupsSlugs" id="collapse3" />
   </div>
 </template>
 
@@ -14,10 +11,12 @@
   import {usersSlugs} from '../users-slugs';
   import {channelsSlugs} from '../channels-slugs';
   import {groupsSlugs} from '../groups-slugs';
+  import store from "../store/store";
+  import GroupNavSection from "./GroupNavSection";
 
   export default {
-    props: {
-      isGroup: Boolean
+    computed: {
+
     },
     data() {
       return {
@@ -27,9 +26,10 @@
       }
     },
     components: {
-        NavSection
+      GroupNavSection,
+      NavSection
     },
-    mounted() {
+    methods: {
 
     }
   }

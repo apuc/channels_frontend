@@ -2,7 +2,7 @@
   <div class="home container-fluid">
     <div class="row">
       <div class="col-md-3 p-0 bg-light">
-        <Nav :isGroup="true" />
+        <Nav />
       </div>
 
       <div class="col-md-6 p-0">
@@ -29,7 +29,7 @@
     components: {
       Nav,
       Chat
-    }
+    },
   }
 </script>
 

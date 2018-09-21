@@ -1,19 +1,22 @@
 export const groupsSlugs = [
   {
     name: 'Мои любимые группы',
-    slug: '/group/my-fav-groups',
+    slug: '/my-fav-groups',
     groupId: 987
   },
   {
     name: 'Мои не любимые групппы',
-    slug: '/group/trash'
+    slug: '/trash',
+    groupId: 987
   },
   {
     name: 'Группы для девушки',
-    slug: '/group/girlfriend'
+    slug: '/girlfriend',
+    groupId: 987
   },
   {
     name: 'Всякая фигня',
-    slug: '/group/etc'
+    slug: '/etc',
+    groupId: 987
   }
 ];

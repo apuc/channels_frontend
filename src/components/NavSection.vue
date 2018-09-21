@@ -1,6 +1,7 @@
 <template>
   <div class="list-group">
-    <b-list-group-item variant="warning" v-b-toggle="id" class="text-center nav-items-header">{{ title }}
+    <b-list-group-item variant="warning" v-b-toggle="id" class="text-center nav-items-header">
+      {{ title }}
     </b-list-group-item>
 
     <b-collapse :visible="isOpen" :id="id" class="nav-items">
@@ -8,8 +9,8 @@
         v-for="(item, index) in itemsList"
         :to="item.slug"
         :key="index + item.slug"
-        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action"
-      >{{ item.name }}
+        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+        {{ item.name }}
       </router-link>
     </b-collapse>
   </div>
@@ -24,16 +25,8 @@
       isOpen: Boolean
     },
     watch: {
-      '$route'(to, from) {
-        console.log(to);
-        console.log(from);
-      }
+
     },
-    beforeRouteUpdate(to, from, next) {
-      console.log(to);
-      console.log(from);
-      console.log(next);
-    }
   }
 </script>
 
