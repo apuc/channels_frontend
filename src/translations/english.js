@@ -1,14 +1,13 @@
-export default {
-    ChatFooter: {
-        sendBtn: 'Send',
-        textareaPlaceholder: 'Enter message'
+import {MLanguage} from "vue-multilanguage";
+
+export default new MLanguage('en').create({
+    Chat: {
+        btnSend: 'Send',
+        textareaPlaceholder: 'Enter message...'
     },
     Nav: {
         users: 'Users',
         channels: 'Channels',
         groups: 'Groups'
-    },
-    shared: {
-        change_language: 'Chose language'
     }
-}
+})

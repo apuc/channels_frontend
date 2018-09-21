@@ -1,11 +1,12 @@
-import ru from './russian'
-import en from './english'
+import Vue from 'vue'
+import { MLInstaller, MLCreate} from 'vue-multilanguage'
+import russian from './russian'
+import english from './english'
 
-export const messages = {
-    en,
-    ru
-};
+Vue.use(MLInstaller);
 
-export const getLanguages = function() {
-    return Object.keys(messages);
-};
+export default new MLCreate({
+    initial: 'ru',
+    save: process.env.NODE_ENV === 'production',
+    languages: [russian, english]
+})

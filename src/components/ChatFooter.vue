@@ -4,12 +4,12 @@
             <b-form-textarea id="input_message"
                              class="input_message"
                              v-model="input"
-                             :placeholder="$t('ChatFooter.textareaPlaceholder')"
+                             :placeholder="$ml.get('Chat.textareaPlaceholder')"
                              :rows="3"
                              :max-rows="5">
             </b-form-textarea>
             <b-input-group-append>
-                <b-btn class="footer_sendBtn" variant="outline-success">{{$t('ChatFooter.sendBtn')}}</b-btn>
+                <b-btn class="footer_sendBtn" variant="outline-success">{{$ml.get('Chat.btnSend')}}</b-btn>
             </b-input-group-append>
         </b-input-group>
     </div>

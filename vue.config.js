@@ -1,5 +1,5 @@
-// module.exports = {
-//     configureWebpack: {
-//         plugins: []
-//     }
-// };
+module.exports = {
+    transpileDependencies: [
+        /\bvue-awesome\b/
+    ]
+};
