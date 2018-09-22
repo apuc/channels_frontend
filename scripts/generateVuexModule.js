@@ -37,9 +37,7 @@ export default {
   mutations
 };
 `;
-const exportFileContent = `import * as types from '@/store/types';
-
-export default {
+const exportFileContent = `export default {
 
 };
 `;

@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "make-module": "node scripts/generateVuexModule.js"
+    "vuex-module": "node scripts/generateVuexModule.js"
   },
   "dependencies": {
     "bootstrap": "^4.1.3",
