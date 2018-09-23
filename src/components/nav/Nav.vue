@@ -2,17 +2,16 @@
   <div class="nav d-flex flex-column">
     <NavSection title="Собеседники" :isOpen=false :itemsList="usersSlugs" id="collapse1" />
     <NavSection title="Каналы" :isOpen=false :itemsList="channelsSlugs" id="collapse2" />
-    <GroupNavSection title="Группы" :isOpen=true :itemsList="groupsSlugs" id="collapse3" />
+    <NavSection title="Группы" :isOpen=true :itemsList="groupsSlugs" id="collapse3" />
   </div>
 </template>
 
 <script>
   import NavSection from './NavSection';
-  import {usersSlugs} from '../users-slugs';
-  import {channelsSlugs} from '../channels-slugs';
-  import {groupsSlugs} from '../groups-slugs';
-  import store from "../store/store";
-  import GroupNavSection from "./GroupNavSection";
+  import {usersSlugs} from '../../users-slugs';
+  import {channelsSlugs} from '../../channels-slugs';
+  import {groupsSlugs} from '../../groups-slugs';
+  import store from "../../store/store";
 
   export default {
     computed: {
@@ -26,7 +25,6 @@
       }
     },
     components: {
-      GroupNavSection,
       NavSection
     },
     methods: {

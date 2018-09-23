@@ -1,13 +1,15 @@
 <template>
-  <div class="auth">asdasd</div>
+  <header class="bg-light"></header>
 </template>
 
 <script>
   export default {
-    name: "AuthLayout"
+
   }
 </script>
 
 <style scoped>
-
+  header {
+    min-height: 100px;
+  }
 </style>

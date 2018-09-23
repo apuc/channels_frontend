@@ -1,10 +1,10 @@
 <template>
-  <div class="auth">asdasd</div>
+  
 </template>
 
 <script>
   export default {
-    name: "AuthLayout"
+    name: "RegLayout"
   }
 </script>
 

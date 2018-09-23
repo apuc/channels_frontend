@@ -6,7 +6,7 @@
       </aside>
 
       <div class="col-md-6 p-0">
-        <Chat/>
+        <Group/>
       </div>
 
       <aside class="col-md-3 p-0 bg-light">
@@ -19,6 +19,7 @@
 <script>
   import Nav from '../components/nav/Nav'
   import Chat from '../components/chat/Chat'
+  import Group from '../components/group/Group';
   import Advertisings from '../components/ads/Advertisings';
 
   export default {
@@ -29,6 +30,7 @@
     },
     components: {
       Advertisings,
+      Group,
       Nav,
       Chat
     },

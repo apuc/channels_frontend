@@ -1,5 +1,5 @@
 <template>
-  <div class="list-group">
+  <section class="list-group">
     <b-list-group-item variant="warning" v-b-toggle="id" class="text-center nav-items-header">
       {{ title }}
     </b-list-group-item>
@@ -13,7 +13,7 @@
         {{ item.name }}
       </router-link>
     </b-collapse>
-  </div>
+  </section>
 </template>
 
 <script>

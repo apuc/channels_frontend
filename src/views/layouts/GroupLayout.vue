@@ -1,18 +1,18 @@
 <template>
-  <Group/>
+  <Groups/>
 </template>
 
 <script>
-  import Group from '../Group'
+  import Groups from '../Groups';
 
   export default {
-    data() {
-      return {
-
-      }
-    },
+    name: "GroupLayout",
     components: {
-      Group
+      Groups
     }
   }
 </script>
+
+<style scoped>
+
+</style>

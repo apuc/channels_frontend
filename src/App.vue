@@ -1,18 +1,25 @@
 <template>
   <div id="app">
-    <Home />
+    <router-view></router-view>
+    <profile-modal v-if="userProfile"></profile-modal>
   </div>
 </template>
 
 <script>
   import Home from "./views/Home";
+  import Groups from "./views/Groups";
+  import ProfileModal from './components/ProfileModal';
 
   export default {
     components: {
-      Home
+      ProfileModal,
+      Home,
+      Groups
     },
     computed: {
-
+      userProfile() {
+        return this.$store.getters.userProfile;
+      }
     }
   }
 </script>
