@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import MainLayout from '../views/layouts/MainLayout';
 import AuthLayout from '../views/layouts/AuthLayout';
+import RegLayout from '../views/layouts/RegLayout';
 import GroupLayout from '../views/layouts/GroupLayout';
 import NotFoundComponent from '../views/NotFoundComponent';
 import ProfileModal from '../components/ProfileModal';
@@ -18,8 +19,11 @@ export default new Router({
     },
     {
       path: '/auth',
-      name: 'authLayout',
       component: AuthLayout
+    },
+    {
+      path: '/registration',
+      component: RegLayout
     },
     {
       path: '/:id',

@@ -18,7 +18,7 @@
     },
     computed: {
       userProfile() {
-        return this.$store.getters.userProfile;
+        return this.$store.getters['user/userProfile'];
       }
     }
   }

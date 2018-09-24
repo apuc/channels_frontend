@@ -25,31 +25,27 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
+
   export default {
     name: "ProfileModal",
     computed: {
-      getUserInfo() {
-        return this.$store.getters.userProfileInfo;
-      }
+      ...mapGetters({
+        user: 'user/userProfileInfo'
+      }),
     },
     data() {
       return {
-        user: {}
+
       }
     },
     methods: {
       closeModal() {
-        this.$store.commit('deleteCurrentUserInfo');
-        this.$store.commit('deleteUserModal');
+        this.$store.commit('user/deleteCurrentUserInfo', {});
+        this.$store.commit('user/deleteUserModal');
         this.$router.go(-1);
       }
     },
-    created() {
-      this.$store.watch(state => {
-        console.log(this.$store.getters.userProfileInfo);
-        return this.$store.userProfileInfo
-      })
-    }
   }
 </script>
 
@@ -59,30 +55,30 @@
     top: 0;
     left: 0;
     z-index: 999;
-    
+
     width: 100%;
     height: 100%;
   }
-  
+
   .backdrop {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 1;
-    
+
     width: 100%;
     height: 100%;
 
     background-color: rgba(0,0,0, 0.4);
   }
-  
+
   .container {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
-    
+
     width: 500px;
     height: 300px;
     padding: 30px;
