@@ -71,5 +71,8 @@
     padding: 20px;
     flex-grow: 1;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 </style>

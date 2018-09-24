@@ -1,48 +1,21 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+// Vuex structure from https://habr.com/company/ruvds/blog/420357/
+
+import Vue from 'vue'
+import Vuex from 'vuex'
+import modules from './modules'
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
-    userProfile: false,
-    userProfileInfo: {
-      name: '',
-      avatar: '',
-      slug: '',
-      id: null
+const store = new Vuex.Store({
+    modules,
+    strict: process.env.NODE_ENV !== 'production'
+});
+
+// Автоматически запустить действие `init` для каждого существующего модуля
+for (const moduleName of Object.keys(modules)) {
+    if (modules[moduleName].actions.init) {
+        store.dispatch(`${moduleName}/init`)
     }
-  },
-  getters: {
-    userProfile: state => state.userProfile,
-    userProfileInfo: state => {
-      console.log('get', state.userProfileInfo);
-      return state.userProfileInfo
-    }
-  },
-  mutations: {
-    setUserModal(state) {
-      state.userProfile = true
-    },
-    deleteUserModal(state) {
-      state.userProfile = false
-    },
-    setCurrentUserInfo(state, payload) {
-      console.log(payload.user);
-      state.userProfileInfo = payload.user;
-      console.log('set', state.userProfileInfo);
-    },
-    deleteCurrentUserInfo(state) {
-      state.userProfileInfo = {
-        name: '',
-        avatar: '',
-        slug: '',
-        id: null
-      }
-    }
-  },
-  actions: {
-    setUserModal: ({ commit }) => commit('setUserModal'),
-    deleteUserModal: ({ commit }) => commit('setUserModal'),
-  }
-})
+}
+
+export default store
