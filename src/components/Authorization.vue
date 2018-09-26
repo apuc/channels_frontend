@@ -6,7 +6,6 @@
           <CustomInput v-for="(item, index) in  info"
                        :name="item.name"
                        :value.sync="item.value"
-                       :pattern="item.pattern"
                        :key="index"
                        :id="item.name"
                        class=""
@@ -15,7 +14,7 @@
           </CustomInput>
 
           <button class="btn btn-primary">
-            Send Data
+            Enter
           </button>
         </form>
       </div>
@@ -27,7 +26,7 @@
   import CustomInput from './form/CustomInput'
 
   export default {
-    name: "Registration",
+    name: "Authorization",
     components: {
       CustomInput
     },
@@ -38,16 +37,6 @@
             name: 'Name',
             value: '',
             pattern: /^[a-zA-Z ]{2,30}$/
-          },
-          {
-            name: 'Phone',
-            value: '',
-            pattern: /^(?!\+.*\(.*\).*\-\-.*$)(?!\+.*\(.*\).*\-$)(\+38\(0[0-9]{2}\)[0-9]{3}[-]{1}[0-9]{2}[-]{1}[0-9]{2})$/
-          },
-          {
-            name: 'Email',
-            value: '',
-            pattern: /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
           },
           {
             name: 'Password',

@@ -14,33 +14,43 @@
 
 <script>
   export default {
-    props: ['name', 'value', 'pattern', 'id'],
-    data(){
+    props: {
+      name: String,
+      value: String,
+      pattern: {
+        type: String,
+        required: false
+      },
+      id: String
+    },
+    data() {
       return {
         activated: this.value != ''
       }
     },
-    mounted(){
+    mounted() {
       this.$emit('changeStatus', this.isValid);
     },
     computed: {
-      isValid(){
-        return this.pattern.test(this.value);
+      isValid() {
+       if (this.pattern) {
+         return this.pattern.test(this.value);
+       }
       },
-      validClass(){
+      validClass() {
         if (this.activated) {
           return this.isValid ? 'is-valid' : 'is-invalid';
         }
       }
     },
     methods: {
-      onInput(e){
+      onInput(e) {
         this.activated = true;
         this.$emit('update:value', e.target.value);
       }
     },
     watch: {
-      isValid(){
+      isValid() {
         this.$emit('changeStatus', this.isValid);
       }
     }
