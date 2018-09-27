@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="col-md-6 p-0">
     <GroupsHeader/>
     <GroupsList/>
   </main>

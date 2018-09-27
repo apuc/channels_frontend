@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import Links from '../components/Links';
 import MainLayout from '../views/layouts/MainLayout';
 import AuthLayout from '../views/layouts/AuthLayout';
 import RegLayout from '../views/layouts/RegLayout';
@@ -15,6 +16,10 @@ export default new Router({
   routes: [
     {
       path: '/',
+      component: Links,
+    },
+    {
+      path: '/chat',
       component: MainLayout,
     },
     {

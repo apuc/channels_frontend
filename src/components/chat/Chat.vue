@@ -1,5 +1,5 @@
 <template>
-  <div class="chat">
+  <div class="chat col-md-6 p-0">
     <ChatHeader/>
     <ChatMessages/>
     <ChatFooter/>
