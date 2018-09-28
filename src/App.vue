@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <profile-modal v-if="userProfile"></profile-modal>
+    <profile-modal v-if="isModalOpened"></profile-modal>
+    <group-modal v-if="isModalOpened"></group-modal>
   </div>
 </template>
 
@@ -9,16 +10,22 @@
   import Home from "./views/Home";
   import Groups from "./views/Groups";
   import ProfileModal from './components/ProfileModal';
+  import GroupModal from './components/GroupModal';
 
   export default {
     components: {
+      GroupModal,
       ProfileModal,
       Home,
       Groups
     },
     computed: {
-      userProfile() {
-        return this.$store.getters['user/userProfile'];
+      isModalOpened() {
+        return this.$store.getters['modal/isModalOpened'];
+      }
+    },
+    data() {
+      return {
       }
     }
   }

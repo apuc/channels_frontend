@@ -44,6 +44,11 @@ export default new Router({
       component: ProfileModal
     },
     {
+      path: '/create-group',
+      name: 'create_group',
+      component: ProfileModal
+    },
+    {
       path: '*',
       component: NotFoundComponent,
     },

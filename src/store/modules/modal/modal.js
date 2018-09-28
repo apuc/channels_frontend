@@ -3,12 +3,7 @@ import actions from './actions';
 import mutations from './mutations';
 
 const state = {
-  userProfileInfo: {
-    name: '',
-    avatar: '',
-    slug: '',
-    id: null
-  }
+  isModalOpened: false,
 };
 
 export default {

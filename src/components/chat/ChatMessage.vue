@@ -36,22 +36,13 @@
     methods: {
       openUserProfile(e, user) {
         e.preventDefault();
-        // this.$store.commit({
-        //   type: 'user/setCurrentUserInfo',
-        //   user: {
-        //     name: user.name,
-        //     id: user.id,
-        //     avatar: user.avatar,
-        //     slug: user.slug
-        //   }
-        // });
         this.$store.dispatch('user/setCurrentUserInfo', {
           name: user.name,
           id: user.id,
           avatar: user.avatar,
           slug: user.slug
         });
-        this.$store.commit('user/setUserModal');
+        this.$store.commit('modal/setModal');
         history.pushState('', 'Title of page', `/user/${this.user.slug}`);
       },
     }

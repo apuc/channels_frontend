@@ -1,15 +1,105 @@
 <template>
-  <header class="bg-light"></header>
+  <header class="bg-light">
+    <div class="settings">
+      <button type="button" class="settings__btn" @mouseover="settingsVisible = true" @mouseout="settingsVisible = false">
+        <v-icon scale="1.6" name="cog"/>
+      </button>
+
+      <div class="settings__list" v-if="settingsVisible">
+        <ul class="list">
+          <li class="list__el" v-for="(setting, index) in settingsList">
+            <a :href="setting.link">{{ setting.name }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <b-dropdown class="language-dropdown" variant="link">
+      <button type="button" slot="button-content">
+        <v-icon scale="1.6" class="icon" name="flag"/>
+      </button>
+
+      <b-dropdown-item
+        v-for="lang in $ml.list"
+        :key="lang"
+        @click="$ml.change(lang)"
+        v-text="lang"
+      ></b-dropdown-item>
+    </b-dropdown>
+  </header>
 </template>
 
 <script>
-  export default {
 
+  export default {
+    data() {
+      return {
+        settingsList: [
+          {
+            name: 'Настройки канала',
+            link: 'https://github.com'
+          },
+          {
+            name: 'Настройки чего-нибудь ещё',
+            link: 'https://github.com'
+          },
+          {
+            name: 'Настройки профиля',
+            link: 'https://github.com'
+          },
+        ],
+        settingsVisible: false
+      }
+    },
+    computed: {}
   }
 </script>
 
 <style scoped>
   header {
-    min-height: 100px;
+    display: flex;
+    align-items: center;
+    height: 100px;
+    padding: 15px;
   }
+
+  .settings {
+    position: relative;
+    z-index: 1;
+  }
+
+  button {
+    padding: 5px;
+
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .settings__list {
+    position: absolute;
+    left: 0;
+    z-index: 2;
+
+    width: 200px;
+
+    background-color: #fff;
+  }
+
+  .list {
+    padding: 10px;
+    list-style: none;
+  }
+
+  .list__el {
+    padding: 8px 0;
+    line-height: 1.2;
+  }
+
+  .icon {
+    color: #ffeeba;
+    stroke: blue;
+    stroke-width: 15px;
+  }
+
 </style>

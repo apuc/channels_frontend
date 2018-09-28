@@ -1,7 +1,8 @@
 <template>
   <section class="list-group">
     <b-list-group-item variant="warning" v-b-toggle="id" class="text-center nav-items-header">
-      {{ title }}
+      <h2>{{ title }}</h2>
+      <a :href="'/create-group'" class="addButton" v-if="addButton" @click="openUserProfile">+</a>
     </b-list-group-item>
 
     <b-collapse :visible="isOpen" :id="id" class="nav-items">
@@ -22,10 +23,18 @@
       id: String,
       title: String,
       itemsList: Array,
-      isOpen: Boolean
+      isOpen: Boolean,
+      addButton: {
+        type: Boolean,
+        required: false
+      }
     },
-    watch: {
-
+    methods: {
+      openUserProfile(e) {
+        e.preventDefault();
+        this.$store.commit('modal/setModal');
+        history.pushState('', 'Title of page', `/create-group`);
+      },
     },
   }
 </script>
@@ -41,6 +50,25 @@
   }
 
   .nav-items-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    cursor: pointer;
+  }
+
+  .addButton {
+    width: 36px;
+    height: 36px;
+
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 1;
+    color: #856404;
+
+    background-color: #E5D7A5;
+    border: none;
+    border-radius: 50%;
     cursor: pointer;
   }
 </style>

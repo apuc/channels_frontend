@@ -2,7 +2,7 @@
   <aside class="nav d-flex flex-column col-md-3 p-0 bg-light">
     <NavSection title="Собеседники" :isOpen=false :itemsList="usersSlugs" id="collapse1" />
     <NavSection title="Каналы" :isOpen=false :itemsList="channelsSlugs" id="collapse2" />
-    <NavSection title="Группы" :isOpen=true :itemsList="groupsSlugs" id="collapse3" />
+    <NavSection title="Группы" :addButton="true" :isOpen=true :itemsList="groupsSlugs" id="collapse3" />
   </aside>
 </template>
 

@@ -9,16 +9,8 @@
         @click="closeModal"
       >Close</button>
 
-      <header class="container__header">
-        <img :src="user.avatar"
-             alt=""
-             class="portrait"
-        >
-
-        <h4>{{ user.name }}</h4>
-      </header>
-
       <div class="container__content">
+
       </div>
     </div>
   </div>
@@ -26,13 +18,17 @@
 
 <script>
   import {mapGetters} from 'vuex';
+  import CustomInput from './form/CustomInput';
 
   export default {
-    name: "ProfileModal",
+    name: "GroupModal",
+    comments: {
+      CustomInput
+    },
     computed: {
-      ...mapGetters({
-        user: 'user/userProfileInfo'
-      }),
+      // ...mapGetters({
+      //   user: 'user/userProfileInfo'
+      // }),
     },
     data() {
       return {
@@ -41,7 +37,6 @@
     },
     methods: {
       closeModal() {
-        this.$store.commit('user/deleteCurrentUserInfo', {});
         this.$store.commit('modal/deleteModal');
         this.$router.go(-1);
       }
