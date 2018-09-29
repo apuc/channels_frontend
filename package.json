@@ -23,6 +23,7 @@
     "@vue/cli-plugin-pwa": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
     "chalk": "^2.4.1",
+    "vue-isyourpasswordsafe": "^1.0.2",
     "vue-template-compiler": "^2.5.17"
   },
   "postcss": {

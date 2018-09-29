@@ -3,17 +3,42 @@
     <div class="container">
       <div class="row">
         <form @submit.prevent="formSubmited = true" class="col-lg-6 col-12 offset-3 pt-lg-3">
-          <CustomInput v-for="(item, index) in  info"
+          <CustomInput v-for="(item, index) in info"
                        :name="item.name"
                        :value.sync="item.value"
                        :pattern="item.pattern"
                        :key="index"
-                       :id="item.name"
+                       :id="item.id"
+                       :inputType="item.type"
                        class=""
                        @changeStatus="onChangeData(index, $event)"
           >
           </CustomInput>
 
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password"
+                   class="form-control"
+                   :class="isRepeatPassValid"
+                   id="password"
+                   @input="onInput"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="repeat-password">Repeat Password</label>
+
+            <input type="password"
+                   class="form-control"
+                   :class="isRepeatPassValid"
+                   id="repeat-password"
+                   @input="onInput"
+            >
+          </div>
+          <p>
+            {{ password }}
+            {{ repeatPassword }}
+          </p>
           <button class="btn btn-primary">
             Send Data
           </button>
@@ -24,39 +49,48 @@
 </template>
 
 <script>
-  import CustomInput from './form/CustomInput'
+  import CustomInput from './form/CustomInput';
 
   export default {
     name: "Registration",
     components: {
-      CustomInput
+      CustomInput,
+      // VueIsYourPasswordSafe
+    },
+    computed: {
+      isRepeatPassValid() {
+        if (this.isActive) {
+          return (this.password === this.repeatPassword) ? 'is-valid' : 'is-invalid'
+        }
+      }
     },
     data(){
       return {
         info: [
           {
             name: 'Name',
+            id: 'name',
+            type: 'text',
             value: '',
-            pattern: /^[a-zA-Z ]{2,30}$/
-          },
-          {
-            name: 'Phone',
-            value: '',
-            pattern: /^(?!\+.*\(.*\).*\-\-.*$)(?!\+.*\(.*\).*\-$)(\+38\(0[0-9]{2}\)[0-9]{3}[-]{1}[0-9]{2}[-]{1}[0-9]{2})$/
+            pattern: /^[a-zA-Z][a-zA-Z0-9-_\.]{2,20}$/
           },
           {
             name: 'Email',
+            id: 'email',
+            type: 'email',
             value: '',
             pattern: /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
           },
-          {
-            name: 'Password',
-            value: '',
-            pattern: /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g // цифра, заглавная буква, строчная и спец. символ
-          },
         ],
         controls: [],
-        formSubmited: false
+        formSubmited: false,
+        isPassSafe: null,
+        password: {
+          value: '',
+          pattern: /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g // цифра, заглавная буква, строчная и спец. символ
+        },
+        repeatPassword: '',
+        isActive: false
       }
     },
     created() {
@@ -67,6 +101,17 @@
     methods: {
       onChangeData(index, status) {
         this.controls[index] = status;
+      },
+      onInput(e) {
+        let target = e.target;
+
+        if (target.id === 'password') {
+          this.password = target.value;
+        }
+        if (target.id === 'repeat-password') {
+          this.repeatPassword = target.value;
+        }
+        this.isActive = true;
       }
     },
   }

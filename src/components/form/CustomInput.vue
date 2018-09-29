@@ -2,7 +2,7 @@
   <div class="form-group">
     <label :for="id">{{ name }}</label>
 
-    <input type="text"
+    <input :type="inputType"
            class="form-control"
            :class="validClass"
            :id="id"
@@ -18,10 +18,11 @@
       name: String,
       value: String,
       pattern: {
-        type: String,
+        type: RegExp,
         required: false
       },
-      id: String
+      id: String,
+      inputType: String
     },
     data() {
       return {
