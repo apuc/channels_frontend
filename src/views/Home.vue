@@ -1,17 +1,9 @@
 <template>
   <main class="home container-fluid">
     <div class="row">
-      <aside class="col-md-3 p-0 bg-light">
         <Nav/>
-      </aside>
-
-      <div class="col-md-6 p-0">
         <Chat/>
-      </div>
-
-      <aside class="col-md-3 p-0 bg-light">
         <Advertisings/>
-      </aside>
     </div>
   </main>
 </template>
