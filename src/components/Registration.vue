@@ -66,17 +66,6 @@
         const pattern = this.password.pattern;
         const value = this.password.value;
         if (this.isPassActive) {
-          console.log('match', value.match(pattern));
-          console.log('test', this.password.pattern.test(this.password.value) === true);
-          // if (this.password.pattern.test(this.password.value)) {
-          // if(value.match(pattern) === value) {
-          //   console.log('is-valid');
-          //   return 'is-valid'
-          // } else {
-          //   console.log('is-invalid');
-          //   return 'is-invalid'
-          // }
-          // return this.password.pattern.test(this.password.value) ? 'is-valid' : 'is-invalid';
           return value.match(pattern)  ?  'is-valid' : 'is-invalid';
         }
       }
