@@ -12,16 +12,23 @@
         <p class="text">{{message}}</p>
       </div>
     </b-media>
+
+    <Modal :modalType="'userProfile'"
+           :user="user"
+           @onModalClose="closeModal($event)"
+           v-if="isModalActive" />
   </b-card>
 </template>
 
 <script>
 
+  import Modal from '../ModalWindows/Modal';
   export default {
-    components: {},
+    components: {Modal},
     data() {
       return {
         myId: 111,
+        isModalActive: false
       }
     },
     props: {
@@ -34,17 +41,15 @@
       message: String
     },
     methods: {
-      openUserProfile(e, user) {
+      openUserProfile(e) {
         e.preventDefault();
-        this.$store.dispatch('user/setCurrentUserInfo', {
-          name: user.name,
-          id: user.id,
-          avatar: user.avatar,
-          slug: user.slug
-        });
-        this.$store.commit('modal/setModal');
+        this.isModalActive = true;
         history.pushState('', 'Title of page', `/user/${this.user.slug}`);
       },
+      closeModal(isModalActive) {
+        console.log(isModalActive);
+        this.isModalActive = isModalActive;
+      }
     }
   }
 </script>

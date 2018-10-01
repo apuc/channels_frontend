@@ -18,7 +18,7 @@
 
 <script>
   import {mapGetters} from 'vuex';
-  import CustomInput from './form/CustomInput';
+  import CustomInput from '../form/CustomInput';
 
   export default {
     name: "GroupModal",

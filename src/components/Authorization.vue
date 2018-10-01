@@ -6,8 +6,10 @@
           <CustomInput v-for="(item, index) in  info"
                        :name="item.name"
                        :value.sync="item.value"
+                       :pattern="item.pattern"
                        :key="index"
-                       :id="item.name"
+                       :id="item.id"
+                       :inputType="item.type"
                        class=""
                        @changeStatus="onChangeData(index, $event)"
           >
@@ -34,13 +36,17 @@
       return {
         info: [
           {
-            name: 'Name',
+            name: 'Email',
+            id: 'email',
             value: '',
-            pattern: /^[a-zA-Z ]{2,30}$/
+            type: 'email',
+            pattern: /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,60})$/i
           },
           {
             name: 'Password',
+            id: 'password',
             value: '',
+            type: 'password',
             pattern: /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g // цифра, заглавная буква, строчная и спец. символ
           },
         ],
