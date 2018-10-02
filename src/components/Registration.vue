@@ -35,10 +35,6 @@
                    @input="onInput"
             >
           </div>
-          <p>
-            {{ password.value }}
-            {{ repeatPassword }}
-          </p>
           <button class="btn btn-primary">
             Send Data
           </button>

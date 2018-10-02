@@ -6,7 +6,7 @@ import AuthLayout from '../views/layouts/AuthLayout';
 import RegLayout from '../views/layouts/RegLayout';
 import GroupLayout from '../views/layouts/GroupLayout';
 import NotFoundComponent from '../views/NotFoundComponent';
-import ProfileModal from '../components/ProfileModal';
+import ProfileModal from '../components/ModalWindows/ProfileModal';
 
 Vue.use(Router);
 
