@@ -1,9 +1,14 @@
 <template>
   <section class="list-group">
-    <b-list-group-item variant="warning" v-b-toggle="id" class="text-center nav-items-header">
-      <h2>{{ title }}</h2>
-      <a :href="'/create-group'" class="addButton" v-if="addButton" @click="openUserProfile">+</a>
-    </b-list-group-item>
+    <header class="list-group__header">
+      <b-list-group-item variant="warning" v-b-toggle="id" class="text-center nav-items-header">
+        <h2>{{ title }}</h2>
+      </b-list-group-item>
+
+      <div class="addButton-wrapper" v-if="addButton">
+        <a :href="'/create-group'" class="addButton" @click="openUserProfile">+</a>
+      </div>
+    </header>
 
     <b-collapse :visible="isOpen" :id="id" class="nav-items">
       <router-link
@@ -14,11 +19,19 @@
         {{ item.name }}
       </router-link>
     </b-collapse>
+
+    <Modal :modalType="'createGroup'"
+           @onModalClose="closeModal($event)"
+           v-if="isModalActive" />
   </section>
 </template>
 
 <script>
+  import Modal from '../ModalWindows/Modal';
   export default {
+    components: {
+      Modal
+    },
     props: {
       id: String,
       title: String,
@@ -29,12 +42,20 @@
         required: false
       }
     },
+    data() {
+      return {
+        isModalActive: false
+      }
+    },
     methods: {
       openUserProfile(e) {
         e.preventDefault();
-        this.$store.commit('modal/setModal');
+        this.isModalActive = true;
         history.pushState('', 'Title of page', `/create-group`);
       },
+      closeModal(isModalActive) {
+        this.isModalActive = isModalActive;
+      }
     },
   }
 </script>
@@ -42,6 +63,20 @@
 <style scoped>
   .list-group {
     max-height: calc(100% - 100px);
+  }
+
+  .list-group__header {
+    display: flex;
+    align-items: center;
+  }
+
+  .list-group-item:first-child {
+    flex-grow: 1;
+    border-radius: 0;
+  }
+
+  h2 {
+    font-size: 24px;
   }
 
   .nav-items {
@@ -57,11 +92,24 @@
     cursor: pointer;
   }
 
+  .addButton-wrapper {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 10px;
+
+    background-color: #ffeeba;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+  }
+
   .addButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 36px;
     height: 36px;
 
-    font-size: 23px;
+    font-size: 22px;
     font-weight: 700;
     line-height: 1;
     color: #856404;
@@ -70,5 +118,9 @@
     border: none;
     border-radius: 50%;
     cursor: pointer;
+  }
+
+  .addButton:hover {
+    text-decoration: none;
   }
 </style>

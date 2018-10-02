@@ -47,7 +47,6 @@
         history.pushState('', 'Title of page', `/user/${this.user.slug}`);
       },
       closeModal(isModalActive) {
-        console.log(isModalActive);
         this.isModalActive = isModalActive;
       }
     }

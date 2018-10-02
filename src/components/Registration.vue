@@ -11,9 +11,7 @@
                        :id="item.id"
                        :inputType="item.type"
                        class=""
-                       @changeStatus="onChangeData(index, $event)"
-          >
-          </CustomInput>
+                       @changeStatus="onChangeData(index, $event)"/>
 
           <div class="form-group">
             <label for="password">Password</label>

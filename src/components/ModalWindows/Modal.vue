@@ -2,19 +2,25 @@
   <div class="my-modal">
     <div class="backdrop" @click="onModalClose"></div>
 
-    <div class="modal__container">
+    <div class="modal__container ">
       <button type="button" class="close">Close</button>
 
       <ProfileModal v-if="modalType === 'userProfile'" :user="user" />
+      <GroupModal v-else-if="modalType === 'createGroup'"/>
     </div>
   </div>
 </template>
 
 <script>
   import ProfileModal from './ProfileModal';
+  import GroupModal from './GroupModal';
+
   export default {
     name: "Modal",
-    components: {ProfileModal},
+    components: {
+      ProfileModal,
+      GroupModal
+    },
     props: {
       modalType: String,
       user: {
@@ -58,6 +64,9 @@
 
     width: 100%;
     height: 100%;
+
+    direction: ltr;
+    text-align: left;
   }
 
   .modal__container {
@@ -68,7 +77,7 @@
     z-index: 2;
 
     width: 500px;
-    height: 300px;
+    min-height: 300px;
     padding: 30px;
 
     background-color: #fff;

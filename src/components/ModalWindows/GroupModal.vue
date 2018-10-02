@@ -1,105 +1,89 @@
 <template>
-  <div class="profile">
-    <div class="backdrop" @click="closeModal"></div>
+  <div>
+    <header class="modal__header">
+      <h4>Создать группу</h4>
+    </header>
 
-    <div class="profile__container container">
-      <button
-        type="button"
-        class="close"
-        @click="closeModal"
-      >Close</button>
+    <form class="modal__content">
+      <CustomInput v-for="(item, index) in info"
+                   :name="item.name"
+                   :value.sync="item.value"
+                   :key="index"
+                   :id="item.id"
+                   :inputType="item.type"
+                   :pattern="item.pattern"
+                   class=""
+                   @changeStatus="onChangeData(index, $event)"/>
 
-      <div class="container__content">
-
+      <div class="form-group">
+        <label :for="textarea.id"> {{ textarea.name }}</label>
+        <textarea v-model="textarea.value"
+                  :id="textarea.id"
+                  class="form-control">
+        </textarea>
       </div>
-    </div>
+
+      <button type="submit" class="btn btn-primary">Create</button>
+    </form>
   </div>
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
   import CustomInput from '../form/CustomInput';
 
   export default {
     name: "GroupModal",
-    comments: {
+    components: {
       CustomInput
     },
-    computed: {
-      // ...mapGetters({
-      //   user: 'user/userProfileInfo'
-      // }),
-    },
+    computed: {},
     data() {
       return {
-
+        info: [
+          {
+            name: 'Group Name',
+            id: 'group-name',
+            value: '',
+            type: 'text',
+            pattern: /^[a-zA-Z0-9]+$/
+          },
+          {
+            name: 'Group slug',
+            id: 'group-slug',
+            value: '',
+            type: 'text',
+            pattern: /^[a-zA-Z0-9]+$/
+          }
+        ],
+        textarea: {
+          name: 'Group describe',
+          id: 'group-desc',
+          value: '',
+          type: 'textarea'
+        },
+        controls: [],
+        formSubmited: false
       }
     },
     methods: {
-      closeModal() {
-        this.$store.commit('modal/deleteModal');
-        this.$router.go(-1);
+      onChangeData(index, status) {
+        this.controls[index] = status;
       }
     },
+    created() {
+      for (let i = 0; i < this.info.length; i++) {
+        this.controls.push(false);
+      }
+    }
   }
 </script>
 
 <style scoped>
-  .profile {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 999;
-
-    width: 100%;
-    height: 100%;
-  }
-
-  .backdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-
-    width: 100%;
-    height: 100%;
-
-    background-color: rgba(0,0,0, 0.4);
-  }
-
-  .container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-
-    width: 500px;
-    height: 300px;
-    padding: 30px;
-
-    background-color: #fff;
-  }
-
-  .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-
-    cursor: pointer;
-  }
-
-  .container__header {
+  .modal__header {
     display: flex;
     align-items: center;
   }
-
-  .portrait {
-    width: 50px;
-    height: 50px;
-    margin-right: 20px;
-
-    object-fit: cover;
-    border-radius: 50%;
+  textarea {
+    resize: none;
   }
 </style>

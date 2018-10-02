@@ -1,14 +1,12 @@
 <template>
   <div class="form-group">
     <label :for="id">{{ name }}</label>
-
     <input :type="inputType"
            class="form-control"
            :class="validClass"
            :id="id"
            :value="value"
-           @input="onInput"
-    >
+           @input="onInput">
   </div>
 </template>
 
@@ -22,7 +20,7 @@
         required: false
       },
       id: String,
-      inputType: String
+      inputType: String,
     },
     data() {
       return {
@@ -57,3 +55,7 @@
     }
   }
 </script>
+
+<style scoped>
+
+</style>
