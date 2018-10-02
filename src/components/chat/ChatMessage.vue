@@ -12,6 +12,11 @@
         <p class="text">{{message}}</p>
       </div>
     </b-media>
+
+    <Modal :modalType="'userProfile'"
+           :user="user"
+           @onModalClose="closeModal($event)"
+           v-if="isModalActive" />
   </b-card>
 </template>
 
@@ -52,6 +57,9 @@
         });
         history.pushState('', 'Title of page', `/user/${this.user.slug}`);
       },
+      closeModal(isModalActive) {
+        this.isModalActive = isModalActive;
+      }
     }
   }
 </script>

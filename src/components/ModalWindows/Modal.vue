@@ -5,8 +5,8 @@
     <div class="modal__container ">
       <button type="button" class="close">Close</button>
 
-      <ProfileModal v-if="userProfile"/>
-      <GroupModal v-else-if="createGroup"/>
+      <ProfileModal v-if="modalType === 'userProfile'" :user="user" />
+      <GroupModal v-else-if="modalType === 'createGroup'"/>
     </div>
   </div>
 </template>
@@ -14,7 +14,6 @@
 <script>
   import ProfileModal from './ProfileModal';
   import GroupModal from './GroupModal';
-  import {mapGetters} from 'vuex';
 
   export default {
     name: "Modal",
@@ -22,20 +21,23 @@
       ProfileModal,
       GroupModal
     },
-    computed: {
-      ...mapGetters({
-        createGroup: 'modal/setCreateGroup',
-        userProfile: 'modal/setUserProfile',
-      }),
+    props: {
+      modalType: String,
+      user: {
+        name: String,
+        avatar: String,
+        slug: String,
+        id: String
+      },
     },
     data() {
-      return {}
+      return {
+      }
     },
     methods: {
       onModalClose() {
-        this.$store.commit('user/deleteCurrentUserInfo', {});
-        this.$store.commit('modal/deleteModal');
         this.$router.go(-1);
+        this.$emit('onModalClose', false);
       }
     }
   }
@@ -62,9 +64,6 @@
 
     width: 100%;
     height: 100%;
-
-    direction: ltr;
-    text-align: left;
   }
 
   .modal__container {
