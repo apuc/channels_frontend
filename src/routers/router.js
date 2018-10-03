@@ -3,7 +3,8 @@ import Router from 'vue-router';
 import Links from '../components/Links';
 import MainLayout from '../views/layouts/MainLayout';
 import AuthLayout from '../views/layouts/AuthLayout';
-import RegLayout from '../views/layouts/RegLayout';
+import Login from '../components/Login';
+import Registration from '../components/Registration';
 import GroupLayout from '../views/layouts/GroupLayout';
 import NotFoundComponent from '../views/NotFoundComponent';
 import ProfileModal from '../components/ModalWindows/ProfileModal';
@@ -24,11 +25,12 @@ export default new Router({
     },
     {
       path: '/auth',
-      component: AuthLayout
-    },
-    {
-      path: '/registration',
-      component: RegLayout
+      component: AuthLayout,
+      children: [
+          {path: '/', redirect: 'login'},
+          {path: 'login', component: Login},
+          {path: 'registration', component: Registration},
+      ]
     },
     {
       path: '/:id',

@@ -1,8 +1,8 @@
 <template>
   <main>
     <router-link to="/chat">Chat</router-link>
-    <router-link to="/auth">Authorization</router-link>
-    <router-link to="/registration">Registration</router-link>
+    <router-link to="/auth/login">Authorization</router-link>
+    <router-link to="/auth/registration">Registration</router-link>
   </main>
 </template>
 
