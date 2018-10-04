@@ -1,8 +1,8 @@
 <template>
-  <main class="col-md-6 p-0">
+  <div>
     <GroupsHeader/>
     <GroupsList/>
-  </main>
+  </div>
 </template>
 
 <script>

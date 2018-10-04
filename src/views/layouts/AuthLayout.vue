@@ -1,12 +1,12 @@
 <template>
-  <Authorization />
+  <div>
+    <slot />
+  </div>
 </template>
 
 <script>
-  import Authorization from '../../components/Authorization';
   export default {
-    name: "AuthLayout",
-    components: {Authorization}
+    name: "AuthLayout"
   }
 </script>
 

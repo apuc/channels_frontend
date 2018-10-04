@@ -9,10 +9,15 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import './translations';
 import 'vue-awesome/icons';
 import Icon from 'vue-awesome/components/Icon';
+import MainLayout from './views/layouts/MainLayout';
+import AuthLayout from './views/layouts/AuthLayout';
 
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
+
 Vue.component('v-icon', Icon);
+Vue.component('main-layout', MainLayout);
+Vue.component('auth-layout', AuthLayout);
 
 new Vue({
   router,

@@ -1,5 +1,5 @@
 <template>
-  <div class="chat col-md-6 p-0">
+  <div>
     <ChatHeader/>
     <ChatMessages/>
     <ChatFooter/>
@@ -22,9 +22,5 @@
 </script>
 
 <style scoped>
-  .chat {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
+
 </style>

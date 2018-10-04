@@ -1,19 +1,18 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <component :is="layout">
+      <router-view />
+    </component>
   </div>
 </template>
 
 <script>
-  import Home from "./views/Home";
-  import Groups from "./views/Groups";
 
   export default {
-    components: {
-      Home,
-      Groups
-    },
     computed: {
+      layout() {
+        return (this.$route.meta.layout || 'main') + '-layout'
+      }
     },
     data() {
       return {
