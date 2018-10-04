@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row">
                 <form @submit.prevent="formSubmited = true" class="col-lg-6 col-12 offset-3 pt-lg-3">
-                    <CustomInput v-for="(item, index) in  info"
+                    <CustomInput v-for="(item, index) in info"
                                  :name="item.name"
                                  :value.sync="item.value"
                                  :pattern="item.pattern"
@@ -40,6 +40,7 @@
         },
         data() {
             return {
+
                 info: [
                     {
                         name: 'Email',

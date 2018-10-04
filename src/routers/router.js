@@ -10,6 +10,15 @@ import ProfileModal from '../components/ModalWindows/ProfileModal';
 
 Vue.use(Router);
 
+const isUserInBase = (to, from, next) => {
+  // Получить юзера по слагу с базы
+  // if (store.getters.isAuthenticated) {
+  //   next()
+  //   return
+  // }
+  // next('/login')
+};
+
 export default new Router({
   base: process.env.BASE_URL,
   mode: 'history',
@@ -17,10 +26,6 @@ export default new Router({
     {
       path: '/',
       component: Links,
-    },
-    {
-      path: '/:id',
-      component: Chat,
     },
     {
       path: '/group',
@@ -51,6 +56,11 @@ export default new Router({
       path: '/create-group',
       name: 'create_group',
       component: ProfileModal
+    },
+    {
+      path: '/:id',
+      component: Chat,
+      beforeEnter: isUserInBase,
     },
     {
       path: '*',
