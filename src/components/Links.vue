@@ -1,9 +1,9 @@
 <template>
-  <main>
+  <div class="d-flex flex-column align-items-center">
     <router-link to="/chat">Chat</router-link>
     <router-link to="/auth/login">Authorization</router-link>
     <router-link to="/auth/registration">Registration</router-link>
-  </main>
+  </div>
 </template>
 
 <script>
