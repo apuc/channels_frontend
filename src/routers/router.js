@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Links from '../components/Links';
-import MainLayout from '../views/layouts/MainLayout';
-import AuthLayout from '../views/layouts/AuthLayout';
-import RegLayout from '../views/layouts/RegLayout';
-import GroupLayout from '../views/layouts/GroupLayout';
+import Login from '../components/Login';
+import Registration from '../components/Registration';
+import Group from '../components/group/Group';
+import Chat from '../components/chat/Chat';
 import NotFoundComponent from '../views/NotFoundComponent';
 import ProfileModal from '../components/ModalWindows/ProfileModal';
 
@@ -19,24 +19,28 @@ export default new Router({
       component: Links,
     },
     {
-      path: '/chat',
-      component: MainLayout,
-    },
-    {
-      path: '/auth',
-      component: AuthLayout
-    },
-    {
-      path: '/registration',
-      component: RegLayout
-    },
-    {
       path: '/:id',
-      component: MainLayout,
+      component: Chat,
+    },
+    {
+      path: '/group',
+      redirect: '/',
     },
     {
       path: '/group/:id',
-      component: GroupLayout
+      component: Group,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      meta: {layout: 'auth'},
+      component: Login,
+    },
+    {
+      path: '/registration',
+      name: 'registration',
+      meta: {layout: 'auth'},
+      component: Registration,
     },
     {
       path: '/user/:user_id',

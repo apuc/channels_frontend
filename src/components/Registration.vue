@@ -33,9 +33,15 @@
                    @input="onInput"
             >
           </div>
-          <button class="btn btn-primary">
-            Send Data
-          </button>
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-primary flex-fill mr-3">
+              Зарегистрироваться
+            </button>
+            <router-link class="btn btn-warning" to="login">
+              Вход
+            </router-link>
+          </div>
+
         </form>
       </div>
     </div>
