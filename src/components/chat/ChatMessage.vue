@@ -12,23 +12,23 @@
         <p class="text">{{message}}</p>
       </div>
     </b-media>
-
-    <Modal :modalType="'userProfile'"
-           :user="user"
-           @onModalClose="closeModal($event)"
-           v-if="isModalActive" />
   </b-card>
 </template>
 
 <script>
-
   import Modal from '../ModalWindows/Modal';
+  import {mapGetters} from 'vuex';
+
   export default {
-    components: {Modal},
+    computed: {
+      ...mapGetters({
+        userInfo: 'user/userProfileInfo',
+        modal: 'modal/setUserProfile'
+      }),
+    },
     data() {
       return {
         myId: 111,
-        isModalActive: false
       }
     },
     props: {
@@ -43,12 +43,15 @@
     methods: {
       openUserProfile(e) {
         e.preventDefault();
-        this.isModalActive = true;
+        this.$store.commit('modal/setModal', 'userProfile');
+        this.$store.dispatch('user/setCurrentUserInfo', {
+          name: this.user.name,
+          id: this.user.id,
+          avatar: this.user.avatar,
+          slug: this.user.slug
+        });
         history.pushState('', 'Title of page', `/user/${this.user.slug}`);
       },
-      closeModal(isModalActive) {
-        this.isModalActive = isModalActive;
-      }
     }
   }
 </script>
