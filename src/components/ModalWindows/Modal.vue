@@ -5,8 +5,8 @@
     <div class="modal__container ">
       <button type="button" class="close">Close</button>
 
-      <ProfileModal v-if="createGroup" />
-      <GroupModal v-else-if="userProfile"/>
+      <ProfileModal v-if="userProfile"/>
+      <GroupModal v-else-if="createGroup"/>
     </div>
   </div>
 </template>
@@ -29,14 +29,13 @@
       }),
     },
     data() {
-      return {
-      }
+      return {}
     },
     methods: {
       onModalClose() {
-          this.$store.commit('user/deleteCurrentUserInfo', {});
-          this.$store.commit('modal/deleteModal');
-          this.$router.go(-1);
+        this.$store.commit('user/deleteCurrentUserInfo', {});
+        this.$store.commit('modal/deleteModal');
+        this.$router.go(-1);
       }
     }
   }

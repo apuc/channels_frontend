@@ -15,17 +15,14 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
+
   export default {
     name: "ProfileModal",
     computed: {
-    },
-    props: {
-      user: {
-        name: String,
-        avatar: String,
-        slug: String,
-        id: String
-      },
+      ...mapGetters({
+        user: 'user/userProfileInfo'
+      }),
     },
     data() {
       return {}
@@ -33,6 +30,9 @@
     methods: {
 
     },
+    mounted() {
+
+    }
   }
 </script>
 

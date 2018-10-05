@@ -4,22 +4,22 @@
       <router-view />
     </component>
 
-    <Modal v-if="modalActive"/>
+    <Modal v-if="setModal"/>
   </div>
 </template>
 
 <script>
-
   import Modal from './components/ModalWindows/Modal';
+  import {mapGetters} from 'vuex';
   export default {
     components: {Modal},
     computed: {
+      ...mapGetters({
+        setModal: 'modal/setModal'
+      }),
       layout() {
         return (this.$route.meta.layout || 'main') + '-layout'
       },
-      modalActive() {
-        return this.$store.getters.modalActive
-      }
     },
     data() {
       return {

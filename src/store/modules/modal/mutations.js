@@ -1,6 +1,7 @@
 export default {
-  setModal (state, payload) {
-    state.setModal= true;
+  setModal(state, payload) {
+    state.setModal = true;
+
     if (payload === 'group') {
       state.setCreateGroup = true;
     }
@@ -8,13 +9,9 @@ export default {
       state.setUserProfile = true;
     }
   },
-  deleteModal (state, payload) {
-    state.setModal= false;
-    if (payload === 'group') {
-      state.setCreateGroup = false;
-    }
-    if (payload === 'userProfile') {
-      state.setUserProfile = false;
-    }
+  deleteModal(state) {
+    state.setModal = false;
+    state.setCreateGroup = false;
+    state.setUserProfile = false;
   },
 };
