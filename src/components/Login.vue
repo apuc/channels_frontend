@@ -2,7 +2,7 @@
     <main>
         <div class="container">
             <div class="row">
-                <form class="col-lg-6 col-12 offset-3 pt-lg-3">
+                <form @submit.prevent="login" class="col-lg-6 col-12 offset-3 pt-lg-3">
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="text" class="form-control" id="email" v-model="username" />
@@ -24,7 +24,7 @@
 <script>
 
     export default {
-        name: "Authorization",
+        name: "Login",
         data() {
             return {
                 username: '',
@@ -33,9 +33,13 @@
         },
         methods: {
             login() {
-                const {username, password} = this;
-                this.$store.dispatch(AUTH_REQUEST, {username, password}).then(() => {
-                    this.$router.push('/');
+                const { username, password } = this;
+                this.$store.dispatch('auth/GET_TOKEN', {
+                    grant_type: 'password',
+                    client_id: '1',
+                    client_secret: 'h9oisXmiMSJVGdy9ExoKVxNhtAg2jvm6rpza8KOk',
+                    username,
+                    password
                 });
             }
         }
