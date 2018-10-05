@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex flex-column align-items-center">
     <router-link to="/chat">Chat</router-link>
-    <router-link to="/auth/login">Authorization</router-link>
-    <router-link to="/auth/registration">Registration</router-link>
+    <router-link to="/login">Authorization</router-link>
+    <router-link to="/registration">Registration</router-link>
   </div>
 </template>
 

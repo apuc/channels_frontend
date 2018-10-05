@@ -6,7 +6,9 @@
            :class="validClass"
            :id="id"
            :value="value"
-           @input="onInput">
+           :name="name"
+           @input="onInput"
+    >
   </div>
 </template>
 
@@ -20,7 +22,7 @@
         required: false
       },
       id: String,
-      inputType: String,
+      inputType: String
     },
     data() {
       return {
@@ -46,6 +48,10 @@
       onInput(e) {
         this.activated = true;
         this.$emit('update:value', e.target.value);
+        this.$emit('value', {
+          value: e.target.value,
+          name: e.target.name
+        });
       }
     },
     watch: {
@@ -55,7 +61,3 @@
     }
   }
 </script>
-
-<style scoped>
-
-</style>

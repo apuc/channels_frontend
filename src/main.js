@@ -12,7 +12,7 @@ import Icon from 'vue-awesome/components/Icon';
 import MainLayout from './views/layouts/MainLayout';
 import AuthLayout from './views/layouts/AuthLayout';
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = process.env.NODE_ENV === 'production';
 Vue.use(BootstrapVue);
 
 Vue.component('v-icon', Icon);

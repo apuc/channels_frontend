@@ -60,7 +60,7 @@ export default new Router({
     {
       path: '/:id',
       component: Chat,
-      beforeEnter: isUserInBase,
+      // beforeEnter: isUserInBase,
     },
     {
       path: '*',
