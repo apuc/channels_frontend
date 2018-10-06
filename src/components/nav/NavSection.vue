@@ -6,7 +6,7 @@
       </b-list-group-item>
 
       <div class="addButton-wrapper" v-if="addButton">
-        <a :href="'/create-group'" class="addButton" @click="openUserProfile">+</a>
+        <a href="/create-group" class="addButton" @click="openModal">+</a>
       </div>
     </header>
 
@@ -23,16 +23,12 @@
 </template>
 
 <script>
-  import Modal from '../ModalWindows/Modal';
   export default {
-    components: {
-      Modal
-    },
     props: {
       id: String,
       title: String,
-      itemsList: Array,
       isOpen: Boolean,
+      itemsList: Array,
       addButton: {
         type: Boolean,
         required: false
@@ -40,7 +36,6 @@
     },
     data() {
       return {
-        isModalActive: false
       }
     },
     methods: {
@@ -48,8 +43,10 @@
         e.preventDefault();
         this.$store.commit('modal/setModal', 'group');
         history.pushState('', 'Title of page', `/create-group`);
-      }
+      },
     },
+    mounted() {
+    }
   }
 </script>
 

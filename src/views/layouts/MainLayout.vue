@@ -20,6 +20,9 @@
       Advertisings,
       Nav
     },
+    beforeMount() {
+
+    }
   }
 </script>
 

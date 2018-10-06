@@ -11,6 +11,7 @@
 <script>
   import Modal from './components/ModalWindows/Modal';
   import {mapGetters} from 'vuex';
+
   export default {
     components: {Modal},
     computed: {

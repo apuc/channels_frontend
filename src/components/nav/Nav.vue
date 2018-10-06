@@ -11,25 +11,32 @@
   import {usersSlugs} from '../../users-slugs';
   import {channelsSlugs} from '../../channels-slugs';
   import {groupsSlugs} from '../../groups-slugs';
-  import store from "../../store/store";
+  import { mapGetters } from 'vuex';
 
   export default {
     computed: {
-
+      ...mapGetters({
+        userGroup: 'auth/userGroups',
+        userChannel: 'auth/userChannels',
+      }),
     },
     data() {
       return {
-        usersSlugs,
-        channelsSlugs,
-        groupsSlugs
+        groupsSlugs: this.userGroup,
+        channelsSlugs: this.userChannel,
+        usersSlugs
       }
     },
     components: {
       NavSection
     },
     methods: {
+    },
+    created() {
+      this.$store.dispatch('auth/GET_USER_CHANNELS');
+      this.$store.dispatch('auth/GET_USER_GROUPS');
+    },
 
-    }
   }
 
 </script>
