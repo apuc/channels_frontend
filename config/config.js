@@ -1,1 +1,1 @@
-export const API_URL = 'https://api.mychannels.gq/v1';
+export const API_URL = 'http://api.channels.com:81/v1';
