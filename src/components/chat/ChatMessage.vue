@@ -13,15 +13,10 @@
       </div>
     </b-media>
 
-    <Modal :modalType="'userProfile'"
-           :user="user"
-           @onModalClose="closeModal($event)"
-           v-if="isModalActive" />
   </b-card>
 </template>
 
 <script>
-  import Modal from '../ModalWindows/Modal';
   import {mapGetters} from 'vuex';
 
   export default {
@@ -57,9 +52,6 @@
         });
         history.pushState('', 'Title of page', `/user/${this.user.slug}`);
       },
-      closeModal(isModalActive) {
-        this.isModalActive = isModalActive;
-      }
     }
   }
 </script>

@@ -27,8 +27,8 @@
     props: {
       id: String,
       title: String,
-      isOpen: Boolean,
       itemsList: Array,
+      isOpen: Boolean,
       addButton: {
         type: Boolean,
         required: false
@@ -36,6 +36,7 @@
     },
     data() {
       return {
+
       }
     },
     methods: {
@@ -45,8 +46,6 @@
         history.pushState('', 'Title of page', `/create-group`);
       },
     },
-    mounted() {
-    }
   }
 </script>
 
