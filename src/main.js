@@ -21,22 +21,23 @@ Vue.component('v-icon', Icon);
 Vue.component('main-layout', MainLayout);
 Vue.component('auth-layout', AuthLayout);
 
-const token = localStorage.getItem('access_token');
+const token = store.getters["auth/token"];
 if (token) {
-  // console.log('inside main js', token);
   Vue.http.headers.common['Authorization'] = `Bearer ${token}`;
 }
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.getters["auth/isAuthenticated"]) {
+  if (to.matched.some(record => record.meta.requiresAuth)) { // если в роутинге в поле meta указано requiresAuth в true
+    if (store.getters["auth/isAuthenticated"]) { // Проверяем авторизован ли пользователь
       next()
-    } else {
-      next({
-        path: '/login',
-      });
+    } else { // Если не авторизован - редиректим на логин
+      next({path: '/login'});
     }
-  } else {
+  } else { // если в роутинге в поле meta указано requiresAuth в false или не указан
+      if (to.matched.some(record => record.path === '/login' || record.path === '/registration')) { // Если пользователь залогинен, но хочет войти на страницу регистрации или логина
+          next({path: '/'});
+          return
+      }
     next();
   }
 });

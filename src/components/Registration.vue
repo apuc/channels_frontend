@@ -2,11 +2,11 @@
   <main>
     <div class="container">
       <div class="row">
-        <form class="col-lg-6 col-12 offset-3 pt-lg-3">
+        <form @submit.prevent="registration" class="col-lg-6 col-12 offset-3 pt-lg-3">
 
           <div class="form-group">
             <label for="login">Логин</label>
-            <input type="text" class="form-control" id="login" v-model="login" />
+            <input type="text" class="form-control" id="login" v-model="username" />
           </div>
           <div class="form-group">
             <label for="email">Email</label>
@@ -18,10 +18,10 @@
           </div>
           <div class="form-group">
             <label for="repeat-password">Повторите пароль</label>
-            <input type="password" class="form-control" id="repeat-password" v-model="repeatPassword" />
+            <input type="password" class="form-control" id="repeat-password" v-model="password_confirmation" />
           </div>
           <div class="d-flex justify-content-between">
-            <button class="btn btn-primary flex-fill mr-3">Зарегистрироваться</button>
+            <button type="submit" class="btn btn-primary flex-fill mr-3">Зарегистрироваться</button>
             <router-link class="btn btn-warning" to="login">Вход</router-link>
           </div>
 
@@ -37,15 +37,23 @@
     name: "Registration",
     data() {
       return {
-        login: '',
+        username: '',
         email: '',
         password: '',
-        repeatPassword: '',
+        password_confirmation: '',
       }
     },
     computed: {},
     methods: {
-
+      registration() {
+          const {username, password , password_confirmation, email} = this;
+          this.$store.dispatch('auth/REGISTRATION', {
+              username,
+              password,
+              email,
+              password_confirmation
+          });
+      }
     },
   }
 </script>

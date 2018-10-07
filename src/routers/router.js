@@ -7,7 +7,6 @@ import Group from '../components/group/Group';
 import Chat from '../components/chat/Chat';
 import NotFoundComponent from '../views/NotFoundComponent';
 import ProfileModal from '../components/ModalWindows/ProfileModal';
-import store from '../store/store';
 
 Vue.use(Router);
 
