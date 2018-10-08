@@ -1,4 +1,4 @@
 export default {
-  // user profile data
-  userProfileInfo: state => state.userProfileInfo
+  userGroups: state => state.groups,
+  userChannels: state => state.channels,
 };

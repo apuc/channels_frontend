@@ -6,6 +6,12 @@ const state = {
   setModal: false,
   setCreateGroup: false,
   setUserProfile: false,
+  userProfileInfo: {
+    name: '',
+    avatar: '',
+    slug: '',
+    id: null
+  }
 };
 
 export default {
