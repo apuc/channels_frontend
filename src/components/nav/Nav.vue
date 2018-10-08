@@ -16,14 +16,14 @@
   export default {
     computed: {
       ...mapGetters({
-        userGroup: 'user/userGroups',
-        userChannel: 'user/userChannels',
+        userGroups: 'user/userGroups',
+        userChannels: 'user/userChannels',
       }),
     },
     data() {
       return {
-        groupsSlugs: this.userGroup,
-        channelsSlugs: this.userChannel,
+        groupsSlugs: this.userGroups,
+        channelsSlugs: this.userChannels,
         usersSlugs
       }
     },
@@ -33,8 +33,10 @@
     methods: {
     },
     created() {
-      // this.$store.dispatch('user/GET_USER_CHANNELS');
-      // this.$store.dispatch('user/GET_USER_GROUPS');
+      this.$store.dispatch('user/GET_NAV').then(() => {
+          console.log(this.groupsSlugs)
+          console.log(this.channelsSlugs)
+      });
     },
 
   }

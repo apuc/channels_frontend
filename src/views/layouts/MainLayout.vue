@@ -21,9 +21,9 @@
       Nav
     },
     beforeMount() {
-      if (this.$store.getters['user/user'].length) { // Если пользователь залогиненый (при перезагрузке страницы)
-        const token = this.$store.getters['auth/token'];
-        this.$store.dispatch('auth/GET_USER', token);
+      if (!this.$store.getters['user/info'].length) { // Если пользователь залогиненый (при перезагрузке страницы)
+        this.$store.dispatch('user/GET_USER');
+        console.log('main layout ', this.$store.state)
       }
     }
   }

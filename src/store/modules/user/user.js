@@ -3,9 +3,9 @@ import actions from './actions';
 import mutations from './mutations';
 
 const state = {
-  user: {},
-  userGroups: [],
-  userChannels: [],
+  info: {},
+  groups: [],
+  channels: [],
 };
 
 export default {
