@@ -22,7 +22,7 @@
   export default {
     computed: {
       ...mapGetters({
-        userInfo: 'user/userProfileInfo',
+        userInfo: 'modal/userProfileInfo',
         modal: 'modal/setUserProfile'
       }),
     },
@@ -44,7 +44,7 @@
       openUserProfile(e) {
         e.preventDefault();
         this.$store.commit('modal/setModal', 'userProfile');
-        this.$store.dispatch('user/setCurrentUserInfo', {
+        this.$store.dispatch('modal/setCurrentUserInfo', {
           name: this.user.name,
           id: this.user.id,
           avatar: this.user.avatar,

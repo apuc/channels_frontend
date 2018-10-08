@@ -21,7 +21,7 @@
     name: "ProfileModal",
     computed: {
       ...mapGetters({
-        user: 'user/userProfileInfo'
+        user: 'modal/userProfileInfo'
       }),
     },
     data() {

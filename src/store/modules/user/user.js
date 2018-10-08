@@ -3,12 +3,9 @@ import actions from './actions';
 import mutations from './mutations';
 
 const state = {
-  userProfileInfo: {
-    name: '',
-    avatar: '',
-    slug: '',
-    id: null
-  }
+  user: {},
+  userGroups: [],
+  userChannels: [],
 };
 
 export default {

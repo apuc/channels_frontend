@@ -34,7 +34,7 @@
     },
     methods: {
       onModalClose() {
-        this.$store.commit('user/deleteCurrentUserInfo', {});
+        this.$store.commit('modal/deleteCurrentUserInfo', {});
         this.$store.commit('modal/deleteModal');
         this.$router.go(-1);
       }

@@ -1,10 +1,8 @@
 export default {
-  // set current user info to modal
-  setCurrentUserInfo(state, payload) {
-    state.userProfileInfo = payload;
+  'USER_GROUPS': (state, groups) => {
+    state.userGroups = groups;
   },
-  // delete current user info to modal
-  deleteCurrentUserInfo(state, payload) {
-    state.userProfileInfo = payload;
+  'USER_CHANNELS': (state, channels) => {
+    state.userChannels= channels;
   }
 };

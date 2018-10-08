@@ -21,7 +21,8 @@
       Nav
     },
     beforeMount() {
-
+      const token = this.$store.getters.token;
+      this.$store.dispatch('auth/GET_USER', token);
     }
   }
 </script>

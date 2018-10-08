@@ -5,9 +5,6 @@ import mutations from './mutations';
 const state = {
   token: localStorage.getItem('access_token') || '',
   status: '',
-  user: {},
-  userGroups: [],
-  userChannels: [],
 };
 
 export default {
