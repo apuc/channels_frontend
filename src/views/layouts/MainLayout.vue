@@ -19,9 +19,6 @@
     components: {
       Advertisings,
       Nav
-    },
-    beforeMount() {
-
     }
   }
 </script>
