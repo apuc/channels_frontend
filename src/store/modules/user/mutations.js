@@ -3,6 +3,6 @@ export default {
     state.userGroups = groups;
   },
   'USER_CHANNELS': (state, channels) => {
-    state.userChannels= channels;
+    state.userChannels = channels;
   }
 };

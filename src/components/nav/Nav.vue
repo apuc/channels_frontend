@@ -33,8 +33,8 @@
     methods: {
     },
     created() {
-      this.$store.dispatch('user/GET_USER_CHANNELS');
-      this.$store.dispatch('user/GET_USER_GROUPS');
+      // this.$store.dispatch('user/GET_USER_CHANNELS');
+      // this.$store.dispatch('user/GET_USER_GROUPS');
     },
 
   }

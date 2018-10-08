@@ -25,7 +25,6 @@ export default {
    */
   'GET_TOKEN': ({commit, dispatch}, userData) => {
     commit('LOADING');
-    console.log(userData);
     Vue.http.post(`${process.env.VUE_APP_API_URL}/oauth/token`, userData)
       .then(
         res => {
@@ -44,13 +43,12 @@ export default {
   },
   /**
    * Логинит с помощью токена
-   * @param tokenData {Object}
-   * @param tokenData.token_type {string} - Тип токена
-   * @param tokenData.access_token {string} - Токен для авторизации
+   * @param token {string}
    * @constructor
    */
   'GET_USER': ({commit, dispatch}, token) => {
     commit('LOADING');
+    console.log('GET_USER', token);
     Vue.http.headers.common['Authorization'] = `Bearer ${token}`;
     Vue.http.get(`${process.env.VUE_APP_API_URL}/user`)
       .then(

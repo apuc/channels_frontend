@@ -21,8 +21,10 @@
       Nav
     },
     beforeMount() {
-      const token = this.$store.getters.token;
-      this.$store.dispatch('auth/GET_USER', token);
+      if (this.$store.getters['user/user'].length) { // Если пользователь залогиненый (при перезагрузке страницы)
+        const token = this.$store.getters['auth/token'];
+        this.$store.dispatch('auth/GET_USER', token);
+      }
     }
   }
 </script>
