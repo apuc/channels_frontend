@@ -21,9 +21,8 @@
       Nav
     },
     beforeMount() {
-      if (!this.$store.getters['user/info'].length) { // Если пользователь залогиненый (при перезагрузке страницы)
+      if (!this.$store.getters['user/info']) { // Если пользователь залогиненый (при перезагрузке страницы)
         this.$store.dispatch('user/GET_USER');
-        console.log('main layout ', this.$store.state)
       }
     }
   }

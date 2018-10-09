@@ -7,13 +7,18 @@
 </template>
 
 <script>
-  import {channelsSlugs} from '../../channels-slugs';
+  import { mapGetters } from 'vuex'
 
   export default {
     name: "GroupsList",
+    computed: {
+      ...mapGetters({
+        channelsSlug: 'user/channels'
+      })
+    },
     data() {
       return {
-        channelsSlugs
+
       }
     }
   }

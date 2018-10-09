@@ -1,6 +1,4 @@
 import Vue from "vue";
-import router from "../../../routers/router";
-import store from "../../../store/store";
 
 export default {
     /**
@@ -11,11 +9,8 @@ export default {
     'GET_USER': async ({commit, dispatch}) => {
         await Vue.http.get(`${process.env.VUE_APP_API_URL}/user`)
             .then(
-                async res => {
-                    await commit('USER_INFO', res.body);
-                    console.log('res GET_USER', res);
-                    console.log('store', store.state);
-                    return res
+                res => {
+                    commit('USER_INFO', res.body);
                 },
                 err => {
                     console.log('err login', err);
@@ -23,9 +18,9 @@ export default {
             )
             .catch(err => console.log('GET_USER catch err: ', err));
     },
-    'GET_NAV': async (context) => {
-        await context.dispatch('GET_USER_GROUPS');
-        await context.dispatch('GET_USER_CHANNELS');
+    'GET_NAV': (context) => {
+        context.dispatch('GET_USER_GROUPS');
+        context.dispatch('GET_USER_CHANNELS');
     },
     /**
      * Get user groups
@@ -34,7 +29,6 @@ export default {
         await Vue.http.get(`${process.env.VUE_APP_API_URL}/group`)
             .then(
                 res => {
-                    console.log('GET_USER_GROUPS', res);
                     context.commit('USER_GROUPS', res.body.data);
                 },
                 err => {
@@ -49,7 +43,6 @@ export default {
         await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel`)
             .then(
                 res => {
-                    console.log('GET_USER_CHANNELS', res);
                     context.commit('USER_CHANNELS', res.body.data);
                 },
                 err => {
