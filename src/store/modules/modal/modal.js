@@ -3,9 +3,15 @@ import actions from './actions';
 import mutations from './mutations';
 
 const state = {
-  info: null,
-  groups: [],
-  channels: [],
+  setModal: false,
+  setCreateGroup: false,
+  setUserProfile: false,
+  userProfileInfo: {
+    name: '',
+    avatar: '',
+    slug: '',
+    id: null
+  }
 };
 
 export default {

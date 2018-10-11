@@ -1,12 +1,12 @@
 <template>
   <div class="form-group">
     <label :for="id">{{ name }}</label>
-
     <input :type="inputType"
            class="form-control"
            :class="validClass"
            :id="id"
            :value="value"
+           :name="name"
            @input="onInput"
     >
   </div>
@@ -48,6 +48,10 @@
       onInput(e) {
         this.activated = true;
         this.$emit('update:value', e.target.value);
+        this.$emit('value', {
+          value: e.target.value,
+          name: e.target.name
+        });
       }
     },
     watch: {

@@ -9,27 +9,29 @@
 <script>
   import NavSection from './NavSection';
   import {usersSlugs} from '../../users-slugs';
-  import {channelsSlugs} from '../../channels-slugs';
-  import {groupsSlugs} from '../../groups-slugs';
-  import store from "../../store/store";
+  import { mapGetters } from 'vuex';
 
   export default {
     computed: {
-
+      ...mapGetters({
+        groupsSlugs: 'user/groups',
+        channelsSlugs: 'user/channels',
+      }),
     },
     data() {
       return {
-        usersSlugs,
-        channelsSlugs,
-        groupsSlugs
+        usersSlugs
       }
     },
     components: {
       NavSection
     },
     methods: {
+    },
+    created() {
+      this.$store.dispatch('user/GET_NAV');
+    },
 
-    }
   }
 
 </script>

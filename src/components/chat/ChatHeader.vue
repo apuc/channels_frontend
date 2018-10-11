@@ -1,7 +1,7 @@
 <template>
   <header class="bg-light">
-    <div class="settings">
-      <button type="button" class="settings__btn" @mouseover="settingsVisible = true" @mouseout="settingsVisible = false">
+    <div class="settings" @mouseover="settingsVisible = true" @mouseout="settingsVisible = false">
+      <button type="button" class="settings__btn">
         <v-icon scale="1.6" name="cog"/>
       </button>
 
@@ -15,7 +15,7 @@
     </div>
 
     <b-dropdown class="language-dropdown" variant="link">
-      <button type="button" slot="button-content">
+      <button class="settings__btn" type="button" slot="button-content">
         <v-icon scale="1.6" class="icon" name="flag"/>
       </button>
 
@@ -26,11 +26,12 @@
         v-text="lang"
       ></b-dropdown-item>
     </b-dropdown>
+
+    <button class="btn btn-primary exit" type="button" @click="exit">Exit</button>
   </header>
 </template>
 
 <script>
-
   export default {
     data() {
       return {
@@ -51,7 +52,12 @@
         settingsVisible: false
       }
     },
-    computed: {}
+    methods: {
+      exit() {
+        this.$store.dispatch('auth/LOGOUT');
+        this.$router.push('/')
+      }
+    }
   }
 </script>
 
@@ -68,7 +74,7 @@
     z-index: 1;
   }
 
-  button {
+  .settings__btn {
     padding: 5px;
 
     background-color: transparent;
@@ -102,4 +108,7 @@
     stroke-width: 15px;
   }
 
+  .exit {
+    margin-left: auto;
+  }
 </style>

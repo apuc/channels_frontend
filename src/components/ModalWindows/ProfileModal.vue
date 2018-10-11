@@ -1,12 +1,16 @@
 <template>
   <div>
-    <header class="container__header">
+    <header class="modal__header">
       <img :src="user.avatar"
            alt=""
            class="portrait">
 
       <h4>{{ user.name }}</h4>
     </header>
+
+    <section class="modal__content">
+
+    </section>
   </div>
 </template>
 
@@ -16,14 +20,9 @@
   export default {
     name: "ProfileModal",
     computed: {
-    },
-    props: {
-      user: {
-        name: String,
-        avatar: String,
-        slug: String,
-        id: String
-      },
+      ...mapGetters({
+        user: 'modal/userProfileInfo'
+      }),
     },
     data() {
       return {}
@@ -31,11 +30,14 @@
     methods: {
 
     },
+    mounted() {
+
+    }
   }
 </script>
 
 <style scoped>
-  .container__header {
+  .modal__header {
     display: flex;
     align-items: center;
   }

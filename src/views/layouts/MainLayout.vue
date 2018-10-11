@@ -20,6 +20,11 @@
       Advertisings,
       Nav
     },
+    beforeMount() {
+      if (!this.$store.getters['user/info']) { // Если пользователь залогиненый (при перезагрузке страницы)
+        this.$store.dispatch('user/GET_USER');
+      }
+    }
   }
 </script>
 

@@ -2,27 +2,31 @@
   <div class="my-modal">
     <div class="backdrop" @click="onModalClose"></div>
 
-    <div class="modal__container">
+    <div class="modal__container ">
       <button type="button" class="close">Close</button>
 
-      <ProfileModal v-if="modalType === 'userProfile'" :user="user" />
+      <ProfileModal v-if="userProfile" />
+      <GroupModal v-else-if="createGroup"/>
     </div>
   </div>
 </template>
 
 <script>
   import ProfileModal from './ProfileModal';
+  import GroupModal from './GroupModal';
+  import {mapGetters} from 'vuex';
+
   export default {
     name: "Modal",
-    components: {ProfileModal},
-    props: {
-      modalType: String,
-      user: {
-        name: String,
-        avatar: String,
-        slug: String,
-        id: String
-      },
+    components: {
+      ProfileModal,
+      GroupModal
+    },
+    computed: {
+      ...mapGetters({
+        createGroup: 'modal/setCreateGroup',
+        userProfile: 'modal/setUserProfile',
+      }),
     },
     data() {
       return {
@@ -30,8 +34,9 @@
     },
     methods: {
       onModalClose() {
+        this.$store.commit('modal/deleteCurrentUserInfo', {});
+        this.$store.commit('modal/deleteModal');
         this.$router.go(-1);
-        this.$emit('onModalClose', false);
       }
     }
   }
@@ -58,6 +63,9 @@
 
     width: 100%;
     height: 100%;
+
+    direction: ltr;
+    text-align: left;
   }
 
   .modal__container {
@@ -68,7 +76,7 @@
     z-index: 2;
 
     width: 500px;
-    height: 300px;
+    min-height: 300px;
     padding: 30px;
 
     background-color: #fff;
