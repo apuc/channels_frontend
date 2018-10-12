@@ -16,7 +16,7 @@
         :to="item.slug"
         :key="index + item.slug"
         class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
-        {{ item.name }}
+        {{ item.title }}
       </router-link>
     </b-collapse>
   </section>

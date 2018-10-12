@@ -12,7 +12,6 @@ export default {
   'SUCCESS_LOGIN': (state, user) => {
     state.status = 'success login';
     state.user = user;
-    console.log(state)
   },
   'ERROR': (state, error) => {
     state.status = 'error';

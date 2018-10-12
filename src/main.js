@@ -34,10 +34,12 @@ router.beforeEach((to, from, next) => {
       next({path: '/login'});
     }
   } else { // если в роутинге в поле meta указано requiresAuth в false или не указан
-      if (to.matched.some(record => record.path === '/login' || record.path === '/registration')) { // Если пользователь залогинен, но хочет войти на страницу регистрации или логина
-          next({path: '/'});
-          return
+    if (store.getters["auth/isAuthenticated"]) { // Если пользователь залогинен
+      if (to.matched.some(record => record.path === '/login' || record.path === '/registration')) { // Но хочет войти на страницу регистрации или логина
+        next({path: '/'});
+        return
       }
+    }
     next();
   }
 });

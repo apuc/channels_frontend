@@ -1,4 +1,5 @@
 export default {
-  userGroups: state => state.groups,
-  userChannels: state => state.channels,
+  info: state => state.info,
+  groups: state => state.groups,
+  channels: state => state.channels,
 };
