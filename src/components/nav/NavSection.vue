@@ -16,7 +16,8 @@
         :to="item.slug"
         :key="index + item.slug"
         class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
-        {{ item.name }}
+        <img src="item.avatar.small" alt="" v-if="item.avatar.small">
+        <span>{{ item.title }}</span>
       </router-link>
     </b-collapse>
   </section>

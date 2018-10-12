@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Links from '../components/Links';
 import Login from '../components/Login';
 import Registration from '../components/Registration';
 import Group from '../components/group/Group';
 import Chat from '../components/chat/Chat';
+import Empty from '../components/chat/Empty';
 import NotFoundComponent from '../views/NotFoundComponent';
 import ProfileModal from '../components/ModalWindows/ProfileModal';
 
@@ -16,7 +16,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: Links,
+      component: Empty,
       meta: { requiresAuth: true}
     },
     {

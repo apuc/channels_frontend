@@ -9,21 +9,17 @@
 <script>
   import NavSection from './NavSection';
   import {usersSlugs} from '../../users-slugs';
-  import {channelsSlugs} from '../../channels-slugs';
-  import {groupsSlugs} from '../../groups-slugs';
   import { mapGetters } from 'vuex';
 
   export default {
     computed: {
       ...mapGetters({
-        userGroup: 'auth/userGroups',
-        userChannel: 'auth/userChannels',
+        groupsSlugs: 'groups/groups',
+        channelsSlugs: 'channels/channels',
       }),
     },
     data() {
       return {
-        groupsSlugs: this.userGroup,
-        channelsSlugs: this.userChannel,
         usersSlugs
       }
     },
@@ -32,9 +28,8 @@
     },
     methods: {
     },
-    created() {
-      this.$store.dispatch('auth/GET_USER_CHANNELS');
-      this.$store.dispatch('auth/GET_USER_GROUPS');
+    async created() {
+      await this.$store.dispatch('user/GET_NAV');
     },
 
   }

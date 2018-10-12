@@ -1,36 +1,25 @@
-import Vue from "vue/types/index";
+import Vue from "vue";
 
 export default {
   /**
-   * Get user groups
+   * Логинит с помощью токена
+   * @param commit {Object}
+   * @constructor
    */
-  'GET_USER_GROUPS': ({commit}) => {
-    commit('LOADING');
-    Vue.http.get(`${process.env.VUE_APP_API_URL}/group`)
+  'GET_USER': async ({commit, dispatch}) => {
+    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user`)
       .then(
         res => {
-          commit('USER_GROUPS', JSON.parse(res.bodyText).data);
+          commit('USER_INFO', res.body);
         },
         err => {
-          console.log(err);
-          commit('ERROR', err.body);
+          console.log('err login', err);
         }
       )
+      .catch(err => console.log('GET_USER catch err: ', err));
   },
-  /**
-   * Get user channels
-   */
-  'GET_USER_CHANNELS': ({commit}) => {
-    commit('LOADING');
-    Vue.http.get(`${process.env.VUE_APP_API_URL}/channel`)
-      .then(
-        res => {
-          commit('USER_CHANNELS', JSON.parse(res.bodyText).data);
-        },
-        err => {
-          console.log(err);
-          commit('ERROR', err.body)
-        }
-      )
+  'GET_NAV': async (context, dispatch) => {
+    await context.dispatch('groups/GET_USER_GROUPS', null, { root: true });
+    await context.dispatch('channels/GET_USER_CHANNELS', null, { root: true });
   },
 };

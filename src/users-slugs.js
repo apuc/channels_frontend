@@ -1,24 +1,24 @@
 export const usersSlugs = [
   {
-    name: 'Вася',
+    title: 'Вася',
     slug: '/vasya',
     userId: 123,
     channelId: 456
   },
   {
-    name: 'Петя',
+    title: 'Петя',
     slug: '/petya'
   },
   {
-    name: 'Коля',
+    title: 'Коля',
     slug: '/kolyan777'
   },
   {
-    name: 'Юра',
+    title: 'Юра',
     slug: '/yurets666'
   },
   {
-    name: 'Гриша',
+    title: 'Гриша',
     slug: '/grinya_1978'
   }
 ];
