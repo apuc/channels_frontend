@@ -31,7 +31,8 @@ export default {
           localStorage.setItem('refresh_token', res.body.refresh_token);
           commit('SUCCESS_TOKEN', res.body.access_token);
           Vue.http.headers.common['Authorization'] = `Bearer ${res.body.access_token}`;
-          dispatch('user/GET_USER', res.body.access_token, {root: true}).then(() => {
+          dispatch('user/GET_USER', res.body.access_token, {root: true})
+            .then(() => {
             router.push('/')
           });
         },

@@ -3,28 +3,32 @@
     <div class="backdrop" @click="onModalClose"></div>
 
     <div class="modal__container ">
-      <button type="button" class="close">Close</button>
+      <button type="button" class="close" @click="onModalClose">Close</button>
 
       <ProfileModal v-if="userProfile" />
-      <GroupModal v-else-if="createGroup"/>
+      <CreateGroup v-else-if="createGroup"/>
+      <CreateChannel v-else-if="createChannel"/>
     </div>
   </div>
 </template>
 
 <script>
   import ProfileModal from './ProfileModal';
-  import GroupModal from './GroupModal';
+  import CreateGroup from './CreateGroup';
+  import CreateChannel from './CreateChannel';
   import {mapGetters} from 'vuex';
 
   export default {
     name: "Modal",
     components: {
       ProfileModal,
-      GroupModal
+      CreateGroup,
+      CreateChannel
     },
     computed: {
       ...mapGetters({
         createGroup: 'modal/setCreateGroup',
+        createChannel: 'modal/setCreateChannel',
         userProfile: 'modal/setUserProfile',
       }),
     },

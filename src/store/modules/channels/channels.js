@@ -4,6 +4,15 @@ import mutations from './mutations';
 
 const state = {
   channels: [],
+  newChannelData: {
+    title: '',
+    slug: '',
+    status: '',
+    user_ids: [],
+    type: '',
+    private: '',
+    avatar: '',
+  },
 };
 
 export default {

@@ -5,6 +5,7 @@ import mutations from './mutations';
 const state = {
   setModal: false,
   setCreateGroup: false,
+  setCreateChannel: false,
   setUserProfile: false,
   userProfileInfo: {
     name: '',

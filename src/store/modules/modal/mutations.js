@@ -5,6 +5,9 @@ export default {
     if (payload === 'group') {
       state.setCreateGroup = true;
     }
+    if (payload === 'channel') {
+      state.setCreateChannel = true;
+    }
     if (payload === 'userProfile') {
       state.setUserProfile = true;
     }
@@ -12,6 +15,7 @@ export default {
   deleteModal(state) {
     state.setModal = false;
     state.setCreateGroup = false;
+    state.setCreateChannel = false;
     state.setUserProfile = false;
   },
   // set current user info to modal

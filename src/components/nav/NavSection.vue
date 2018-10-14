@@ -6,7 +6,7 @@
       </b-list-group-item>
 
       <div class="addButton-wrapper" v-if="addButton">
-        <a href="/create-group" class="addButton" @click="openModal">+</a>
+        <a :href="info.link" class="addButton" @click="openModal($event, info.modalTrigger, info.link)">+</a>
       </div>
     </header>
 
@@ -15,8 +15,13 @@
         v-for="(item, index) in itemsList"
         :to="item.slug"
         :key="index + item.slug"
-        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
-        <img src="item.avatar.small" alt="" v-if="item.avatar.small">
+        class="list-group-item d-flex align-items-center list-group-item-action">
+        <img :src="item.avatar.small"
+             alt=""
+             class="avatar"
+             width="30"
+             height="30"
+             v-if="item.avatar">
         <span>{{ item.title }}</span>
       </router-link>
     </b-collapse>
@@ -29,6 +34,10 @@
       id: String,
       title: String,
       itemsList: Array,
+      info: {
+        type: Object,
+        required: false
+      },
       isOpen: Boolean,
       addButton: {
         type: Boolean,
@@ -41,10 +50,10 @@
       }
     },
     methods: {
-      openModal(e) {
+      openModal(e, modalType, modalLink) {
         e.preventDefault();
-        this.$store.commit('modal/setModal', 'group');
-        history.pushState('', 'Title of page', `/create-group`);
+        this.$store.commit('modal/setModal', modalType);
+        history.pushState('', 'Title of page', modalLink);
       },
     },
   }
@@ -112,5 +121,10 @@
 
   .addButton:hover {
     text-decoration: none;
+  }
+
+  .avatar {
+    margin-right: 15px;
+    border-radius: 50%;
   }
 </style>
