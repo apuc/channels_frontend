@@ -157,7 +157,6 @@
       onFileChange(e) {
         this.imgSrc = '';
         const files = e.target.files || e.dataTransfer.files;
-        this.img = files[0];
         const fileType = files[0].type.split('/');
 
         if (files.length && fileType[0] === 'image') {
@@ -178,7 +177,6 @@
 
         reader.onload = (e) => {
           this.imgSrc = e.target.result;
-          console.log(this.imgSrc)
         };
         reader.readAsDataURL(file);
       },

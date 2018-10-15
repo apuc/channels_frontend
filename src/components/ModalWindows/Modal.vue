@@ -79,8 +79,10 @@
     transform: translate(-50%, -50%);
     z-index: 2;
 
+    overflow: auto;
     width: 500px;
     min-height: 300px;
+    max-height: 90vh;
     padding: 30px;
 
     background-color: #fff;
