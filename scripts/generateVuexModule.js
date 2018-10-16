@@ -12,7 +12,7 @@ const error = (...args) => {
 };
 
 const success = (...args) => {
-    console.log(chalk.green(...args));
+    console.log(chalk.blue(...args));
 };
 
 if (!args.length) {
