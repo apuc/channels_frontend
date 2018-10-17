@@ -25,10 +25,13 @@
     },
     beforeMount() {
       if (!this.$store.getters['user/info']) { // Если пользователь залогиненый (при перезагрузке страницы)
-        this.$store.dispatch('user/GET_USER');
+        this.$store.dispatch('user/GET_USER').then(
+            () => {
+                this.io = socket(process.env.VUE_APP_SOCKET_URL, {query: {token: this.$store.getters['auth/token']}}); // пробуем подключится к ноду
+                this.io.emit('connected', {user: this.$store.getters['user/info']}); // отправляем в нод данные о юзере
+            }
+        );
       }
-      this.io = socket(process.env.VUE_APP_SOCKET_URL, {query: {token: this.$store.getters['auth/token']}});
-      this.io.emit('connected', {});
     }
   }
 </script>
