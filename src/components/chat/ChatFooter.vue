@@ -9,7 +9,7 @@
                              :max-rows="5">
             </b-form-textarea>
             <b-input-group-append>
-                <b-btn class="footer_sendBtn" variant="outline-success">{{$ml.get('Chat.btnSend')}}</b-btn>
+                <b-btn @click="sendMessage" class="footer_sendBtn" variant="outline-success">{{$ml.get('Chat.btnSend')}}</b-btn>
             </b-input-group-append>
         </b-input-group>
     </div>
@@ -21,6 +21,11 @@
         data() {
             return {
                 input: ''
+            }
+        },
+        methods: {
+            sendMessage() {
+                console.log(this.socket)
             }
         }
     }

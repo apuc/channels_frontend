@@ -4,7 +4,7 @@ import mutations from './mutations';
 
 const state = {
   messages: [],
-  user: {}
+  user: {},
 };
 
 export default {

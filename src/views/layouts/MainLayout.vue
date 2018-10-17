@@ -11,7 +11,7 @@
 <script>
   import Nav from '../../components/nav/Nav'
   import Advertisings from '../../components/ads/Advertisings';
-  import socket from 'socket.io-client';
+  import socketIo from 'socket.io-client';
 
   export default {
     data() {
@@ -26,8 +26,8 @@
     beforeMount() {
       if (!this.$store.getters['user/info']) { // Если пользователь залогиненый (при перезагрузке страницы)
         this.$store.dispatch('user/GET_USER').then(
-            () => {
-                this.io = socket(process.env.VUE_APP_SOCKET_URL, {query: {token: this.$store.getters['auth/token']}}); // пробуем подключится к ноду
+            async () => {
+                this.io = await socketIo(process.env.VUE_APP_SOCKET_URL, {query: {token: this.$store.getters['auth/token']}}); // пробуем подключится к ноду
                 this.io.emit('connected', {user: this.$store.getters['user/info']}); // отправляем в нод данные о юзере
             }
         );
