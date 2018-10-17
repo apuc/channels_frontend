@@ -27,12 +27,8 @@
       if (!this.$store.getters['user/info']) { // Если пользователь залогиненый (при перезагрузке страницы)
         this.$store.dispatch('user/GET_USER');
       }
-      this.io = socket('http://localhost:3000', {query: {token: 123}});
-      // io.emit('connected', {});
-      //
-      // io.on('connected', (data) => {
-      //     console.log('connected', data);
-      // });
+      this.io = socket(process.env.VUE_APP_SOCKET_URL, {query: {token: this.$store.getters['auth/token']}});
+      this.io.emit('connected', {});
     }
   }
 </script>
