@@ -18,15 +18,15 @@
 
             <input type="text" id="slug" class="form-control" v-model="groupCreateData.slug">
           </div>
+        </div>
 
+        <div class="col-6">
           <div class="form-group">
             <label for="user_ids">Users (через запятую)</label>
 
             <input type="text" id="user_ids" class="form-control" @input="getUsers">
           </div>
-        </div>
 
-        <div class="col-6">
           <div class="form-group">
             <p>Group status</p>
 
@@ -41,49 +41,6 @@
               <label for="disable" class="form-check-label">
                 <input type="radio" id="disable" class="form-check-input" value="disable" v-model="groupCreateData.status">
                 <span>disable</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <p>Group type</p>
-
-            <div class="form-check-inline">
-              <label for="chat" class="form-check-label">
-                <input type="radio" id="chat" class="form-check-input" value="chat" v-model="groupCreateData.type">
-                <span>chat</span>
-              </label>
-            </div>
-
-            <div class="form-check-inline">
-              <label for="wall" class="form-check-label">
-                <input type="radio" id="wall" class="form-check-input" value="wall" v-model="groupCreateData.type">
-                <span>wall</span>
-              </label>
-            </div>
-
-            <div class="form-check-inline">
-              <label for="dialog" class="form-check-label">
-                <input type="radio" id="dialog" class="form-check-input" value="dialog" v-model="groupCreateData.type">
-                <span>dialog</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <p>Privacy (0/1)</p>
-
-            <div class="form-check-inline">
-              <label for="private" class="form-check-label">
-                <input type="radio" id="private" class="form-check-input" value="1" v-model="groupCreateData.private">
-                <span>1</span>
-              </label>
-            </div>
-
-            <div class="form-check-inline">
-              <label for="not-private" class="form-check-label">
-                <input type="radio" id="not-private" class="form-check-input" value="0" v-model="groupCreateData.private">
-                <span>0</span>
               </label>
             </div>
           </div>
@@ -132,8 +89,6 @@
           slug: '',
           status: '',
           user_ids: [],
-          type: '',
-          private: '',
           avatar: '',
         },
         img: {},

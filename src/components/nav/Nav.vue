@@ -1,15 +1,36 @@
 <template>
   <aside class="nav d-flex flex-column col-md-3 p-0 bg-light">
-    <NavSection title="Собеседники" :isOpen=false :itemsList="usersSlugs" id="collapse1" />
-    <NavSection title="Каналы" :addButton="true" :info="channelInfo" :isOpen=false :itemsList="channelsSlugs" id="collapse2" />
-    <NavSection title="Группы" :addButton="true" :info="groupInfo" :isOpen=true :itemsList="groupsSlugs" id="collapse3" />
+
+    <header class="nav-header">
+      <div @mouseover="addMenuVisible = true" @mouseout="addMenuVisible = false">
+        <button class="addButton" type="button">
+          <v-icon scale="1.6" class="icon" name="plus-circle"/>
+        </button>
+
+        <ul v-if="addMenuVisible" class="dropdown">
+          <li v-for="(elem, index) in info" class="dropdown__el"><a :href="elem.link" @click="openModal($event, elem.modalTrigger, elem.link)">Создать {{elem.name}}</a></li>
+        </ul>
+      </div>
+
+      <button type="button">
+        <v-icon scale="1.6" class="icon" name="bullhorn"/>
+      </button>
+
+      <button type="button">
+        <v-icon scale="1.6" class="icon" name="folder"/>
+      </button>
+    </header>
+
+    <NavSection title="Собеседники" :itemsList="usersSlugs" :type="'users'" id="collapse1"/>
+    <NavSection title="Каналы" :itemsList="channelsSlugs" :type="'channel'" id="collapse2"/>
+    <NavSection title="Группы" :itemsList="groupsSlugs" :type="'group'" id="collapse3"/>
   </aside>
 </template>
 
 <script>
   import NavSection from './NavSection';
   import {usersSlugs} from '../../users-slugs';
-  import { mapGetters } from 'vuex';
+  import {mapGetters} from 'vuex';
 
   export default {
     computed: {
@@ -21,20 +42,30 @@
     data() {
       return {
         usersSlugs,
-        channelInfo: {
-          link: '/create-channel',
-          modalTrigger: 'channel'
-        },
-        groupInfo: {
-          link: '/create-group',
-          modalTrigger: 'group'
-        },
+        info: [
+          {
+            name: 'канал',
+            link: '/create-channel',
+            modalTrigger: 'channel'
+          },
+          {
+            name: 'группу',
+            link: '/create-group',
+            modalTrigger: 'group'
+          },
+        ],
+        addMenuVisible: false
       }
     },
     components: {
       NavSection
     },
     methods: {
+      openModal(e, modalType, modalLink) {
+        e.preventDefault();
+        this.$store.commit('modal/setModal', modalType);
+        history.pushState('', 'Title of page', modalLink);
+      },
     },
     async created() {
       await this.$store.dispatch('user/GET_NAV');
@@ -45,8 +76,58 @@
 </script>
 
 <style scoped>
+  .nav-header {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .nav {
+    flex-wrap: nowrap !important;
     height: 100%;
-    flex-wrap: nowrap!important;
+    overflow: auto;
+  }
+
+  .addButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+    color: #856404;
+
+    background-color: #E5D7A5;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .addButton:hover {
+    text-decoration: none;
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 15px;
+
+    list-style: none;
+    background-color: #fff;
+  }
+
+  .dropdown__el {
+    padding: 5px 0;
   }
 </style>

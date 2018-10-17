@@ -7,7 +7,7 @@ export default {
    * @constructor
    */
   'GET_USER': async ({commit, dispatch}) => {
-    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user`)
+    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/me`)
       .then(
         res => {
           commit('USER_INFO', res.body);

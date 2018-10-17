@@ -49,5 +49,22 @@ export default {
         }
       )
       .catch(error => console.log(error))
-  }
+  },
+
+  'EDIT_GROUP': ({context, dispatch, commit, getters}, groupData) => {
+    Vue.http.put(`${process.env.VUE_APP_API_URL}/group/${groupData.group_id}`, {
+      title: groupData.title,
+      slug: groupData.slug,
+      status: groupData.status,
+      avatar: groupData.avatar,
+    })
+      .then(
+        res => {
+          console.log(res);
+        },
+        err => {
+          console.log(err)
+        })
+      .catch(error => console.log(error))
+  },
 };

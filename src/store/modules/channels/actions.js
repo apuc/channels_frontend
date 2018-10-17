@@ -46,5 +46,24 @@ export default {
         }
       )
       .catch(error => console.log(error))
-  }
+  },
+  'EDIT_CHANNEL': ({context, dispatch, commit, getters}) => {
+    Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/120`, {
+      title: 'Mew',
+      slug: 'mew',
+      status: 'active',
+      user_ids: [1, 21],
+      avatar: 5,
+      type: 'chat',
+      private: '0',
+    })
+      .then(
+        res => {
+          console.log(res);
+        },
+        err => {
+          console.log(err)
+        })
+      .catch(error => console.log(error))
+  },
 };
