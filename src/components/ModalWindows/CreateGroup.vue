@@ -74,13 +74,8 @@
 </template>
 
 <script>
-  import CustomInput from '../form/CustomInput';
-
   export default {
     name: "CreateGroup",
-    components: {
-      CustomInput
-    },
     computed: {},
     data() {
       return {

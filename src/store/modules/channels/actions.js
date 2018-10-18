@@ -47,19 +47,29 @@ export default {
       )
       .catch(error => console.log(error))
   },
-  'EDIT_CHANNEL': ({context, dispatch, commit, getters}) => {
-    Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/120`, {
-      title: 'Mew',
-      slug: 'mew',
-      status: 'active',
-      user_ids: [1, 21],
-      avatar: 5,
-      type: 'chat',
-      private: '0',
+  'SET_CHANNEL_EDITING': async ({commit, dispatch, getters}, channelId) => {
+    await dispatch('GET_EDITING_CHANNEL', channelId);
+    commit('modal/toggleEditMode', null, { root: true });
+    commit('modal/setModal', 'channel', { root: true });
+  },
+  'GET_EDITING_CHANNEL': ({commit, getters}, id) => {
+    const editingChannel = getters.channels.find(channel => channel.channel_id === id);
+    commit('EDITING_CHANNEL', editingChannel);
+  },
+  'EDIT_CHANNEL': ({context, dispatch, commit, getters}, channel) => {
+    Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${channel.channel_id}`, {
+      title: channel.title,
+      slug: channel.slug,
+      status: channel.status,
+      user_ids: channel.user_ids,
+      avatar: channel.avatar,
+      type: channel.type,
+      private: channel.private,
     })
       .then(
         res => {
           console.log(res);
+          commit('EDITING_CHANNEL', {});
         },
         err => {
           console.log(err)

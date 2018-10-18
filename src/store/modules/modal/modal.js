@@ -12,7 +12,8 @@ const state = {
     avatar: '',
     slug: '',
     id: null
-  }
+  },
+  editMode: false
 };
 
 export default {

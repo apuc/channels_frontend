@@ -12,6 +12,20 @@
            height="30"
            v-if="item.avatar">
       <span>{{ item.title }}</span>
+
+      <button type="button"
+              class="button"
+              :data-id="type === 'channel' ? item.channel_id : item.group_id"
+              @click="editThis">
+        <v-icon scale="1.6" class="icon" name="pen"/>
+      </button>
+
+      <button type="button"
+              class="button"
+              :data-id="type === 'channel' ? item.channel_id : item.group_id"
+              @click="deleteThis">
+        <v-icon scale="1.6" class="icon" name="trash-alt"/>
+      </button>
     </router-link>
   </section>
 </template>
@@ -32,8 +46,19 @@
       return {}
     },
     methods: {
-      testEdit() {
-        this.$store.dispatch('channels/EDIT_CHANNEL');
+      editThis(e) {
+        e.preventDefault();
+        const id = e.target.getAttribute('data-id');
+        this.type === 'channel' ?
+          this.$store.dispatch('channels/SET_CHANNEL_EDITING', Number(id))
+          :
+          this.$store.dispatch('groups/EDIT_GROUP')
+      },
+      deleteThis() {
+        this.type === 'channel' ?
+          this.$store.dispatch('channels/DELETE_CHANNEL')
+          :
+          this.$store.dispatch('groups/DELETE_GROUP')
       }
     },
   }

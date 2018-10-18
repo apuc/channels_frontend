@@ -13,6 +13,7 @@ const state = {
     private: '',
     avatar: '',
   },
+  editingChannel: {}
 };
 
 export default {

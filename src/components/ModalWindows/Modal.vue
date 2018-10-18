@@ -30,6 +30,7 @@
         createGroup: 'modal/setCreateGroup',
         createChannel: 'modal/setCreateChannel',
         userProfile: 'modal/setUserProfile',
+        editMode: 'modal/editMode',
       }),
     },
     data() {
@@ -40,7 +41,11 @@
       onModalClose() {
         this.$store.commit('modal/deleteCurrentUserInfo', {});
         this.$store.commit('modal/deleteModal');
-        this.$router.go(-1);
+
+        this.editMode ?
+          this.$store.commit('modal/toggleEditMode')
+        :
+          this.$router.go(-1)
       }
     }
   }

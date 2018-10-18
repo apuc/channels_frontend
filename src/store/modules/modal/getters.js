@@ -4,5 +4,6 @@ export default {
   setCreateChannel: state => state.setCreateChannel,
   setUserProfile: state => state.setUserProfile,
   // another user profile data
-  userProfileInfo: state => state.userProfileInfo
+  userProfileInfo: state => state.userProfileInfo,
+  editMode: state => state.editMode,
 };

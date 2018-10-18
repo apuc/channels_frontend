@@ -117,27 +117,28 @@
 </template>
 
 <script>
-  import CustomInput from '../form/CustomInput';
+  import {mapGetters} from 'vuex';
 
   export default {
     name: "CreateChannel",
-    components: {
-      CustomInput
+    computed: {
+      ...mapGetters({
+        editingChannel: 'channels/editingChannel'
+      })
     },
-    computed: {},
     data() {
       return {
         channelCreateData: {
-          title: '',
-          slug: '',
-          status: '',
+          title: this.editingChannel.title || '',
+          slug: this.editingChannel.slug || '',
+          status: this.editingChannel.status || '',
           user_ids: [],
-          type: '',
-          private: '',
+          type: this.editingChannel.type || '',
+          private: this.editingChannel.private || '',
           avatar: '',
         },
         img: {},
-        imgSrc: '',
+        imgSrc: this.editingChannel.avatar.average || '',
         notImage: '',
         controls: [],
         formSubmited: false
@@ -185,6 +186,7 @@
       },
     },
     created() {
+      console.log(this.editingChannel.title)
     }
   }
 </script>

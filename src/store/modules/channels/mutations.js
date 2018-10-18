@@ -10,5 +10,9 @@ export default {
   },
   'ADD_CHANNEL': (state, newChannel) => {
     state.channels.push(newChannel);
-  }
+  },
+  'EDITING_CHANNEL': (state, editingChannel) => {
+    state.editingChannel = editingChannel;
+  },
+
 };
