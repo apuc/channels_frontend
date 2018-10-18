@@ -9,24 +9,38 @@
                              :max-rows="5">
             </b-form-textarea>
             <b-input-group-append>
-                <b-btn @click="sendMessage" class="footer_sendBtn" variant="outline-success">{{$ml.get('Chat.btnSend')}}</b-btn>
+                <b-btn @click="sendMessage(input, currentChannel)" class="footer_sendBtn"
+                       variant="outline-success">{{$ml.get('Chat.btnSend')}}
+                </b-btn>
             </b-input-group-append>
         </b-input-group>
     </div>
 </template>
 
 <script>
+    import {sendMessage, typing} from '../../services/socket/message.service'
+    import { io } from '../../services/socket/socket.service'
+    import {mapGetters} from 'vuex'
 
     export default {
+        computed: {
+            ...mapGetters({
+                currentChannel: 'channels/currentChannel',
+            }),
+        },
         data() {
             return {
                 input: ''
             }
         },
         methods: {
-            sendMessage() {
-                console.log(this.socket)
-            }
+            sendMessage,
+            typing
+        },
+        mounted() {
+            io.on('message', (data) => {
+                console.log('message from socket ', data)
+            })
         }
     }
 </script>
