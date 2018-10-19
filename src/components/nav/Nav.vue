@@ -21,15 +21,13 @@
       </button>
     </header>
 
-    <NavSection title="Собеседники" :itemsList="usersSlugs" :type="'users'" id="collapse1"/>
-    <NavSection title="Каналы" :itemsList="channelsSlugs" :type="'channel'" id="collapse2"/>
-    <NavSection title="Группы" :itemsList="groupsSlugs" :type="'group'" id="collapse3"/>
+    <NavSection title="Каналы" :itemsList="channelsSlugs" :type="'channel'"/>
+    <NavSection title="Группы" :itemsList="groupsSlugs" :type="'group'"/>
   </aside>
 </template>
 
 <script>
   import NavSection from './NavSection';
-  import {usersSlugs} from '../../users-slugs';
   import {mapGetters} from 'vuex';
 
   export default {
@@ -41,7 +39,6 @@
     },
     data() {
       return {
-        usersSlugs,
         info: [
           {
             name: 'канал',

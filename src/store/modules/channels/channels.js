@@ -4,7 +4,7 @@ import mutations from './mutations';
 
 const state = {
   channels: [],
-  newChannelData: {
+  channelInfo: {
     title: '',
     slug: '',
     status: '',
@@ -13,7 +13,8 @@ const state = {
     private: '',
     avatar: '',
   },
-  editingChannel: {}
+  channelId: '',
+  users: [],
 };
 
 export default {

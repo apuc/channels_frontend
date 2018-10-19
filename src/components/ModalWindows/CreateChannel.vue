@@ -112,6 +112,7 @@
 
 
       <button type="submit" class="btn btn-primary">Create</button>
+      <button type="button" class="btn btn-primary" @click="getUsersFromBack">get users</button>
     </form>
   </div>
 </template>
@@ -123,22 +124,22 @@
     name: "CreateChannel",
     computed: {
       ...mapGetters({
-        editingChannel: 'channels/editingChannel'
+        channelInfo: 'channels/channelInfo'
       })
     },
     data() {
       return {
         channelCreateData: {
-          title: this.editingChannel.title || '',
-          slug: this.editingChannel.slug || '',
-          status: this.editingChannel.status || '',
+          title: '',
+          slug: '',
+          status: '',
           user_ids: [],
-          type: this.editingChannel.type || '',
-          private: this.editingChannel.private || '',
+          type: '',
+          private: '',
           avatar: '',
         },
         img: {},
-        imgSrc: this.editingChannel.avatar.average || '',
+        imgSrc: '',
         notImage: '',
         controls: [],
         formSubmited: false
@@ -159,7 +160,6 @@
         this.imgSrc = '';
         const files = e.target.files || e.dataTransfer.files;
         const fileType = files[0].type.split('/');
-
         if (files.length && fileType[0] === 'image') {
           this.notImage = '';
           this.createImage(files[0]);
@@ -184,9 +184,17 @@
       removeImage: function (e) {
         this.imgSrc = '';
       },
+      getUsersFromBack() {
+
+      }
     },
     created() {
-      console.log(this.editingChannel.title)
+      this.channelCreateData.title = this.channelInfo.title;
+      this.channelCreateData.slug = this.channelInfo.slug;
+      this.channelCreateData.status = this.channelInfo.status;
+      this.channelCreateData.type = this.channelInfo.type;
+      this.channelCreateData.private = this.channelInfo.private;
+      this.imgSrc = this.channelInfo.avatar.average;
     }
   }
 </script>

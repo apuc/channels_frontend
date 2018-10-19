@@ -5,20 +5,27 @@ export default {
   /**
    * Get user channels
    */
-  'GET_USER_CHANNELS': async (context) => {
+  'GET_USER_CHANNELS': async ({ commit }) => {
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel`)
       .then(
         res => {
-          context.commit('USER_CHANNELS', res.body.data);
+          commit('USER_CHANNELS', res.body.data);
         },
         err => {
           console.log(err);
         }
       )
   },
-
+  'GET_USERS': ({ commit, getters }) => {
+    const channelId = getter
+    Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/users`)
+      .then(
+        res => console.log(res),
+        err => console.log(err)
+      )
+  },
   'CREATE_CHANNEL': ({dispatch, commit, getters}) => {
-    Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.newChannelData)
+    Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.channelInfo)
       .then(
         res => {
           router.go(-1);
@@ -52,28 +59,27 @@ export default {
     commit('modal/toggleEditMode', null, { root: true });
     commit('modal/setModal', 'channel', { root: true });
   },
-  'GET_EDITING_CHANNEL': ({commit, getters}, id) => {
-    const editingChannel = getters.channels.find(channel => channel.channel_id === id);
-    commit('EDITING_CHANNEL', editingChannel);
+  'GET_EDITING_CHANNEL': async ({commit, getters}, channelId) => {
+    const editingChannel = await getters.channels.find(channel => channel.channel_id === channelId);
+    await commit('SET_CHANNEL_DATA', editingChannel);
   },
-  'EDIT_CHANNEL': ({context, dispatch, commit, getters}, channel) => {
-    Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${channel.channel_id}`, {
-      title: channel.title,
-      slug: channel.slug,
-      status: channel.status,
-      user_ids: channel.user_ids,
-      avatar: channel.avatar,
-      type: channel.type,
-      private: channel.private,
+  'EDIT_CHANNEL': ({context, dispatch, commit, getters}, channelData) => {
+    Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${channelData.channel_id}`, {
+      title: channelData.title,
+      slug: channelData.slug,
+      status: channelData.status,
+      user_ids: channelData.user_ids,
+      avatar: channelData.avatar,
+      type: channelData.type,
+      private: channelData.private,
     })
       .then(
         res => {
           console.log(res);
-          commit('EDITING_CHANNEL', {});
+          commit('SET_CHANNEL_DATA', {});
         },
-        err => {
-          console.log(err)
-        })
+        err => console.log(err)
+      )
       .catch(error => console.log(error))
   },
 };

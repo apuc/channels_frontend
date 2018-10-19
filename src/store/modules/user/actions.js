@@ -13,6 +13,14 @@ export default {
           commit('USER_INFO', res.body);
         },
         err => {
+          if (err.status === 401) {
+            dispatch('auth/GET_TOKEN', {
+              grant_type: 'refresh_token',
+              client_id: process.env.VUE_APP_CLIENT_ID,
+              client_secret: process.env.VUE_APP_CLIENT_SECRET,
+              refresh_token: localStorage.getItem('refresh_token'),
+            }, { root: true })
+          }
           console.log('err login', err);
         }
       )
