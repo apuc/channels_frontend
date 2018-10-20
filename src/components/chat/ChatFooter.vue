@@ -9,7 +9,7 @@
                              :max-rows="5">
             </b-form-textarea>
             <b-input-group-append>
-                <b-btn @click="sendMessage(input, currentChannel)" class="footer_sendBtn"
+                <b-btn @click="sendMessage(input, currentChannelId)" class="footer_sendBtn"
                        variant="outline-success">{{$ml.get('Chat.btnSend')}}
                 </b-btn>
             </b-input-group-append>
@@ -25,7 +25,7 @@
     export default {
         computed: {
             ...mapGetters({
-                currentChannel: 'channels/currentChannel',
+                currentChannelId: 'channels/currentChannelId',
             }),
         },
         data() {
@@ -36,11 +36,6 @@
         methods: {
             sendMessage,
             typing
-        },
-        mounted() {
-            io.on('message', (data) => {
-                console.log('message from socket ', data)
-            })
         }
     }
 </script>

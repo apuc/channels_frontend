@@ -5,7 +5,15 @@ export function typing(user, channelId) {
 }
 
 export function sendMessage(message, channelId) {
-    console.log(message)
-    console.log(channelId)
-    io.emit('message', {message, channelId})
+    io.emit('userMessage', {message, channelId})
+}
+
+export function messageEventListenerInit() {
+    io.on('systemMessage', function (message) {
+        console.log('systemMessage', message)
+    });
+
+    io.on('userMessage', function (data) {
+        console.log('userMessage', data)
+    })
 }
