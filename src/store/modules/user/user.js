@@ -4,6 +4,12 @@ import mutations from './mutations';
 
 const state = {
   info: null,
+  refreshTokenBody: {
+    grant_type: 'refresh_token',
+    client_id: process.env.VUE_APP_CLIENT_ID,
+    client_secret: process.env.VUE_APP_CLIENT_SECRET,
+    refresh_token: localStorage.getItem('refresh_token'),
+  }
 };
 
 export default {

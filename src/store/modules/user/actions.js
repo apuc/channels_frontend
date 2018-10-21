@@ -6,7 +6,7 @@ export default {
    * @param commit {Object}
    * @constructor
    */
-  'GET_USER': async ({commit, dispatch}) => {
+  'GET_USER': async ({commit, dispatch, getters}) => {
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/me`)
       .then(
         res => {
@@ -14,12 +14,8 @@ export default {
         },
         err => {
           if (err.status === 401) {
-            dispatch('auth/GET_TOKEN', {
-              grant_type: 'refresh_token',
-              client_id: process.env.VUE_APP_CLIENT_ID,
-              client_secret: process.env.VUE_APP_CLIENT_SECRET,
-              refresh_token: localStorage.getItem('refresh_token'),
-            }, { root: true })
+            dispatch('auth/GET_TOKEN', getters.refreshTokenBody, { root: true });
+            dispatch('GET_USER');
           }
           console.log('err login', err);
         }

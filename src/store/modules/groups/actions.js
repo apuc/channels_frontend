@@ -5,19 +5,23 @@ export default {
   /**
    * Get user groups
    */
-  'GET_USER_GROUPS': async (context) => {
+  'GET_USER_GROUPS': async ({commit, dispatch, rootGetters}) => {
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/group`)
       .then(
         res => {
-          context.commit('USER_GROUPS', res.body.data);
+          commit('USER_GROUPS', res.body.data);
         },
-        err => {
+        async err => {
           console.log(err);
+          if (err.status === 401) {
+            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], { root: true });
+            dispatch('GET_USER_GROUPS');
+          }
         }
       )
       .catch(error => console.log(error))
   },
-  'CREATE_GROUP': ({context, dispatch, commit, getters}) => {
+  'CREATE_GROUP': ({dispatch, commit, getters, rootGetters}) => {
     Vue.http.post(`${process.env.VUE_APP_API_URL}/group`, getters.newGroupData)
       .then(
         res => {
@@ -27,13 +31,16 @@ export default {
           commit('modal/deleteModal', null, {root: true});
           dispatch('GET_USER_GROUPS');
         },
-        err => {
-          console.log(err)
+       async err => {
+          console.log(err);
+          if (err.status === 401) {
+            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], { root: true });
+            dispatch('CREATE_GROUP');
+          }
         })
       .catch(error => console.log(error))
   },
-  'CREATE_GROUP_AVATAR': async ({context, dispatch, commit}, img) => {
-    console.log(img);
+  'CREATE_GROUP_AVATAR': async ({dispatch, commit, rootGetters}, img) => {
     await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/avatar`, img, {
       headers: {
         "Content-Type": "multipart/form-data;"
@@ -44,14 +51,18 @@ export default {
           console.log(res.data.data.avatar_id);
           await commit('SET_GROUP_AVATAR_ID', res.data.data.avatar_id)
         },
-        err => {
-          console.log(err)
+        async err => {
+          console.log(err);
+          if (err.status === 401) {
+            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], { root: true });
+            dispatch('CREATE_GROUP_AVATAR', img);
+          }
         }
       )
       .catch(error => console.log(error))
   },
 
-  'EDIT_GROUP': ({context, dispatch, commit, getters}, groupData) => {
+  'EDIT_GROUP': ({dispatch, commit, getters, rootGetters}, groupData) => {
     Vue.http.put(`${process.env.VUE_APP_API_URL}/group/${groupData.group_id}`, {
       title: groupData.title,
       slug: groupData.slug,

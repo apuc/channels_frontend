@@ -5,26 +5,31 @@ export default {
   /**
    * Get user channels
    */
-  'GET_USER_CHANNELS': async ({ commit }) => {
+  'GET_USER_CHANNELS': async ({ dispatch, commit, rootGetters }) => {
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel`)
       .then(
         res => {
           commit('USER_CHANNELS', res.body.data);
+
         },
-        err => {
+        async err => {
           console.log(err);
+          if (err.status === 401) {
+            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], { root: true });
+            dispatch('GET_USER_CHANNELS');
+          }
         }
       )
   },
-  'GET_USERS': ({ commit, getters }) => {
-    const channelId = getter
+  'GET_USERS': ({ commit, getters, rootGetters }) => {
+    const channelId = getter;
     Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/users`)
       .then(
         res => console.log(res),
         err => console.log(err)
       )
   },
-  'CREATE_CHANNEL': ({dispatch, commit, getters}) => {
+  'CREATE_CHANNEL': ({dispatch, commit, getters, rootGetters}) => {
     Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.channelInfo)
       .then(
         res => {
@@ -33,12 +38,16 @@ export default {
           commit('modal/deleteModal', null, {root: true});
           dispatch('GET_USER_CHANNELS');
         },
-        err => {
-          console.log(err)
+        async err => {
+          console.log(err);
+          if (err.status === 401) {
+            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], { root: true });
+            dispatch('CREATE_CHANNEL');
+          }
         })
       .catch(error => console.log(error))
   },
-  'CREATE_CHANNEL_AVATAR': async ({dispatch, commit}, img) => {
+  'CREATE_CHANNEL_AVATAR': async ({dispatch, commit, rootGetters}, img) => {
     await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/avatar`, img, {
       headers: {
         "Content-Type": "multipart/form-data;"
@@ -48,22 +57,26 @@ export default {
         async res => {
           await commit('SET_CHANNEL_AVATAR_ID', res.data.data.avatar_id)
         },
-        err => {
-          console.log(err)
+        async err => {
+          console.log(err);
+          if (err.status === 401) {
+            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], { root: true });
+            dispatch('CREATE_GROUP_AVATAR', img);
+          }
         }
       )
       .catch(error => console.log(error))
   },
-  'SET_CHANNEL_EDITING': async ({commit, dispatch, getters}, channelId) => {
+  'SET_CHANNEL_EDITING': async ({commit, dispatch, getters, rootGetters}, channelId) => {
     await dispatch('GET_EDITING_CHANNEL', channelId);
     commit('modal/toggleEditMode', null, { root: true });
     commit('modal/setModal', 'channel', { root: true });
   },
-  'GET_EDITING_CHANNEL': async ({commit, getters}, channelId) => {
+  'GET_EDITING_CHANNEL': async ({commit, getters, rootGetters}, channelId) => {
     const editingChannel = await getters.channels.find(channel => channel.channel_id === channelId);
     await commit('SET_CHANNEL_DATA', editingChannel);
   },
-  'EDIT_CHANNEL': ({context, dispatch, commit, getters}, channelData) => {
+  'EDIT_CHANNEL': ({context, dispatch, commit, getters, rootGetters}, channelData) => {
     Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${channelData.channel_id}`, {
       title: channelData.title,
       slug: channelData.slug,
