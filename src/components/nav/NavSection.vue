@@ -69,11 +69,6 @@
     max-height: calc(100% - 100px);
   }
 
-  .list-group__header {
-    display: flex;
-    align-items: center;
-  }
-
   .list-group-item:first-child {
     flex-grow: 1;
     border-radius: 0;
@@ -94,9 +89,5 @@
 
     background-color: transparent;
     border: none;
-  }
-
-  .button_ml {
-    margin-left: auto;
   }
 </style>

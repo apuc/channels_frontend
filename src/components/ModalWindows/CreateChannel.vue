@@ -111,8 +111,8 @@
       </div>
 
 
-      <button type="submit" class="btn btn-primary">Create</button>
-      <button type="button" class="btn btn-primary" @click="getUsersFromBack">get users</button>
+      <button type="submit" class="btn btn-primary" v-if="isEdit">Edit</button>
+      <button type="submit" class="btn btn-primary" v-else>Create</button>
     </form>
   </div>
 </template>
@@ -124,7 +124,8 @@
     name: "CreateChannel",
     computed: {
       ...mapGetters({
-        channelInfo: 'channels/channelInfo'
+        channelInfo: 'channels/channelInfo',
+        isEdit: 'modal/editMode',
       })
     },
     data() {
@@ -142,16 +143,19 @@
         imgSrc: '',
         notImage: '',
         controls: [],
-        formSubmited: false
       }
     },
     methods: {
       async onSubmit() {
-        this.$store.commit('channels/SET_NEW_CHANNEL_DATA', this.channelCreateData);
+        this.$store.commit('channels/SET_CHANNEL_DATA', this.channelCreateData);
         if (this.img) {
           await this.$store.dispatch('channels/CREATE_CHANNEL_AVATAR', this.img);
         }
-        this.$store.dispatch('channels/CREATE_CHANNEL');
+        if (this.isEdit) {
+          this.$store.dispatch('channels/EDIT_CHANNEL', this.channelCreateData);
+        } else {
+          this.$store.dispatch('channels/CREATE_CHANNEL');
+        }
       },
       getUsers(e) {
         this.channelCreateData.user_ids = e.target.value.split(',');
@@ -184,9 +188,6 @@
       removeImage: function (e) {
         this.imgSrc = '';
       },
-      getUsersFromBack() {
-
-      }
     },
     created() {
       this.channelCreateData.title = this.channelInfo.title;

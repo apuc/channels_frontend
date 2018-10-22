@@ -5,6 +5,7 @@ import mutations from './mutations';
 const state = {
   channels: [],
   channelInfo: {
+    channel_id: '',
     title: '',
     slug: '',
     status: '',

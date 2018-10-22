@@ -21,8 +21,7 @@ export default {
         }
       )
   },
-  'GET_USERS': ({ commit, getters, rootGetters }) => {
-    const channelId = getter;
+  'GET_USERS': ({ commit, getters, rootGetters }, channelId) => {
     Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/users`)
       .then(
         res => console.log(res),
@@ -68,16 +67,17 @@ export default {
       .catch(error => console.log(error))
   },
   'SET_CHANNEL_EDITING': async ({commit, dispatch, getters, rootGetters}, channelId) => {
-    await dispatch('GET_EDITING_CHANNEL', channelId);
+    await dispatch('GET_CHANNEL_DATA', channelId);
+    commit('SET_CHANNEL_ID', channelId);
     commit('modal/toggleEditMode', null, { root: true });
     commit('modal/setModal', 'channel', { root: true });
   },
-  'GET_EDITING_CHANNEL': async ({commit, getters, rootGetters}, channelId) => {
+  'GET_CHANNEL_DATA': async ({commit, getters, rootGetters}, channelId) => {
     const editingChannel = await getters.channels.find(channel => channel.channel_id === channelId);
     await commit('SET_CHANNEL_DATA', editingChannel);
   },
   'EDIT_CHANNEL': ({context, dispatch, commit, getters, rootGetters}, channelData) => {
-    Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${channelData.channel_id}`, {
+    Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelId}`, {
       title: channelData.title,
       slug: channelData.slug,
       status: channelData.status,
@@ -88,11 +88,21 @@ export default {
     })
       .then(
         res => {
-          console.log(res);
+          dispatch('GET_USER_CHANNELS');
           commit('SET_CHANNEL_DATA', {});
+          commit('modal/deleteModal', null, {root: true});
         },
-        err => console.log(err)
+        async err => {
+          console.log(err);
+          if (err.status === 401) {
+            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], { root: true });
+            dispatch('EDIT_CHANNEL');
+          }
+        }
       )
       .catch(error => console.log(error))
   },
+  'DELETE_CHANNEL': () => {
+
+  }
 };
