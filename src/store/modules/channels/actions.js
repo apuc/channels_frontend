@@ -92,6 +92,8 @@ export default {
           dispatch('GET_USER_CHANNELS');
           commit('SET_CHANNEL_DATA', {});
           commit('modal/deleteModal', 'channel', {root: true});
+          commit('SET_CHANNEL_ID', '');
+          commit('modal/toggleEditMode', null, {root: true});
         },
         async err => {
           console.log(err);
@@ -103,12 +105,22 @@ export default {
       )
       .catch(error => console.log(error))
   },
-  'DELETE_CHANNEL': (channelId) => {
+  'SET_CHANNEL_DELETING': async ({commit, dispatch}, channelId) => {
+    commit('modal/toggleEditModal', null, {root: true});
+    await dispatch('GET_CHANNEL_DATA', channelId);
+    await commit('SET_CHANNEL_ID', channelId);
+    await commit('modal/currentModal', 'deleteChannel', {root: true});
+    commit('modal/setModal', 'deleteChannel', {root: true});
+  },
+  'DELETE_CHANNEL': ({commit, dispatch}, channelId) => {
     Vue.http.delete(`${process.env.VUE_APP_API_URL}`, channelId)
       .then(
         res => {
           console.log(res);
+          dispatch('GET_USER_CHANNELS');
           commit('modal/deleteModal', 'channel', {root: true});
+          commit('SET_CHANNEL_ID', '');
+          commit('modal/toggleEditMode', null, {root: true});
         },
         err => {
           console.log(err)

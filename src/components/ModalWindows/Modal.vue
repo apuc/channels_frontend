@@ -8,7 +8,7 @@
       <ProfileModal v-if="userProfile" />
       <CreateGroup v-else-if="createGroup"/>
       <CreateChannel v-else-if="createChannel"/>
-      <DeleteChannelOrGroup v-else-if="DeleteChannelOrGroup"/>
+      <DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>
     </div>
   </div>
 </template>
@@ -35,7 +35,7 @@
         userProfile: 'modal/setUserProfile',
         editMode: 'modal/editMode',
         currentModal: 'modal/currentModal',
-        DeleteChannelOrGroup: 'modal/DeleteChannelOrGroup',
+        deleteChannelOrGroup: 'modal/deleteChannelOrGroup',
       }),
     },
     data() {

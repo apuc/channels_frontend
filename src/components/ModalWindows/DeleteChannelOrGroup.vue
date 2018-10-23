@@ -12,18 +12,32 @@
   export default {
     name: "DeleteChannelOrGroup",
     computed: {
-      currentModal: 'modal/currentModal'
+      currentModal: 'modal/currentModal',
+      channelId: 'channel/channelId',
+    },
+    data() {
+      return {
+        groupOrChannel: '',
+    }
     },
     methods: {
       closeModal() {
-        this.$store.dispatch('modal/deleteModal', this.currentModal);
+        this.$store.commit('modal/deleteModal', this.currentModal);
+        this.$store.commit('modal/toggleEditModal');
+        this.currentModal === 'channel' ?
+          this.$store.commit('channels/SET_CHANNEL_ID', '')
+          :
+          this.$store.commit('channels/SET_GROUP_ID', '');
       },
       remove(e) {
         this.currentModal === 'channel' ?
-          this.$store.dispatch('channels/DELETE_CHANNEL')
+          this.$store.dispatch('channels/DELETE_CHANNEL', this.channelId)
           :
           this.$store.dispatch('groups/DELETE_GROUP')
       }
+    },
+    created() {
+      this.$store.getters['modal/currentModal'] === 'deleteChannel' ? this.groupOrChannel = 'данный канал?' : this.groupOrChannel = 'данную группу?'
     }
   }
 </script>

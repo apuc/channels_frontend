@@ -13,10 +13,10 @@ export default {
         state.setUserProfile = true;
         break;
       case 'deleteChannel':
-        state.setDeleteChannel = true;
+        state.deleteChannelOrGroup = true;
         break;
       case 'deleteGroup':
-        state.setDeleteGroup = true;
+        state.deleteChannelOrGroup = true;
         break;
     }
   },
@@ -24,8 +24,6 @@ export default {
     state.currentModal = modalType;
   },
   deleteModal(state) {
-    state.currentModal = '';
-
     switch (state.currentModal) {
       case 'group':
         state.setCreateGroup = false;
@@ -37,12 +35,14 @@ export default {
         state.setUserProfile = false;
         break;
       case 'deleteChannel':
-        state.setDeleteChannel = false;
+        state.deleteChannelOrGroup = false;
         break;
       case 'deleteGroup':
-        state.setDeleteGroup = false;
+        state.deleteChannelOrGroup = false;
         break;
     }
+    state.setModal = false;
+    state.currentModal = '';
   },
   // set current user info to modal
   setCurrentUserInfo(state, payload) {
@@ -55,4 +55,7 @@ export default {
   toggleEditMode(state) {
     state.editMode = !state.editMode
   },
+  deleteChannelOrGroup(state) {
+    state.deleteChannelOrGroup = !state.deleteChannelOrGroup
+  }
 };

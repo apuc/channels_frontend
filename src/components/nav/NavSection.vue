@@ -47,21 +47,20 @@
     },
     methods: {
       editThis(e) {
-        e.preventDefault();
+        e.preventDefault(); // prevent proceed to the channel
         const id = e.target.getAttribute('data-id');
         this.type === 'channel' ?
           this.$store.dispatch('channels/SET_CHANNEL_EDITING', Number(id))
           :
           this.$store.dispatch('groups/EDIT_GROUP')
       },
-      deleteThis() {
+      deleteThis(e) {
+        e.preventDefault(); // prevent proceed to the channel
         const id = e.target.getAttribute('data-id');
-        if (this.type === 'channel') {
-          this.$store.dispatch('modal/setModal', 'deleteChannel');
-          this.$store.dispatch('modal/currentModal', 'deleteChannel');
-        } else {
-
-        }
+        this.type === 'channel' ?
+          this.$store.dispatch('channels/SET_CHANNEL_DELETING', Number(id))
+          :
+          this.$store.dispatch('channels/SET_CHANNEL_DELETING')
       }
     },
   }

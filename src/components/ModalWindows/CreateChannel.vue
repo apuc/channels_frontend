@@ -1,7 +1,7 @@
 <template>
   <div>
     <header class="modal__header">
-      <h4>Создать канал</h4>
+      <h4>{{isEdit ? 'Редактировать' : 'Создать'}} канал</h4>
     </header>
 
     <form class="modal__content" @submit.prevent="onSubmit">

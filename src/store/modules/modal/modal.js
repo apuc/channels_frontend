@@ -7,8 +7,7 @@ const state = {
   setCreateGroup: false,
   setCreateChannel: false,
   setUserProfile: false,
-  setDeleteChannel: false,
-  setDeleteGroup: false,
+  deleteChannelOrGroup: false,
   editMode: false,
   currentModal: '',
   userProfileInfo: {
