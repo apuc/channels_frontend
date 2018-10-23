@@ -7,13 +7,16 @@ const state = {
   setCreateGroup: false,
   setCreateChannel: false,
   setUserProfile: false,
+  setDeleteChannel: false,
+  setDeleteGroup: false,
+  editMode: false,
+  currentModal: '',
   userProfileInfo: {
     name: '',
     avatar: '',
     slug: '',
     id: null
   },
-  editMode: false
 };
 
 export default {

@@ -2,21 +2,47 @@ export default {
   setModal(state, payload) {
     state.setModal = true;
 
-    if (payload === 'group') {
-      state.setCreateGroup = true;
-    }
-    if (payload === 'channel') {
-      state.setCreateChannel = true;
-    }
-    if (payload === 'userProfile') {
-      state.setUserProfile = true;
+    switch (payload) {
+      case 'group':
+        state.setCreateGroup = true;
+        break;
+      case 'channel':
+        state.setCreateChannel = true;
+        break;
+      case 'userProfile':
+        state.setUserProfile = true;
+        break;
+      case 'deleteChannel':
+        state.setDeleteChannel = true;
+        break;
+      case 'deleteGroup':
+        state.setDeleteGroup = true;
+        break;
     }
   },
+  currentModal(state, modalType) {
+    state.currentModal = modalType;
+  },
   deleteModal(state) {
-    state.setModal = false;
-    state.setCreateGroup = false;
-    state.setCreateChannel = false;
-    state.setUserProfile = false;
+    state.currentModal = '';
+
+    switch (state.currentModal) {
+      case 'group':
+        state.setCreateGroup = false;
+        break;
+      case 'channel':
+        state.setCreateChannel = false;
+        break;
+      case 'userProfile':
+        state.setUserProfile = false;
+        break;
+      case 'deleteChannel':
+        state.setDeleteChannel = false;
+        break;
+      case 'deleteGroup':
+        state.setDeleteGroup = false;
+        break;
+    }
   },
   // set current user info to modal
   setCurrentUserInfo(state, payload) {

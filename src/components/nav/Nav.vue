@@ -61,6 +61,7 @@
       openModal(e, modalType, modalLink) {
         e.preventDefault();
         this.$store.commit('modal/setModal', modalType);
+        this.$store.commit('modal/currentModal', modalType);
         history.pushState('', 'Title of page', modalLink);
       },
     },

@@ -44,6 +44,7 @@
       openUserProfile(e) {
         e.preventDefault();
         this.$store.commit('modal/setModal', 'userProfile');
+        this.$store.commit('modal/currentModal', 'userProfile');
         this.$store.dispatch('modal/setCurrentUserInfo', {
           name: this.user.name,
           id: this.user.id,

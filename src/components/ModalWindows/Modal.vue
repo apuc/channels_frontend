@@ -34,6 +34,8 @@
         createChannel: 'modal/setCreateChannel',
         userProfile: 'modal/setUserProfile',
         editMode: 'modal/editMode',
+        currentModal: 'modal/currentModal',
+        DeleteChannelOrGroup: 'modal/DeleteChannelOrGroup',
       }),
     },
     data() {
@@ -43,7 +45,7 @@
     methods: {
       onModalClose() {
         this.$store.commit('modal/deleteCurrentUserInfo', {});
-        this.$store.commit('modal/deleteModal');
+        this.$store.commit('modal/deleteModal', this.currentModal);
 
         this.editMode ?
           this.$store.commit('modal/toggleEditMode')

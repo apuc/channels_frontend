@@ -55,10 +55,13 @@
           this.$store.dispatch('groups/EDIT_GROUP')
       },
       deleteThis() {
-        this.type === 'channel' ?
-          this.$store.dispatch('channels/DELETE_CHANNEL')
-          :
-          this.$store.dispatch('groups/DELETE_GROUP')
+        const id = e.target.getAttribute('data-id');
+        if (this.type === 'channel') {
+          this.$store.dispatch('modal/setModal', 'deleteChannel');
+          this.$store.dispatch('modal/currentModal', 'deleteChannel');
+        } else {
+
+        }
       }
     },
   }

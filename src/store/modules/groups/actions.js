@@ -28,7 +28,7 @@ export default {
           console.log(res);
           router.go(-1);
           commit('ADD_GROUP', res);
-          commit('modal/deleteModal', null, {root: true});
+          commit('modal/deleteModal', 'group', {root: true});
           dispatch('GET_USER_GROUPS');
         },
        async err => {
