@@ -9,28 +9,35 @@
 </template>
 
 <script>
-    import Nav from '../../components/nav/Nav'
+    import Nav from '../../components/nav/Nav';
     import Advertisings from '../../components/ads/Advertisings';
-    import {connectSocket} from '../../services/socket/socket.service'
-    import {sendUserInfo} from '../../services/socket/user.service'
+    import {connectSocket} from '../../services/socket/socket.service';
+    import {sendUserInfo} from '../../services/socket/user.service';
+    import {mapGetters} from 'vuex';
 
     export default {
+        computed: {
+          ...mapGetters({
+            token: 'auth/token',
+            userInfo: 'user/info'
+          })
+        },
         data() {
-            return {}
+          return {}
         },
         components: {
             Advertisings,
             Nav
         },
         beforeMount() {
-            connectSocket(this.$store.getters['auth/token'])
+            connectSocket(this.token)
                 .then(() => console.log('Socket connected!'))
                 .catch(err => console.error(err));
-            if (!this.$store.getters['user/info']) { // Если пользователь залогиненый (при перезагрузке страницы)
-                this.$store.dispatch('user/GET_USER').then((res) => {
+            if (!this.userInfo) { // Если пользователь залогиненый (при перезагрузке страницы)
+                this.$store.dispatch('user/GET_USER').then(() => {
                     sendUserInfo({
-                        username: res.data.username,
-                        id: res.data.user_id
+                        username: this.userInfo.data.username,
+                        id: this.userInfo.data.user_id
                     })
                 });
             }

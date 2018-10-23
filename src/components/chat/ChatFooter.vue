@@ -25,7 +25,7 @@
     export default {
         computed: {
             ...mapGetters({
-                currentChannelId: 'channels/currentChannelId',
+                currentChannelId: 'channels/channelId',
             }),
         },
         data() {
