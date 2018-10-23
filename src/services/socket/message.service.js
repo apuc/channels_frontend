@@ -5,6 +5,8 @@ export function typing(user, channelId) {
 }
 
 export function sendMessage(message, channelId) {
+    console.log('message', message)
+    console.log('channelId', channelId)
     io.emit('userMessage', {message, channelId})
 }
 

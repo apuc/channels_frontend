@@ -11,7 +11,6 @@ export default {
       .then(
         res => {
           commit('USER_INFO', res.body);
-          return res.body
         },
         err => {
           if (err.status === 401) {

@@ -1,5 +1,5 @@
 <template>
-  <b-card class="mb-3" :class="user.id === myId ? 'dirRtl' : '' ">
+  <b-card class="message mb-3" :class="user.id === myId ? 'dirRtl' : '' ">
     <b-media>
       <div class="flex">
         <a :href="'/user/' + user.slug" @click="openUserProfile($event, user)">
@@ -58,6 +58,9 @@
 </script>
 
 <style scoped>
+  .message {
+    flex-shrink: 0;
+  }
   .dirRtl {
     direction: rtl;
     text-align: right;

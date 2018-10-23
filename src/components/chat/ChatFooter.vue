@@ -43,6 +43,7 @@
 <style scoped>
     .chat-footer {
         padding: 20px;
+      flex-shrink: 0;
     }
 
     .input_message {
