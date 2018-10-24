@@ -18,8 +18,7 @@
 </template>
 
 <script>
-    import {sendMessage, typing} from '../../services/socket/message.service'
-    import { io } from '../../services/socket/socket.service'
+    import {ioSendMessage, typing} from '../../services/socket/message.service'
     import {mapGetters} from 'vuex'
 
     export default {
@@ -34,8 +33,12 @@
             }
         },
         methods: {
-            sendMessage,
-            typing
+            ioSendMessage,
+            typing,
+            sendMessage(msg, channelId) {
+                ioSendMessage(msg, channelId);
+                this.input = ''
+            }
         }
     }
 </script>

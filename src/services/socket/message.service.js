@@ -4,9 +4,7 @@ export function typing(user, channelId) {
     io.emit('typing', {user, channelId});
 }
 
-export function sendMessage(message, channelId) {
-    console.log('message', message)
-    console.log('channelId', channelId)
+export function ioSendMessage(message, channelId) {
     io.emit('userMessage', {message, channelId})
 }
 

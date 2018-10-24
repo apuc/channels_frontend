@@ -4,7 +4,9 @@
       v-for="(item, index) in itemsList"
       :to="item.slug"
       :key="index + item.slug"
-      class="list-group-item d-flex align-items-center list-group-item-action">
+      :data-id="type === 'channel' ? item.channel_id : item.group_id"
+      class="list-group-item d-flex align-items-center list-group-item-action"
+      @click.native="setCurrentChannel">
       <img :src="item.avatar.small"
            alt=""
            class="avatar"
@@ -61,6 +63,10 @@
           this.$store.dispatch('channels/SET_CHANNEL_DELETING', Number(id))
           :
           this.$store.dispatch('channels/SET_CHANNEL_DELETING')
+      },
+      setCurrentChannel(e) {
+        const id = e.target.getAttribute('data-id');
+        this.$store.commit('channels/SET_CHANNEL_ID', id);
       }
     },
   }
