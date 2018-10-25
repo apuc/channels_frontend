@@ -15,5 +15,5 @@ export function messageEventListenerInit() {
 
     io.on('userMessage', function (data) {
         console.log('userMessage', data)
-    })
+    });
 }

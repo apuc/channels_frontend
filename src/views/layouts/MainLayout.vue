@@ -33,14 +33,12 @@
             connectSocket(this.token)
                 .then(() => console.log('Socket connected!'))
                 .catch(err => console.error(err));
-            if (!this.userInfo) { // Если пользователь залогиненый (при перезагрузке страницы)
-                this.$store.dispatch('user/GET_USER').then(() => {
-                    sendUserInfo({
-                        username: this.userInfo.data.username,
-                        id: this.userInfo.data.user_id
-                    })
-                });
-            }
+            this.$store.dispatch('user/GET_USER').then(() => {
+                sendUserInfo({
+                    username: this.userInfo.data.username,
+                    id: this.userInfo.data.user_id
+                })
+            });
         }
     }
 </script>
