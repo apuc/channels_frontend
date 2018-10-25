@@ -139,7 +139,7 @@
           private: '',
           avatar: '',
         },
-        img: {},
+        img: '',
         imgSrc: '',
         notImage: '',
         controls: [],

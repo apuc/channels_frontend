@@ -33,7 +33,6 @@ export default {
       .then(
         res => {
           router.go(-1);
-          commit('ADD_CHANNEL', res);
           commit('modal/deleteModal', 'channel', {root: true});
           dispatch('GET_USER_CHANNELS');
         },
@@ -90,7 +89,17 @@ export default {
       .then(
         res => {
           dispatch('GET_USER_CHANNELS');
-          commit('SET_CHANNEL_DATA', {});
+          //устанавливаем поля пустыми, чтобы геттер не ругался на пустое поле у аватара при открытии создания канала
+          commit('SET_CHANNEL_DATA', {
+            channel_id: '',
+            title: '',
+            slug: '',
+            status: '',
+            user_ids: [],
+            type: '',
+            private: '',
+            avatar: '',
+          });
           commit('modal/deleteModal', 'channel', {root: true});
           commit('SET_CHANNEL_ID', '');
           commit('modal/toggleEditMode', null, {root: true});
@@ -106,19 +115,19 @@ export default {
       .catch(error => console.log(error))
   },
   'SET_CHANNEL_DELETING': async ({commit, dispatch}, channelId) => {
-    commit('modal/toggleEditModal', null, {root: true});
+    commit('modal/toggleEditMode', null, {root: true});
     await dispatch('GET_CHANNEL_DATA', channelId);
     await commit('SET_CHANNEL_ID', channelId);
     await commit('modal/currentModal', 'deleteChannel', {root: true});
     commit('modal/setModal', 'deleteChannel', {root: true});
   },
   'DELETE_CHANNEL': ({commit, dispatch}, channelId) => {
-    Vue.http.delete(`${process.env.VUE_APP_API_URL}`, channelId)
+    Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/${channelId}`)
       .then(
         res => {
           console.log(res);
           dispatch('GET_USER_CHANNELS');
-          commit('modal/deleteModal', 'channel', {root: true});
+          commit('modal/deleteModal', 'deleteChannel', {root: true});
           commit('SET_CHANNEL_ID', '');
           commit('modal/toggleEditMode', null, {root: true});
         },

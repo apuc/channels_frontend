@@ -8,9 +8,6 @@ export default {
   'SET_CHANNEL_AVATAR_ID': (state, avatar_id) => {
     state.channelInfo.avatar = avatar_id;
   },
-  'ADD_CHANNEL': (state, newChannel) => {
-    state.channels.push(newChannel);
-  },
   'SET_CHANNEL_ID': (state, id) => {
     state.channelId = id;
   }

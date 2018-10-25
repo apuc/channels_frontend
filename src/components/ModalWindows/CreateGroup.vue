@@ -86,7 +86,7 @@
           user_ids: [],
           avatar: '',
         },
-        img: {},
+        img: '',
         imgSrc: '',
         notImage: '',
         controls: [],

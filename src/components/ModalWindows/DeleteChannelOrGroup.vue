@@ -1,8 +1,8 @@
 <template>
   <div>
     <h3>Вы уверены, что хотите удалить {{currentModal === 'deleteChannel' ? 'данный канал?' : 'данную группу?'}}</h3>
-    <button type="button" @click="remove">Да</button>
-    <button type="button" @click="closeModal">Нет</button>
+    <button type="button" class="btn btn-primary" style="margin-right: 15px" @click="remove">Да</button>
+    <button type="button" class="btn btn-primary" @click="closeModal">Нет</button>
   </div>
 </template>
 
@@ -12,8 +12,10 @@
   export default {
     name: "DeleteChannelOrGroup",
     computed: {
-      currentModal: 'modal/currentModal',
-      channelId: 'channel/channelId',
+      ...mapGetters({
+        currentModal: 'modal/currentModal',
+        channelId: 'channels/channelId',
+      })
     },
     data() {
       return {
@@ -22,15 +24,17 @@
     },
     methods: {
       closeModal() {
-        this.$store.commit('modal/deleteModal', this.currentModal);
-        this.$store.commit('modal/toggleEditModal');
-        this.currentModal === 'channel' ?
+        this.currentModal === 'deleteChannel' ?
           this.$store.commit('channels/SET_CHANNEL_ID', '')
           :
-          this.$store.commit('channels/SET_GROUP_ID', '');
+          this.$store.commit('groups/SET_GROUP_ID', '');
+
+        this.$store.commit('modal/deleteModal', this.currentModal);
+        this.$store.commit('modal/toggleEditMode');
       },
       remove(e) {
-        this.currentModal === 'channel' ?
+        console.log(this.channelId);
+        this.currentModal === 'deleteChannel' ?
           this.$store.dispatch('channels/DELETE_CHANNEL', this.channelId)
           :
           this.$store.dispatch('groups/DELETE_GROUP')

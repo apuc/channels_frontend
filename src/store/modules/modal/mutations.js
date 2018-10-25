@@ -41,6 +41,7 @@ export default {
         state.deleteChannelOrGroup = false;
         break;
     }
+
     state.setModal = false;
     state.currentModal = '';
   },
@@ -53,9 +54,6 @@ export default {
     state.userProfileInfo = payload;
   },
   toggleEditMode(state) {
-    state.editMode = !state.editMode
+    state.editMode = !state.editMode;
   },
-  deleteChannelOrGroup(state) {
-    state.deleteChannelOrGroup = !state.deleteChannelOrGroup
-  }
 };
