@@ -45,18 +45,18 @@ export default new Router({
       path: '/user/:user_id',
       name: 'profile_modal',
       component: ProfileModal,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/create-group',
       name: 'create_group',
       component: ProfileModal,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/:id',
       component: Chat,
-      meta: { requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '*',

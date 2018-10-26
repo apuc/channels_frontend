@@ -67,6 +67,7 @@
     align-items: center;
     height: 100px;
     padding: 15px;
+    flex-shrink: 0;
   }
 
   .settings {

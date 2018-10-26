@@ -1,24 +1,34 @@
 <template>
   <section class="list-group">
-    <header class="list-group__header">
-      <b-list-group-item variant="warning" v-b-toggle="id" class="text-center nav-items-header">
-        <h2>{{ title }}</h2>
-      </b-list-group-item>
+    <router-link
+      v-for="(item, index) in itemsList"
+      :to="item.slug"
+      :key="index + item.slug"
+      :data-id="type === 'channel' ? item.channel_id : item.group_id"
+      class="list-group-item d-flex align-items-center list-group-item-action"
+      @click.native="setCurrentChannel">
+      <img :src="item.avatar.small"
+           alt=""
+           class="avatar"
+           width="30"
+           height="30"
+           v-if="item.avatar">
+      <span>{{ item.title }}</span>
 
-      <div class="addButton-wrapper" v-if="addButton">
-        <a href="/create-group" class="addButton" @click="openModal">+</a>
-      </div>
-    </header>
+      <button type="button"
+              class="button"
+              :data-id="type === 'channel' ? item.channel_id : item.group_id"
+              @click="editThis">
+        <v-icon scale="1.6" class="icon" name="pen"/>
+      </button>
 
-    <b-collapse :visible="isOpen" :id="id" class="nav-items">
-      <router-link
-        v-for="(item, index) in itemsList"
-        :to="item.slug"
-        :key="index + item.slug"
-        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
-        {{ item.title }}
-      </router-link>
-    </b-collapse>
+      <button type="button"
+              class="button"
+              :data-id="type === 'channel' ? item.channel_id : item.group_id"
+              @click="deleteThis">
+        <v-icon scale="1.6" class="icon" name="trash-alt"/>
+      </button>
+    </router-link>
   </section>
 </template>
 
@@ -28,23 +38,36 @@
       id: String,
       title: String,
       itemsList: Array,
-      isOpen: Boolean,
       addButton: {
         type: Boolean,
         required: false
-      }
+      },
+      type: String,
     },
     data() {
-      return {
-
-      }
+      return {}
     },
     methods: {
-      openModal(e) {
-        e.preventDefault();
-        this.$store.commit('modal/setModal', 'group');
-        history.pushState('', 'Title of page', `/create-group`);
+      editThis(e) {
+        e.preventDefault(); // prevent proceed to the channel
+        const id = e.target.getAttribute('data-id');
+        this.type === 'channel' ?
+          this.$store.dispatch('channels/SET_CHANNEL_EDITING', Number(id))
+          :
+          this.$store.dispatch('groups/EDIT_GROUP')
       },
+      deleteThis(e) {
+        e.preventDefault(); // prevent proceed to the channel
+        const id = e.target.getAttribute('data-id');
+        this.type === 'channel' ?
+          this.$store.dispatch('channels/SET_CHANNEL_DELETING', Number(id))
+          :
+          this.$store.dispatch('channels/SET_CHANNEL_DELETING')
+      },
+      setCurrentChannel(e) {
+        const id = e.target.getAttribute('data-id');
+        this.$store.commit('channels/SET_CHANNEL_ID', id);
+      }
     },
   }
 </script>
@@ -52,11 +75,6 @@
 <style scoped>
   .list-group {
     max-height: calc(100% - 100px);
-  }
-
-  .list-group__header {
-    display: flex;
-    align-items: center;
   }
 
   .list-group-item:first-child {
@@ -68,48 +86,16 @@
     font-size: 24px;
   }
 
-  .nav-items {
-    height: 100%;
-    overflow-x: hidden;
-  }
-
-  .nav-items-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    cursor: pointer;
-  }
-
-  .addButton-wrapper {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding: 0 10px;
-
-    background-color: #ffeeba;
-    border: 1px solid rgba(0, 0, 0, 0.125);
-  }
-
-  .addButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 36px;
-    height: 36px;
-
-    font-size: 22px;
-    font-weight: 700;
-    line-height: 1;
-    color: #856404;
-
-    background-color: #E5D7A5;
-    border: none;
+  .avatar {
+    margin-right: 15px;
     border-radius: 50%;
-    cursor: pointer;
   }
 
-  .addButton:hover {
-    text-decoration: none;
+  .button {
+    margin-right: 5px;
+    padding: 5px;
+
+    background-color: transparent;
+    border: none;
   }
 </style>
