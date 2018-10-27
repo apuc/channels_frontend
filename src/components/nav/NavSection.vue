@@ -1,37 +1,48 @@
 <template>
-  <section class="list-group">
-    <router-link
-      v-for="(item, index) in itemsList"
-      :to="item.slug"
-      :key="index + item.slug"
-      class="list-group-item d-flex align-items-center list-group-item-action">
-      <img :src="item.avatar.small"
-           alt=""
-           class="avatar"
-           width="30"
-           height="30"
-           v-if="item.avatar">
-      <span>{{ item.title }}</span>
+  <nav class="list-group">
+    <section class="list-group__item" v-for="(item, index) in itemsList" @click="setChannelData($event, type === 'channel' ? item.channel_id : item.group_id)">
+      <router-link
+        :to="item.slug"
+        :key="index + item.slug"
+        class="list-group__link">
+        <img :src="item.avatar.small"
+             alt=""
+             class="avatar"
+             width="30"
+             height="30"
+             v-if="item.avatar">
+        <span>{{ item.title }}</span>
 
-      <button type="button"
-              class="button"
-              :data-id="type === 'channel' ? item.channel_id : item.group_id"
-              @click="editThis">
-        <v-icon scale="1.6" class="icon" name="pen"/>
-      </button>
+        <v-icon scale="1.6" class="icon icon_mla" name="folder" v-if="type === 'group'"/>
+      </router-link>
 
-      <button type="button"
-              class="button"
-              :data-id="type === 'channel' ? item.channel_id : item.group_id"
-              @click="deleteThis">
-        <v-icon scale="1.6" class="icon" name="trash-alt"/>
-      </button>
-    </router-link>
-  </section>
+      <div class="control">
+        <button type="button"
+                class="button"
+                @click="editThis">
+          <v-icon scale="1.6" class="icon" name="pen"/>
+        </button>
+
+        <button type="button"
+                class="button"
+                @click="deleteThis">
+          <v-icon scale="1.6" class="icon" name="trash-alt"/>
+        </button>
+      </div>
+    </section>
+  </nav>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
+
   export default {
+    computed: {
+      ...mapGetters({
+        channelId: 'channels/channelId',
+        groupId: 'groups/groupId',
+      })
+    },
     props: {
       id: String,
       title: String,
@@ -43,25 +54,29 @@
       type: String,
     },
     data() {
-      return {}
+      return {
+
+      }
     },
     methods: {
-      editThis(e) {
-        e.preventDefault(); // prevent proceed to the channel
-        const id = e.target.getAttribute('data-id');
+      setChannelData(e, id) {
         this.type === 'channel' ?
-          this.$store.dispatch('channels/SET_CHANNEL_EDITING', Number(id))
-          :
-          this.$store.dispatch('groups/EDIT_GROUP')
+          this.$store.dispatch('channels/SET_CHANNEL_DATA', Number(id))
+        :
+          this.$store.dispatch('groups/SET_GROUP_DATA', Number(id))
+      },
+      editThis(e) {
+        this.type === 'channel' ?
+          this.$store.dispatch('channels/SET_CHANNEL_EDITING', this.channelId)
+        :
+          this.$store.dispatch('groups/SET_GROUP_EDITING', this.groupId)
       },
       deleteThis(e) {
-        e.preventDefault(); // prevent proceed to the channel
-        const id = e.target.getAttribute('data-id');
         this.type === 'channel' ?
-          this.$store.dispatch('channels/SET_CHANNEL_DELETING', Number(id))
-          :
-          this.$store.dispatch('channels/SET_CHANNEL_DELETING')
-      }
+          this.$store.dispatch('channels/SET_CHANNEL_DELETING', this.channelId)
+        :
+          this.$store.dispatch('groups/SET_GROUP_DELETING', this.groupId)
+      },
     },
   }
 </script>
@@ -71,11 +86,42 @@
     max-height: calc(100% - 100px);
   }
 
-  .list-group-item:first-child {
-    flex-grow: 1;
-    border-radius: 0;
+  .list-group__item, 
+  .control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
+  .list-group__item {
+    padding: 3px 7px;
+
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+  }
+
+  .list-group__item:last-child {
+    border-top: 1px solid #ccc;
+  }
+
+  .list-group__item:hover {
+    background-color: #f8f9fa;
+  }
+
+  .list-group__link {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    color: #495057;
+  }
+
+  .list-group__link:hover,
+  .list-group__link:active,
+  .list-group__link:focus {
+    text-decoration: none;
+  }
+  
   h2 {
     font-size: 24px;
   }
@@ -91,5 +137,16 @@
 
     background-color: transparent;
     border: none;
+    cursor: pointer;
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+    color: #495057;
+  }
+
+  .icon_mla {
+    margin-left: auto;
   }
 </style>

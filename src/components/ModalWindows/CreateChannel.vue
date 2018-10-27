@@ -110,8 +110,7 @@
                 v-if="imgSrc">Remove img</button>
       </div>
 
-
-      <button type="submit" class="btn btn-primary" v-if="isEdit">Edit</button>
+      <button type="submit" class="btn btn-primary" v-if="isEdit">Save</button>
       <button type="submit" class="btn btn-primary" v-else>Create</button>
     </form>
   </div>

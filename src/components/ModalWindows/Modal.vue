@@ -45,17 +45,25 @@
     methods: {
       onModalClose() {
         if (this.editMode) {
-          console.log(this.currentModal);
-          this.currentModal === 'channel' ? this.$store.commit('channels/SET_CHANNEL_DATA', {
-            channel_id: '',
-            title: '',
-            slug: '',
-            status: '',
-            user_ids: [],
-            type: '',
-            private: '',
-            avatar: '',
-          }) : this.$store.commit('channels/SET_GROUP_DATA', {});
+          this.currentModal === 'channel' ||  this.currentModal === 'deleteChannel' ?
+            this.$store.commit('channels/SET_CHANNEL_DATA', {
+              channel_id: '',
+              title: '',
+              slug: '',
+              status: '',
+              user_ids: [],
+              type: '',
+              private: '',
+              avatar: '',
+            })
+          :
+            this.$store.commit('groups/SET_GROUP_DATA', {
+              title: '',
+              slug: '',
+              status: '',
+              avatar: ''
+            });
+
           this.$store.commit('modal/toggleEditMode');
         } else {
           this.$router.go(-1)

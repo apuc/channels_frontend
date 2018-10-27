@@ -1,4 +1,6 @@
 export default {
   groups: state => state.groups,
-  newGroupData: state => state.newGroupData,
+  groupInfo: state => state.groupInfo,
+  users: state => state.users,
+  groupId: state => state.groupId,
 };

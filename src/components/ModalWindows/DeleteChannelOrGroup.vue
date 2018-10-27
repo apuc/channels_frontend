@@ -15,6 +15,7 @@
       ...mapGetters({
         currentModal: 'modal/currentModal',
         channelId: 'channels/channelId',
+        groupId: 'groups/groupId',
       })
     },
     data() {
@@ -33,11 +34,10 @@
         this.$store.commit('modal/toggleEditMode');
       },
       remove(e) {
-        console.log(this.channelId);
         this.currentModal === 'deleteChannel' ?
           this.$store.dispatch('channels/DELETE_CHANNEL', this.channelId)
           :
-          this.$store.dispatch('groups/DELETE_GROUP')
+          this.$store.dispatch('groups/DELETE_GROUP', this.groupId)
       }
     },
     created() {

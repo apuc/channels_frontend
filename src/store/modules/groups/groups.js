@@ -4,7 +4,7 @@ import mutations from './mutations';
 
 const state = {
   groups: [],
-  newGroupData: {
+  groupInfo: {
     title: '',
     slug: '',
     status: '',
@@ -13,6 +13,8 @@ const state = {
     private: '',
     avatar: '',
   },
+  groupId: '',
+  users: [],
 };
 
 export default {

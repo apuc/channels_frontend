@@ -2,13 +2,13 @@ export default {
   'USER_GROUPS': (state, groups) => {
     state.groups = groups;
   },
-  'SET_NEW_GROUP_DATA': (state, data) => {
-    state.newGroupData = data;
+  'SET_GROUP_DATA': (state, data) => {
+    state.groupInfo = data;
   },
   'SET_GROUP_AVATAR_ID': (state, avatar_id) => {
-    state.newGroupData.avatar = avatar_id;
+    state.groupInfo.avatar = avatar_id;
   },
-  'ADD_GROUP': (state, newGroup) => {
-    state.groups.push(newGroup);
+  'SET_GROUP_ID': (state, id) => {
+    state.groupId = id;
   }
 };

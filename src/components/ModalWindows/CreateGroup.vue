@@ -1,7 +1,7 @@
 <template>
   <div>
     <header class="modal__header">
-      <h4>Создать канал</h4>
+      <h4>{{isEdit ? 'Редактировать' : 'Создать'}} группу</h4>
     </header>
 
     <form class="modal__content" @submit.prevent="onSubmit">
@@ -67,16 +67,23 @@
                 v-if="imgSrc">Remove img</button>
       </div>
 
-
-      <button type="submit" class="btn btn-primary">Create</button>
+      <button type="submit" class="btn btn-primary" v-if="isEdit">Save</button>
+      <button type="submit" class="btn btn-primary" v-else>Create</button>
     </form>
   </div>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
+
   export default {
     name: "CreateGroup",
-    computed: {},
+    computed: {
+      ...mapGetters({
+        groupInfo: 'groups/groupInfo',
+        isEdit: 'modal/editMode',
+      })
+    },
     data() {
       return {
         groupCreateData: {
@@ -95,11 +102,16 @@
     },
     methods: {
       async onSubmit() {
-        this.$store.commit('groups/SET_NEW_GROUP_DATA', this.groupCreateData);
+        this.$store.commit('groups/SET_GROUP_DATA', this.groupCreateData);
         if (this.img) {
           await this.$store.dispatch('groups/CREATE_GROUP_AVATAR', this.img);
         }
-        this.$store.dispatch('groups/CREATE_GROUP');
+
+        if (this.isEdit) {
+          this.$store.dispatch('groups/EDIT_GROUP', this.groupCreateData);
+        } else {
+          this.$store.dispatch('groups/CREATE_GROUP');
+        }
       },
       getUsers(e) {
         this.groupCreateData.user_ids = e.target.value.split(',');
@@ -137,6 +149,10 @@
       },
     },
     created() {
+      this.groupCreateData.title = this.groupInfo.title;
+      this.groupCreateData.slug = this.groupInfo.slug;
+      this.groupCreateData.status = this.groupInfo.status;
+      this.imgSrc = this.groupInfo.avatar.average;
     }
   }
 </script>

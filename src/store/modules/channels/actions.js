@@ -66,15 +66,15 @@ export default {
       .catch(error => console.log(error))
   },
   'SET_CHANNEL_EDITING': async ({commit, dispatch, getters, rootGetters}, channelId) => {
-    await dispatch('GET_CHANNEL_DATA', channelId);
-    commit('SET_CHANNEL_ID', channelId);
     commit('modal/toggleEditMode', null, { root: true });
     commit('modal/setModal', 'channel', { root: true });
     commit('modal/currentModal', 'channel', { root: true });
   },
-  'GET_CHANNEL_DATA': async ({commit, getters, rootGetters}, channelId) => {
+  'SET_CHANNEL_DATA': async ({commit, getters, rootGetters}, channelId) => {
+    console.log(channelId);
     const editingChannel = await getters.channels.find(channel => channel.channel_id === channelId);
     await commit('SET_CHANNEL_DATA', editingChannel);
+    await commit('SET_CHANNEL_ID', channelId);
   },
   'EDIT_CHANNEL': ({context, dispatch, commit, getters, rootGetters}, channelData) => {
     Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelId}`, {
@@ -116,8 +116,6 @@ export default {
   },
   'SET_CHANNEL_DELETING': async ({commit, dispatch}, channelId) => {
     commit('modal/toggleEditMode', null, {root: true});
-    await dispatch('GET_CHANNEL_DATA', channelId);
-    await commit('SET_CHANNEL_ID', channelId);
     await commit('modal/currentModal', 'deleteChannel', {root: true});
     commit('modal/setModal', 'deleteChannel', {root: true});
   },
