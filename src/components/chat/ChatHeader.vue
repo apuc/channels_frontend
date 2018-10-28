@@ -27,12 +27,21 @@
       ></b-dropdown-item>
     </b-dropdown>
 
+    <p class="username">{{userInfo.username}}</p>
+
     <button class="btn btn-primary exit" type="button" @click="exit">Exit</button>
   </header>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
+
   export default {
+    computed: {
+      ...mapGetters({
+        userInfo: 'user/info'
+      })
+    },
     data() {
       return {
         settingsList: [
@@ -65,7 +74,7 @@
   header {
     display: flex;
     align-items: center;
-    height: 100px;
+    height: 40px;
     padding: 15px;
   }
 
@@ -106,6 +115,10 @@
     color: #ffeeba;
     stroke: blue;
     stroke-width: 15px;
+  }
+
+  .username {
+    margin: 0;
   }
 
   .exit {

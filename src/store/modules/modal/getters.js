@@ -4,6 +4,7 @@ export default {
   setCreateChannel: state => state.setCreateChannel,
   deleteChannelOrGroup: state => state.deleteChannelOrGroup,
   setUserProfile: state => state.setUserProfile,
+  setEditProfile: state => state.setEditProfile,
   userProfileInfo: state => state.userProfileInfo,
   currentModal: state => state.currentModal,
   editMode: state => state.editMode,

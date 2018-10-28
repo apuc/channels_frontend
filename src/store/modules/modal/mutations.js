@@ -12,6 +12,9 @@ export default {
       case 'userProfile':
         state.setUserProfile = true;
         break;
+      case 'editProfile':
+        state.setEditProfile = true;
+        break;
       case 'deleteChannel':
         state.deleteChannelOrGroup = true;
         break;
@@ -33,6 +36,9 @@ export default {
         break;
       case 'userProfile':
         state.setUserProfile = false;
+        break;
+      case 'editProfile':
+        state.setEditProfile = false;
         break;
       case 'deleteChannel':
         state.deleteChannelOrGroup = false;

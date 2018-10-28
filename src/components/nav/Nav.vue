@@ -1,6 +1,5 @@
 <template>
   <aside class="nav d-flex flex-column col-md-3 p-0 bg-light">
-
     <header class="nav-header">
       <div @mouseover="addMenuVisible = true" @mouseout="addMenuVisible = false">
         <button class="addButton" type="button">
@@ -8,17 +7,21 @@
         </button>
 
         <ul v-if="addMenuVisible" class="dropdown">
-          <li v-for="(elem, index) in info" class="dropdown__el"><a :href="elem.link" @click="openModal($event, elem.modalTrigger, elem.link)">Создать {{elem.name}}</a></li>
+          <li v-for="(elem, index) in info" class="dropdown__el"><a :href="elem.link" @click="openModal($event, elem.modalTrigger, elem.link)">{{elem.name}}</a></li>
         </ul>
       </div>
 
-      <button type="button">
-        <v-icon scale="1.6" class="icon" name="bullhorn"/>
-      </button>
+      <div class="filters">
+        <button type="button" class="btn btn-primary filters__filter">All</button>
 
-      <button type="button">
-        <v-icon scale="1.6" class="icon" name="folder"/>
-      </button>
+        <button type="button" class="btn btn-primary filters__filter">
+          <v-icon scale="1.6" class="icon" name="bullhorn"/>
+        </button>
+
+        <button type="button" class="btn btn-primary filters__filter">
+          <v-icon scale="1.6" class="icon" name="folder"/>
+        </button>
+      </div>
     </header>
 
     <NavSection title="Каналы" :itemsList="channelsSlugs" :type="'channel'"/>
@@ -41,17 +44,27 @@
       return {
         info: [
           {
-            name: 'канал',
+            name: 'Создать канал',
             link: '/create-channel',
             modalTrigger: 'channel'
           },
           {
-            name: 'группу',
+            name: 'Создать группу',
             link: '/create-group',
             modalTrigger: 'group'
           },
+          {
+            name: 'Редактировать профиль',
+            link: '/edit-profile',
+            modalTrigger: 'editProfile'
+          }
         ],
-        addMenuVisible: false
+        addMenuVisible: false,
+        filters: {
+          allVisible: true,
+          channelsVisible: false,
+          groupsVisible: false,
+        }
       }
     },
     components: {
@@ -81,6 +94,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 40px;
   }
 
   .nav {
@@ -99,9 +113,9 @@
     font-size: 22px;
     font-weight: 700;
     line-height: 1;
-    color: #856404;
+    color: white;
 
-    background-color: #E5D7A5;
+    background-color: #1082CF;
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -127,5 +141,21 @@
 
   .dropdown__el {
     padding: 5px 0;
+  }
+
+  .filters {
+    display: flex;
+    align-items: center;
+  }
+
+  .filters__filter {
+    width: 40px;
+    height: 30px;
+    margin-right: 10px;
+    padding: 2px 5px;
+  }
+
+  .filters__filter:last-child {
+    margin-right: 0;
   }
 </style>

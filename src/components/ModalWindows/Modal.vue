@@ -9,6 +9,7 @@
       <CreateGroup v-else-if="createGroup"/>
       <CreateChannel v-else-if="createChannel"/>
       <DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>
+      <EditProfile v-else-if="editProfile"/>
     </div>
   </div>
 </template>
@@ -19,6 +20,7 @@
   import CreateChannel from './CreateChannel';
   import {mapGetters} from 'vuex';
   import DeleteChannelOrGroup from './DeleteChannelOrGroup';
+  import EditProfile from './EditProfile';
 
   export default {
     name: "Modal",
@@ -26,7 +28,8 @@
       DeleteChannelOrGroup,
       ProfileModal,
       CreateGroup,
-      CreateChannel
+      CreateChannel,
+      EditProfile,
     },
     computed: {
       ...mapGetters({
@@ -36,6 +39,7 @@
         editMode: 'modal/editMode',
         currentModal: 'modal/currentModal',
         deleteChannelOrGroup: 'modal/deleteChannelOrGroup',
+        editProfile: 'modal/setEditProfile'
       }),
     },
     data() {
