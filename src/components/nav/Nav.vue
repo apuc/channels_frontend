@@ -12,20 +12,26 @@
       </div>
 
       <div class="filters">
-        <button type="button" class="btn btn-primary filters__filter">All</button>
+        <button type="button" class="btn btn-primary filters__filter" data-filter="all" @click="filter">All</button>
 
-        <button type="button" class="btn btn-primary filters__filter">
+        <button type="button" class="btn btn-primary filters__filter" data-filter="channel" @click="filter">
           <v-icon scale="1.6" class="icon" name="bullhorn"/>
         </button>
 
-        <button type="button" class="btn btn-primary filters__filter">
+        <button type="button" class="btn btn-primary filters__filter" data-filter="group" @click="filter">
           <v-icon scale="1.6" class="icon" name="folder"/>
         </button>
       </div>
     </header>
 
-    <NavSection title="Каналы" :itemsList="channelsSlugs" :type="'channel'"/>
-    <NavSection title="Группы" :itemsList="groupsSlugs" :type="'group'"/>
+    <NavSection title="Каналы"
+                :itemsList="channelsSlugs"
+                :type="'channel'"
+                v-if="filters.channelsVisible"/>
+    <NavSection title="Группы"
+                :itemsList="groupsSlugs"
+                :type="'group'"
+                v-if="filters.groupsVisible"/>
   </aside>
 </template>
 
@@ -61,9 +67,8 @@
         ],
         addMenuVisible: false,
         filters: {
-          allVisible: true,
-          channelsVisible: false,
-          groupsVisible: false,
+          channelsVisible: true,
+          groupsVisible: true,
         }
       }
     },
@@ -76,6 +81,29 @@
         this.$store.commit('modal/setModal', modalType);
         this.$store.commit('modal/currentModal', modalType);
         history.pushState('', 'Title of page', modalLink);
+      },
+      filter(e) {
+        const target = e.target;
+        const filterType = target.getAttribute('data-filter');
+        console.log(filterType);
+        switch (filterType) {
+          case 'all':
+            this.filters.channelsVisible = true;
+            this.filters.groupsVisible = true;
+            break;
+          case 'channel':
+            this.filters.channelsVisible = true;
+            this.filters.groupsVisible = false;
+            break;
+          case 'group':
+            this.filters.channelsVisible = false;
+            this.filters.groupsVisible = true;
+            break;
+          default:
+            break;
+        }
+        console.log(this.filters.channelsVisible);
+        console.log(this.filters.groupsVisible);
       },
     },
     async created() {
@@ -95,6 +123,7 @@
     justify-content: space-between;
     align-items: center;
     height: 40px;
+    padding: 0 5px;
   }
 
   .nav {
