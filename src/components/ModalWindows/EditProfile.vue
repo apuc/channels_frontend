@@ -4,7 +4,7 @@
       <h4>Редактирование профиля</h4>
     </header>
 
-    <form class="modal__content" @submit.prevent="onSubmit">
+    <form class="modal__content" @submit.prevent>
       <div class="row">
         <div class="col-6">
           <div class="form-group">
@@ -55,7 +55,8 @@
                 <!--v-if="imgSrc">Remove img</button>-->
       <!--</div>-->
 
-      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="submit" class="btn btn-primary mr-1" @click="onSubmit">Save</button>
+      <button type="submit" class="btn btn-danger" @click="deleteUser">Delete</button>
     </form>
   </div>
 </template>
@@ -82,7 +83,10 @@
     },
     methods: {
       onSubmit() {
-        this.$store.dispatch('user/EDIT_PROFILE', this.userData)
+        this.$store.dispatch('user/EDIT_PROFILE', this.userData);
+      },
+      deleteUser() {
+        this.$store.dispatch('user/DELETE_USER');
       }
     },
     created() {

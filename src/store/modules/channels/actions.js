@@ -71,7 +71,6 @@ export default {
     commit('modal/currentModal', 'channel', { root: true });
   },
   'SET_CHANNEL_DATA': async ({commit, getters, rootGetters}, channelId) => {
-    console.log(channelId);
     const editingChannel = await getters.channels.find(channel => channel.channel_id === channelId);
     await commit('SET_CHANNEL_DATA', editingChannel);
     await commit('SET_CHANNEL_ID', channelId);

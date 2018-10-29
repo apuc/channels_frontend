@@ -1,15 +1,20 @@
 <template>
-  <aside class="nav d-flex flex-column col-md-3 p-0 bg-light">
+  <aside class="nav d-flex flex-column col-md-2 p-0 bg-light">
     <header class="nav-header">
       <div @mouseover="addMenuVisible = true" @mouseout="addMenuVisible = false">
         <button class="addButton" type="button">
           <v-icon scale="1.6" class="icon" name="plus-circle"/>
         </button>
 
-        <ul v-if="addMenuVisible" class="dropdown">
+        <ul class="dropdown" v-if="addMenuVisible">
           <li v-for="(elem, index) in info" class="dropdown__el"><a :href="elem.link" @click="openModal($event, elem.modalTrigger, elem.link)">{{elem.name}}</a></li>
         </ul>
       </div>
+
+      <p class="username">
+        <img :src="userData.avatar" alt="">
+        {{userData.username}}
+      </p>
 
       <div class="filters">
         <button type="button" class="btn btn-primary filters__filter" data-filter="all" @click="filter">All</button>
@@ -44,6 +49,7 @@
       ...mapGetters({
         groupsSlugs: 'groups/groups',
         channelsSlugs: 'channels/channels',
+        userInfo: 'user/info'
       }),
     },
     data() {
@@ -65,6 +71,10 @@
             modalTrigger: 'editProfile'
           }
         ],
+        userData: {
+          name: '',
+          avatar: '',
+        },
         addMenuVisible: false,
         filters: {
           channelsVisible: true,
@@ -85,7 +95,7 @@
       filter(e) {
         const target = e.target;
         const filterType = target.getAttribute('data-filter');
-        console.log(filterType);
+
         switch (filterType) {
           case 'all':
             this.filters.channelsVisible = true;
@@ -102,12 +112,12 @@
           default:
             break;
         }
-        console.log(this.filters.channelsVisible);
-        console.log(this.filters.groupsVisible);
       },
     },
     async created() {
       await this.$store.dispatch('user/GET_NAV');
+      this.userData.username = this.userInfo.username;
+      this.userData.avatar = this.userInfo.avatar.small;
     },
 
   }
@@ -156,20 +166,25 @@
 
   .dropdown {
     position: absolute;
-    top: 100%;
+    top: 85%;
     z-index: 1;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px 15px;
+    margin: 0;
+    padding: 0;
 
     list-style: none;
-    background-color: #fff;
+    background-color: transparent;
+    border-top: 10px solid transparent;
   }
 
   .dropdown__el {
-    padding: 5px 0;
+    width: 100%;
+    padding: 5px 15px;
+
+    background-color: #fff;
   }
 
   .filters {
@@ -184,7 +199,16 @@
     padding: 2px 5px;
   }
 
+  .filters__filter svg {
+    width: 15px;
+    height: 15px;
+  }
+
   .filters__filter:last-child {
     margin-right: 0;
+  }
+
+  .username {
+    margin: 0;
   }
 </style>

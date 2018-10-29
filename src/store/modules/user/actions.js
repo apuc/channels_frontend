@@ -27,7 +27,7 @@ export default {
     await dispatch('channels/GET_USER_CHANNELS', null, { root: true });
   },
   'EDIT_PROFILE': ({getters, commit, dispatch}, userData) => {
-    Vue.http.put(`${process.env.VUE_APP_API_URL}/user/${getters.info.id}`, {
+    Vue.http.put(`${process.env.VUE_APP_API_URL}/user/${getters.info.user_id}`, {
       email: userData.email,
       password: userData.password,
       password_confirmation: userData.passwordRepeat,
@@ -40,6 +40,20 @@ export default {
         err => {
           if (err.status === 401) {
             dispatch('EDIT_PROFILE', userData);
+            commit('modal/setModal', 'editProfile', {root: true});
+          }
+        }
+      )
+  },
+  'DELETE_USER': ({getters, commit, dispatch}) => {
+    Vue.http.delete(`${process.env.VUE_APP_API_URL}/user/${getters.info.user_id}`)
+      .then(
+        res => {
+          commit('modal/setModal', 'editProfile', {root: true});
+        },
+        err => {
+          if (err.status === 401) {
+            dispatch('DELETE_USER');
             commit('modal/setModal', 'editProfile', {root: true});
           }
         }
