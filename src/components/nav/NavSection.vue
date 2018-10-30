@@ -1,38 +1,57 @@
 <template>
-  <section class="list-group">
-    <header class="list-group__header">
-      <b-list-group-item variant="warning" v-b-toggle="id" class="text-center nav-items-header">
-        <h2>{{ title }}</h2>
-      </b-list-group-item>
-
-      <div class="addButton-wrapper" v-if="addButton">
-        <a href="/create-group" class="addButton" @click="openModal">+</a>
-      </div>
-    </header>
-
-    <b-collapse :visible="isOpen" :id="id" class="nav-items">
+  <nav class="list-group">
+    <section class="list-group__item" v-for="(item, index) in itemsList" @click="setChannelData(type === 'channel' ? item.channel_id : item.group_id)">
       <router-link
-        v-for="(item, index) in itemsList"
-        :to="item.slug"
+        :to="type === 'channel' ? item.slug : `/group/${item.slug}`"
         :key="index + item.slug"
-        class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
-        {{ item.title }}
+        class="list-group__link">
+        <img :src="item.avatar.small"
+             alt=""
+             class="avatar"
+             width="30"
+             height="30"
+             v-if="item.avatar">
+        <span>{{ item.title }}</span>
+
+        <v-icon scale="1.6" class="icon icon_mla" name="folder" v-if="type === 'group'"/>
       </router-link>
-    </b-collapse>
-  </section>
+
+      <div class="control">
+        <button type="button"
+                class="button"
+                @click="editThis">
+          <v-icon scale="1.6" class="icon" name="pen"/>
+        </button>
+
+        <button type="button"
+                class="button"
+                @click="deleteThis">
+          <v-icon scale="1.6" class="icon" name="trash-alt"/>
+        </button>
+      </div>
+    </section>
+  </nav>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
+
   export default {
+    computed: {
+      ...mapGetters({
+        channelId: 'channels/channelId',
+        groupId: 'groups/groupId',
+      })
+    },
     props: {
       id: String,
       title: String,
       itemsList: Array,
-      isOpen: Boolean,
       addButton: {
         type: Boolean,
         required: false
-      }
+      },
+      type: String,
     },
     data() {
       return {
@@ -40,10 +59,23 @@
       }
     },
     methods: {
-      openModal(e) {
-        e.preventDefault();
-        this.$store.commit('modal/setModal', 'group');
-        history.pushState('', 'Title of page', `/create-group`);
+      setChannelData(id) {
+        this.type === 'channel' ?
+          this.$store.dispatch('channels/SET_CHANNEL_DATA', Number(id))
+        :
+          this.$store.dispatch('groups/SET_GROUP_DATA', Number(id))
+      },
+      editThis(e) {
+        this.type === 'channel' ?
+          this.$store.dispatch('channels/SET_CHANNEL_EDITING', this.channelId)
+        :
+          this.$store.dispatch('groups/SET_GROUP_EDITING', this.groupId)
+      },
+      deleteThis(e) {
+        this.type === 'channel' ?
+          this.$store.dispatch('channels/SET_CHANNEL_DELETING', this.channelId)
+        :
+          this.$store.dispatch('groups/SET_GROUP_DELETING', this.groupId)
       },
     },
   }
@@ -54,62 +86,63 @@
     max-height: calc(100% - 100px);
   }
 
-  .list-group__header {
+  .list-group__item, 
+  .control {
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
 
-  .list-group-item:first-child {
-    flex-grow: 1;
-    border-radius: 0;
+  .list-group__item {
+    padding: 3px 7px;
+
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
   }
 
+  .list-group__item:hover {
+    background-color: #f8f9fa;
+  }
+
+  .list-group__link {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    color: #495057;
+  }
+
+  .list-group__link:hover,
+  .list-group__link:active,
+  .list-group__link:focus {
+    text-decoration: none;
+  }
+  
   h2 {
     font-size: 24px;
   }
 
-  .nav-items {
-    height: 100%;
-    overflow-x: hidden;
-  }
-
-  .nav-items-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    cursor: pointer;
-  }
-
-  .addButton-wrapper {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding: 0 10px;
-
-    background-color: #ffeeba;
-    border: 1px solid rgba(0, 0, 0, 0.125);
-  }
-
-  .addButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 36px;
-    height: 36px;
-
-    font-size: 22px;
-    font-weight: 700;
-    line-height: 1;
-    color: #856404;
-
-    background-color: #E5D7A5;
-    border: none;
+  .avatar {
+    margin-right: 15px;
     border-radius: 50%;
+  }
+
+  .button {
+    margin-right: 5px;
+    padding: 5px;
+
+    background-color: transparent;
+    border: none;
     cursor: pointer;
   }
 
-  .addButton:hover {
-    text-decoration: none;
+  .icon {
+    width: 20px;
+    height: 20px;
+    color: #495057;
+  }
+
+  .icon_mla {
+    margin-left: auto;
   }
 </style>

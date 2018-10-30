@@ -3,29 +3,43 @@
     <div class="backdrop" @click="onModalClose"></div>
 
     <div class="modal__container ">
-      <button type="button" class="close">Close</button>
+      <button type="button" class="close" @click="onModalClose">Close</button>
 
       <ProfileModal v-if="userProfile" />
-      <GroupModal v-else-if="createGroup"/>
+      <CreateGroup v-else-if="createGroup"/>
+      <CreateChannel v-else-if="createChannel"/>
+      <DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>
+      <EditProfile v-else-if="editProfile"/>
     </div>
   </div>
 </template>
 
 <script>
   import ProfileModal from './ProfileModal';
-  import GroupModal from './GroupModal';
+  import CreateGroup from './CreateGroup';
+  import CreateChannel from './CreateChannel';
   import {mapGetters} from 'vuex';
+  import DeleteChannelOrGroup from './DeleteChannelOrGroup';
+  import EditProfile from './EditProfile';
 
   export default {
     name: "Modal",
     components: {
+      DeleteChannelOrGroup,
       ProfileModal,
-      GroupModal
+      CreateGroup,
+      CreateChannel,
+      EditProfile,
     },
     computed: {
       ...mapGetters({
         createGroup: 'modal/setCreateGroup',
+        createChannel: 'modal/setCreateChannel',
         userProfile: 'modal/setUserProfile',
+        editMode: 'modal/editMode',
+        currentModal: 'modal/currentModal',
+        deleteChannelOrGroup: 'modal/deleteChannelOrGroup',
+        editProfile: 'modal/setEditProfile'
       }),
     },
     data() {
@@ -34,9 +48,32 @@
     },
     methods: {
       onModalClose() {
+        if (this.editMode) {
+          this.currentModal === 'channel' ||  this.currentModal === 'deleteChannel' ?
+            this.$store.commit('channels/SET_CHANNEL_DATA', {
+              channel_id: '',
+              title: '',
+              slug: '',
+              status: '',
+              user_ids: [],
+              type: '',
+              private: '',
+              avatar: '',
+            })
+          :
+            this.$store.commit('groups/SET_GROUP_DATA', {
+              title: '',
+              slug: '',
+              status: '',
+              avatar: ''
+            });
+
+          this.$store.commit('modal/toggleEditMode');
+        } else {
+          this.$router.go(-1)
+        }
         this.$store.commit('modal/deleteCurrentUserInfo', {});
-        this.$store.commit('modal/deleteModal');
-        this.$router.go(-1);
+        this.$store.commit('modal/deleteModal', this.currentModal);
       }
     }
   }
@@ -75,8 +112,10 @@
     transform: translate(-50%, -50%);
     z-index: 2;
 
+    overflow: auto;
     width: 500px;
     min-height: 300px;
+    max-height: 90vh;
     padding: 30px;
 
     background-color: #fff;

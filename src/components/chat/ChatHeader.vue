@@ -27,12 +27,24 @@
       ></b-dropdown-item>
     </b-dropdown>
 
+    <button type="button" class="btn btn-light">{{usersCount}} {{getNoun(usersCount, 'пользователь', 'пользователя',
+      'пользователей')}}
+    </button>
+
     <button class="btn btn-primary exit" type="button" @click="exit">Exit</button>
   </header>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
+
   export default {
+    computed: {
+      ...mapGetters({
+        channelData: 'channels/channelInfo',
+      }),
+
+    },
     data() {
       return {
         settingsList: [
@@ -49,14 +61,33 @@
             link: 'https://github.com'
           },
         ],
-        settingsVisible: false
+        settingsVisible: false,
+        usersCount: null
       }
     },
     methods: {
       exit() {
         this.$store.dispatch('auth/LOGOUT');
         this.$router.push('/')
+      },
+      getNoun(number, one, two, five) {
+        number = Math.abs(number);
+        number %= 100;
+        if (number >= 5 && number <= 20) {
+          return five;
+        }
+        number %= 10;
+        if (number === 1) {
+          return one;
+        }
+        if (number >= 2 && number <= 4) {
+          return two;
+        }
+        return five;
       }
+    },
+    created() {
+      this.usersCount = this.channelData.user_count;
     }
   }
 </script>
@@ -65,7 +96,7 @@
   header {
     display: flex;
     align-items: center;
-    height: 100px;
+    height: 40px;
     padding: 15px;
   }
 

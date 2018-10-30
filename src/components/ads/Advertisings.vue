@@ -1,5 +1,5 @@
 <template>
-  <aside class="col-md-3 bg-light">
+  <aside class="col-md-2 bg-light">
     <section class="info" v-for="(ad, index) in ads" :key="index">
       <div class="info__img">
         <img :src="ad.img" alt="">
