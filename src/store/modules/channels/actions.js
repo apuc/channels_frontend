@@ -10,7 +10,6 @@ export default {
       .then(
         res => {
           commit('USER_CHANNELS', res.body.data);
-
         },
         async err => {
           console.log(err);
@@ -24,9 +23,14 @@ export default {
   'GET_USERS': ({ commit, getters, rootGetters }, channelId) => {
     Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/users`)
       .then(
-        res => console.log(res),
-        err => console.log(err)
+        async res => {
+          await commit('SET_CHANNEL_USERS', res.body.data);
+        },
+        err => {
+          console.log(err)
+        }
       )
+      .catch(error => console.log(error))
   },
   'CREATE_CHANNEL': ({dispatch, commit, getters, rootGetters}) => {
     Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.channelInfo)
@@ -65,15 +69,16 @@ export default {
       )
       .catch(error => console.log(error))
   },
-  'SET_CHANNEL_EDITING': async ({commit, dispatch, getters, rootGetters}, channelId) => {
+  'SET_CHANNEL_EDITING': async ({commit}) => {
     commit('modal/toggleEditMode', null, { root: true });
     commit('modal/setModal', 'channel', { root: true });
     commit('modal/currentModal', 'channel', { root: true });
   },
-  'SET_CHANNEL_DATA': async ({commit, getters, rootGetters}, channelId) => {
+  'SET_CHANNEL_DATA': async ({getters, commit, dispatch, rootGetters}, channelId) => {
     const editingChannel = await getters.channels.find(channel => channel.channel_id === channelId);
     await commit('SET_CHANNEL_DATA', editingChannel);
     await commit('SET_CHANNEL_ID', channelId);
+    dispatch('GET_USERS', channelId);
   },
   'EDIT_CHANNEL': ({context, dispatch, commit, getters, rootGetters}, channelData) => {
     Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelId}`, {
@@ -95,6 +100,7 @@ export default {
             slug: '',
             status: '',
             user_ids: [],
+            user_count: '',
             type: '',
             private: '',
             avatar: '',
@@ -113,7 +119,7 @@ export default {
       )
       .catch(error => console.log(error))
   },
-  'SET_CHANNEL_DELETING': async ({commit, dispatch}, channelId) => {
+  'SET_CHANNEL_DELETING': async ({commit}) => {
     commit('modal/toggleEditMode', null, {root: true});
     await commit('modal/currentModal', 'deleteChannel', {root: true});
     commit('modal/setModal', 'deleteChannel', {root: true});
@@ -132,5 +138,6 @@ export default {
           console.log(err)
         }
       )
-  }
+  },
+
 };

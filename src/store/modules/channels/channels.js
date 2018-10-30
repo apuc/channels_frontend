@@ -10,6 +10,7 @@ const state = {
     slug: '',
     status: '',
     user_ids: [],
+    user_count: '',
     type: '',
     private: '',
     avatar: '',

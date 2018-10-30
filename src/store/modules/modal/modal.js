@@ -10,6 +10,7 @@ const state = {
   setEditProfile: false,
   deleteChannelOrGroup: false,
   editMode: false,
+  channelUsers: false,
   currentModal: '',
   userProfileInfo: {
     name: '',

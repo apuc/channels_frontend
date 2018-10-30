@@ -27,7 +27,7 @@
       ></b-dropdown-item>
     </b-dropdown>
 
-    <button type="button" class="btn btn-light">{{usersCount}} {{getNoun(usersCount, 'пользователь', 'пользователя',
+    <button type="button" class="btn btn-light" @click="openModal">{{channelData.user_count}} {{getNoun(channelData.user_count, 'пользователь', 'пользователя',
       'пользователей')}}
     </button>
 
@@ -42,6 +42,7 @@
     computed: {
       ...mapGetters({
         channelData: 'channels/channelInfo',
+        channels: 'channels/channels',
       }),
 
     },
@@ -84,10 +85,23 @@
           return two;
         }
         return five;
-      }
+      },
+      openModal() {
+        this.$store.commit('modal/setModal', 'channelUsers');
+        this.$store.commit('modal/currentModal', 'channelUsers');
+        this.$store.commit('modal/toggleEditMode');
+      },
     },
     created() {
-      this.usersCount = this.channelData.user_count;
+      if (!this.channelData.channel_id) {
+        window.onload = () => {
+          const slug = location.pathname;
+          const channelObj = this.channels.find(channel => channel.slug === slug.slice(1));
+          this.$store.commit('channels/SET_CHANNEL_DATA', channelObj);
+          this.$store.commit('channels/SET_CHANNEL_ID', channelObj.channel_id);
+          this.$store.dispatch('channels/GET_USERS', channelObj.channel_id)
+        }
+      }
     }
   }
 </script>

@@ -21,6 +21,11 @@ export default {
       case 'deleteGroup':
         state.deleteChannelOrGroup = true;
         break;
+      case 'channelUsers':
+        state.channelUsers = true;
+        break;
+      default:
+        break;
     }
   },
   currentModal(state, modalType) {
@@ -45,6 +50,11 @@ export default {
         break;
       case 'deleteGroup':
         state.deleteChannelOrGroup = false;
+        break;
+      case 'channelUsers':
+        state.channelUsers = false;
+        break;
+      default:
         break;
     }
 

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from '../store/store';
 import Login from '../components/Login';
 import Registration from '../components/Registration';
 import Group from '../components/group/Group';
@@ -17,46 +18,46 @@ export default new Router({
     {
       path: '/',
       component: Empty,
-      meta: { requiresAuth: true}
+      meta: {requiresAuth: true}
     },
     {
       path: '/group',
       redirect: '/',
-      meta: { requiresAuth: true}
+      meta: {requiresAuth: true}
     },
     {
       path: '/group/:id',
       component: Group,
-      meta: { requiresAuth: true}
+      meta: {requiresAuth: true}
     },
     {
       path: '/login',
       name: 'login',
-      meta: { layout: 'auth' },
+      meta: {layout: 'auth'},
       component: Login,
     },
     {
       path: '/registration',
       name: 'registration',
-      meta: { layout: 'auth' },
+      meta: {layout: 'auth'},
       component: Registration,
     },
     {
       path: '/user/:user_id',
       name: 'profile_modal',
       component: ProfileModal,
-      meta: { requiresAuth: true }
+      meta: {requiresAuth: true}
     },
     {
       path: '/create-group',
       name: 'create_group',
       component: ProfileModal,
-      meta: { requiresAuth: true }
+      meta: {requiresAuth: true}
     },
     {
       path: '/:id',
       component: Chat,
-      meta: { requiresAuth: true }
+      meta: {requiresAuth: true},
     },
     {
       path: '*',

@@ -16,7 +16,7 @@
       ChatHeader,
       ChatMessages,
       ChatFooter
-    }
+    },
   }
 
 </script>

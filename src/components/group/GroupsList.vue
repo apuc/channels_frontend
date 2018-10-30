@@ -1,7 +1,7 @@
 <template>
   <section class="groups">
-    <router-link :to="channel.slug" v-for="(channel, index) in channelsSlugs" :key="channel.id">
-      {{ channel.name }}
+    <router-link :to="channel.slug" v-for="(channel, index) in channels" :key="channel.id">
+      {{ channel.title }}
     </router-link>
   </section>
 </template>
@@ -13,7 +13,7 @@
     name: "GroupsList",
     computed: {
       ...mapGetters({
-        channelsSlug: 'user/channels'
+        channels: 'channels/channels'
       })
     },
     data() {

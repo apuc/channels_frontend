@@ -10,5 +10,8 @@ export default {
   },
   'SET_CHANNEL_ID': (state, id) => {
     state.channelId = id;
+  },
+  'SET_CHANNEL_USERS': (state, users) => {
+    state.users = users;
   }
 };

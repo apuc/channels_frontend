@@ -3,11 +3,13 @@
     <header class="nav-header">
       <div @mouseover="addMenuVisible = true" @mouseout="addMenuVisible = false">
         <button class="addButton" type="button">
-          <v-icon scale="1.6" class="icon" name="plus-circle"/>
+          <v-icon scale="1" class="icon" name="plus-circle"/>
         </button>
 
         <ul class="dropdown" v-if="addMenuVisible">
-          <li v-for="(elem, index) in info" class="dropdown__el"><a :href="elem.link" @click="openModal($event, elem.modalTrigger, elem.link)">{{elem.name}}</a></li>
+          <li v-for="(elem, index) in info" class="dropdown__el">
+            <a :href="elem.link" @click="openModal($event, elem.modalTrigger, elem.link)">{{elem.name}}</a>
+          </li>
         </ul>
       </div>
 
@@ -20,11 +22,11 @@
         <button type="button" class="btn btn-primary filters__filter" data-filter="all" @click="filter">All</button>
 
         <button type="button" class="btn btn-primary filters__filter" data-filter="channel" @click="filter">
-          <v-icon scale="1.6" class="icon" name="bullhorn"/>
+          <v-icon scale="1" class="icon" name="bullhorn"/>
         </button>
 
         <button type="button" class="btn btn-primary filters__filter" data-filter="group" @click="filter">
-          <v-icon scale="1.6" class="icon" name="folder"/>
+          <v-icon scale="1" class="icon" name="folder"/>
         </button>
       </div>
     </header>
@@ -197,11 +199,6 @@
     height: 30px;
     margin-right: 10px;
     padding: 2px 5px;
-  }
-
-  .filters__filter svg {
-    width: 15px;
-    height: 15px;
   }
 
   .filters__filter:last-child {

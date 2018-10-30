@@ -8,4 +8,5 @@ export default {
   userProfileInfo: state => state.userProfileInfo,
   currentModal: state => state.currentModal,
   editMode: state => state.editMode,
+  channelUsers: state => state.channelUsers,
 };

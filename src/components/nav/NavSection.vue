@@ -1,8 +1,8 @@
 <template>
   <nav class="list-group">
-    <section class="list-group__item" v-for="(item, index) in itemsList" @click="setChannelData(type === 'channel' ? item.channel_id : item.group_id)">
+    <section class="list-group__item" v-for="(item, index) in itemsList" @click="setData(type === 'channel' ? item.channel_id : item.group_id)">
       <router-link
-        :to="type === 'channel' ? item.slug : `/group/${item.slug}`"
+        :to="type === 'channel' ? `/${item.slug}` : `/group/${item.slug}`"
         :key="index + item.slug"
         class="list-group__link">
         <img :src="item.avatar.small"
@@ -59,7 +59,7 @@
       }
     },
     methods: {
-      setChannelData(id) {
+      setData(id) {
         this.type === 'channel' ?
           this.$store.dispatch('channels/SET_CHANNEL_DATA', Number(id))
         :
