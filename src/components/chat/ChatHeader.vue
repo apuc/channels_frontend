@@ -112,6 +112,7 @@
     align-items: center;
     height: 40px;
     padding: 15px;
+    flex-shrink: 0;
   }
 
   .settings {

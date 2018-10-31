@@ -45,6 +45,7 @@
 <script>
   import NavSection from './NavSection';
   import {mapGetters} from 'vuex';
+  import {joinChannels} from '../../services/socket/channels.service'
 
   export default {
     computed: {
@@ -118,6 +119,7 @@
     },
     async created() {
       await this.$store.dispatch('user/GET_NAV');
+      joinChannels(this.channelsSlugs);
       this.userData.username = this.userInfo.username;
       this.userData.avatar = this.userInfo.avatar.small;
     },

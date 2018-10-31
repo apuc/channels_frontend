@@ -86,7 +86,7 @@
     max-height: calc(100% - 100px);
   }
 
-  .list-group__item, 
+  .list-group__item,
   .control {
     display: flex;
     align-items: center;
@@ -117,7 +117,7 @@
   .list-group__link:focus {
     text-decoration: none;
   }
-  
+
   h2 {
     font-size: 24px;
   }
