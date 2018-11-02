@@ -1,6 +1,7 @@
 export default {
   channels: state => state.channels,
-  channelInfo: state => state.channelInfo,
-  users: state => state.users,
-  channelId: state => state.channelId,
+  currentChannelData: state => state.currentChannelData,
+  channelData: state => state.channelData,
+  currentChannelUsers: state => state.currentChannelUsers,
+  channelToDelete: state => state.channelToDelete,
 };

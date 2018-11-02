@@ -3,7 +3,16 @@ import actions from './actions';
 import mutations from './mutations';
 
 const state = {
-  info: null,
+  info: {
+    avatar: {
+      average:'',
+      origin:'',
+      small:'',
+    },
+    email: '',
+    user_id: null,
+    username: '',
+  },
   refreshTokenBody: {
     grant_type: 'refresh_token',
     client_id: process.env.VUE_APP_CLIENT_ID,

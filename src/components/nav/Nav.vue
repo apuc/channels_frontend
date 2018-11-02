@@ -44,7 +44,7 @@
 
 <script>
   import NavSection from './NavSection';
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
   import {joinChannels} from '../../services/socket/channels.service'
 
   export default {
@@ -89,10 +89,17 @@
       NavSection
     },
     methods: {
+      ...mapMutations({
+        setModal: 'modal/setModal',
+        currentModal: 'modal/currentModal',
+      }),
+      ...mapActions({
+        getNav: 'user/GET_NAV',
+      }),
       openModal(e, modalType, modalLink) {
         e.preventDefault();
-        this.$store.commit('modal/setModal', modalType);
-        this.$store.commit('modal/currentModal', modalType);
+        this.setModal(modalType);
+        this.currentModal(modalType);
         history.pushState('', 'Title of page', modalLink);
       },
       filter(e) {
@@ -118,10 +125,8 @@
       },
     },
     async created() {
-      await this.$store.dispatch('user/GET_NAV');
+      await this.getNav();
       joinChannels(this.channelsSlugs);
-      this.userData.username = this.userInfo.username;
-      this.userData.avatar = this.userInfo.avatar.small;
     },
 
   }

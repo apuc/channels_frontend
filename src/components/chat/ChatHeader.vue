@@ -27,8 +27,15 @@
       ></b-dropdown-item>
     </b-dropdown>
 
-    <button type="button" class="btn btn-light" @click="openModal">{{channelData.user_count}} {{getNoun(channelData.user_count, 'пользователь', 'пользователя',
+    <button type="button" class="btn btn-light" @click="openModal">
+      <span :class="fadeUsers" v-show="channelData.user_count">
+        {{channelData.user_count}} {{getNoun(channelData.user_count, 'пользователь', 'пользователя',
       'пользователей')}}
+      </span>
+
+      <span :class="fadePreloader" v-show="!channelData.user_count">
+        <v-icon scale="1.6" name="ellipsis-h"/>
+      </span>
     </button>
 
     <button class="btn btn-primary exit" type="button" @click="exit">Exit</button>
@@ -36,15 +43,20 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
     computed: {
       ...mapGetters({
-        channelData: 'channels/channelInfo',
+        channelData: 'channels/currentChannelData',
         channels: 'channels/channels',
       }),
-
+      fadeUsers() {
+        return this.channelData.user_count ? 'fade-users_active' : 'fade-users'
+      },
+      fadePreloader() {
+        return this.channelData.user_count ? 'fade-preloader' : 'fade-preloader_active'
+      }
     },
     data() {
       return {
@@ -63,12 +75,22 @@
           },
         ],
         settingsVisible: false,
-        usersCount: null
+        usersCount: null,
+        hidden: true,
       }
     },
     methods: {
+      ...mapMutations({
+        setModal: 'modal/setModal',
+        currentModal: 'modal/currentModal',
+        toggleEditMode: 'modal/toggleEditMode',
+      }),
+      ...mapActions({
+        logout: 'auth/LOGOUT',
+        setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
+      }),
       exit() {
-        this.$store.dispatch('auth/LOGOUT');
+        this.logout();
         this.$router.push('/')
       },
       getNoun(number, one, two, five) {
@@ -87,19 +109,19 @@
         return five;
       },
       openModal() {
-        this.$store.commit('modal/setModal', 'channelUsers');
-        this.$store.commit('modal/currentModal', 'channelUsers');
-        this.$store.commit('modal/toggleEditMode');
+        this.setModal('channelUsers');
+        this.currentModal('channelUsers');
+        this.toggleEditMode();
       },
+    },
+    watch: {
     },
     created() {
       if (!this.channelData.channel_id) {
         window.onload = () => {
           const slug = location.pathname;
           const channelObj = this.channels.find(channel => channel.slug === slug.slice(1));
-          this.$store.commit('channels/SET_CHANNEL_DATA', channelObj);
-          this.$store.commit('channels/SET_CHANNEL_ID', channelObj.channel_id);
-          this.$store.dispatch('channels/GET_USERS', channelObj.channel_id)
+          this.setCurrentChannelData(channelObj.channel_id);
         }
       }
     }
@@ -156,5 +178,17 @@
 
   .exit {
     margin-left: auto;
+  }
+
+  .fade-preloader_active,
+  .fade-users_active {
+    opacity: 1;
+    transition: opacity 0.5s;
+  }
+
+  .fade-preloader,
+  .fade-users{
+    opacity: 0;
+    transition: opacity 0.5s;
   }
 </style>

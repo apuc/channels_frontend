@@ -7,14 +7,13 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
     name: "DeleteChannelOrGroup",
     computed: {
       ...mapGetters({
         currentModal: 'modal/currentModal',
-        channelId: 'channels/channelId',
         groupId: 'groups/groupId',
       })
     },
@@ -24,24 +23,30 @@
     }
     },
     methods: {
+      ...mapMutations({
+        toggleEditMode: 'modal/toggleEditMode',
+        deleteModal: 'modal/deleteModal',
+      }),
+      ...mapActions({
+        deleteChannel: 'channels/DELETE_CHANNEL',
+        deleteGroup: 'groups/DELETE_GROUP',
+      }),
       closeModal() {
-        this.currentModal === 'deleteChannel' ?
-          this.$store.commit('channels/SET_CHANNEL_ID', '')
-          :
-          this.$store.commit('groups/SET_GROUP_ID', '');
-
-        this.$store.commit('modal/deleteModal', this.currentModal);
-        this.$store.commit('modal/toggleEditMode');
+        this.deleteModal(this.currentModal);
+        this.toggleEditMode();
       },
       remove(e) {
         this.currentModal === 'deleteChannel' ?
-          this.$store.dispatch('channels/DELETE_CHANNEL', this.channelId)
-          :
-          this.$store.dispatch('groups/DELETE_GROUP', this.groupId)
+          this.deleteChannel()
+        :
+          this.deleteGroup(this.groupId)
       }
     },
     created() {
-      this.$store.getters['modal/currentModal'] === 'deleteChannel' ? this.groupOrChannel = 'данный канал?' : this.groupOrChannel = 'данную группу?'
+      this.currentModal === 'deleteChannel' ?
+        this.groupOrChannel = 'данный канал?'
+      :
+        this.groupOrChannel = 'данную группу?'
     }
   }
 </script>

@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapMutations} from 'vuex';
   import ProfileModal from './ProfileModal';
   import CreateGroup from './CreateGroup';
   import CreateChannel from './CreateChannel';
@@ -51,36 +51,21 @@
       }
     },
     methods: {
+      ...mapMutations({
+        toggleEditMode: 'modal/toggleEditMode',
+        deleteModal: 'modal/deleteModal',
+        deleteCurrentUserInfo: 'modal/deleteCurrentUserInfo',
+      }),
       onModalClose() {
         if (this.editMode) {
-          this.currentModal === 'channel' ||  this.currentModal === 'deleteChannel' ?
-            this.$store.commit('channels/SET_CHANNEL_DATA', {
-              channel_id: '',
-              title: '',
-              slug: '',
-              status: '',
-              user_ids: [],
-              user_count: '',
-              type: '',
-              private: '',
-              avatar: '',
-            })
-          :
-            this.$store.commit('groups/SET_GROUP_DATA', {
-              title: '',
-              slug: '',
-              status: '',
-              avatar: ''
-            });
-
-          this.$store.commit('modal/toggleEditMode');
+          this.toggleEditMode();
         } else {
           this.$router.go(-1)
         }
-        this.$store.commit('modal/deleteCurrentUserInfo', {});
-        this.$store.commit('modal/deleteModal', this.currentModal);
+        this.deleteCurrentUserInfo();
+        this.deleteModal(this.currentModal);
       }
-    }
+    },
   }
 </script>
 

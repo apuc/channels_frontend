@@ -10,13 +10,13 @@
           <div class="form-group">
             <label for="title">Channel name</label>
 
-            <input type="text" id="title" class="form-control" v-model="channelCreateData.title">
+            <input type="text" id="title" class="form-control" v-model="settingChannelData.title">
           </div>
 
           <div class="form-group">
             <label for="slug">Channel slug</label>
 
-            <input type="text" id="slug" class="form-control" v-model="channelCreateData.slug">
+            <input type="text" id="slug" class="form-control" v-model="settingChannelData.slug">
           </div>
 
           <div class="form-group">
@@ -32,14 +32,14 @@
 
             <div class="form-check-inline">
               <label for="active" class="form-check-label">
-                <input type="radio" id="active" class="form-check-input" value="active" v-model="channelCreateData.status">
+                <input type="radio" id="active" class="form-check-input" value="active" v-model="settingChannelData.status">
                 <span>active</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="disable" class="form-check-label">
-                <input type="radio" id="disable" class="form-check-input" value="disable" v-model="channelCreateData.status">
+                <input type="radio" id="disable" class="form-check-input" value="disable" v-model="settingChannelData.status">
                 <span>disable</span>
               </label>
             </div>
@@ -50,21 +50,21 @@
 
             <div class="form-check-inline">
               <label for="chat" class="form-check-label">
-                <input type="radio" id="chat" class="form-check-input" value="chat" v-model="channelCreateData.type">
+                <input type="radio" id="chat" class="form-check-input" value="chat" v-model="settingChannelData.type">
                 <span>chat</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="wall" class="form-check-label">
-                <input type="radio" id="wall" class="form-check-input" value="wall" v-model="channelCreateData.type">
+                <input type="radio" id="wall" class="form-check-input" value="wall" v-model="settingChannelData.type">
                 <span>wall</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="dialog" class="form-check-label">
-                <input type="radio" id="dialog" class="form-check-input" value="dialog" v-model="channelCreateData.type">
+                <input type="radio" id="dialog" class="form-check-input" value="dialog" v-model="settingChannelData.type">
                 <span>dialog</span>
               </label>
             </div>
@@ -75,14 +75,14 @@
 
             <div class="form-check-inline">
               <label for="private" class="form-check-label">
-                <input type="radio" id="private" class="form-check-input" value="1" v-model="channelCreateData.private">
+                <input type="radio" id="private" class="form-check-input" value="1" v-model="settingChannelData.private">
                 <span>1</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="not-private" class="form-check-label">
-                <input type="radio" id="not-private" class="form-check-input" value="0" v-model="channelCreateData.private">
+                <input type="radio" id="not-private" class="form-check-input" value="0" v-model="settingChannelData.private">
                 <span>0</span>
               </label>
             </div>
@@ -117,19 +117,20 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
     name: "CreateChannel",
     computed: {
       ...mapGetters({
-        channelInfo: 'channels/channelInfo',
+        channelData: 'channels/channelData',
         isEdit: 'modal/editMode',
       })
     },
     data() {
       return {
-        channelCreateData: {
+        settingChannelData: {
+          id: undefined,
           title: '',
           slug: '',
           status: '',
@@ -145,19 +146,29 @@
       }
     },
     methods: {
+      ...mapMutations({
+        setChannelData: 'channels/SET_CHANNEL_DATA',
+      }),
+      ...mapActions({
+        editChannel: 'channels/EDIT_CHANNEL',
+        createChannel: 'channels/CREATE_CHANNEL',
+        createChannelAvatar: 'channels/CREATE_CHANNEL_AVATAR',
+      }),
       async onSubmit() {
-        this.$store.commit('channels/SET_CHANNEL_DATA', this.channelCreateData);
+        await this.setChannelData(this.settingChannelData);
+
         if (this.img) {
-          await this.$store.dispatch('channels/CREATE_CHANNEL_AVATAR', this.img);
+          await this.createChannelAvatar(this.img);
         }
+
         if (this.isEdit) {
-          this.$store.dispatch('channels/EDIT_CHANNEL', this.channelCreateData);
+          this.editChannel();
         } else {
-          this.$store.dispatch('channels/CREATE_CHANNEL');
+          this.createChannel();
         }
       },
       getUsers(e) {
-        this.channelCreateData.user_ids = e.target.value.split(',');
+        this.settingChannelData.user_ids = e.target.value.split(',');
       },
       onFileChange(e) {
         this.imgSrc = '';
@@ -189,12 +200,19 @@
       },
     },
     created() {
-      this.channelCreateData.title = this.channelInfo.title;
-      this.channelCreateData.slug = this.channelInfo.slug;
-      this.channelCreateData.status = this.channelInfo.status;
-      this.channelCreateData.type = this.channelInfo.type;
-      this.channelCreateData.private = this.channelInfo.private;
-      this.imgSrc = this.channelInfo.avatar.average;
+      if (this.isEdit) {
+        this.settingChannelData.channel_id = this.channelData.channel_id;
+        this.settingChannelData.title = this.channelData.title;
+        this.settingChannelData.slug = this.channelData.slug;
+        this.settingChannelData.status = this.channelData.status;
+        this.settingChannelData.type = this.channelData.type;
+        this.settingChannelData.private = this.channelData.private;
+        this.settingChannelData.user_count = this.channelData.user_count;
+        if (this.channelData.avatar) {
+          this.imgSrc = this.channelData.avatar.average;
+          this.settingChannelData.avatar = this.channelData.avatar.avatar_id;
+        }
+      }
     }
   }
 </script>

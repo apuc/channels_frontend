@@ -30,14 +30,14 @@
             Nav
         },
         beforeMount() {
-            connectSocket(this.token)
-                .then(() => console.log('Socket connected!'))
-                .catch(err => console.error(err));
+            // connectSocket(this.token)
+            //     .then(() => console.log('Socket connected!'))
+            //     .catch(err => console.error(err));
             this.$store.dispatch('user/GET_USER').then(() => {
-                sendUserInfo({
-                    username: this.userInfo.data.username,
-                    id: this.userInfo.data.user_id
-                })
+                // sendUserInfo({
+                //     username: this.userInfo.username,
+                //     id: this.userInfo.user_id
+                // })
             });
         }
     }

@@ -1,6 +1,6 @@
 <template>
   <nav class="list-group">
-    <section class="list-group__item" v-for="(item, index) in itemsList" @click="setData(type === 'channel' ? item.channel_id : item.group_id)">
+    <section class="list-group__item" v-for="(item, index) in itemsList" @click="setData($event, type === 'channel' ? item.channel_id : item.group_id)">
       <router-link
         :to="type === 'channel' ? `/${item.slug}` : `/group/${item.slug}`"
         :key="index + item.slug"
@@ -11,22 +11,23 @@
              width="30"
              height="30"
              v-if="item.avatar">
+
         <span>{{ item.title }}</span>
 
-        <v-icon scale="1.6" class="icon icon_mla" name="folder" v-if="type === 'group'"/>
+        <v-icon scale="1" class="icon icon_mla" name="folder" v-if="type === 'group'"/>
       </router-link>
 
       <div class="control">
         <button type="button"
                 class="button"
-                @click="editThis">
-          <v-icon scale="1.6" class="icon" name="pen"/>
+                @click="editThis($event, type === 'channel' ? item.channel_id : item.group_id)">
+          <v-icon scale="1" class="icon" name="pen"/>
         </button>
 
         <button type="button"
                 class="button"
-                @click="deleteThis">
-          <v-icon scale="1.6" class="icon" name="trash-alt"/>
+                @click="deleteThis($event, type === 'channel' ? item.channel_id : item.group_id)">
+          <v-icon scale="1" class="icon" name="trash-alt"/>
         </button>
       </div>
     </section>
@@ -34,14 +35,15 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapActions} from 'vuex';
 
   export default {
     computed: {
       ...mapGetters({
-        channelId: 'channels/channelId',
+        currentChannelData: 'channels/currentChannelData',
+        editingOrDeletingChannelData: 'channels/editingOrDeletingChannelData',
         groupId: 'groups/groupId',
-      })
+      }),
     },
     props: {
       id: String,
@@ -59,23 +61,33 @@
       }
     },
     methods: {
-      setData(id) {
-        this.type === 'channel' ?
-          this.$store.dispatch('channels/SET_CHANNEL_DATA', Number(id))
-        :
-          this.$store.dispatch('groups/SET_GROUP_DATA', Number(id))
+      ...mapActions({
+        setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
+        setChannelEditing: 'channels/SET_CHANNEL_EDITING',
+        setChannelDeleting: 'channels/SET_CHANNEL_DELETING',
+        setGroupData: 'groups/SET_GROUP_DATA',
+        setGroupEditing: 'groups/SET_GROUP_EDITING',
+        setGroupDeleting: 'groups/SET_GROUP_DELETING',
+      }),
+      setData(e,id) {
+        if (!e.target.hasAttribute('type')) {
+          this.type === 'channel' ?
+            this.setCurrentChannelData(Number(id))
+          :
+            this.setGroupData(Number(id))
+        }
       },
-      editThis(e) {
+      editThis(e, id) {
         this.type === 'channel' ?
-          this.$store.dispatch('channels/SET_CHANNEL_EDITING', this.channelId)
+          this.setChannelEditing(Number(id))
         :
-          this.$store.dispatch('groups/SET_GROUP_EDITING', this.groupId)
+          this.setGroupEditing(Number(id))
       },
-      deleteThis(e) {
+      deleteThis(e, id) {
         this.type === 'channel' ?
-          this.$store.dispatch('channels/SET_CHANNEL_DELETING', this.channelId)
+          this.setChannelDeleting(Number(id))
         :
-          this.$store.dispatch('groups/SET_GROUP_DELETING', this.groupId)
+          this.setGroupDeleting(Number(id))
       },
     },
   }
@@ -137,8 +149,6 @@
   }
 
   .icon {
-    width: 20px;
-    height: 20px;
     color: #495057;
   }
 

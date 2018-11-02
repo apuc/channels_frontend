@@ -66,8 +66,13 @@ export default {
     state.userProfileInfo = payload;
   },
   // delete current user info to modal
-  deleteCurrentUserInfo(state, payload) {
-    state.userProfileInfo = payload;
+  deleteCurrentUserInfo(state) {
+    state.userProfileInfo = {
+      name: '',
+      avatar: '',
+      slug: '',
+      id: null
+    };
   },
   toggleEditMode(state) {
     state.editMode = !state.editMode;

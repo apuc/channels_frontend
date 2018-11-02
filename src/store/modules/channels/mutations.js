@@ -3,15 +3,18 @@ export default {
     state.channels = channels;
   },
   'SET_CHANNEL_DATA': (state, data) => {
-    state.channelInfo = data;
+    state.channelData = data;
+  },
+  'SET_CURRENT_CHANNEL_DATA': (state, data) => {
+    state.currentChannelData = data;
   },
   'SET_CHANNEL_AVATAR_ID': (state, avatar_id) => {
-    state.channelInfo.avatar = avatar_id;
+    state.channelData.avatar = avatar_id;
   },
-  'SET_CHANNEL_ID': (state, id) => {
-    state.channelId = id;
+  'SET_CHANNEL_ID_TO_DELETE': (state, id) => {
+    state.channelToDelete = id;
   },
   'SET_CHANNEL_USERS': (state, users) => {
-    state.users = users;
+    state.currentChannelUsers = users;
   }
 };

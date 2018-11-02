@@ -149,10 +149,14 @@
       },
     },
     created() {
-      this.groupCreateData.title = this.groupInfo.title;
-      this.groupCreateData.slug = this.groupInfo.slug;
-      this.groupCreateData.status = this.groupInfo.status;
-      this.imgSrc = this.groupInfo.avatar.average;
+      if (this.isEdit) {
+        this.groupCreateData.title = this.groupInfo.title;
+        this.groupCreateData.slug = this.groupInfo.slug;
+        this.groupCreateData.status = this.groupInfo.status;
+        if (this.groupInfo.avatar) {
+          this.imgSrc = this.groupInfo.avatar.average;
+        }
+      }
     }
   }
 </script>

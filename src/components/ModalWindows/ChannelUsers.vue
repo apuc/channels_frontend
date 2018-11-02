@@ -2,7 +2,7 @@
   <div>
     <header class="form-group">
       <label for="user">Поиск по пользователям канала</label>
-      <input id="user" class="form-control" type="text" v-model="user">
+      <input id="user" class="form-control" type="text" @input="findUser">
     </header>
 
     <div class="add-user">
@@ -10,6 +10,7 @@
 
       <div class="input-wrap">
         <input id="add-user" class="form-control add-user__input" type="text" v-model="add_user">
+
         <button type="button" class="btn" :class="disableButton" @click="addUser">
           <v-icon scale="1" class="icon" name="plus-square"/>
         </button>
@@ -19,8 +20,8 @@
     <ul class="users-list">
       <UserPreview v-for="(user, index) in users"
                    :username="user.username"
-                   :id="user.id"
-                   :avatar="user.avatar.small"/>
+                   :id="user.user_id"
+                   :avatar="user.avatar ? user.avatar.small : false"/>
     </ul>
   </div>
 </template>
@@ -34,7 +35,7 @@
     components: {UserPreview},
     computed: {
       ...mapGetters({
-        users: 'channels/users'
+        currentChannelUsers: 'channels/currentChannelUsers'
       }),
       disableButton() {
         return this.add_user.length > 0 ? 'btn-primary' : 'btn-default disable';
@@ -42,16 +43,35 @@
     },
     data() {
       return {
-        user: '',
+        users: [],
         add_user: ''
       }
     },
     methods: {
       addUser() {
         this.$store.dispatch('channels/ADD_USER', this.add_user);
+      },
+      findUser(e) {
+        const value = e.target.value;
+
+        for (let i = 0; i < this.users.length; i++) {
+          if (this.users[i].username.indexOf(value) !== 0) {
+            // this.users.push(this.users[i]);
+          } else {
+            this.users.findIndex(user => {
+              console.log(value);
+              console.log(user.username);
+              console.log(user.username.indexOf(value));
+              if (user.username.indexOf(value) !== 0) {
+                console.log(user.username);
+              }
+            })
+          }
+        }
       }
     },
     created() {
+      this.users = this.currentChannelUsers;
     }
   }
 </script>

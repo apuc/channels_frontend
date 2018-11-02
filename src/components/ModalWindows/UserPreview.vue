@@ -3,7 +3,7 @@
     <div>
       <div class="user-info">
         <div class="image-wrap">
-          <img :src="avatar" width="30" height="30" alt="">
+          <img v-if="avatar" :src="avatar" width="30" height="30" alt="">
         </div>
 
         <div>
@@ -23,8 +23,8 @@
     name: "UserPreview",
     props: {
       username: String,
-      id: String || Number,
-      avatar: String
+      id: [String, Number],
+      avatar: [String, Boolean],
     },
     methods: {
       removeUser(id) {

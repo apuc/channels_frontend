@@ -4,19 +4,28 @@ import mutations from './mutations';
 
 const state = {
   channels: [],
-  channelInfo: {
+  currentChannelData: {
+    channel_id: '',
+    title: '',
+    slug: '',
+    status: '',
+    user_count: '',
+    type: '',
+    private: '',
+    avatar: undefined,
+  },
+  channelData: {
     channel_id: '',
     title: '',
     slug: '',
     status: '',
     user_ids: [],
-    user_count: '',
     type: '',
     private: '',
-    avatar: '',
+    avatar: undefined,
   },
-  channelId: '',
-  users: [],
+  currentChannelUsers: [],
+  channelToDelete: '',
 };
 
 export default {
