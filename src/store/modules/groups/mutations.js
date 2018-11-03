@@ -3,12 +3,15 @@ export default {
     state.groups = groups;
   },
   'SET_GROUP_DATA': (state, data) => {
-    state.groupInfo = data;
+    state.groupData = data;
+  },
+  'SET_CURRENT_GROUP_DATA': (state, data) => {
+    state.currentGroupData = data;
   },
   'SET_GROUP_AVATAR_ID': (state, avatar_id) => {
-    state.groupInfo.avatar = avatar_id;
+    state.groupData.avatar = avatar_id;
   },
-  'SET_GROUP_ID': (state, id) => {
-    state.groupId = id;
-  }
+  'SET_GROUP_ID_TO_DELETE': (state, id) => {
+    state.groupToDelete = id;
+  },
 };

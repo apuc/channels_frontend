@@ -32,6 +32,7 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex';
 
   export default {
     name: "Registration",
@@ -45,9 +46,12 @@
     },
     computed: {},
     methods: {
+      ...mapActions({
+        userRegistration: 'auth/REGISTRATION',
+      }),
       registration() {
           const {username, password , password_confirmation, email} = this;
-          this.$store.dispatch('auth/REGISTRATION', {
+          this.userRegistration({
               username,
               password,
               email,

@@ -32,11 +32,11 @@
     </header>
 
     <NavSection title="Каналы"
-                :itemsList="channelsSlugs"
+                :itemsList="channels"
                 :type="'channel'"
                 v-if="filters.channelsVisible"/>
     <NavSection title="Группы"
-                :itemsList="groupsSlugs"
+                :itemsList="groups"
                 :type="'group'"
                 v-if="filters.groupsVisible"/>
   </aside>
@@ -50,8 +50,8 @@
   export default {
     computed: {
       ...mapGetters({
-        groupsSlugs: 'groups/groups',
-        channelsSlugs: 'channels/channels',
+        groups: 'groups/groups',
+        channels: 'channels/channels',
         userInfo: 'user/info'
       }),
     },
@@ -126,7 +126,7 @@
     },
     async created() {
       await this.getNav();
-      joinChannels(this.channelsSlugs);
+      joinChannels(this.channels);
     },
 
   }

@@ -26,6 +26,7 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex';
 
   export default {
     name: "Login",
@@ -36,9 +37,12 @@
       }
     },
     methods: {
+      ...mapActions({
+        getToken: 'auth/GET_TOKEN',
+      }),
       login() {
         const {username, password} = this;
-        this.$store.dispatch('auth/GET_TOKEN', {
+        this.getToken({
           grant_type: 'password',
           client_id: process.env.VUE_APP_CLIENT_ID,
           client_secret: process.env.VUE_APP_CLIENT_SECRET,

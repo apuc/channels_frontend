@@ -62,7 +62,7 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapActions} from 'vuex';
 
   export default {
     name: "EditProfile",
@@ -82,11 +82,15 @@
       }
     },
     methods: {
+      ...mapActions({
+        editProfile: 'user/EDIT_PROFILE',
+        deleteProfile: 'user/DELETE_USER',
+      }),
       onSubmit() {
-        this.$store.dispatch('user/EDIT_PROFILE', this.userData);
+        this.editProfile(this.userData);
       },
       deleteUser() {
-        this.$store.dispatch('user/DELETE_USER');
+        this.deleteProfile();
       }
     },
     created() {

@@ -10,13 +10,13 @@
           <div class="form-group">
             <label for="title">Group name</label>
 
-            <input type="text" id="title" class="form-control" v-model="groupCreateData.title">
+            <input type="text" id="title" class="form-control" v-model="settingGroupData.title">
           </div>
 
           <div class="form-group">
             <label for="slug">Group slug</label>
 
-            <input type="text" id="slug" class="form-control" v-model="groupCreateData.slug">
+            <input type="text" id="slug" class="form-control" v-model="settingGroupData.slug">
           </div>
         </div>
 
@@ -32,14 +32,14 @@
 
             <div class="form-check-inline">
               <label for="active" class="form-check-label">
-                <input type="radio" id="active" class="form-check-input" value="active" v-model="groupCreateData.status">
+                <input type="radio" id="active" class="form-check-input" value="active" v-model="settingGroupData.status">
                 <span>active</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="disable" class="form-check-label">
-                <input type="radio" id="disable" class="form-check-input" value="disable" v-model="groupCreateData.status">
+                <input type="radio" id="disable" class="form-check-input" value="disable" v-model="settingGroupData.status">
                 <span>disable</span>
               </label>
             </div>
@@ -74,19 +74,20 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
     name: "CreateGroup",
     computed: {
       ...mapGetters({
-        groupInfo: 'groups/groupInfo',
+        groupData: 'groups/groupData',
         isEdit: 'modal/editMode',
       })
     },
     data() {
       return {
-        groupCreateData: {
+        settingGroupData: {
+          group_id: undefined,
           title: '',
           slug: '',
           status: '',
@@ -101,20 +102,29 @@
       }
     },
     methods: {
+      ...mapMutations({
+        setGroupData: 'groups/SET_GROUP_DATA',
+      }),
+      ...mapActions({
+        editGroup: 'groups/EDIT_GROUP',
+        createGroup: 'groups/CREATE_GROUP',
+        createGroupAvatar: 'groups/CREATE_GROUP_AVATAR',
+      }),
       async onSubmit() {
-        this.$store.commit('groups/SET_GROUP_DATA', this.groupCreateData);
+        await this.setGroupData(this.settingGroupData);
+
         if (this.img) {
-          await this.$store.dispatch('groups/CREATE_GROUP_AVATAR', this.img);
+          await this.createGroupAvatar(this.img);
         }
 
         if (this.isEdit) {
-          this.$store.dispatch('groups/EDIT_GROUP', this.groupCreateData);
+          this.editGroup();
         } else {
-          this.$store.dispatch('groups/CREATE_GROUP');
+          this.createGroup();
         }
       },
       getUsers(e) {
-        this.groupCreateData.user_ids = e.target.value.split(',');
+        this.settingGroupData.user_ids = e.target.value.split(',');
       },
       onFileChange(e) {
         this.imgSrc = '';
@@ -150,11 +160,13 @@
     },
     created() {
       if (this.isEdit) {
-        this.groupCreateData.title = this.groupInfo.title;
-        this.groupCreateData.slug = this.groupInfo.slug;
-        this.groupCreateData.status = this.groupInfo.status;
-        if (this.groupInfo.avatar) {
-          this.imgSrc = this.groupInfo.avatar.average;
+        this.settingGroupData.group_id = this.groupData.group_id;
+        this.settingGroupData.title = this.groupData.title;
+        this.settingGroupData.slug = this.groupData.slug;
+        this.settingGroupData.status = this.groupData.status;
+        if (this.groupData.avatar) {
+          this.imgSrc = this.groupData.avatar.average;
+          this.settingChannelData.avatar = this.groupData.avatar.avatar_id;
         }
       }
     }

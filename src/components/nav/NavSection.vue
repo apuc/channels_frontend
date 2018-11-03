@@ -41,8 +41,7 @@
     computed: {
       ...mapGetters({
         currentChannelData: 'channels/currentChannelData',
-        editingOrDeletingChannelData: 'channels/editingOrDeletingChannelData',
-        groupId: 'groups/groupId',
+        currentGroupData: 'groups/currentGroupData',
       }),
     },
     props: {
@@ -65,7 +64,7 @@
         setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
         setChannelEditing: 'channels/SET_CHANNEL_EDITING',
         setChannelDeleting: 'channels/SET_CHANNEL_DELETING',
-        setGroupData: 'groups/SET_GROUP_DATA',
+        setCurrentGroupData: 'groups/SET_GROUP_CHANNEL_DATA',
         setGroupEditing: 'groups/SET_GROUP_EDITING',
         setGroupDeleting: 'groups/SET_GROUP_DELETING',
       }),
@@ -74,7 +73,7 @@
           this.type === 'channel' ?
             this.setCurrentChannelData(Number(id))
           :
-            this.setGroupData(Number(id))
+            this.setCurrentGroupData(Number(id))
         }
       },
       editThis(e, id) {

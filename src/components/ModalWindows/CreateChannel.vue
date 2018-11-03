@@ -130,7 +130,7 @@
     data() {
       return {
         settingChannelData: {
-          id: undefined,
+          channel_id: undefined,
           title: '',
           slug: '',
           status: '',

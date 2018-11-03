@@ -4,17 +4,22 @@ import mutations from './mutations';
 
 const state = {
   groups: [],
-  groupInfo: {
+  currentGroupData: {
+    group_id: '',
+    title: '',
+    slug: '',
+    status: '',
+    avatar: undefined,
+  },
+  groupData: {
+    group_id: '',
     title: '',
     slug: '',
     status: '',
     user_ids: [],
-    type: '',
-    private: '',
-    avatar: '',
+    avatar: undefined,
   },
-  groupId: '',
-  users: [],
+  groupToDelete: '',
 };
 
 export default {

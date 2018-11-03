@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
     computed: {
@@ -41,11 +41,18 @@
       message: String
     },
     methods: {
+      ...mapMutations({
+        setModal: 'modal/setModal',
+        currentModal: 'modal/currentModal',
+      }),
+      ...mapActions({
+        setCurrentUserInfo: 'modal/setCurrentUserInfo',
+      }),
       openUserProfile(e) {
         e.preventDefault();
-        this.$store.commit('modal/setModal', 'userProfile');
-        this.$store.commit('modal/currentModal', 'userProfile');
-        this.$store.dispatch('modal/setCurrentUserInfo', {
+        this.setModal('userProfile');
+        this.currentModal('userProfile');
+        this.setCurrentUserInfo({
           name: this.user.name,
           id: this.user.id,
           avatar: this.user.avatar,

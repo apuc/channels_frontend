@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapActions} from 'vuex';
   import UserPreview from './UserPreview';
 
   export default {
@@ -48,8 +48,11 @@
       }
     },
     methods: {
+      ...mapActions({
+        addUser: 'channels/ADD_USER',
+      }),
       addUser() {
-        this.$store.dispatch('channels/ADD_USER', this.add_user);
+        this.addUser(this.add_user);
       },
       findUser(e) {
         const value = e.target.value;

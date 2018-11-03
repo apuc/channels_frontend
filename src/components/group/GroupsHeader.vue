@@ -32,7 +32,7 @@
 </template>
 
 <script>
-
+  import {mapActions} from 'vuex';
   export default {
     data() {
       return {
@@ -54,9 +54,12 @@
       }
     },
     methods: {
+      ...mapActions({
+        logout: 'auth/LOGOUT',
+      }),
       exit() {
-        this.$store.dispatch('auth/LOGOUT');
-        this.$router.push('/')
+        this.logout();
+        this.$router.push('/');
       }
     }
   }

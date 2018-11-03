@@ -1,6 +1,6 @@
 export default {
   groups: state => state.groups,
-  groupInfo: state => state.groupInfo,
-  users: state => state.users,
-  groupId: state => state.groupId,
+  currentGroupData: state => state.currentGroupData,
+  groupData: state => state.groupData,
+  groupToDelete: state => state.groupToDelete,
 };

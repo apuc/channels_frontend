@@ -19,6 +19,7 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex';
   export default {
     name: "UserPreview",
     props: {
@@ -27,8 +28,11 @@
       avatar: [String, Boolean],
     },
     methods: {
+      ...mapActions({
+        deleteUser: 'channels/DELETE_USER'
+      }),
       removeUser(id) {
-        this.$store.dispatch('channels/DELETE_USER', id);
+        this.deleteUser(id);
       }
     }
   }
