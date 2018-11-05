@@ -4,7 +4,7 @@
       <router-view />
     </component>
 
-    <Modal v-if="setModal"/>
+    <Modal v-if="modalStatus"/>
   </div>
 </template>
 
@@ -16,7 +16,7 @@
     components: {Modal},
     computed: {
       ...mapGetters({
-        setModal: 'modal/setModal'
+        modalStatus: 'modal/modalStatus'
       }),
       layout() {
         return (this.$route.meta.layout || 'main') + '-layout'

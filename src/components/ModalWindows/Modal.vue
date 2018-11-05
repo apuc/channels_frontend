@@ -52,9 +52,8 @@
     },
     methods: {
       ...mapMutations({
-        toggleEditMode: 'modal/toggleEditMode',
-        deleteModal: 'modal/deleteModal',
-        deleteCurrentUserInfo: 'modal/deleteCurrentUserInfo',
+        toggleEditMode: 'modal/TOGGLE_EDIT_MODE',
+        deleteModal: 'modal/DELETE_MODAL',
       }),
       onModalClose() {
         if (this.editMode) {
@@ -62,7 +61,6 @@
         } else {
           this.$router.go(-1)
         }
-        this.deleteCurrentUserInfo();
         this.deleteModal(this.currentModal);
       }
     },

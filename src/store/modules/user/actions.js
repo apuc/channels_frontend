@@ -3,8 +3,7 @@ import Vue from "vue";
 export default {
   /**
    * Логинит с помощью токена
-   * @param commit {Object}
-   * @constructor
+   *
    */
   'GET_USER': async ({commit, dispatch, getters}) => {
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/me`)
@@ -35,12 +34,12 @@ export default {
     })
       .then(
         res => {
-          commit('modal/setModal', 'editProfile', {root: true});
+          commit('modal/SET_MODAL', 'editProfile', {root: true});
         },
         err => {
           if (err.status === 401) {
             dispatch('EDIT_PROFILE', userData);
-            commit('modal/setModal', 'editProfile', {root: true});
+            commit('modal/SET_MODAL', 'editProfile', {root: true});
           }
         }
       )
@@ -49,12 +48,12 @@ export default {
     Vue.http.delete(`${process.env.VUE_APP_API_URL}/user/${getters.info.user_id}`)
       .then(
         res => {
-          commit('modal/setModal', 'editProfile', {root: true});
+          commit('modal/SET_MODAL', 'editProfile', {root: true});
         },
         err => {
           if (err.status === 401) {
             dispatch('DELETE_USER');
-            commit('modal/setModal', 'editProfile', {root: true});
+            commit('modal/SET_MODAL', 'editProfile', {root: true});
           }
         }
       )

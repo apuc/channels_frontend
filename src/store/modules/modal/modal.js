@@ -3,7 +3,10 @@ import actions from './actions';
 import mutations from './mutations';
 
 const state = {
-  setModal: false,
+  modal: {
+    status: false,
+    current: '',
+  },
   setCreateGroup: false,
   setCreateChannel: false,
   setUserProfile: false,
@@ -11,13 +14,6 @@ const state = {
   deleteChannelOrGroup: false,
   editMode: false,
   channelUsers: false,
-  currentModal: '',
-  userProfileInfo: {
-    name: '',
-    avatar: '',
-    slug: '',
-    id: null
-  },
 };
 
 export default {

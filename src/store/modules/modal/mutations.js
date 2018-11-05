@@ -1,38 +1,42 @@
 export default {
-  setModal(state, payload) {
-    state.setModal = true;
+  'SET_MODAL': (state, payload) => {
+    state.modal.status= true;
 
     switch (payload) {
       case 'group':
         state.setCreateGroup = true;
+        state.modal.current = payload;
         break;
       case 'channel':
         state.setCreateChannel = true;
+        state.modal.current = payload;
         break;
       case 'userProfile':
         state.setUserProfile = true;
+        state.modal.current = payload;
         break;
       case 'editProfile':
         state.setEditProfile = true;
+        state.modal.current = payload;
         break;
       case 'deleteChannel':
         state.deleteChannelOrGroup = true;
+        state.modal.current = payload;
         break;
       case 'deleteGroup':
         state.deleteChannelOrGroup = true;
+        state.modal.current = payload;
         break;
       case 'channelUsers':
         state.channelUsers = true;
+        state.modal.current = payload;
         break;
       default:
         break;
     }
   },
-  currentModal(state, modalType) {
-    state.currentModal = modalType;
-  },
-  deleteModal(state) {
-    switch (state.currentModal) {
+  'DELETE_MODAL': (state) => {
+    switch (state.modal.current) {
       case 'group':
         state.setCreateGroup = false;
         break;
@@ -58,23 +62,10 @@ export default {
         break;
     }
 
-    state.setModal = false;
-    state.currentModal = '';
+    state.modal.status = false;
+    state.modal.current = '';
   },
-  // set current user info to modal
-  setCurrentUserInfo(state, payload) {
-    state.userProfileInfo = payload;
-  },
-  // delete current user info to modal
-  deleteCurrentUserInfo(state) {
-    state.userProfileInfo = {
-      name: '',
-      avatar: '',
-      slug: '',
-      id: null
-    };
-  },
-  toggleEditMode(state) {
+  'TOGGLE_EDIT_MODE': (state) => {
     state.editMode = !state.editMode;
   },
 };

@@ -81,9 +81,8 @@
     },
     methods: {
       ...mapMutations({
-        setModal: 'modal/setModal',
-        currentModal: 'modal/currentModal',
-        toggleEditMode: 'modal/toggleEditMode',
+        setModal: 'modal/SET_MODAL',
+        toggleEditMode: 'modal/TOGGLE_EDIT_MODE',
       }),
       ...mapActions({
         logout: 'auth/LOGOUT',
@@ -110,7 +109,6 @@
       },
       openModal() {
         this.setModal('channelUsers');
-        this.currentModal('channelUsers');
         this.toggleEditMode();
       },
     },

@@ -4,12 +4,6 @@ import router from '../../../routers/router';
 export default {
   /**
    * Get user channels
-   *
-   * @param dispatch
-   * @param commit
-   * @param rootGetters
-   * @returns {Promise<void>}
-   * @constructor
    */
   'GET_USER_CHANNELS': async ({commit, dispatch, rootGetters}) => {
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel`)
@@ -29,11 +23,7 @@ export default {
   /**
    * Get current channel users
    *
-   * @param getters
-   * @param commit
-   * @param rootGetters
    * @param channelId {String || Number} - channel id
-   * @constructor
    */
   'GET_USERS': ({getters, commit, rootGetters}, channelId) => {
     Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/users`)
@@ -49,19 +39,13 @@ export default {
   },
   /**
    * Create channel and reload channels
-   *
-   * @param dispatch
-   * @param commit
-   * @param getters
-   * @param rootGetters
-   * @constructor
    */
   'CREATE_CHANNEL': ({getters, commit, dispatch, rootGetters}) => {
     Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.channelData)
       .then(
         res => {
           router.go(-1);
-          commit('modal/deleteModal', 'channel', {root: true});
+          commit('modal/DELETE_MODAL', 'channel', {root: true});
           dispatch('GET_USER_CHANNELS');
         },
         async err => {
@@ -76,12 +60,7 @@ export default {
   /**
    * Add avatar to the channel and write avatar_id to the store
    *
-   * @param dispatch
-   * @param commit
-   * @param rootGetters
    * @param img - image form data
-   * @returns {Promise<void>}
-   * @constructor
    */
   'CREATE_CHANNEL_AVATAR': async ({commit, dispatch, rootGetters}, img) => {
     await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/avatar`, img, {
@@ -106,12 +85,7 @@ export default {
   /**
    * Set current channel data to the store and get this channel users
    *
-   * @param getters
-   * @param commit
-   * @param dispatch
    * @param channelId {String || Number} - current channel id
-   * @returns {Promise<void>}
-   * @constructor
    */
   'SET_CURRENT_CHANNEL_DATA': async ({getters, commit, dispatch}, channelId) => {
     const editingChannel = await getters.channels.find(channel => channel.channel_id === channelId);
@@ -121,26 +95,16 @@ export default {
   /**
    * Set edit mode
    *
-   * @param commit
-   * @param dispatch
    * @param channelId - editing channel id
-   * @returns {Promise<void>}
-   * @constructor
    */
   'SET_CHANNEL_EDITING': async ({commit, dispatch}, channelId) => {
     dispatch('SET_EDITED_CHANNEL_DATA', channelId);
-    commit('modal/toggleEditMode', null, {root: true});
-    commit('modal/setModal', 'channel', {root: true});
-    commit('modal/currentModal', 'channel', {root: true});
+    dispatch('modal/OPEN_MODAL_EDIT_MODE', 'channel', {root: true});
   },
   /**
    * Set data of editing channel to the store
    *
-   * @param getters
-   * @param commit
    * @param channelId {String || Number} - chosen channel id
-   * @returns {Promise<void>}
-   * @constructor
    */
   'SET_EDITED_CHANNEL_DATA': async ({getters, commit}, channelId) => {
     const editingChannel = await getters.channels.find(channel => channel.channel_id === channelId);
@@ -148,12 +112,6 @@ export default {
   },
   /**
    * Edit chosen channel
-   *
-   * @param getters
-   * @param commit
-   * @param dispatch
-   * @param rootGetters
-   * @constructor
    */
   'EDIT_CHANNEL': ({getters, commit, dispatch, rootGetters}) => {
     Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelData.channel_id}`, {
@@ -169,8 +127,7 @@ export default {
         res => {
           dispatch('GET_USER_CHANNELS');
           commit('SET_CURRENT_CHANNEL_DATA', res.body.data);
-          commit('modal/deleteModal', 'channel', {root: true});
-          commit('modal/toggleEditMode', null, {root: true});
+          dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'channel', {root: true})
         },
         async err => {
           console.log(err);
@@ -185,34 +142,21 @@ export default {
   /**
    * Set delete mode
    *
-   * @param commit
-   * @param dispatch
    * @param channelId - channel to edit
-   * @returns {Promise<void>}
-   * @constructor
    */
   'SET_CHANNEL_DELETING': async ({commit, dispatch}, channelId) => {
     commit('SET_CHANNEL_ID_TO_DELETE', channelId);
-    commit('modal/toggleEditMode', null, {root: true});
-    await commit('modal/currentModal', 'deleteChannel', {root: true});
-    commit('modal/setModal', 'deleteChannel', {root: true});
+    dispatch('modal/OPEN_MODAL_EDIT_MODE', 'deleteChannel', {root: true});
   },
   /**
    * Delete chosen channel
-   *
-   * @param getters
-   * @param commit
-   * @param dispatch
-   * @constructor
    */
   'DELETE_CHANNEL': ({getters, commit, dispatch}) => {
     Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/${getters.channelToDelete}`)
       .then(
         res => {
-          console.log(res);
           dispatch('GET_USER_CHANNELS');
-          commit('modal/deleteModal', 'deleteChannel', {root: true});
-          commit('modal/toggleEditMode', null, {root: true});
+          commit('modal/DELETE_MODAL', 'deleteChannel', {root: true});
         },
         err => {
           console.log(err);
@@ -223,11 +167,7 @@ export default {
   /**
    * Remove user from channel
    *
-   * @param getters
-   * @param commit
-   * @param dispatch
    * @param userId {String || Number} - user id  to remove
-   * @constructor
    */
   'DELETE_USER': ({getters, commit, dispatch}, userId) => {
     Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/delete-user`, {
@@ -243,11 +183,8 @@ export default {
   },
   /**
    * Add user to the channel
-   * @param getters
-   * @param commit
-   * @param dispatch
+   *
    * @param userId {String || Number} - user id to add
-   * @constructor
    */
   'ADD_USER': ({getters, commit, dispatch}, userId) => {
     Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/add-user`, {

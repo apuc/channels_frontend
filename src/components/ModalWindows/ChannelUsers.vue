@@ -2,7 +2,7 @@
   <div>
     <header class="form-group">
       <label for="user">Поиск по пользователям канала</label>
-      <input id="user" class="form-control" type="text" @input="findUser">
+      <input id="user" class="form-control" type="text">
     </header>
 
     <div class="add-user">
@@ -54,24 +54,6 @@
       addUser() {
         this.addUser(this.add_user);
       },
-      findUser(e) {
-        const value = e.target.value;
-
-        for (let i = 0; i < this.users.length; i++) {
-          if (this.users[i].username.indexOf(value) !== 0) {
-            // this.users.push(this.users[i]);
-          } else {
-            this.users.findIndex(user => {
-              console.log(value);
-              console.log(user.username);
-              console.log(user.username.indexOf(value));
-              if (user.username.indexOf(value) !== 0) {
-                console.log(user.username);
-              }
-            })
-          }
-        }
-      }
     },
     created() {
       this.users = this.currentChannelUsers;

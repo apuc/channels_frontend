@@ -42,16 +42,14 @@
     },
     methods: {
       ...mapMutations({
-        setModal: 'modal/setModal',
-        currentModal: 'modal/currentModal',
+        setModal: 'modal/SET_MODAL',
       }),
       ...mapActions({
-        setCurrentUserInfo: 'modal/setCurrentUserInfo',
+        setCurrentUserInfo: 'modal/SET_CURRENT_USER_INFO',
       }),
       openUserProfile(e) {
         e.preventDefault();
         this.setModal('userProfile');
-        this.currentModal('userProfile');
         this.setCurrentUserInfo({
           name: this.user.name,
           id: this.user.id,

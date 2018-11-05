@@ -90,8 +90,7 @@
     },
     methods: {
       ...mapMutations({
-        setModal: 'modal/setModal',
-        currentModal: 'modal/currentModal',
+        setModal: 'modal/SET_MODAL',
       }),
       ...mapActions({
         getNav: 'user/GET_NAV',
@@ -99,7 +98,6 @@
       openModal(e, modalType, modalLink) {
         e.preventDefault();
         this.setModal(modalType);
-        this.currentModal(modalType);
         history.pushState('', 'Title of page', modalLink);
       },
       filter(e) {

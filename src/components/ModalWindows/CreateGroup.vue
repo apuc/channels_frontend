@@ -150,7 +150,6 @@
 
         reader.onload = (e) => {
           this.imgSrc = e.target.result;
-          console.log(this.imgSrc)
         };
         reader.readAsDataURL(file);
       },
@@ -166,7 +165,7 @@
         this.settingGroupData.status = this.groupData.status;
         if (this.groupData.avatar) {
           this.imgSrc = this.groupData.avatar.average;
-          this.settingChannelData.avatar = this.groupData.avatar.avatar_id;
+          this.settingGroupData.avatar = this.groupData.avatar.avatar_id;
         }
       }
     }

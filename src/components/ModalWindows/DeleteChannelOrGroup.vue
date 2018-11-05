@@ -14,7 +14,6 @@
     computed: {
       ...mapGetters({
         currentModal: 'modal/currentModal',
-        groupId: 'groups/groupId',
       })
     },
     data() {
@@ -24,8 +23,8 @@
     },
     methods: {
       ...mapMutations({
-        toggleEditMode: 'modal/toggleEditMode',
-        deleteModal: 'modal/deleteModal',
+        toggleEditMode: 'modal/TOGGLE_EDIT_MODE',
+        deleteModal: 'modal/DELETE_MODAL',
       }),
       ...mapActions({
         deleteChannel: 'channels/DELETE_CHANNEL',
@@ -35,11 +34,11 @@
         this.deleteModal(this.currentModal);
         this.toggleEditMode();
       },
-      remove(e) {
+      remove() {
         this.currentModal === 'deleteChannel' ?
           this.deleteChannel()
         :
-          this.deleteGroup(this.groupId)
+          this.deleteGroup()
       }
     },
     created() {
