@@ -44,8 +44,13 @@ export default {
     Vue.http.post(`${process.env.VUE_APP_API_URL}/oauth/token`, userData)
       .then(
         res => {
+          const currentDateInSeconds = Math.round(Date.now());
+          const tokenExpiresIn = Number(currentDateInSeconds )+ Number(res.body.expires_in);
+
           localStorage.setItem('access_token', res.body.access_token);
           localStorage.setItem('refresh_token', res.body.refresh_token);
+          // time when token expires in seconds minus 5 mins. in local storage should be a string
+          localStorage.setItem('expires_in', Number(tokenExpiresIn) - 300 + '');
           commit('SUCCESS_TOKEN', res.body.access_token);
           Vue.http.headers.common['Authorization'] = `Bearer ${res.body.access_token}`;
           dispatch('user/GET_USER', res.body.access_token, {root: true})
@@ -64,7 +69,7 @@ export default {
    */
   'LOGOUT': ({commit}) => {
     commit('LOGOUT');
-    localStorage.removeItem('access_token'); // clear your user's token from localstorage
+    localStorage.removeItem('access_token'); // clear your user's token from local storage
     localStorage.removeItem('refresh_token');
   },
 };

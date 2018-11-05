@@ -6,20 +6,23 @@ export default {
    *
    */
   'GET_USER': async ({commit, dispatch, getters}) => {
-    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/me`)
-      .then(
-        res => {
-          commit('USER_INFO', res.body.data);
-        },
-        err => {
-          if (err.status === 401) {
-            dispatch('auth/GET_TOKEN', getters.refreshTokenBody, { root: true });
-            dispatch('GET_USER');
+    const currentDateInSeconds = Math.round(Date.now());
+    const tokenExpiresIn = Number(localStorage.getItem('expires_in'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/me`)
+        .then(
+          res => {
+            commit('USER_INFO', res.body.data);
+          },
+          err => {
+            console.log('err login', err);
           }
-          console.log('err login', err);
-        }
-      )
-      .catch(err => console.log('GET_USER catch err: ', err));
+        )
+        .catch(err => console.log('GET_USER catch err: ', err));
+    } else {
+      dispatch('auth/GET_TOKEN', getters.refreshTokenBody, {root: true});
+    }
   },
   'GET_NAV': async ({dispatch}) => {
     await dispatch('groups/GET_USER_GROUPS', null, { root: true });
