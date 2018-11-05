@@ -35,14 +35,14 @@
       }),
     },
     beforeMount() {
-      // connectSocket(this.token)
-      //     .then(() => console.log('Socket connected!'))
-      //     .catch(err => console.error(err));
+      connectSocket(this.token)
+          .then(() => console.log('Socket connected!'))
+          .catch(err => console.error(err));
       this.getUser().then(() => {
-        // sendUserInfo({
-        //     username: this.userInfo.username,
-        //     id: this.userInfo.user_id
-        // })
+        sendUserInfo({
+            username: this.userInfo.username,
+            id: this.userInfo.user_id
+        })
       });
     }
   }
