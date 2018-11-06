@@ -3,13 +3,14 @@ import {ioSendMessage} from '../../../services/socket/message.service'
 
 export default {
   'GET_MESSAGES': async ({commit, dispatch, rootGetters}) => {
-    const channelId = rootGetters['channels/channelId'];
+    const channelId = rootGetters['channels/currentChannelData'].channel_id;
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/messages`)
       .then(
         res => {
-          commit('SET_MESSAGES', res.body.data);
+            commit('SET_MESSAGES', res.body.data)
         },
         err => console.log(err)
+
       )
   },
   'SEND_MESSAGE': async ({commit, dispatch, rootGetters}, payload) => {
