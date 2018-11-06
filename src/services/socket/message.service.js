@@ -6,8 +6,8 @@ export function ioTyping(user, channelId) {
     io.emit('typing', {user, channelId});
 }
 
-export function ioSendMessage(message, channelId) {
-    io.emit('userMessage', {message, channelId})
+export function ioSendMessage(messageData) {
+    io.emit('userMessage', messageData)
 }
 
 export function messageEventListenerInit() {
@@ -17,7 +17,7 @@ export function messageEventListenerInit() {
     });
 
     io.on('userMessage', function (data) {
-        console.log('new message', data)
-        store.dispatch('messages/ON_MESSAGE', data)
+        console.log('io.on(userMessage) ', data);
+        store.dispatch('messages/ON_MESSAGE', data);
     });
 }

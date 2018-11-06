@@ -14,7 +14,7 @@ export default {
   },
   'SEND_MESSAGE': async ({commit, dispatch, rootGetters}, payload) => {
     const {user_id, username, avatar} = rootGetters['user/info'];
-    const message = {
+    const messageData = {
       user: {
         username,
         avatar,
@@ -24,8 +24,7 @@ export default {
       from: user_id,
       text: payload.text
     };
-    await ioSendMessage(message, payload.channelId);
-    commit('SET_MESSAGE', message)
+    await ioSendMessage(messageData);
   },
   'ON_MESSAGE': async ({commit, dispatch, rootGetters}, message) => commit('SET_MESSAGE', message)
 };
