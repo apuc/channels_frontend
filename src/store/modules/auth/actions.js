@@ -44,20 +44,33 @@ export default {
     Vue.http.post(`${process.env.VUE_APP_API_URL}/oauth/token`, userData)
       .then(
         res => {
-          const currentDateInSeconds = Math.round(Date.now());
-          const tokenExpiresIn = Number(currentDateInSeconds )+ Number(res.body.expires_in);
+          const currentDateInSeconds = Math.round(Date.now() / 1000);
+          const tokenExpiresIn = Number(currentDateInSeconds) + Number(res.body.expires_in);
 
           localStorage.setItem('access_token', res.body.access_token);
           localStorage.setItem('refresh_token', res.body.refresh_token);
           // time when token expires in seconds minus 5 mins. in local storage should be a string
-          localStorage.setItem('expires_in', Number(tokenExpiresIn) - 300 + '');
+          localStorage.setItem('expires_in', `${Number(tokenExpiresIn)}`);
+
           commit('SUCCESS_TOKEN', res.body.access_token);
+
           Vue.http.headers.common['Authorization'] = `Bearer ${res.body.access_token}`;
+
           dispatch('user/GET_USER', res.body.access_token, {root: true})
             .then(() => router.push('/'));
         },
-        err => {
+        async err => {
           console.log('err from vue resource', err);
+          console.log('The refresh token is invalid.', err.body.message);
+
+          if (err.body.message === 'The refresh token is invalid.') {
+            await localStorage.removeItem('access_token'); // clear your user's token from local storage
+            await localStorage.removeItem('refresh_token');
+            await localStorage.removeItem('expires_in');
+            console.log('pam', router);
+            router.push('/login');
+            console.log('bam', router);
+          }
           commit('ERROR', err.body);
         }
       )
@@ -71,5 +84,6 @@ export default {
     commit('LOGOUT');
     localStorage.removeItem('access_token'); // clear your user's token from local storage
     localStorage.removeItem('refresh_token');
+    localStorage.removeItem('expires_in');
   },
 };

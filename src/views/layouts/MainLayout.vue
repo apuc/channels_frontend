@@ -32,18 +32,24 @@
     methods: {
       ...mapActions({
         getUser: 'user/GET_USER',
+        getNav: 'user/GET_NAV',
       }),
     },
     beforeMount() {
+      console.log(321);
       // connectSocket(this.token)
       //     .then(() => console.log('Socket connected!'))
       //     .catch(err => console.error(err));
-      this.getUser().then(() => {
-        // sendUserInfo({
-        //     username: this.userInfo.username,
-        //     id: this.userInfo.user_id
-        // })
-      });
+      if (!this.userInfo.user_id) {
+        this.getUser().then(() => {
+          console.log(123);
+          this.getNav();
+          // sendUserInfo({
+          //     username: this.userInfo.username,
+          //     id: this.userInfo.user_id
+          // })
+        });
+      }
     }
   }
 </script>

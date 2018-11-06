@@ -29,7 +29,8 @@ if (token) {
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) { // если в роутинге в поле meta указано requiresAuth в true
     if (store.getters["auth/isAuthenticated"]) { // Проверяем авторизован ли пользователь
-      next()
+      console.log('authenticated');
+      next();
     } else { // Если не авторизован - редиректим на логин
       next({path: '/login'});
     }

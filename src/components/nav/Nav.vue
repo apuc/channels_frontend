@@ -52,7 +52,8 @@
       ...mapGetters({
         groups: 'groups/groups',
         channels: 'channels/channels',
-        userInfo: 'user/info'
+        userData: 'user/info',
+        authStatus: 'auth/authStatus',
       }),
     },
     data() {
@@ -74,15 +75,14 @@
             modalTrigger: 'editProfile'
           }
         ],
-        userData: {
-          name: '',
-          avatar: '',
-        },
         addMenuVisible: false,
         filters: {
           channelsVisible: true,
           groupsVisible: true,
-        }
+        },
+        // interval: setInterval(() => {
+        //   this.setIntervalForNav();
+        // }, 200)
       }
     },
     components: {
@@ -121,14 +121,19 @@
             break;
         }
       },
+      // setIntervalForNav() {
+      //   if (this.authStatus !== 'loading') {
+      //     console.log(this.authStatus);
+      //     clearInterval(this.interval);
+      //     this.getNav();
+      //   }
+      // }
     },
     async created() {
-      await this.getNav();
       joinChannels(this.channels);
     },
 
   }
-
 </script>
 
 <style scoped>

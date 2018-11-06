@@ -12,11 +12,11 @@ export default {
           commit('USER_CHANNELS', res.body.data);
         },
         async err => {
-          console.log(err);
-          if (err.status === 401) {
-            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
-            dispatch('GET_USER_CHANNELS');
-          }
+          console.log('get channels', err);
+          // if (err.status === 401) {
+          //   await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
+          //   dispatch('GET_USER_CHANNELS');
+          // }
         }
       )
   },
@@ -50,10 +50,10 @@ export default {
         },
         async err => {
           console.log(err);
-          if (err.status === 401) {
-            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
-            dispatch('CREATE_CHANNEL');
-          }
+          // if (err.status === 401) {
+          //   await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
+          //   dispatch('CREATE_CHANNEL');
+          // }
         })
       .catch(error => console.log(error))
   },
@@ -74,10 +74,10 @@ export default {
         },
         async err => {
           console.log(err);
-          if (err.status === 401) {
-            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
-            dispatch('CREATE_GROUP_AVATAR', img);
-          }
+          // if (err.status === 401) {
+          //   await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
+          //   dispatch('CREATE_GROUP_AVATAR', img);
+          // }
         }
       )
       .catch(error => console.log(error))
@@ -131,10 +131,10 @@ export default {
         },
         async err => {
           console.log(err);
-          if (err.status === 401) {
-            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
-            dispatch('EDIT_CHANNEL');
-          }
+          // if (err.status === 401) {
+          //   await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
+          //   dispatch('EDIT_CHANNEL');
+          // }
         }
       )
       .catch(error => console.log(error))

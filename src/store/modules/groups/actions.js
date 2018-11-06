@@ -12,11 +12,11 @@ export default {
           commit('USER_GROUPS', res.body.data);
         },
         async err => {
-          console.log(err);
-          if (err.status === 401) {
-            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], { root: true });
-            dispatch('GET_USER_GROUPS');
-          }
+          console.log('get groups', err);
+          // if (err.status === 401) {
+          //   await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], { root: true });
+          //   dispatch('GET_USER_GROUPS');
+          // }
         }
       )
       .catch(error => console.log(error))
@@ -34,10 +34,10 @@ export default {
         },
         async err => {
           console.log(err);
-          if (err.status === 401) {
-            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
-            dispatch('CREATE_GROUP');
-          }
+          // if (err.status === 401) {
+          //   await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
+          //   dispatch('CREATE_GROUP');
+          // }
         })
       .catch(error => console.log(error))
   },
@@ -58,10 +58,10 @@ export default {
         },
         async err => {
           console.log(err);
-          if (err.status === 401) {
-            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
-            dispatch('CREATE_GROUP_AVATAR', img);
-          }
+          // if (err.status === 401) {
+            // await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
+            // dispatch('CREATE_GROUP_AVATAR', img);
+          // }
         }
       )
       .catch(error => console.log(error))
@@ -112,10 +112,10 @@ export default {
         },
         async err => {
           console.log(err);
-          if (err.status === 401) {
-            await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
-            dispatch('EDIT_GROUP');
-          }
+          // if (err.status === 401) {
+          //   await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
+          //   dispatch('EDIT_GROUP');
+          // }
         }
       )
       .catch(error => console.log(error))
