@@ -18,6 +18,6 @@ export function messageEventListenerInit() {
 
     io.on('userMessage', function (data) {
         console.log('new message', data)
-        // store.dispatch('messages/ON_MESSAGE', data)
+        store.dispatch('messages/ON_MESSAGE', data)
     });
 }

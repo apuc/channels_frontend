@@ -1,9 +1,7 @@
 <template>
   <section class="messages" ref="messagesList">
     <ChatMessage v-for="(message, index) in messages"
-                 :user="message.user"
-                 :message="message.text"
-                 :slug="message.slug"
+                 :messageData="message"
                  :key="index" />
   </section>
 </template>

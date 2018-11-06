@@ -1,15 +1,15 @@
 <template>
-  <b-card class="message mb-3" :class="user.id === myId ? 'dirRtl' : '' ">
+  <b-card class="message mb-3" :class="messageData.from === myId ? 'dirRtl' : '' ">
     <b-media>
       <div class="flex">
-        <a :href="'/user/' + user.slug" @click="openUserProfile($event, user)">
-          <img :src="user.avatar || noavatar" width="64" alt="placeholder"/>
+        <a :href="'/user/'" @click="openUserProfile($event, messageData.user)">
+          <img :src="noavatar" width="64" alt="placeholder"/>
         </a>
 
         <h5 class="mt-0">
-          <a :href="'/user/' + user.slug" @click="openUserProfile($event, user)">{{user.name}}</a>
+          <a :href="'/user/'" @click="openUserProfile($event, messageData.user)">{{messageData.user.username}}</a>
         </h5>
-        <p class="text">{{message}}</p>
+        <p class="text">{{messageData.text}}</p>
       </div>
     </b-media>
 
@@ -33,13 +33,7 @@
       }
     },
     props: {
-      user: {
-        name: String,
-        avatar: String,
-        slug: String,
-        id: String
-      },
-      message: String
+      messageData: Object
     },
     methods: {
       ...mapMutations({
@@ -59,6 +53,9 @@
         });
         history.pushState('', 'Title of page', `/user/${this.user.slug}`);
       },
+    },
+    created() {
+      console.log(this.messageData);
     }
   }
 </script>
