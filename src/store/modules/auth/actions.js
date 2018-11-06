@@ -64,11 +64,11 @@ export default {
           console.log('The refresh token is invalid.', err.body.message);
 
           if (err.body.message === 'The refresh token is invalid.') {
-            await localStorage.removeItem('access_token'); // clear your user's token from local storage
-            await localStorage.removeItem('refresh_token');
-            await localStorage.removeItem('expires_in');
+            localStorage.removeItem('access_token'); // clear your user's token from local storage
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('expires_in');
             console.log('pam', router);
-            router.push('/login');
+            router.push({path: '/login'});
             console.log('bam', router);
           }
           commit('ERROR', err.body);

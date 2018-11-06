@@ -19,7 +19,8 @@
     computed: {
       ...mapGetters({
         token: 'auth/token',
-        userInfo: 'user/info'
+        userInfo: 'user/info',
+        authStatus: 'auth/authStatus',
       })
     },
     data() {
@@ -40,7 +41,8 @@
       // connectSocket(this.token)
       //     .then(() => console.log('Socket connected!'))
       //     .catch(err => console.error(err));
-      if (!this.userInfo.user_id) {
+      console.log(this.authStatus);
+      if (!this.userInfo.user_id || this.authStatus !== 'loading') {
         this.getUser().then(() => {
           console.log(123);
           this.getNav();
