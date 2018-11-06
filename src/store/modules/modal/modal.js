@@ -14,6 +14,7 @@ const state = {
   deleteChannelOrGroup: false,
   editMode: false,
   channelUsers: false,
+  addChannelsToGroup: false,
 };
 
 export default {

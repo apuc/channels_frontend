@@ -20,6 +20,13 @@
       <div class="control">
         <button type="button"
                 class="button"
+                v-if="type === 'group'"
+                @click="openChannelsAdding(item.group_id)">
+          <v-icon scale="1" class="icon" name="plus-circle"/>
+        </button>
+
+        <button type="button"
+                class="button"
                 @click="editThis($event, type === 'channel' ? item.channel_id : item.group_id)">
           <v-icon scale="1" class="icon" name="pen"/>
         </button>
@@ -45,13 +52,8 @@
       }),
     },
     props: {
-      id: String,
       title: String,
       itemsList: Array,
-      addButton: {
-        type: Boolean,
-        required: false
-      },
       type: String,
     },
     data() {
@@ -64,9 +66,10 @@
         setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
         setChannelEditing: 'channels/SET_CHANNEL_EDITING',
         setChannelDeleting: 'channels/SET_CHANNEL_DELETING',
-        setCurrentGroupData: 'groups/SET_GROUP_CHANNEL_DATA',
+        setCurrentGroupData: 'groups/SET_CURRENT_GROUP_DATA',
         setGroupEditing: 'groups/SET_GROUP_EDITING',
         setGroupDeleting: 'groups/SET_GROUP_DELETING',
+        setAddingChannelsToGroup: 'groups/SET_ADDING_CHANNELS_TO_GROUP',
       }),
       setData(e,id) {
         if (!e.target.hasAttribute('type')) {
@@ -87,6 +90,9 @@
           this.setChannelDeleting(Number(id))
         :
           this.setGroupDeleting(Number(id))
+      },
+      openChannelsAdding(group_id) {
+        this.setAddingChannelsToGroup(group_id);
       },
     },
   }

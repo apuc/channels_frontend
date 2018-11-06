@@ -8,4 +8,5 @@ export default {
   channelUsers: state => state.channelUsers,
   setUserProfile: state => state.setUserProfile,
   setEditProfile: state => state.setEditProfile,
+  addChannelsToGroup: state => state.addChannelsToGroup,
 };

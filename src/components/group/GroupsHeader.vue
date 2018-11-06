@@ -69,7 +69,7 @@
   header {
     display: flex;
     align-items: center;
-    height: 100px;
+    height: 40px;
     padding: 15px;
   }
 

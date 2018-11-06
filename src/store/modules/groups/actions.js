@@ -144,4 +144,19 @@ export default {
         }
       )
   },
+  'SET_ADDING_CHANNELS_TO_GROUP': ({commit, dispatch}, groupId) => {
+    commit('SET_GROUP_ID_FOR_ADDING_CHANNEL', groupId);
+    dispatch('modal/OPEN_MODAL_EDIT_MODE', 'addChannelsToGroup', {root: true});
+  },
+  'ADD_CHANNELS': ({getters, dispatch}, channel_ids) => {
+    Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.groupForAddingChannels}/channels`, {channel_ids})
+      .then(
+        res => {
+          dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'addChannelsToGroup', {root: true});
+        },
+        err => {
+          console.log(err);
+        }
+      )
+  }
 };

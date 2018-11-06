@@ -3,14 +3,19 @@
     <div class="backdrop" @click="onModalClose"></div>
 
     <div class="modal__container ">
-      <button type="button" class="close" @click="onModalClose">Close</button>
+      <button type="button" class="close" @click="onModalClose">
+        <v-icon scale="1.5" class="icon text-danger" name="times-circle"/>
+      </button>
 
-      <ProfileModal v-if="userProfile" />
-      <CreateGroup v-else-if="createGroup"/>
-      <CreateChannel v-else-if="createChannel"/>
-      <DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>
-      <EditProfile v-else-if="editProfile"/>
-      <ChannelUsers v-else-if="channelUsers"/>
+      <div class="modal_wrap">
+        <ProfileModal v-if="userProfile" />
+        <CreateGroup v-else-if="createGroup"/>
+        <CreateChannel v-else-if="createChannel"/>
+        <DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>
+        <EditProfile v-else-if="editProfile"/>
+        <ChannelUsers v-else-if="channelUsers"/>
+        <AddChannelsToGroup v-else-if="addChannelsToGroup"/>
+      </div>
     </div>
   </div>
 </template>
@@ -23,10 +28,12 @@
   import DeleteChannelOrGroup from './DeleteChannelOrGroup';
   import EditProfile from './EditProfile';
   import ChannelUsers from "./ChannelUsers";
+  import AddChannelsToGroup from "./AddChannelsToGroup";
 
   export default {
     name: "Modal",
     components: {
+      AddChannelsToGroup,
       ChannelUsers,
       DeleteChannelOrGroup,
       ProfileModal,
@@ -43,7 +50,8 @@
         currentModal: 'modal/currentModal',
         deleteChannelOrGroup: 'modal/deleteChannelOrGroup',
         editProfile: 'modal/setEditProfile',
-        channelUsers: 'modal/channelUsers'
+        channelUsers: 'modal/channelUsers',
+        addChannelsToGroup: 'modal/addChannelsToGroup',
       }),
     },
     data() {
@@ -100,20 +108,28 @@
     transform: translate(-50%, -50%);
     z-index: 2;
 
-    overflow: auto;
+    background-color: #fff;
+  }
+
+  .modal_wrap {
     width: 500px;
-    min-height: 300px;
     max-height: 90vh;
     padding: 30px;
 
-    background-color: #fff;
+    overflow: auto;
   }
 
   .close {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: -14px;
+    right: -13px;
 
+    font-size: 0;
+
+    background-color: #fff;
+    border: 1px solid #dc3545;
+    border-radius: 50%;
+    opacity: 1;
     cursor: pointer;
   }
 </style>

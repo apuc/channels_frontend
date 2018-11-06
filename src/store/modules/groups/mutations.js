@@ -14,4 +14,7 @@ export default {
   'SET_GROUP_ID_TO_DELETE': (state, id) => {
     state.groupToDelete = id;
   },
+  'SET_GROUP_ID_FOR_ADDING_CHANNEL': (state, group_id) => {
+    state.groupForAddingChannels = group_id;
+  },
 };
