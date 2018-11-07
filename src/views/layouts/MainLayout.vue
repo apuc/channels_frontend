@@ -12,7 +12,6 @@
   import Nav from '../../components/nav/Nav';
   import Advertisings from '../../components/ads/Advertisings';
   import {connectSocket} from '../../services/socket/socket.service';
-  import {sendUserInfo} from '../../services/socket/user.service';
   import {mapGetters, mapActions} from 'vuex';
 
   export default {
@@ -38,12 +37,7 @@
       connectSocket(this.token)
           .then(() => console.log('Socket connected!'))
           .catch(err => console.error(err));
-      this.getUser().then(() => {
-        sendUserInfo({
-            username: this.userInfo.username,
-            id: this.userInfo.user_id
-        })
-      });
+      this.getUser();
     }
   }
 </script>
