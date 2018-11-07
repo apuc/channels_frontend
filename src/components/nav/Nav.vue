@@ -13,10 +13,15 @@
         </ul>
       </div>
 
-      <p class="username">
-        <img :src="userData.avatar" alt="">
-        {{userData.username}}
-      </p>
+      <div class="user">
+        <div class="user__avatar">
+          <img :src="userInfo.avatar ? userInfo.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
+        </div>
+
+        <div class="user__name">
+          <a :href="'/edit-profile'" @click="openModal($event, 'editProfile', '/edit-profile')">{{userInfo.username}}</a>
+        </div>
+      </div>
 
       <div class="filters">
         <button type="button" class="btn btn-primary filters__filter" data-filter="all" @click="filter">All</button>
@@ -74,10 +79,6 @@
             modalTrigger: 'editProfile'
           }
         ],
-        userData: {
-          name: '',
-          avatar: '',
-        },
         addMenuVisible: false,
         filters: {
           channelsVisible: true,
@@ -200,9 +201,9 @@
   }
 
   .filters__filter {
-    width: 40px;
+    width: 30px;
     height: 30px;
-    margin-right: 10px;
+    margin-right: 5px;
     padding: 2px 5px;
   }
 
@@ -210,7 +211,19 @@
     margin-right: 0;
   }
 
-  .username {
+  .user {
+    display: flex;
+    align-items: center;
     margin: 0;
   }
+
+  .user__avatar {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
 </style>

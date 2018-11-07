@@ -112,8 +112,7 @@
         this.toggleEditMode();
       },
     },
-    watch: {
-    },
+    watch: {},
     created() {
       if (!this.channelData.channel_id) {
         window.onload = () => {
@@ -185,7 +184,7 @@
   }
 
   .fade-preloader,
-  .fade-users{
+  .fade-users {
     opacity: 0;
     transition: opacity 0.5s;
   }

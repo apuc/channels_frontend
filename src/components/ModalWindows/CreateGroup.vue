@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="modal-inside">
     <header class="modal__header">
       <h4>{{isEdit ? 'Редактировать' : 'Создать'}} группу</h4>
     </header>
@@ -209,5 +209,11 @@
 
   .remove-btn {
     margin-top: 20px;
+  }
+
+  .modal-inside {
+    max-height: 90%;
+    padding: 30px;
+    overflow: auto;
   }
 </style>

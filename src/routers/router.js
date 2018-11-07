@@ -4,10 +4,12 @@ import store from '../store/store';
 import Login from '../components/Login';
 import Registration from '../components/Registration';
 import Group from '../components/group/Group';
+import CreateGroup from '../components/ModalWindows/CreateGroup';
+import CreateChannel from '../components/ModalWindows/CreateChannel';
 import Chat from '../components/chat/Chat';
 import Empty from '../components/chat/Empty';
 import NotFoundComponent from '../views/NotFoundComponent';
-import ProfileModal from '../components/ModalWindows/ProfileModal';
+import UserProfile from '../components/UserProfile';
 
 Vue.use(Router);
 
@@ -44,14 +46,20 @@ export default new Router({
     },
     {
       path: '/user/:user_id',
-      name: 'profile_modal',
-      component: ProfileModal,
+      name: 'user_profile',
+      component: UserProfile,
       meta: {requiresAuth: true}
     },
     {
       path: '/create-group',
       name: 'create_group',
-      component: ProfileModal,
+      component: CreateGroup,
+      meta: {requiresAuth: true}
+    },
+    {
+      path: '/create-channel',
+      name: 'create_channel',
+      component: CreateChannel,
       meta: {requiresAuth: true}
     },
     {

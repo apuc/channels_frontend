@@ -5,9 +5,8 @@
     <div class="modal__container ">
       <button type="button" class="close" @click="onModalClose">Close</button>
 
-      <ProfileModal v-if="userProfile" />
-      <CreateGroup v-else-if="createGroup"/>
-      <CreateChannel v-else-if="createChannel"/>
+      <CreateGroup v-if="createGroup"/>
+      <CreateChannel v-else-if="createChannel.status"/>
       <DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>
       <EditProfile v-else-if="editProfile"/>
       <ChannelUsers v-else-if="channelUsers"/>
@@ -17,7 +16,6 @@
 
 <script>
   import {mapGetters, mapMutations} from 'vuex';
-  import ProfileModal from './ProfileModal';
   import CreateGroup from './CreateGroup';
   import CreateChannel from './CreateChannel';
   import DeleteChannelOrGroup from './DeleteChannelOrGroup';
@@ -29,7 +27,6 @@
     components: {
       ChannelUsers,
       DeleteChannelOrGroup,
-      ProfileModal,
       CreateGroup,
       CreateChannel,
       EditProfile,
@@ -104,7 +101,6 @@
     width: 500px;
     min-height: 300px;
     max-height: 90vh;
-    padding: 30px;
 
     background-color: #fff;
   }

@@ -59,7 +59,7 @@
   }
 
   main {
-    height: 100%;
     flex-grow: 1;
+    height: 100%;
   }
 </style>
