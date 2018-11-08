@@ -8,7 +8,7 @@
       </button>
 
       <div class="modal_wrap">
-        <CreateGroup v-else-if="createGroup"/>
+        <CreateGroup v-if="createGroup"/>
         <CreateChannel v-else-if="createChannel"/>
         <DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>
         <EditProfile v-else-if="editProfile"/>

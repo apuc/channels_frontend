@@ -159,7 +159,7 @@
       }),
       async onSubmit() {
         if (!Array.isArray(this.settingChannelData.user_ids)) {
-          this.settingChannelData.user_ids = this.makeUsersArray(this.settingChannelData.user_ids);
+          this.settingChannelData.user_ids = this.makeSplitedArray(this.settingChannelData.user_ids);
         }
         await this.setChannelData(this.settingChannelData);
 
@@ -174,10 +174,9 @@
         }
       },
       getUsers(e) {
-        console.log(this.settingChannelData.user_ids);
-        this.settingChannelData.user_ids = this.makeUsersArray(e.target.value);
+        this.settingChannelData.user_ids = this.makeSplitedArray(e.target.value);
       },
-      makeUsersArray(string) {
+      makeSplitedArray(string) {
         return string.split(',')
       },
       onFileChange(e) {

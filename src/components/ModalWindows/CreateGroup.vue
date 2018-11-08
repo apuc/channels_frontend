@@ -48,6 +48,11 @@
       </div>
 
       <div class="form-group">
+        <label for="channels">Channels (разделённые запятой)</label>
+        <input class="form-control" id="channels" type="text" @input="getChannels">
+      </div>
+
+      <div class="form-group">
         <label for="file">Upload Image</label>
 
         <div class="input-group">
@@ -94,6 +99,7 @@
           user_ids: [],
           avatar: '',
         },
+        groupChannels: [],
         img: '',
         imgSrc: '',
         notImage: '',
@@ -109,6 +115,7 @@
         editGroup: 'groups/EDIT_GROUP',
         createGroup: 'groups/CREATE_GROUP',
         createGroupAvatar: 'groups/CREATE_GROUP_AVATAR',
+        addChannels: 'groups/ADD_CHANNELS',
       }),
       async onSubmit() {
         await this.setGroupData(this.settingGroupData);
@@ -117,14 +124,24 @@
           await this.createGroupAvatar(this.img);
         }
 
+        if (this.groupChannels) {
+          await this.addChannels(this.settingGroupData.group_id);
+        }
+
         if (this.isEdit) {
           this.editGroup();
         } else {
           this.createGroup();
         }
       },
+      makeSplitedArray(string) {
+        return string.split(',')
+      },
       getUsers(e) {
-        this.settingGroupData.user_ids = e.target.value.split(',');
+        this.settingGroupData.user_ids = this.makeSplitedArray(e.target.value);
+      },
+      getChannels(e) {
+        this.groupChannels = this.makeSplitedArray(e.target.value);
       },
       onFileChange(e) {
         this.imgSrc = '';
