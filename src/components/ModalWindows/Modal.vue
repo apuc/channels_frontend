@@ -55,9 +55,8 @@
       onModalClose() {
         if (this.editMode) {
           this.toggleEditMode();
-        } else {
-          this.$router.go(-1)
         }
+
         this.deleteModal(this.currentModal);
       }
     },

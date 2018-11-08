@@ -8,7 +8,7 @@
 
         <ul class="dropdown" v-if="addMenuVisible">
           <li v-for="(elem, index) in info" class="dropdown__el">
-            <a :href="elem.link" @click="openModal($event, elem.modalTrigger, elem.link)">{{elem.name}}</a>
+            <button type="button" class="btn btn-link" @click="openModal($event, elem.modalTrigger)">{{elem.name}}</button>
           </li>
         </ul>
       </div>
@@ -19,7 +19,7 @@
         </div>
 
         <div class="user__name">
-          <a :href="'/edit-profile'" @click="openModal($event, 'editProfile', '/edit-profile')">{{userInfo.username}}</a>
+          <button type="button" class="btn btn-link" @click="openModal($event, 'editProfile')">{{userInfo.username}}</button>
         </div>
       </div>
 
@@ -65,17 +65,14 @@
         info: [
           {
             name: 'Создать канал',
-            link: '/create-channel',
             modalTrigger: 'channel'
           },
           {
             name: 'Создать группу',
-            link: '/create-group',
             modalTrigger: 'group'
           },
           {
             name: 'Редактировать профиль',
-            link: '/edit-profile',
             modalTrigger: 'editProfile'
           }
         ],
@@ -96,10 +93,9 @@
       ...mapActions({
         getNav: 'user/GET_NAV',
       }),
-      openModal(e, modalType, modalLink) {
+      openModal(e, modalType) {
         e.preventDefault();
         this.setModal(modalType);
-        history.pushState('', 'Title of page', modalLink);
       },
       filter(e) {
         const target = e.target;

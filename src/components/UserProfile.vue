@@ -13,7 +13,7 @@
     </header>
 
     <div class="controls">
-      <a :href="'/create-channel'" class="btn btn-primary" @click="openModal($event, 'dialog','/create-channel')">Start chat with this user</a>
+      <button type="button" class="btn btn-primary" @click="openModal($event, 'dialog')">Start chat with this user</button>
     </div>
   </div>
 </template>
