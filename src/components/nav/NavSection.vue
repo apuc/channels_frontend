@@ -70,14 +70,16 @@
         setGroupEditing: 'groups/SET_GROUP_EDITING',
         setGroupDeleting: 'groups/SET_GROUP_DELETING',
         setAddingChannelsToGroup: 'groups/SET_ADDING_CHANNELS_TO_GROUP',
+        getMessages: 'messages/GET_MESSAGES',
       }),
-      setData(e,id) {
+      async setData(e,id) {
         if (!e.target.hasAttribute('type')) {
           this.type === 'channel' ?
-            this.setCurrentChannelData(Number(id))
+            await this.setCurrentChannelData(Number(id))
           :
-            this.setCurrentGroupData(Number(id))
+            await this.setCurrentGroupData(Number(id))
         }
+        this.getMessages();
       },
       editThis(e, id) {
         this.type === 'channel' ?

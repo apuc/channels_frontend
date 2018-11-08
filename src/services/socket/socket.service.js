@@ -1,7 +1,6 @@
 import socketIo from 'socket.io-client';
 import {channelsEventListenerInit} from './channels.service'
 import {messageEventListenerInit} from './message.service'
-import {userEventListenerInit} from './user.service'
 
 export let io = null;
 
@@ -23,6 +22,5 @@ export function connectSocket(token) {
 function socketEventListenerInit() {
     channelsEventListenerInit();
     messageEventListenerInit();
-    userEventListenerInit();
 }
 
