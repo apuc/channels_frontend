@@ -8,7 +8,10 @@ const state = {
     current: '',
   },
   setCreateGroup: false,
-  setCreateChannel: false,
+  setCreateChannel: {
+    status: false,
+    isDialog: false
+  },
   setUserProfile: false,
   setEditProfile: false,
   deleteChannelOrGroup: false,

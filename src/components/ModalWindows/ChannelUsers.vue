@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="modal-inside">
     <header class="form-group">
       <label for="user">Поиск по пользователям канала</label>
       <input id="user" class="form-control" type="text">
@@ -27,16 +27,15 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
+  import {mapState, mapActions} from 'vuex';
   import UserPreview from './UserPreview';
 
   export default {
     name: "ChannelUsers",
     components: {UserPreview},
     computed: {
-      ...mapGetters({
-        currentChannelUsers: 'channels/currentChannelUsers'
-      }),
+      ...mapState('channels', ['currentChannelUsers']),
+
       disableButton() {
         return this.add_user.length > 0 ? 'btn-primary' : 'btn-default disable';
       }
@@ -71,6 +70,7 @@
   .users-list {
     max-height: 300px;
     margin: 0;
+    margin-top: 10px;
     padding: 0;
     overflow: auto;
   }
@@ -86,5 +86,11 @@
 
   .disable {
     pointer-events: none;
+  }
+
+  .modal-inside {
+    max-height: 90%;
+    padding: 30px;
+    overflow: auto;
   }
 </style>

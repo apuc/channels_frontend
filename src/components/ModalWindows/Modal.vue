@@ -8,7 +8,6 @@
       </button>
 
       <div class="modal_wrap">
-        <ProfileModal v-if="userProfile" />
         <CreateGroup v-else-if="createGroup"/>
         <CreateChannel v-else-if="createChannel"/>
         <DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>
@@ -22,7 +21,6 @@
 
 <script>
   import {mapGetters, mapMutations} from 'vuex';
-  import ProfileModal from './ProfileModal';
   import CreateGroup from './CreateGroup';
   import CreateChannel from './CreateChannel';
   import DeleteChannelOrGroup from './DeleteChannelOrGroup';
@@ -36,7 +34,6 @@
       AddChannelsToGroup,
       ChannelUsers,
       DeleteChannelOrGroup,
-      ProfileModal,
       CreateGroup,
       CreateChannel,
       EditProfile,
@@ -66,9 +63,8 @@
       onModalClose() {
         if (this.editMode) {
           this.toggleEditMode();
-        } else {
-          this.$router.go(-1)
         }
+
         this.deleteModal(this.currentModal);
       }
     },
@@ -114,7 +110,6 @@
   .modal_wrap {
     width: 500px;
     max-height: 90vh;
-    padding: 30px;
 
     overflow: auto;
   }

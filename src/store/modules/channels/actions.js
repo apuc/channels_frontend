@@ -41,12 +41,15 @@ export default {
    * Create channel and reload channels
    */
   'CREATE_CHANNEL': ({getters, commit, dispatch, rootGetters}) => {
+
     Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.channelData)
       .then(
-        res => {
-          router.go(-1);
-          commit('modal/DELETE_MODAL', 'channel', {root: true});
-          dispatch('GET_USER_CHANNELS');
+        async res => {
+          const createdChannelData = res.body.data;
+            router.push({path: `/${createdChannelData.slug}`});
+            commit('modal/DELETE_MODAL', 'channel', {root: true});
+            dispatch('GET_USER_CHANNELS');
+            dispatch('GET_USERS', createdChannelData.user_count);
         },
         async err => {
           console.log(err);

@@ -28,8 +28,9 @@ export default {
     Vue.http.post(`${process.env.VUE_APP_API_URL}/group`, getters.groupData)
       .then(
         res => {
-          router.go(-1);
+          const createdGroupData = res.body.data;
           commit('modal/DELETE_MODAL', 'group', {root: true});
+          router.push({path: `/group/${createdGroupData.slug}`});
           dispatch('GET_USER_GROUPS');
         },
         async err => {

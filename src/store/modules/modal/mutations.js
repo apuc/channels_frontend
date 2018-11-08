@@ -8,7 +8,11 @@ export default {
         state.modal.current = payload;
         break;
       case 'channel':
-        state.setCreateChannel = true;
+        state.setCreateChannel = {status: true, dialog: false};
+        state.modal.current = payload;
+        break;
+      case 'dialog':
+        state.setCreateChannel = {status: true, dialog: true};
         state.modal.current = payload;
         break;
       case 'userProfile':
@@ -45,7 +49,10 @@ export default {
         state.setCreateGroup = false;
         break;
       case 'channel':
-        state.setCreateChannel = false;
+        state.setCreateChannel = {status: false, dialog: false};
+        break;
+      case 'dialog':
+        state.setCreateChannel = {status: false, dialog: false};
         break;
       case 'userProfile':
         state.setUserProfile = false;
