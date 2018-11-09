@@ -148,6 +148,7 @@ export default {
    * @param channelId - channel to edit
    */
   'SET_CHANNEL_DELETING': async ({commit, dispatch}, channelId) => {
+    console.log(123);
     commit('SET_CHANNEL_ID_TO_DELETE', channelId);
     dispatch('modal/OPEN_MODAL_EDIT_MODE', 'deleteChannel', {root: true});
   },
