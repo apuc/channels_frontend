@@ -1,8 +1,11 @@
 export default {
-  'LOADING': (state) => {
+  'LOADING': state => {
     state.status = 'loading';
   },
-  'SUCCESS_REGISTRATION': (state) => {
+  'GETTING_TOKEN_AND_DATA': state => {
+    state.gettingTokenAndData = !state.gettingTokenAndData;
+  },
+  'SUCCESS_REGISTRATION': state => {
     state.status = 'success registration';
   },
   'SUCCESS_TOKEN': (state, token) => {
@@ -17,7 +20,7 @@ export default {
     state.status = 'error';
     console.log(error);
   },
-  'LOGOUT': (state) => {
+  'LOGOUT': state => {
     state.status = '';
     state.token = ''
   },

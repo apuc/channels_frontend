@@ -3,4 +3,5 @@ export default {
   authStatus: state => state.status,
   token: state => state.token,
   refreshTokenBody: state => state.refreshTokenBody,
+  gettingTokenAndData: state => state.gettingTokenAndData,
 };

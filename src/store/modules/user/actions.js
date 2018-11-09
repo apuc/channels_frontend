@@ -1,4 +1,5 @@
 import Vue from "vue";
+import router from "../../../routers/router";
 
 export default {
   /**
@@ -7,15 +8,18 @@ export default {
    */
   'GET_USER': async ({commit, dispatch, getters}) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('expires_in'));
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
     console.log(currentDateInSeconds - tokenExpiresIn);
+    // console.log(currentDateInSeconds - refreshTokenExpiresIn);
 
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/me`)
         .then(
-          res => {
+          async res => {
             console.log('user info', res);
-            commit('USER_INFO', res.body.data);
+            await commit('USER_INFO', res.body.data);
           },
           err => {
             console.log('err login', err);
@@ -23,7 +27,13 @@ export default {
         )
         .catch(err => console.log('GET_USER catch err: ', err));
     } else {
-      dispatch('auth/GET_TOKEN', getters.refreshTokenBody, {root: true})
+      // console.log('currentDateInSeconds', currentDateInSeconds);
+      // console.log('refreshTokenExpiresIn', refreshTokenExpiresIn);
+      // console.log('tokenExpiresIn',tokenExpiresIn);
+
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', getters.refreshTokenBody, {root: true})
+      }
     }
   },
   'GET_NAV': async ({dispatch}) => {
