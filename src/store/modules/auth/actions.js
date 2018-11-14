@@ -39,33 +39,23 @@ export default {
    * @return status 401 - Unauthorized
    * @return status 200 - OK
    */
-  'GET_TOKEN': ({getters, commit, dispatch, rootGetters}, userData) => {
+  'GET_TOKEN': async ({getters, commit, dispatch, rootGetters}, userData) => {
     commit('LOADING');
-    Vue.http.post(`${process.env.VUE_APP_API_URL}/oauth/token`, userData)
+    await Vue.http.post(`${process.env.VUE_APP_API_URL}/oauth/token`, userData)
       .then(
-        res => {
+        async res => {
           const currentDateInSeconds = Math.round(Date.now() / 1000);
-          const tokenExpiresIn = Number(currentDateInSeconds) + Number(res.body.expires_in);
-          const refreshTokenExpiresIn = Number(currentDateInSeconds) + Number(res.body.expires_in) * 2;
+          const tokenExpiresIn = Number(currentDateInSeconds) + Number(res.body.expires_in) - 300;
+          const refreshTokenExpiresIn = Number(currentDateInSeconds) + Number(res.body.expires_in) * 2 - 300;
 
-          localStorage.setItem('access_token', res.body.access_token);
-          localStorage.setItem('refresh_token', res.body.refresh_token);
-          localStorage.setItem('T_expires_at', `${tokenExpiresIn}`);
-          localStorage.setItem('RT_expires_at', `${refreshTokenExpiresIn}`);
+          await localStorage.setItem('access_token', res.body.access_token);
+          await localStorage.setItem('refresh_token', res.body.refresh_token);
+          await localStorage.setItem('T_expires_at', `${tokenExpiresIn}`);
+          await localStorage.setItem('RT_expires_at', `${refreshTokenExpiresIn}`);
 
-          commit('SUCCESS_TOKEN', res.body.access_token);
-
+          commit('SET_TOKEN', res.body.access_token);
+          commit('SET_REFRESH_TOKEN', res.body.refresh_token);
           Vue.http.headers.common['Authorization'] = `Bearer ${res.body.access_token}`;
-          if (!getters.gettingTokenAndData) {
-            console.log('ACTION', getters.gettingTokenAndData);
-            commit('GETTING_TOKEN_AND_DATA');
-            dispatch('user/GET_USER', null, {root: true})
-              .then(() => {
-                dispatch('user/GET_NAV', null, {root: true});
-                router.push('/');
-              });
-          }
-
         },
         async err => {
           console.log('err from vue resource', err);
@@ -74,14 +64,14 @@ export default {
       )
       .catch(err => console.log('GET_TOKEN catch err: ', err));
   },
-
   /**
    * Delete token from storage
    */
   'LOGOUT': ({commit}) => {
     commit('LOGOUT');
-    localStorage.removeItem('access_token'); // clear your user's token from local storage
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('expires_in');
+    localStorage.clear();
+    commit('SET_TOKEN', '');
+    commit('SET_REFRESH_TOKEN', '');
+    router.push('/login');
   },
 };

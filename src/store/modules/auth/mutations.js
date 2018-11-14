@@ -5,12 +5,15 @@ export default {
   'GETTING_TOKEN_AND_DATA': state => {
     state.gettingTokenAndData = !state.gettingTokenAndData;
   },
-  'SUCCESS_REGISTRATION': state => {
-    state.status = 'success registration';
-  },
-  'SUCCESS_TOKEN': (state, token) => {
+  'SET_TOKEN': (state, token) => {
     state.status = 'success getting token';
     state.token = token;
+  },
+  'SET_REFRESH_TOKEN': (state, refreshToken) => {
+    state.refreshTokenBody.refresh_token = refreshToken;
+  },
+  'SUCCESS_REGISTRATION': state => {
+    state.status = 'success registration';
   },
   'SUCCESS_LOGIN': (state, user) => {
     state.status = 'success login';

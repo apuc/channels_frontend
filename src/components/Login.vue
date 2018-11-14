@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import {mapActions} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
     name: "Login",
@@ -36,19 +36,46 @@
         password: ''
       }
     },
+    computed: {
+      ...mapGetters({
+        authStatus: 'auth/gettingTokenAndData',
+      })
+    },
     methods: {
+      ...mapMutations({
+        gettingTokenData: 'auth/GETTING_TOKEN_AND_DATA',
+      }),
       ...mapActions({
         getToken: 'auth/GET_TOKEN',
+        getUser: 'user/GET_USER',
+        getNav: 'user/GET_NAV',
       }),
-      login() {
+      async login() {
         const {username, password} = this;
-        this.getToken({
-          grant_type: 'password',
-          client_id: process.env.VUE_APP_CLIENT_ID,
-          client_secret: process.env.VUE_APP_CLIENT_SECRET,
-          username,
-          password
-        });
+        if (!this.gettingTokenAndData) {
+          this.gettingTokenData();
+          console.log('getting token');
+          await this.getToken({
+            grant_type: 'password',
+            client_id: process.env.VUE_APP_CLIENT_ID,
+            client_secret: process.env.VUE_APP_CLIENT_SECRET,
+            username,
+            password
+          })
+            .then(
+              async () => {
+                await this.getUser()
+                  .then(
+                    async () => {
+                      this.$router.push('/');
+                      await this.getNav();
+                    })
+              });
+
+          this.$router.push('/');
+
+          this.gettingTokenData();
+        }
       }
     }
   }

@@ -6,56 +6,88 @@ export default {
    * Get user channels
    */
   'GET_USER_CHANNELS': async ({commit, dispatch, rootGetters}) => {
-    await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel`)
-      .then(
-        res => {
-          commit('USER_CHANNELS', res.body.data);
-        },
-        async err => {
-          console.log('get channels', err);
-          // if (err.status === 401) {
-          //   await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
-          //   dispatch('GET_USER_CHANNELS');
-          // }
-        }
-      )
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel`)
+        .then(
+          res => {
+            commit('USER_CHANNELS', res.body.data);
+          },
+          err => console.log('get channels', err)
+        )
+        .catch(error => console.log('GET_CHANNELS: ', error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('GET_USER_CHANNELS');
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
   },
   /**
    * Get current channel users
    *
    * @param channelId {String || Number} - channel id
    */
-  'GET_USERS': ({getters, commit, rootGetters}, channelId) => {
-    Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/users`)
-      .then(
-        async res => {
-          await commit('SET_CHANNEL_USERS', res.body.data);
-        },
-        err => {
-          console.log(err)
-        }
-      )
-      .catch(error => console.log(error))
+  'GET_USERS': async ({getters, commit, dispatch, rootGetters}, channelId) => {
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/users`)
+        .then(
+          async res => {
+            await commit('SET_CHANNEL_USERS', res.body.data);
+          },
+          err => console.log(err)
+        )
+        .catch(error => console.log(error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('GET_USERS', channelId);
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
   },
   /**
    * Create channel and reload channels
    */
-  'CREATE_CHANNEL': ({getters, commit, dispatch, rootGetters}) => {
-    Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.channelData)
-      .then(
-        res => {
-          router.go(-1);
-          commit('modal/DELETE_MODAL', 'channel', {root: true});
-          dispatch('GET_USER_CHANNELS');
-        },
-        async err => {
-          console.log(err);
-          // if (err.status === 401) {
-          //   await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
-          //   dispatch('CREATE_CHANNEL');
-          // }
-        })
-      .catch(error => console.log(error))
+  'CREATE_CHANNEL': async ({getters, commit, dispatch, rootGetters}) => {
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.channelData)
+        .then(
+          res => {
+            commit('modal/DELETE_MODAL', 'channel', {root: true});
+            dispatch('GET_USER_CHANNELS');
+          },
+          err => console.log(err)
+        )
+        .catch(error => console.log(error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('CREATE_CHANNEL');
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
   },
   /**
    * Add avatar to the channel and write avatar_id to the store
@@ -63,24 +95,33 @@ export default {
    * @param img - image form data
    */
   'CREATE_CHANNEL_AVATAR': async ({commit, dispatch, rootGetters}, img) => {
-    await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/avatar`, img, {
-      headers: {
-        "Content-Type": "multipart/form-data;"
-      }
-    })
-      .then(
-        async res => {
-          commit('SET_CHANNEL_AVATAR_ID', res.body.data.avatar_id);
-        },
-        async err => {
-          console.log(err);
-          // if (err.status === 401) {
-          //   await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
-          //   dispatch('CREATE_GROUP_AVATAR', img);
-          // }
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/avatar`, img, {
+        headers: {
+          "Content-Type": "multipart/form-data;"
         }
-      )
-      .catch(error => console.log(error))
+      })
+        .then(
+          async res => {
+            commit('SET_CHANNEL_AVATAR_ID', res.body.data.avatar_id);
+          },
+          err => console.log(err)
+        )
+        .catch(error => console.log(error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('CREATE_CHANNEL_AVATAR', img);
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
   },
   /**
    * Set current channel data to the store and get this channel users
@@ -113,89 +154,143 @@ export default {
   /**
    * Edit chosen channel
    */
-  'EDIT_CHANNEL': ({getters, commit, dispatch, rootGetters}) => {
-    Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelData.channel_id}`, {
-      title: getters.channelData.title,
-      slug: getters.channelData.slug,
-      status: getters.channelData.status,
-      user_ids: getters.channelData.user_ids,
-      type: getters.channelData.type,
-      private: getters.channelData.private,
-      avatar: getters.channelData.avatar,
-    })
-      .then(
-        res => {
-          dispatch('GET_USER_CHANNELS');
-          commit('SET_CURRENT_CHANNEL_DATA', res.body.data);
-          dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'channel', {root: true})
-        },
-        async err => {
-          console.log(err);
-          // if (err.status === 401) {
-          //   await dispatch('auth/GET_TOKEN', rootGetters['user/refreshTokenBody'], {root: true});
-          //   dispatch('EDIT_CHANNEL');
-          // }
-        }
-      )
-      .catch(error => console.log(error))
+  'EDIT_CHANNEL': async ({getters, commit, dispatch, rootGetters}) => {
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelData.channel_id}`, {
+        title: getters.channelData.title,
+        slug: getters.channelData.slug,
+        status: getters.channelData.status,
+        user_ids: getters.channelData.user_ids,
+        type: getters.channelData.type,
+        private: getters.channelData.private,
+        avatar: getters.channelData.avatar,
+      })
+        .then(
+          res => {
+            dispatch('GET_USER_CHANNELS');
+            commit('SET_CURRENT_CHANNEL_DATA', res.body.data);
+            dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'channel', {root: true})
+          },
+          err => console.log(err)
+        )
+        .catch(error => console.log(error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('EDIT_CHANNEL');
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
   },
   /**
    * Set delete mode
    *
    * @param channelId - channel to edit
    */
-  'SET_CHANNEL_DELETING': async ({commit, dispatch}, channelId) => {
+  'SET_CHANNEL_DELETING': async ({commit, dispatch, rootGetters}, channelId) => {
     commit('SET_CHANNEL_ID_TO_DELETE', channelId);
     dispatch('modal/OPEN_MODAL_EDIT_MODE', 'deleteChannel', {root: true});
   },
   /**
    * Delete chosen channel
    */
-  'DELETE_CHANNEL': ({getters, commit, dispatch}) => {
-    Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/${getters.channelToDelete}`)
-      .then(
-        res => {
-          dispatch('GET_USER_CHANNELS');
-          commit('modal/DELETE_MODAL', 'deleteChannel', {root: true});
-        },
-        err => {
-          console.log(err);
-          console.log(err.body);
-        }
-      )
+  'DELETE_CHANNEL': async ({getters, commit, dispatch}) => {
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/${getters.channelToDelete}`)
+        .then(
+          res => {
+            dispatch('GET_USER_CHANNELS');
+            commit('modal/DELETE_MODAL', 'deleteChannel', {root: true});
+          },
+          err => console.log(err)
+        )
+        .catch(error => console.log('DELETE_CHANNEL: ', error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('DELETE_CHANNEL');
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
   },
   /**
    * Remove user from channel
    *
    * @param userId {String || Number} - user id  to remove
    */
-  'DELETE_USER': ({getters, commit, dispatch}, userId) => {
-    Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/delete-user`, {
-      user_id: userId,
-      channel_id: getters.currentChannelData.channel_id
-    })
-      .then(
-        res => {
-          dispatch('GET_USERS', getters.currentChannelData.channel_id);
-        },
-        err => console.log(err)
-      )
+  'DELETE_USER': async ({getters, commit, dispatch, rootGetters}, userId) => {
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/delete-user`, {
+        user_id: userId,
+        channel_id: getters.currentChannelData.channel_id
+      })
+        .then(
+          res => {
+            dispatch('GET_USERS', getters.currentChannelData.channel_id);
+          },
+          err => console.log(err)
+        )
+        .catch(error => console.log('DELETE_USER_FROM_CHANNEL: ', error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('DELETE_USER', userId);
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
   },
   /**
    * Add user to the channel
    *
    * @param userId {String || Number} - user id to add
    */
-  'ADD_USER': ({getters, commit, dispatch}, userId) => {
-    Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/add-user`, {
-      user_id: userId,
-      channel_id: getters.currentChannelData.channel_id
-    })
-      .then(
-        res => {
-          dispatch('GET_USERS', getters.currentChannelData.channel_id);
-        },
-        err => console.log(err)
-      )
+  'ADD_USER': async ({getters, commit, dispatch, rootGetters}, userId) => {
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/add-user`, {
+        user_id: userId,
+        channel_id: getters.currentChannelData.channel_id
+      })
+        .then(
+          res => {
+            dispatch('GET_USERS', getters.currentChannelData.channel_id);
+          },
+          err => console.log(err)
+        )
+        .catch(error => console.log('ADD_USER_TO_CHANNEL: ', error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('ADD_USER', userId);
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
   }
 };

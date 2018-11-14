@@ -31,6 +31,10 @@ export default {
         state.channelUsers = true;
         state.modal.current = payload;
         break;
+      case 'logout':
+        state.logout = true;
+        state.modal.current = payload;
+        break;
       default:
         break;
     }
@@ -57,6 +61,9 @@ export default {
         break;
       case 'channelUsers':
         state.channelUsers = false;
+        break;
+      case 'logout':
+        state.logout = false;
         break;
       default:
         break;

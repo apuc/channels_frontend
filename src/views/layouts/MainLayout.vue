@@ -43,30 +43,23 @@
         getNav: 'user/GET_NAV',
       }),
     },
-    beforeMount() {
-      connectSocket(this.token)
-          .then(() => console.log('Socket connected!'))
-          .catch(err => console.error(err));
+    mounted() {
+      // connectSocket(this.token)
+      //     .then(() => console.log('Socket connected!'))
+      //     .catch(err => console.error(err));
       // console.log(this.authStatus);
+
       if (!this.authStatus) {
-        // if (this.refreshTokenExpiresIn < this.currentDateInSeconds) {
-        //   this.$route.push('/login');
-        // } else {
         this.gettingUserData();
-        console.log('LAYOUT', this.authStatus);
         this.getUser()
-          .then(() => {
+          .then(async () => {
             if (this.authStatus) {
               if (this.currentDateInSeconds < this.refreshTokenExpiresIn) {
-                this.getNav();
-              } else {
-                localStorage.clear();
-                this.$router.push({path: '/login'});
-                this.$router.push({name: 'login'});
+                await this.getNav();
+                this.gettingUserData();
               }
             }
           });
-        // }
       }
     }
   }

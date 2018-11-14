@@ -38,7 +38,7 @@
       </span>
     </button>
 
-    <button class="btn btn-primary exit" type="button" @click="exit">Exit</button>
+    <button class="btn btn-primary exit" type="button" @click="logout">Exit</button>
   </header>
 </template>
 
@@ -82,16 +82,11 @@
     methods: {
       ...mapMutations({
         setModal: 'modal/SET_MODAL',
-        toggleEditMode: 'modal/TOGGLE_EDIT_MODE',
       }),
       ...mapActions({
         logout: 'auth/LOGOUT',
         setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
       }),
-      exit() {
-        this.logout();
-        this.$router.push('/')
-      },
       getNoun(number, one, two, five) {
         number = Math.abs(number);
         number %= 100;
@@ -109,7 +104,6 @@
       },
       openModal() {
         this.setModal('channelUsers');
-        this.toggleEditMode();
       },
     },
     watch: {
