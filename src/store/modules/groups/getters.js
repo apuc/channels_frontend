@@ -3,4 +3,5 @@ export default {
   currentGroupData: state => state.currentGroupData,
   groupData: state => state.groupData,
   groupToDelete: state => state.groupToDelete,
+  groupForAddingChannels: state => state.groupForAddingChannels
 };

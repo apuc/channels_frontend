@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="modal-inside">
     <header class="modal__header">
       <h4>{{isEdit ? 'Редактировать' : 'Создать'}} канал</h4>
     </header>
@@ -22,7 +22,7 @@
           <div class="form-group">
             <label for="user_ids">Users (через запятую)</label>
 
-            <input type="text" id="user_ids" class="form-control" @input="getUsers">
+            <input type="text" id="user_ids" class="form-control" :value="settingChannelData.user_ids" @input="getUsers">
           </div>
         </div>
 
@@ -124,7 +124,10 @@
     computed: {
       ...mapGetters({
         channelData: 'channels/channelData',
+        userData: 'user/info',
+        currentUserInfo: 'user/currentUserInfo',
         isEdit: 'modal/editMode',
+        setCreateChannel: 'modal/setCreateChannel',
       })
     },
     data() {
@@ -155,6 +158,9 @@
         createChannelAvatar: 'channels/CREATE_CHANNEL_AVATAR',
       }),
       async onSubmit() {
+        if (!Array.isArray(this.settingChannelData.user_ids)) {
+          this.settingChannelData.user_ids = this.makeSplitedArray(this.settingChannelData.user_ids);
+        }
         await this.setChannelData(this.settingChannelData);
 
         if (this.img) {
@@ -164,11 +170,14 @@
         if (this.isEdit) {
           this.editChannel();
         } else {
-          this.createChannel();
+          this.createChannel(true);
         }
       },
       getUsers(e) {
-        this.settingChannelData.user_ids = e.target.value.split(',');
+        this.settingChannelData.user_ids = this.makeSplitedArray(e.target.value);
+      },
+      makeSplitedArray(string) {
+        return string.split(',')
       },
       onFileChange(e) {
         this.imgSrc = '';
@@ -213,6 +222,19 @@
           this.settingChannelData.avatar = this.channelData.avatar.avatar_id;
         }
       }
+      if (this.setCreateChannel.dialog) {
+        if (this.userData.user_id === this.currentUserInfo.user_id) {
+          this.settingChannelData.title = 'My own chat';
+          this.settingChannelData.user_ids = this.userData.user_id;
+        } else {
+          this.settingChannelData.title = `${this.userData.username} and ${this.currentUserInfo.username} dialog`;
+          this.settingChannelData.user_ids = `${this.userData.user_id},${this.currentUserInfo.user_id}`
+        }
+        this.settingChannelData.type = 'dialog';
+        this.settingChannelData.private = 1;
+        this.settingChannelData.status = 'active';
+
+      }
     }
   }
 </script>
@@ -254,5 +276,11 @@
 
   .remove-btn {
     margin-top: 20px;
+  }
+
+  .modal-inside {
+    max-height: 90%;
+    padding: 30px;
+    overflow: auto;
   }
 </style>

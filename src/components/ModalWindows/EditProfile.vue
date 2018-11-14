@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="modal-inside">
     <header class="modal__header">
       <h4>Редактирование профиля</h4>
     </header>
@@ -101,5 +101,9 @@
 </script>
 
 <style scoped>
-
+.modal-inside {
+  max-height: 90%;
+  padding: 30px;
+  overflow: auto;
+}
 </style>

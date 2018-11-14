@@ -12,7 +12,6 @@
   import Nav from '../../components/nav/Nav';
   import Advertisings from '../../components/ads/Advertisings';
   import {connectSocket} from '../../services/socket/socket.service';
-  import {sendUserInfo} from '../../services/socket/user.service';
   import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
@@ -76,7 +75,7 @@
   }
 
   main {
-    height: 100%;
     flex-grow: 1;
+    height: 100%;
   }
 </style>

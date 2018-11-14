@@ -13,6 +13,12 @@ const state = {
     user_id: null,
     username: '',
   },
+  currentUserInfo: {
+    avatar: undefined,
+    email: '',
+    user_id: '',
+    username: '',
+  }
 };
 
 export default {

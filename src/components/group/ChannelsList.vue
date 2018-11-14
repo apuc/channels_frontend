@@ -1,6 +1,6 @@
 <template>
   <section class="groups">
-    <router-link :to="channel.slug" v-for="(channel, index) in channels" :key="channel.id">
+    <router-link :to="`/${channel.slug}`" v-for="(channel, index) in currentGroupData.channels" :key="channel.id">
       {{ channel.title }}
     </router-link>
   </section>
@@ -10,10 +10,10 @@
   import { mapGetters } from 'vuex'
 
   export default {
-    name: "GroupsList",
+    name: "ChannelsList",
     computed: {
       ...mapGetters({
-        channels: 'channels/channels'
+        currentGroupData: 'groups/currentGroupData'
       })
     },
     data() {

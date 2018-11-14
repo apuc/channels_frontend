@@ -9,4 +9,5 @@ export default {
   setUserProfile: state => state.setUserProfile,
   setEditProfile: state => state.setEditProfile,
   logout: state => state.logout,
+  addChannelsToGroup: state => state.addChannelsToGroup,
 };

@@ -1,10 +1,8 @@
 import Vue from "vue";
-import router from "../../../routers/router";
 
 export default {
   /**
-   * Логинит с помощью токена
-   *
+   * Get user data
    */
   'GET_USER': async ({commit, dispatch, rootGetters}) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
@@ -15,7 +13,7 @@ export default {
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/me`)
         .then(
-          async res => await commit('USER_INFO', res.body.data),
+          async res => await commit('SET_USER_INFO', res.body.data),
           err => console.log('err login', err)
         )
         .catch(error => console.log('GET_USER: ', error));
@@ -30,10 +28,18 @@ export default {
       }
     }
   },
+  /**
+   * Get channels and groups
+   */
   'GET_NAV': async ({dispatch}) => {
     await dispatch('groups/GET_USER_GROUPS', null, {root: true});
     await dispatch('channels/GET_USER_CHANNELS', null, {root: true});
   },
+  /**
+   * Change user data
+   *
+   * @param userData {Object} - new user data
+   */
   'EDIT_PROFILE': async ({getters, commit, dispatch, rootGetters}, userData) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
@@ -64,6 +70,9 @@ export default {
       }
     }
   },
+  /**
+   * Delete user
+   */
   'DELETE_USER': async ({getters, commit, dispatch, rootGetters}) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
@@ -88,5 +97,21 @@ export default {
         commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
+  },
+  /**
+   * Get specific user data and save it to store
+   *
+   * @param user_id {String || Number}
+   */
+  'GET_USER_DATA': ({commit},user_id) => {
+    Vue.http.get(`${process.env.VUE_APP_API_URL}/user/${user_id}`)
+      .then(
+        res => {
+          commit('SET_CURRENT_USER_DATA', res.body.data);
+        },
+        err => {
+          console.log(err);
+        }
+      )
   }
 };

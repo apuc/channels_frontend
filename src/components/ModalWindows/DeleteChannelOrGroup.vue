@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="modal-inside">
     <h3>Вы уверены, что хотите удалить {{currentModal === 'deleteChannel' ? 'данный канал?' : 'данную группу?'}}</h3>
     <button type="button" class="btn btn-primary" style="margin-right: 15px" @click="remove">Да</button>
     <button type="button" class="btn btn-primary" @click="closeModal">Нет</button>
@@ -49,5 +49,9 @@
 </script>
 
 <style scoped>
-
+.modal-inside {
+  max-height: 90%;
+  padding: 30px;
+  overflow: auto;
+}
 </style>

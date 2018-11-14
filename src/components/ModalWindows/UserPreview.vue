@@ -7,7 +7,7 @@
         </div>
 
         <div>
-          <span>{{username}}</span>
+          <router-link :to="`/user/${id}`" @click.native="goToUserProfile(id)">{{username}}</router-link>
         </div>
       </div>
     </div>
@@ -19,20 +19,35 @@
 </template>
 
 <script>
-  import {mapActions} from 'vuex';
+  import {mapState, mapMutations, mapActions} from 'vuex';
   export default {
     name: "UserPreview",
+    computed: {
+      ...mapState('channels', ['currentChannelUsers'])
+    },
     props: {
       username: String,
       id: [String, Number],
       avatar: [String, Boolean],
     },
     methods: {
+      ...mapMutations({
+        setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
+      }),
       ...mapActions({
-        deleteUser: 'channels/DELETE_USER'
+        deleteUser: 'channels/DELETE_USER',
+        closeModal: 'modal/CLOSE_MODAL_EDIT_MODE'
       }),
       removeUser(id) {
         this.deleteUser(id);
+      },
+      setUserData(id) {
+        const getUser = this.currentChannelUsers.find(user => user.user_id === id);
+        this.setCurrentUserData(getUser);
+      },
+      goToUserProfile(id) {
+        this.setUserData(id);
+        this.closeModal('channelUsers');
       }
     }
   }

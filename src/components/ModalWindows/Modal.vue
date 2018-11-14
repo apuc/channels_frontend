@@ -3,36 +3,40 @@
     <div class="backdrop" @click="onModalClose"></div>
 
     <div class="modal__container ">
-      <button type="button" class="close" @click="onModalClose">Close</button>
+      <button type="button" class="close" @click="onModalClose">
+        <v-icon scale="1.5" class="icon text-danger" name="times-circle"/>
+      </button>
 
-      <ProfileModal v-if="userProfile" />
-      <CreateGroup v-else-if="createGroup"/>
-      <CreateChannel v-else-if="createChannel"/>
-      <DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>
-      <EditProfile v-else-if="editProfile"/>
-      <ChannelUsers v-else-if="channelUsers"/>
-      <SessionExpired v-else-if="logout"/>
+      <div class="modal_wrap">
+        <CreateGroup v-if="createGroup"/>
+        <CreateChannel v-else-if="createChannel"/>
+        <DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>
+        <EditProfile v-else-if="editProfile"/>
+        <ChannelUsers v-else-if="channelUsers"/>
+        <AddChannelsToGroup v-else-if="addChannelsToGroup"/>
+        <SessionExpired v-else-if="logout"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
-  import ProfileModal from './ProfileModal';
   import CreateGroup from './CreateGroup';
   import CreateChannel from './CreateChannel';
   import DeleteChannelOrGroup from './DeleteChannelOrGroup';
   import EditProfile from './EditProfile';
   import ChannelUsers from "./ChannelUsers";
+  import AddChannelsToGroup from "./AddChannelsToGroup";
   import SessionExpired from "./SessionExpired";
 
   export default {
     name: "Modal",
     components: {
       SessionExpired,
+      AddChannelsToGroup,
       ChannelUsers,
       DeleteChannelOrGroup,
-      ProfileModal,
       CreateGroup,
       CreateChannel,
       EditProfile,
@@ -48,6 +52,7 @@
         editProfile: 'modal/setEditProfile',
         channelUsers: 'modal/channelUsers',
         logoutModal: 'modal/logout',
+        addChannelsToGroup: 'modal/addChannelsToGroup',
       }),
     },
     data() {
@@ -66,9 +71,11 @@
         if (this.editMode) {
           this.toggleEditMode();
         }
+
         if (this.logoutModal) {
           this.logout();
         }
+
         this.deleteModal(this.currentModal);
       }
     },
@@ -108,20 +115,27 @@
     transform: translate(-50%, -50%);
     z-index: 2;
 
-    overflow: auto;
-    width: 500px;
-    min-height: 300px;
-    max-height: 90vh;
-    padding: 30px;
-
     background-color: #fff;
+  }
+
+  .modal_wrap {
+    width: 500px;
+    max-height: 90vh;
+
+    overflow: auto;
   }
 
   .close {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: -14px;
+    right: -13px;
 
+    font-size: 0;
+
+    background-color: #fff;
+    border: 1px solid #dc3545;
+    border-radius: 50%;
+    opacity: 1;
     cursor: pointer;
   }
 </style>

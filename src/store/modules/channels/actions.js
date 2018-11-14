@@ -72,8 +72,11 @@ export default {
       await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.channelData)
         .then(
           res => {
+            const createdChannelData = res.body.data;
+            router.push({path: `/${createdChannelData.slug}`});
             commit('modal/DELETE_MODAL', 'channel', {root: true});
             dispatch('GET_USER_CHANNELS');
+            dispatch('GET_USERS', createdChannelData.user_count);
           },
           err => console.log(err)
         )
