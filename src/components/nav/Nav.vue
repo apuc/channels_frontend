@@ -82,9 +82,6 @@
           channelsVisible: true,
           groupsVisible: true,
         },
-        // interval: setInterval(() => {
-        //   this.setIntervalForNav();
-        // }, 200)
       }
     },
     components: {
@@ -122,13 +119,6 @@
             break;
         }
       },
-      // setIntervalForNav() {
-      //   if (this.authStatus !== 'loading') {
-      //     console.log(this.authStatus);
-      //     clearInterval(this.interval);
-      //     this.getNav();
-      //   }
-      // }
     },
     async created() {
       joinChannels(this.channels);

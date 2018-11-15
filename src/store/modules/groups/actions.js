@@ -39,12 +39,18 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      Vue.http.post(`${process.env.VUE_APP_API_URL}/group`, getters.groupData)
+      await Vue.http.post(`${process.env.VUE_APP_API_URL}/group`, getters.groupData)
         .then(
-          res => {
+          async res => {
             const createdGroupData = res.body.data;
             commit('modal/DELETE_MODAL', 'group', {root: true});
             router.push({path: `/group/${createdGroupData.slug}`});
+
+            if (getters.channelsToAdd.length > 0) {
+              await commit('SET_GROUP_ID_FOR_ADDING_CHANNEL', getters.groupData.group_id);
+              await dispatch('ADD_CHANNELS', getters.channelsToAdd);
+            }
+
             dispatch('GET_USER_GROUPS');
           },
           err => console.log(err))
@@ -133,7 +139,7 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      Vue.http.put(`${process.env.VUE_APP_API_URL}/group/${getters.groupData.group_id}`, {
+      await Vue.http.put(`${process.env.VUE_APP_API_URL}/group/${getters.groupData.group_id}`, {
         title: getters.groupData.title,
         slug: getters.groupData.slug,
         status: getters.groupData.status,
@@ -141,7 +147,11 @@ export default {
         avatar: getters.groupData.avatar,
       })
         .then(
-          res => {
+          async res => {
+            if (getters.channelsToAdd.length > 0) {
+              await commit('SET_GROUP_ID_FOR_ADDING_CHANNEL', getters.groupData.group_id);
+              await dispatch('ADD_CHANNELS', getters.channelsToAdd);
+            }
             dispatch('GET_USER_GROUPS');
             commit('SET_CURRENT_GROUP_DATA', res.body.data);
             dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'group', {root: true});
@@ -205,15 +215,36 @@ export default {
     commit('SET_GROUP_ID_FOR_ADDING_CHANNEL', groupId);
     dispatch('modal/OPEN_MODAL_EDIT_MODE', 'addChannelsToGroup', {root: true});
   },
-  'ADD_CHANNELS': ({getters, dispatch}, channel_ids) => {
-    Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.groupForAddingChannels}/channels`, {channel_ids})
-      .then(
-        res => {
-          dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'addChannelsToGroup', {root: true});
-        },
-        err => {
-          console.log(err);
-        }
-      )
+  /**
+   * Add channels to group
+   *
+   * @param channel_ids {String || Number} - channels id's
+   * @constructor
+   */
+  'ADD_CHANNELS': async ({getters, commit, dispatch, rootGetters}, channel_ids) => {
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.groupForAddingChannels}/channels`, {channel_ids})
+        .then(
+          res => {
+            dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'addChannelsToGroup', {root: true});
+          },
+          err => {
+            console.log(err);
+          }
+        )
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('ADD_CHANNELS', channel_ids);
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
   }
 };

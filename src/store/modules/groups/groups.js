@@ -19,7 +19,10 @@ const state = {
     user_ids: [],
     avatar: undefined,
   },
-  groupForAddingChannels: '',
+  addingChannelsData: {
+    group_id: '',
+    channels: [],
+  },
   groupToDelete: '',
 };
 

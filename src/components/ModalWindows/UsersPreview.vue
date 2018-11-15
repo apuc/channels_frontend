@@ -1,34 +1,40 @@
 <template>
-  <li>
-    <div>
-      <div class="user-info">
-        <div class="image-wrap">
-          <img v-if="avatar" :src="avatar" width="30" height="30" alt="">
-        </div>
+  <ul class="users-list">
+    <li v-for="(user, index) in currentChannelUsers" :key="index">
+      <div>
+        <div class="user-info">
+          <div class="image-wrap">
+            <img
+              :src="user.avatar ? user.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
+              width="30" height="30" alt="">
+          </div>
 
-        <div>
-          <router-link :to="`/user/${id}`" @click.native="goToUserProfile(id)">{{username}}</router-link>
+          <div>
+            <router-link :to="`/user/${user.user_id}`" @click.native="goToUserProfile(user.user_id)">{{user.username}}
+            </router-link>
+          </div>
         </div>
       </div>
-    </div>
 
-    <button type="button" class="btn btn-sm btn-danger" @click="removeUser(id)">
-      <v-icon scale="1" class="icon" name="user-minus"/>
-    </button>
-  </li>
+      <button type="button" class="btn btn-sm btn-danger" @click="removeUser(user.user_id)">
+        <v-icon scale="1" class="icon" name="user-minus"/>
+      </button>
+    </li>
+  </ul>
 </template>
 
 <script>
-  import {mapState, mapMutations, mapActions} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
+
   export default {
-    name: "UserPreview",
+    name: "UsersPreview",
     computed: {
-      ...mapState('channels', ['currentChannelUsers'])
+      ...mapGetters({
+        currentChannelUsers: 'channels/currentChannelUsers'
+      }),
     },
-    props: {
-      username: String,
-      id: [String, Number],
-      avatar: [String, Boolean],
+    data() {
+      return {}
     },
     methods: {
       ...mapMutations({

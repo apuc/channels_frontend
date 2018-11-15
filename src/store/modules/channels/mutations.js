@@ -16,5 +16,8 @@ export default {
   },
   'SET_CHANNEL_USERS': (state, users) => {
     state.currentChannelUsers = users;
-  }
+  },
+  'REMOVE_USERS_FROM_STORE': state => {
+    state.currentChannelUsers = []
+  },
 };

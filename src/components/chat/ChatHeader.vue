@@ -106,16 +106,6 @@
         this.setModal('channelUsers');
       },
     },
-    watch: {},
-    created() {
-      if (!this.channelData.channel_id) {
-        window.onload = () => {
-          const slug = location.pathname;
-          const channelObj = this.channels.find(channel => channel.slug === slug.slice(1));
-          this.setCurrentChannelData(channelObj.channel_id);
-        }
-      }
-    }
   }
 </script>
 

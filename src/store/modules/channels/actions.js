@@ -14,7 +14,15 @@ export default {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel`)
         .then(
           res => {
-            commit('USER_CHANNELS', res.body.data);
+            const channels = res.body.data;
+            const slug = location.pathname;
+            const channelObj = channels.find(channel => channel.slug === slug.slice(1));
+
+            commit('USER_CHANNELS', channels);
+
+            if (channelObj) {
+              dispatch('SET_CURRENT_CHANNEL_DATA', channelObj.channel_id);
+            }
           },
           err => console.log('get channels', err)
         )
@@ -241,10 +249,7 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/delete-user`, {
-        user_id: userId,
-        channel_id: getters.currentChannelData.channel_id
-      })
+      await Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/delete-user?channel_id=${getters.currentChannelData.channel_id}&user_id=${userId}`)
         .then(
           res => {
             dispatch('GET_USERS', getters.currentChannelData.channel_id);

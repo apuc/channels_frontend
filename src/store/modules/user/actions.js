@@ -9,7 +9,6 @@ export default {
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
-    console.log(currentDateInSeconds - tokenExpiresIn);
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/me`)
         .then(
@@ -102,8 +101,13 @@ export default {
    *
    * @param user_id {String || Number}
    */
-  'GET_USER_DATA': ({commit},user_id) => {
-    Vue.http.get(`${process.env.VUE_APP_API_URL}/user/${user_id}`)
+  'GET_USER_DATA': async ({commit, dispatch, rootGetters}, user_id) => {
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/${user_id}`)
       .then(
         res => {
           commit('SET_CURRENT_USER_DATA', res.body.data);
@@ -112,6 +116,17 @@ export default {
           console.log(err);
         }
       )
+      .catch(error => console.log('GET_USER_DATA: ', error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('GET_USER_DATA');
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
   },
   /**
    * Add avatar to the user profile and write avatar_id to the store

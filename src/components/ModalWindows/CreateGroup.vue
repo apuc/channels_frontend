@@ -103,35 +103,34 @@
         img: '',
         imgSrc: '',
         notImage: '',
-        controls: [],
         formSubmited: false
       }
     },
     methods: {
       ...mapMutations({
         setGroupData: 'groups/SET_GROUP_DATA',
+        setChannelsToAdd: 'groups/SET_CHANNELS_TO_ADD',
       }),
       ...mapActions({
         editGroup: 'groups/EDIT_GROUP',
         createGroup: 'groups/CREATE_GROUP',
         createGroupAvatar: 'groups/CREATE_GROUP_AVATAR',
-        addChannels: 'groups/ADD_CHANNELS',
       }),
       async onSubmit() {
         await this.setGroupData(this.settingGroupData);
+
+        if (this.groupChannels.length > 0) {
+          this.setChannelsToAdd(this.groupChannels);
+        }
 
         if (this.img) {
           await this.createGroupAvatar(this.img);
         }
 
-        if (this.groupChannels) {
-          await this.addChannels(this.settingGroupData.group_id);
-        }
-
         if (this.isEdit) {
           this.editGroup();
         } else {
-          this.createGroup();
+          this.createGroup()
         }
       },
       makeSplitedArray(string) {

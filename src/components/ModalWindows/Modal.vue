@@ -63,6 +63,7 @@
       ...mapMutations({
         toggleEditMode: 'modal/TOGGLE_EDIT_MODE',
         deleteModal: 'modal/DELETE_MODAL',
+        removeUsersFromStore: 'channels/REMOVE_USERS_FROM_STORE',
       }),
       ...mapActions({
         logout: 'auth/LOGOUT'
@@ -74,6 +75,10 @@
 
         if (this.logoutModal) {
           this.logout();
+        }
+
+        if (this.channelUsers) {
+          this.removeUsersFromStore();
         }
 
         this.deleteModal(this.currentModal);

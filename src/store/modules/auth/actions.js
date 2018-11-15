@@ -13,9 +13,9 @@ export default {
    * @return status 201 - пользователь добавлен.
    * @return status 500 - ошибка добавления пользователя.
    */
-  'REGISTRATION': ({commit, dispatch}, userData) => {
+  'REGISTRATION': async ({commit, dispatch}, userData) => {
     commit('LOADING');
-    Vue.http.post(`${process.env.VUE_APP_API_URL}/registration`, userData)
+    await Vue.http.post(`${process.env.VUE_APP_API_URL}/registration`, userData)
       .then(
         res => {
           commit('SUCCESS_REGISTRATION');

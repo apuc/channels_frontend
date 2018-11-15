@@ -54,7 +54,7 @@
         const {username, password} = this;
         if (!this.gettingTokenAndData) {
           this.gettingTokenData();
-          console.log('getting token');
+
           await this.getToken({
             grant_type: 'password',
             client_id: process.env.VUE_APP_CLIENT_ID,

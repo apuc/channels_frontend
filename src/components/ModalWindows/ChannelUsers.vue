@@ -9,54 +9,52 @@
       <label for="add-user" style="margin-right: 10px">Добавить пользователя</label>
 
       <div class="input-wrap">
-        <input id="add-user" class="form-control add-user__input" type="text" v-model="add_user">
+        <input id="add-user" class="form-control add-user__input" type="text" :value="add_user" @input="findUser">
 
-        <button type="button" class="btn" :class="disableButton" @click="addUser">
+        <button type="button" class="btn" :class="disableButton" @click="addUser(add_user)">
           <v-icon scale="1" class="icon" name="plus-square"/>
         </button>
       </div>
+
+      <p class="user-exist" v-if="isUserInChannel">This user exist.</p>
     </div>
 
-    <ul class="users-list">
-      <UserPreview v-for="(user, index) in users"
-                   :username="user.username"
-                   :id="user.user_id"
-                   :avatar="user.avatar ? user.avatar.small : false"/>
-    </ul>
+    <UsersPreview/>
   </div>
 </template>
 
 <script>
-  import {mapState, mapActions} from 'vuex';
-  import UserPreview from './UserPreview';
+  import {mapGetters, mapActions} from 'vuex';
+  import UsersPreview from './UsersPreview';
 
   export default {
     name: "ChannelUsers",
-    components: {UserPreview},
+    components: {UsersPreview},
     computed: {
-      ...mapState('channels', ['currentChannelUsers']),
-
+      ...mapGetters({
+        currentChannelUsers: 'channels/currentChannelUsers'
+      }),
       disableButton() {
-        return this.add_user.length > 0 ? 'btn-primary' : 'btn-default disable';
-      }
+        return this.add_user.length > 0 && !this.isUserInChannel ? 'btn-primary' : 'btn-default disable';
+      },
     },
     data() {
       return {
-        users: [],
-        add_user: ''
+        add_user: '',
+        isUserInChannel: false
       }
     },
     methods: {
       ...mapActions({
         addUser: 'channels/ADD_USER',
       }),
-      addUser() {
-        this.addUser(this.add_user);
-      },
+      findUser(e) {
+        this.add_user = e.target.value;
+        for (let i = 0; i < this.currentChannelUsers.length; i++) {
+          this.isUserInChannel = this.currentChannelUsers[i].user_id === Number(this.add_user);
+        }
+      }
     },
-    created() {
-      this.users = this.currentChannelUsers;
-    }
   }
 </script>
 
@@ -92,5 +90,9 @@
     max-height: 90%;
     padding: 30px;
     overflow: auto;
+  }
+
+  .user-exist {
+    color: rgba(255, 0, 0, 0.64);
   }
 </style>
