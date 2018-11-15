@@ -15,11 +15,11 @@
 
       <div class="user">
         <div class="user__avatar">
-          <img :src="userInfo.avatar ? userInfo.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
+          <img :src="userData.avatar ? userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
         </div>
 
         <div class="user__name">
-          <button type="button" class="btn btn-link" @click="openModal($event, 'editProfile')">{{userInfo.username}}</button>
+          <button type="button" class="btn btn-link" @click="openModal($event, 'editProfile')">{{userData.username}}</button>
         </div>
       </div>
 
@@ -57,7 +57,8 @@
       ...mapGetters({
         groups: 'groups/groups',
         channels: 'channels/channels',
-        userInfo: 'user/info'
+        userData: 'user/info',
+        authStatus: 'auth/authStatus',
       }),
     },
     data() {
@@ -80,7 +81,10 @@
         filters: {
           channelsVisible: true,
           groupsVisible: true,
-        }
+        },
+        // interval: setInterval(() => {
+        //   this.setIntervalForNav();
+        // }, 200)
       }
     },
     components: {
@@ -118,14 +122,19 @@
             break;
         }
       },
+      // setIntervalForNav() {
+      //   if (this.authStatus !== 'loading') {
+      //     console.log(this.authStatus);
+      //     clearInterval(this.interval);
+      //     this.getNav();
+      //   }
+      // }
     },
     async created() {
-      await this.getNav();
       joinChannels(this.channels);
     },
 
   }
-
 </script>
 
 <style scoped>

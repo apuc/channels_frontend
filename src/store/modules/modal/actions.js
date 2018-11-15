@@ -4,8 +4,8 @@ export default {
     commit('SET_MODAL', payload);
     commit('TOGGLE_EDIT_MODE');
   },
-  'CLOSE_MODAL_EDIT_MODE': ({getters, commit}, payload) => {
-    commit('DELETE_MODAL', payload);
+  'CLOSE_MODAL_EDIT_MODE': ({getters, commit}) => {
+    commit('DELETE_MODAL');
     commit('TOGGLE_EDIT_MODE');
-  }
+  },
 };

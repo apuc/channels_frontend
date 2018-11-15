@@ -14,23 +14,26 @@
         <EditProfile v-else-if="editProfile"/>
         <ChannelUsers v-else-if="channelUsers"/>
         <AddChannelsToGroup v-else-if="addChannelsToGroup"/>
+        <SessionExpired v-else-if="logout"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import {mapGetters, mapMutations} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
   import CreateGroup from './CreateGroup';
   import CreateChannel from './CreateChannel';
   import DeleteChannelOrGroup from './DeleteChannelOrGroup';
   import EditProfile from './EditProfile';
   import ChannelUsers from "./ChannelUsers";
   import AddChannelsToGroup from "./AddChannelsToGroup";
+  import SessionExpired from "./SessionExpired";
 
   export default {
     name: "Modal",
     components: {
+      SessionExpired,
       AddChannelsToGroup,
       ChannelUsers,
       DeleteChannelOrGroup,
@@ -48,6 +51,7 @@
         deleteChannelOrGroup: 'modal/deleteChannelOrGroup',
         editProfile: 'modal/setEditProfile',
         channelUsers: 'modal/channelUsers',
+        logoutModal: 'modal/logout',
         addChannelsToGroup: 'modal/addChannelsToGroup',
       }),
     },
@@ -60,9 +64,16 @@
         toggleEditMode: 'modal/TOGGLE_EDIT_MODE',
         deleteModal: 'modal/DELETE_MODAL',
       }),
+      ...mapActions({
+        logout: 'auth/LOGOUT'
+      }),
       onModalClose() {
         if (this.editMode) {
           this.toggleEditMode();
+        }
+
+        if (this.logoutModal) {
+          this.logout();
         }
 
         this.deleteModal(this.currentModal);

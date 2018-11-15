@@ -27,7 +27,7 @@
       ></b-dropdown-item>
     </b-dropdown>
 
-    <button class="btn btn-primary exit" type="button" @click="exit">Exit</button>
+    <button class="btn btn-primary exit" type="button" @click="logout">Exit</button>
   </header>
 </template>
 
@@ -57,10 +57,6 @@
       ...mapActions({
         logout: 'auth/LOGOUT',
       }),
-      exit() {
-        this.logout();
-        this.$router.push('/');
-      }
     }
   }
 </script>

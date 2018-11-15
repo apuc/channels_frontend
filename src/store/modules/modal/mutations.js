@@ -39,6 +39,10 @@ export default {
         state.addChannelsToGroup = true;
         state.modal.current = payload;
         break;
+      case 'logout':
+        state.logout = true;
+        state.modal.current = payload;
+        break;
       default:
         break;
     }
@@ -71,6 +75,9 @@ export default {
         break;
       case 'addChannelsToGroup':
         state.addChannelsToGroup = false;
+        break;
+      case 'logout':
+        state.logout = false;
         break;
       default:
         break;

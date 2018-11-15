@@ -17,6 +17,7 @@ const state = {
   deleteChannelOrGroup: false,
   editMode: false,
   channelUsers: false,
+  logout: false,
   addChannelsToGroup: false,
 };
 

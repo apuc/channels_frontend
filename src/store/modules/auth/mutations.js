@@ -1,13 +1,19 @@
 export default {
-  'LOADING': (state) => {
+  'LOADING': state => {
     state.status = 'loading';
   },
-  'SUCCESS_REGISTRATION': (state) => {
-    state.status = 'success registration';
+  'GETTING_TOKEN_AND_DATA': state => {
+    state.gettingTokenAndData = !state.gettingTokenAndData;
   },
-  'SUCCESS_TOKEN': (state, token) => {
+  'SET_TOKEN': (state, token) => {
     state.status = 'success getting token';
     state.token = token;
+  },
+  'SET_REFRESH_TOKEN': (state, refreshToken) => {
+    state.refreshTokenBody.refresh_token = refreshToken;
+  },
+  'SUCCESS_REGISTRATION': state => {
+    state.status = 'success registration';
   },
   'SUCCESS_LOGIN': (state, user) => {
     state.status = 'success login';
@@ -17,7 +23,7 @@ export default {
     state.status = 'error';
     console.log(error);
   },
-  'LOGOUT': (state) => {
+  'LOGOUT': state => {
     state.status = '';
     state.token = ''
   },

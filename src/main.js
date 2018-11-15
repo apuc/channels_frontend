@@ -29,11 +29,21 @@ if (token) {
 }
 
 router.beforeEach((to, from, next) => {
+  const currentDateInSeconds = Math.round(Date.now() / 1000);
+  const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+  if ((currentDateInSeconds > refreshTokenExpiresIn || !refreshTokenExpiresIn) && store.getters["auth/isAuthenticated"]) {
+    localStorage.clear();
+    store.commit('auth/LOGOUT');
+  }
+
   if (to.matched.some(record => record.meta.requiresAuth)) { // если в роутинге в поле meta указано requiresAuth в true
     if (store.getters["auth/isAuthenticated"]) { // Проверяем авторизован ли пользователь
-      next()
+      console.log('authenticated');
+      next();
     } else { // Если не авторизован - редиректим на логин
-      next({path: '/login'});
+      // next({path: '/login'});
+      store.commit('modal/SET_MODAL', 'logout')
     }
   } else { // если в роутинге в поле meta указано requiresAuth в false или не указан
     if (store.getters["auth/isAuthenticated"]) { // Если пользователь залогинен

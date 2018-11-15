@@ -23,7 +23,6 @@
     },
     methods: {
       ...mapMutations({
-        toggleEditMode: 'modal/TOGGLE_EDIT_MODE',
         deleteModal: 'modal/DELETE_MODAL',
       }),
       ...mapActions({
@@ -32,7 +31,6 @@
       }),
       closeModal() {
         this.deleteModal(this.currentModal);
-        this.toggleEditMode();
       },
       remove() {
         this.currentModal === 'deleteChannel' ?
