@@ -15,11 +15,11 @@
 
       <div class="user">
         <div class="user__avatar">
-          <img :src="userInfo.avatar ? userInfo.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
+          <img :src="userData.avatar ? userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
         </div>
 
         <div class="user__name">
-          <button type="button" class="btn btn-link" @click="openModal($event, 'editProfile')">{{userInfo.username}}</button>
+          <button type="button" class="btn btn-link" @click="openModal($event, 'editProfile')">{{userData.username}}</button>
         </div>
       </div>
 

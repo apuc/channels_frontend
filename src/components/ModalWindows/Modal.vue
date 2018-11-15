@@ -9,7 +9,7 @@
 
       <div class="modal_wrap">
         <CreateGroup v-if="createGroup"/>
-        <CreateChannel v-else-if="createChannel"/>
+        <CreateChannel v-else-if="createChannel.status"/>
         <DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>
         <EditProfile v-else-if="editProfile"/>
         <ChannelUsers v-else-if="channelUsers"/>
