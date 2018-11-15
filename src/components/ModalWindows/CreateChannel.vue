@@ -145,7 +145,6 @@
         img: '',
         imgSrc: '',
         notImage: '',
-        controls: [],
       }
     },
     methods: {

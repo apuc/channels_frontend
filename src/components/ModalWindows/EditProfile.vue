@@ -35,25 +35,25 @@
         </div>
       </div>
 
-      <!--<div class="form-group">-->
-        <!--<label for="file">Upload Image</label>-->
+      <div class="form-group">
+        <label for="file">Upload Image</label>
 
-        <!--<div class="input-group">-->
-            <!--<span class="input-group-btn">-->
-                <!--<span class="btn btn-default btn-file">-->
-                    <!--Browse… <input type="file" id="file" @change="onFileChange">-->
-                <!--</span>-->
-            <!--</span>-->
+        <div class="input-group">
+            <span class="input-group-btn">
+                <span class="btn btn-default btn-file">
+                    Browse… <input type="file" id="file" @change="onFileChange">
+                </span>
+            </span>
 
-          <!--<input type="text" class="form-control" readonly>-->
-        <!--</div>-->
-        <!--<span v-if="notImage"> {{ notImage }}</span>-->
-        <!--<img :src="imgSrc" id='img-upload' v-if="imgSrc"/>-->
-        <!--<button class="btn btn-group remove-btn"-->
-                <!--type="button"-->
-                <!--@click="removeImage"-->
-                <!--v-if="imgSrc">Remove img</button>-->
-      <!--</div>-->
+          <input type="text" class="form-control" readonly>
+        </div>
+        <span v-if="notImage"> {{ notImage }}</span>
+        <img :src="imgSrc" id='img-upload' v-if="imgSrc"/>
+        <button class="btn btn-group remove-btn"
+                type="button"
+                @click="removeImage"
+                v-if="imgSrc">Remove img</button>
+      </div>
 
       <button type="submit" class="btn btn-primary mr-1" @click="onSubmit">Save</button>
       <button type="submit" class="btn btn-danger" @click="deleteUser">Delete</button>
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
     name: "EditProfile",
@@ -74,28 +74,70 @@
     data() {
       return {
         userData: {
+          user_id: '',
           username: '',
           email: '',
           password: '',
           passwordRepeat: '',
-        }
+        },
+        img: '',
+        imgSrc: '',
+        notImage: '',
       }
     },
     methods: {
+      ...mapMutations({
+        setUserData: 'user/SET_USER_INFO',
+      }),
       ...mapActions({
         editProfile: 'user/EDIT_PROFILE',
         deleteProfile: 'user/DELETE_USER',
+        createUserAvatar: 'user/CREATE_USER_AVATAR',
       }),
-      onSubmit() {
-        this.editProfile(this.userData);
+      async onSubmit() {
+        await this.setUserData(this.userData);
+
+        if (this.img) {
+          await this.createUserAvatar(this.img);
+        }
+        this.editProfile();
       },
       deleteUser() {
         this.deleteProfile();
-      }
+      },
+      onFileChange(e) {
+        this.imgSrc = '';
+        const files = e.target.files || e.dataTransfer.files;
+        const fileType = files[0].type.split('/');
+        if (files.length && fileType[0] === 'image') {
+          this.notImage = '';
+          this.createImage(files[0]);
+          this.createFormData(files[0]);
+        } else {
+          this.notImage = 'Choose image please'
+        }
+      },
+      createFormData(file) {
+        let formData = new FormData();
+        formData.append('avatar', file);
+        this.img = formData;
+      },
+      createImage(file) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          this.imgSrc = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      },
+      removeImage: function (e) {
+        this.imgSrc = '';
+      },
     },
     created() {
       this.userData.username = this.userInfo.username;
       this.userData.email = this.userInfo.email;
+      this.userData.user_id = this.userInfo.user_id;
     }
   }
 </script>
@@ -105,5 +147,34 @@
   max-height: 90%;
   padding: 30px;
   overflow: auto;
+}
+.btn-file {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
+
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
+
+#img-upload{
+  width: 100%;
+}
+
+.remove-btn {
+  margin-top: 20px;
 }
 </style>

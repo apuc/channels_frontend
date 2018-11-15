@@ -4,11 +4,7 @@ import mutations from './mutations';
 
 const state = {
   info: {
-    avatar: {
-      average:'',
-      origin:'',
-      small:'',
-    },
+    avatar: undefined,
     email: '',
     user_id: null,
     username: '',

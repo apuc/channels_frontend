@@ -37,28 +37,27 @@ export default {
   },
   /**
    * Change user data
-   *
-   * @param userData {Object} - new user data
    */
-  'EDIT_PROFILE': async ({getters, commit, dispatch, rootGetters}, userData) => {
+  'EDIT_PROFILE': async ({getters, commit, dispatch, rootGetters}) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.put(`${process.env.VUE_APP_API_URL}/user/${getters.info.user_id}`, {
-        email: userData.email,
-        password: userData.password,
-        password_confirmation: userData.passwordRepeat,
-        username: userData.username,
+        email: getters.info.email,
+        password: getters.info.password,
+        password_confirmation: getters.info.passwordRepeat,
+        username: getters.info.username,
+        avatar: getters.info.avatar,
       })
         .then(
           res => {
-            commit('modal/SET_MODAL', 'editProfile', {root: true});
+            commit('modal/DELETE_MODAL', null, {root: true});
           },
           err => console.log(err)
         )
-        .catch(error => console.log('EDIT_PROFILE: ',error))
+        .catch(error => console.log('EDIT_PROFILE: ', error))
     } else {
       if (currentDateInSeconds < refreshTokenExpiresIn) {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
@@ -113,5 +112,39 @@ export default {
           console.log(err);
         }
       )
-  }
+  },
+  /**
+   * Add avatar to the user profile and write avatar_id to the store
+   *
+   * @param img - image form data
+   */
+  'CREATE_USER_AVATAR': async ({commit, dispatch, rootGetters}, img) => {
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.post(`${process.env.VUE_APP_API_URL}/user/avatar`, img, {
+        headers: {
+          "Content-Type": "multipart/form-data;"
+        }
+      })
+        .then(
+          async res => {
+            commit('SET_USER_AVATAR_ID', res.body.data.avatar_id);
+          },
+          err => console.log(err)
+        )
+        .catch(error => console.log('CREATE_GROUP_AVATAR: ', error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('CREATE_USER_AVATAR', img);
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
+  },
 };

@@ -4,5 +4,8 @@ export default {
   },
   'SET_CURRENT_USER_DATA': (state, data) => {
     state.currentUserInfo = data;
-  }
+  },
+  'SET_USER_AVATAR_ID': (state, avatar_id) => {
+    state.info.avatar = avatar_id;
+  },
 };
