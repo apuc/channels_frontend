@@ -5,15 +5,17 @@ export default {
   /**
    * Get user groups
    */
-  'GET_USER_GROUPS': async ({commit, dispatch, rootGetters}) => {
+  'GET_USER_GROUPS': async ({getters, commit, dispatch, rootGetters}) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+    commit('SET_GROUPS_LOADING_FLAG');
 
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/group`)
         .then(
           res => {
+            commit('SET_GROUPS_LOADING_FLAG');
             commit('USER_GROUPS', res.body.data);
           },
           err => console.log('get groups', err)

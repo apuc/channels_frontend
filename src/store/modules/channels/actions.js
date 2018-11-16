@@ -5,10 +5,11 @@ export default {
   /**
    * Get user channels
    */
-  'GET_USER_CHANNELS': async ({commit, dispatch, rootGetters}) => {
+  'GET_USER_CHANNELS': async ({getters, commit, dispatch, rootGetters}) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+    commit('SET_CHANNELS_LOADING_FLAG');
 
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel`)
@@ -17,7 +18,7 @@ export default {
             const channels = res.body.data;
             const slug = location.pathname;
             const channelObj = channels.find(channel => channel.slug === slug.slice(1));
-
+            commit('SET_CHANNELS_LOADING_FLAG');
             commit('USER_CHANNELS', channels);
 
             if (channelObj) {
@@ -49,10 +50,13 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
+      commit('SET_CHANNEL_USERS_LOADING');
+      commit('SET_CHANNEL_USERS', []);
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/users`)
         .then(
           async res => {
             await commit('SET_CHANNEL_USERS', res.body.data);
+            commit('SET_CHANNEL_USERS_LOADED');
           },
           err => console.log(err)
         )

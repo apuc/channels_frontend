@@ -24,11 +24,12 @@ const state = {
     channels: [],
   },
   groupToDelete: '',
+  isGroupsLoading: false,
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

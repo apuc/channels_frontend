@@ -10,9 +10,13 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
+      commit('SET_USER_DATA_LOADING_FLAG');
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/me`)
         .then(
-          async res => await commit('SET_USER_INFO', res.body.data),
+          async res => {
+            commit('SET_USER_DATA_LOADING_FLAG');
+            await commit('SET_USER_INFO', res.body.data);
+          },
           err => console.log('err login', err)
         )
         .catch(error => console.log('GET_USER: ', error));
@@ -107,16 +111,16 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/${user_id}`)
-      .then(
-        res => {
-          commit('SET_CURRENT_USER_DATA', res.body.data);
-        },
-        err => {
-          console.log(err);
-        }
-      )
-      .catch(error => console.log('GET_USER_DATA: ', error))
+      await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/${user_id}`)
+        .then(
+          res => {
+            commit('SET_CURRENT_USER_DATA', res.body.data);
+          },
+          err => {
+            console.log(err);
+          }
+        )
+        .catch(error => console.log('GET_USER_DATA: ', error))
     } else {
       if (currentDateInSeconds < refreshTokenExpiresIn) {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})

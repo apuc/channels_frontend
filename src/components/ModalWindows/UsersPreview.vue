@@ -1,5 +1,9 @@
 <template>
-  <ul class="users-list">
+  <div class="placeholder"
+       v-if="isChannelUsersLoading"
+       :style="calculatePlaceholders"
+  ></div>
+  <ul class="users-list" v-else>
     <li v-for="(user, index) in currentChannelUsers" :key="index">
       <div>
         <div class="user-info">
@@ -30,8 +34,18 @@
     name: "UsersPreview",
     computed: {
       ...mapGetters({
-        currentChannelUsers: 'channels/currentChannelUsers'
+        currentChannelUsers: 'channels/currentChannelUsers',
+        isChannelUsersLoading: 'channels/isChannelUsersLoading',
+        currentChannelData: 'channels/currentChannelData',
       }),
+      calculatePlaceholders() {
+        const height = 45;
+        if (this.currentChannelData.user_count < 5 && this.currentChannelData.user_count > 0) {
+          return `height: ${height * this.currentChannelData.user_count}px`
+        } else {
+          return 'height: 135px'
+        }
+      }
     },
     data() {
       return {}
@@ -83,5 +97,29 @@
 
   img {
     display: block;
+  }
+
+  .placeholder {
+    width: 100%;
+    height: 180px;
+
+    background-image: radial-gradient(circle 15px at 20px, lightgray 99%, transparent 0),
+    linear-gradient(lightgray 12px, transparent 0);
+    background-size: 40px 45px, 80% 45px;
+    background-position: 0 5px, 50px 21.5px;
+    background-repeat: repeat-y;
+
+    animation: shine 1.5s infinite;
+  }
+  @keyframes shine {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 </style>

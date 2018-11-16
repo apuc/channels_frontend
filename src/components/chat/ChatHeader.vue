@@ -85,7 +85,6 @@
       }),
       ...mapActions({
         logout: 'auth/LOGOUT',
-        setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
       }),
       getNoun(number, one, two, five) {
         number = Math.abs(number);
@@ -113,8 +112,8 @@
   header {
     display: flex;
     align-items: center;
-    height: 40px;
-    padding: 15px;
+    height: 50px;
+    padding: 0 15px;
     flex-shrink: 0;
   }
 

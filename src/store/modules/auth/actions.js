@@ -68,6 +68,12 @@ export default {
    * Delete token from storage
    */
   'LOGOUT': ({commit}) => {
+    commit('user/SET_DEFAULT_USER_STATE', null, {root: true});
+    commit('modal/SET_DEFAULT_MODAL_STATE', null, {root: true});
+    commit('groups/SET_DEFAULT_GROUPS_STATE', null, {root: true});
+    commit('channels/SET_DEFAULT_CHANNELS_STATE', null, {root: true});
+    commit('messages/SET_MESSAGES', [], {root: true});
+    commit('chat/SET_CHAT_DEFAULT_STATE', null, {root: true});
     commit('LOGOUT');
     localStorage.clear();
     commit('SET_TOKEN', '');

@@ -1,6 +1,7 @@
 <template>
   <nav class="list-group">
-    <section class="list-group__item" v-for="(item, index) in itemsList" @click="setData($event, type === 'channel' ? item.channel_id : item.group_id)">
+    <section class="list-group__item" v-for="(item, index) in itemsList"
+             @click="setData($event, type === 'channel' ? item.channel_id : item.group_id)">
       <router-link
         :to="type === 'channel' ? `/${item.slug}` : `/group/${item.slug}`"
         :key="index + item.slug"
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
     computed: {
@@ -57,11 +58,12 @@
       type: String,
     },
     data() {
-      return {
-
-      }
+      return {}
     },
     methods: {
+      ...mapMutations({
+        removeUsersFromStore: 'channels/REMOVE_USERS_FROM_STORE',
+      }),
       ...mapActions({
         setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
         setChannelEditing: 'channels/SET_CHANNEL_EDITING',
@@ -72,25 +74,27 @@
         setAddingChannelsToGroup: 'groups/SET_ADDING_CHANNELS_TO_GROUP',
         getMessages: 'messages/GET_MESSAGES',
       }),
-      async setData(e,id) {
+      async setData(e, id) {
         if (!e.target.hasAttribute('type')) {
           this.type === 'channel' ?
             await this.setCurrentChannelData(Number(id))
           :
-            await this.setCurrentGroupData(Number(id))
+            await this.setCurrentGroupData(Number(id));
+
+          this.getMessages();
+          this.removeUsersFromStore();
         }
-        this.getMessages();
       },
       editThis(e, id) {
         this.type === 'channel' ?
           this.setChannelEditing(Number(id))
-        :
+          :
           this.setGroupEditing(Number(id))
       },
       deleteThis(e, id) {
         this.type === 'channel' ?
           this.setChannelDeleting(Number(id))
-        :
+          :
           this.setGroupDeleting(Number(id))
       },
       openChannelsAdding(group_id) {

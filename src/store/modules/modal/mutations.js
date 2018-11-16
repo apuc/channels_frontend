@@ -1,6 +1,6 @@
 export default {
   'SET_MODAL': (state, payload) => {
-    state.modal.status= true;
+    state.modal.status = true;
 
     switch (payload) {
       case 'group':
@@ -89,4 +89,22 @@ export default {
   'TOGGLE_EDIT_MODE': (state) => {
     state.editMode = !state.editMode;
   },
+  'SET_DEFAULT_MODAL_STATE': (state, data) => {
+    state.modal = {
+      status: false,
+      current: '',
+    };
+    state.setCreateGroup = false;
+    state.setCreateChannel = {
+      status: false,
+      isDialog: false
+    };
+    state.setUserProfile = false;
+    state.setEditProfile = false;
+    state.deleteChannelOrGroup = false;
+    state.editMode = false;
+    state.channelUsers = false;
+    state.logout = false;
+    state.addChannelsToGroup = false;
+  }
 };

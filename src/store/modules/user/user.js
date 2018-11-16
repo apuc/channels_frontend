@@ -14,12 +14,13 @@ const state = {
     email: '',
     user_id: '',
     username: '',
-  }
+  },
+  isUserLoading: false,
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

@@ -26,11 +26,13 @@ const state = {
   },
   currentChannelUsers: [],
   channelToDelete: '',
+  isChannelsLoading: false,
+  isChannelUsersLoading: true,
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

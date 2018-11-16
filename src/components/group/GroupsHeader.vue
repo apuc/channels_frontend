@@ -65,8 +65,8 @@
   header {
     display: flex;
     align-items: center;
-    height: 40px;
-    padding: 15px;
+    height: 50px;
+    padding: 0 15px;
   }
 
   .settings {

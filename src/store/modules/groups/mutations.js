@@ -19,5 +19,32 @@ export default {
   },
   'SET_CHANNELS_TO_ADD': (state, channels) => {
     state.addingChannelsData.channels = channels;
+  },
+  'SET_GROUPS_LOADING_FLAG': state => {
+    state.isGroupsLoading = !state.isGroupsLoading;
+  },
+  'SET_DEFAULT_GROUPS_STATE': (state, data) => {
+    state.groups = [];
+    state.currentGroupData = {
+      group_id: '',
+      title: '',
+      slug: '',
+      status: '',
+      avatar: undefined,
+    };
+    state.groupData = {
+      group_id: '',
+      title: '',
+      slug: '',
+      status: '',
+      user_ids: [],
+      avatar: undefined,
+    };
+    state.addingChannelsData = {
+      group_id: '',
+      channels: [],
+    };
+    state.groupToDelete = '';
+    state.isGroupsLoading = false;
   }
 };

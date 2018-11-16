@@ -8,42 +8,57 @@
 
         <ul class="dropdown" v-if="addMenuVisible">
           <li v-for="(elem, index) in info" class="dropdown__el">
-            <button type="button" class="btn btn-link" @click="openModal($event, elem.modalTrigger)">{{elem.name}}</button>
+            <button type="button" class="btn btn-link" @click="openModal($event, elem.modalTrigger)">{{elem.name}}
+            </button>
           </li>
         </ul>
       </div>
 
-      <div class="user">
-        <div class="user__avatar">
-          <img :src="userData.avatar ? userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
-        </div>
 
-        <div class="user__name">
-          <button type="button" class="btn btn-link" @click="openModal($event, 'editProfile')">{{userData.username}}</button>
-        </div>
+      <div class="user">
+        <div class="placeholder placeholder_user" v-if="isUserLoading"></div>
+
+        <button type="button" class="btn btn-link" @click="openModal($event, 'editProfile')" v-else>
+          <img class="user__avatar-img"
+               :src="userData.avatar ? userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
+               alt="">
+          {{userData.username}}
+        </button>
       </div>
 
       <div class="filters">
         <button type="button" class="btn btn-primary filters__filter" data-filter="all" @click="filter">All</button>
 
-        <button type="button" class="btn btn-primary filters__filter" data-filter="channel" @click="filter">
+        <button v-if="channels.length > 0"
+                type="button"
+                class="btn btn-primary filters__filter"
+                data-filter="channel"
+                @click="filter"
+        >
           <v-icon scale="1" class="icon" name="bullhorn"/>
         </button>
 
-        <button type="button" class="btn btn-primary filters__filter" data-filter="group" @click="filter">
+        <button v-if="groups.length > 0"
+                type="button"
+                class="btn btn-primary filters__filter"
+                data-filter="group"
+                @click="filter"
+        >
           <v-icon scale="1" class="icon" name="folder"/>
         </button>
       </div>
     </header>
 
+
     <NavSection title="Каналы"
                 :itemsList="channels"
                 :type="'channel'"
-                v-if="filters.channelsVisible"/>
+                v-if="filters.channelsVisible && !isChannelsLoading"/>
     <NavSection title="Группы"
                 :itemsList="groups"
                 :type="'group'"
-                v-if="filters.groupsVisible"/>
+                v-if="filters.groupsVisible && !isGroupsLoading"/>
+    <div class="placeholder" v-if="isChannelsLoading || isGroupsLoading"></div>
   </aside>
 </template>
 
@@ -59,6 +74,9 @@
         channels: 'channels/channels',
         userData: 'user/info',
         authStatus: 'auth/authStatus',
+        isGroupsLoading: 'groups/isGroupsLoading',
+        isChannelsLoading: 'channels/isChannelsLoading',
+        isUserLoading: 'user/isUserLoading',
       }),
     },
     data() {
@@ -121,6 +139,10 @@
       },
     },
     async created() {
+      this.filter = {
+        channelsVisible: this.channels.length > 0,
+        groupsVisible: this.groups.length > 0,
+      };
       joinChannels(this.channels);
     },
 
@@ -128,14 +150,46 @@
 </script>
 
 <style scoped>
+  .placeholder {
+    width: 100%;
+    height: 180px;
+
+    background-image: radial-gradient(circle 15px at 20px, lightgray 99%, transparent 0),
+                      linear-gradient(lightgray 12px, transparent 0);
+    background-size: 40px 45px, 80% 45px;
+    background-position: 0 5px, 50px 21.5px;
+    background-repeat: repeat-y;
+
+    animation: shine 1.5s infinite;
+  }
+
+  .user {
+    flex-grow: 0.9;
+  }
+
+  .placeholder_user {
+    height: 50px;
+  }
+
+  @keyframes shine {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
   .nav-header {
     position: relative;
     z-index: 2;
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    height: 40px;
+    height: 50px;
     padding: 0 5px;
   }
 
@@ -193,6 +247,7 @@
   .filters {
     display: flex;
     align-items: center;
+    margin-left: auto;
   }
 
   .filters__filter {
@@ -206,19 +261,11 @@
     margin-right: 0;
   }
 
-  .user {
-    display: flex;
-    align-items: center;
-    margin: 0;
-  }
-
-  .user__avatar {
-    width: 25px;
-    height: 25px;
+  .user__avatar-img {
+    width: 30px;
+    height: 30px;
     margin-right: 5px;
-
     border-radius: 50%;
-    overflow: hidden;
+    object-fit: cover;
   }
-
 </style>
