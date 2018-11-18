@@ -23,7 +23,23 @@ export default {
   'SET_GROUPS_LOADING_FLAG': state => {
     state.isGroupsLoading = !state.isGroupsLoading;
   },
-  'SET_DEFAULT_GROUPS_STATE': (state, data) => {
+  'ADD_CREATED_GROUP': (state, data) => {
+    state.groups.push(data);
+  },
+  'SET_EDITED_GROUP_DATA': (state, data) => {
+    for (let i = 0; i < state.groups.length; i++) {
+      if (state.groups[i].channel_id === data.channel_id) {
+        state.groups[i].title = data.title;
+        state.groups[i].slug = data.slug;
+        state.groups[i].status = data.status;
+        state.groups[i].user_ids = data.user_ids;
+        state.groups[i].type = data.type;
+        state.groups[i].private = data.private;
+        state.groups[i].avatar = data.avatar;
+      }
+    }
+  },
+  'SET_DEFAULT_GROUPS_STATE': state => {
     state.groups = [];
     state.currentGroupData = {
       group_id: '',

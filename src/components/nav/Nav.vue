@@ -26,11 +26,10 @@
         </button>
       </div>
 
-      <div class="filters">
+      <div class="filters" v-if="channels.length > 0 && groups.length > 0">
         <button type="button" class="btn btn-primary filters__filter" data-filter="all" @click="filter">All</button>
 
-        <button v-if="channels.length > 0"
-                type="button"
+        <button type="button"
                 class="btn btn-primary filters__filter"
                 data-filter="channel"
                 @click="filter"
@@ -38,8 +37,7 @@
           <v-icon scale="1" class="icon" name="bullhorn"/>
         </button>
 
-        <button v-if="groups.length > 0"
-                type="button"
+        <button type="button"
                 class="btn btn-primary filters__filter"
                 data-filter="group"
                 @click="filter"

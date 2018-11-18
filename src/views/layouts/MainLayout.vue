@@ -12,7 +12,7 @@
   import Nav from '../../components/nav/Nav';
   import Advertisings from '../../components/ads/Advertisings';
   import {connectSocket} from '../../services/socket/socket.service';
-  import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
     computed: {
@@ -20,7 +20,8 @@
         token: 'auth/token',
         userInfo: 'user/info',
         authStatus: 'auth/gettingTokenAndData',
-      })
+      }),
+      ...mapState('channels', ['channels']),
     },
     data() {
       return {
@@ -36,6 +37,7 @@
     methods: {
       ...mapMutations({
         gettingUserData: 'auth/GETTING_TOKEN_AND_DATA',
+        setModal: 'modal/SET_MODAL',
       }),
       ...mapActions({
         getUser: 'user/GET_USER',
@@ -56,6 +58,10 @@
               if (this.currentDateInSeconds < this.refreshTokenExpiresIn) {
                 await this.getNav();
                 this.gettingUserData();
+
+                if (this.channels.length === 0) {
+                  this.setModal('channel');
+                }
               }
             }
           });

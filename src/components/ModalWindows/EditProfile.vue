@@ -35,25 +35,20 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="file">Upload Image</label>
+      <div class="drop" @dragover.prevent @drop="onDrop">
+        <div class="helper"></div>
+        <label v-if="!imgSrc" class="button">
+          SELECT OR DROP AN IMAGE
+          <input type="file" name="image" @change="onChange">
+        </label>
+        <div class="hidden" v-else :class="{ 'image': true }">
+          <img :src="imgSrc" alt="" class="img"/>
 
-        <div class="input-group">
-            <span class="input-group-btn">
-                <span class="btn btn-default btn-file">
-                    Browse… <input type="file" id="file" @change="onFileChange">
-                </span>
-            </span>
-
-          <input type="text" class="form-control" readonly>
+          <button class="button button_remove" @click="removeImage">REMOVE</button>
         </div>
-        <span v-if="notImage"> {{ notImage }}</span>
-        <img :src="imgSrc" id='img-upload' v-if="imgSrc"/>
-        <button class="btn btn-group remove-btn"
-                type="button"
-                @click="removeImage"
-                v-if="imgSrc">Remove img</button>
       </div>
+
+      <p v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</p>
 
       <button type="submit" class="btn btn-primary mr-1" @click="onSubmit">Save</button>
       <button type="submit" class="btn btn-danger" @click="deleteUser">Delete</button>
@@ -105,10 +100,22 @@
       deleteUser() {
         this.deleteProfile();
       },
-      onFileChange(e) {
+      createFormData(file) {
+        let formData = new FormData();
+        formData.append('avatar', file);
+        this.img = formData;
+      },
+      onDrop: function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        const files = e.dataTransfer.files;
+        this.createImage(files[0]);
+      },
+      onChange(e) {
         this.imgSrc = '';
         const files = e.target.files || e.dataTransfer.files;
         const fileType = files[0].type.split('/');
+
         if (files.length && fileType[0] === 'image') {
           this.notImage = '';
           this.createImage(files[0]);
@@ -117,20 +124,15 @@
           this.notImage = 'Choose image please'
         }
       },
-      createFormData(file) {
-        let formData = new FormData();
-        formData.append('avatar', file);
-        this.img = formData;
-      },
       createImage(file) {
         const reader = new FileReader();
 
-        reader.onload = (e) => {
+        reader.onload = e => {
           this.imgSrc = e.target.result;
         };
         reader.readAsDataURL(file);
       },
-      removeImage: function (e) {
+      removeImage() {
         this.imgSrc = '';
       },
     },
@@ -147,11 +149,6 @@
   max-height: 90%;
   padding: 30px;
   overflow: auto;
-}
-.btn-file {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid #ccc;
 }
 
 .btn-file input[type=file] {
@@ -170,11 +167,71 @@
   display: block;
 }
 
-#img-upload{
+
+.button {
+  position: relative;
+  padding: 15px 35px;
+
+  font-weight: bold;
+  color: #fff;
+
+  background-color: #d3394c;
+  border: 0;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #722040;
+}
+
+.button_remove {
+  margin-top: 15px;
+  padding: 10px 20px;
+}
+
+input[type="file"] {
+  position: absolute;
+  left: 0;
+  z-index: -1;
+
+  opacity: 0;
+}
+
+.hidden {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 300px;
   width: 100%;
 }
 
-.remove-btn {
-  margin-top: 20px;
+.hidden.image {
+  display: flex;
+}
+
+.img {
+  width: auto;
+  height: 100%;
+}
+
+.drop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
+  max-height: 400px;
+  min-height: 100px;
+  margin-bottom: 15px;
+
+  border: 4px dashed #ccc;
+  background-color: #f6f6f6;
+  border-radius: 2px;
+}
+
+.drop label {
+  margin-bottom: 0;
 }
 </style>

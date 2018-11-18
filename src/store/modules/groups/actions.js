@@ -53,7 +53,7 @@ export default {
               await dispatch('ADD_CHANNELS', getters.channelsToAdd);
             }
 
-            dispatch('GET_USER_GROUPS');
+            commit('ADD_CREATED_GROUP', createdGroupData);
           },
           err => console.log(err))
         .catch(error => console.log('CREATE_GROUP', error))
@@ -150,12 +150,13 @@ export default {
       })
         .then(
           async res => {
+            const newGroupData = res.body.data;
             if (getters.channelsToAdd.length > 0) {
               await commit('SET_GROUP_ID_FOR_ADDING_CHANNEL', getters.groupData.group_id);
               await dispatch('ADD_CHANNELS', getters.channelsToAdd);
             }
-            dispatch('GET_USER_GROUPS');
-            commit('SET_CURRENT_GROUP_DATA', res.body.data);
+            commit('SET_EDITED_GROUP_DATA', newGroupData);
+            commit('SET_CURRENT_GROUP_DATA', newGroupData);
             dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'group', {root: true});
           },
           err => console.log(err)

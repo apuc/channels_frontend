@@ -29,6 +29,22 @@ export default {
   'SET_CHANNEL_USERS_LOADED': state => {
     state.isChannelUsersLoading = false;
   },
+  'ADD_CREATED_CHANNEL': (state, data) => {
+    state.channels.push(data);
+  },
+  'SET_EDITED_CHANNEL_DATA': (state, data) => {
+    for (let i = 0; i < state.channels.length; i++) {
+      if (state.channels[i].channel_id === data.channel_id) {
+        state.channels[i].title = data.title;
+        state.channels[i].slug = data.slug;
+        state.channels[i].status = data.status;
+        state.channels[i].user_ids = data.user_ids;
+        state.channels[i].type = data.type;
+        state.channels[i].private = data.private;
+        state.channels[i].avatar = data.avatar;
+      }
+    }
+  },
   'SET_DEFAULT_CHANNELS_STATE': state => {
     state.channels = [];
     state.currentChannelData = {
