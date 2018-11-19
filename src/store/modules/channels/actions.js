@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import router from '../../../routers/router';
+import {joinChannels} from '../../../services/socket/channels.service'
 
 export default {
   /**
@@ -24,6 +25,8 @@ export default {
             if (channelObj) {
               dispatch('SET_CURRENT_CHANNEL_DATA', channelObj.channel_id);
             }
+            console.log('GET_USER_CHANNELS')
+            joinChannels(channels);
           },
           err => console.log('get channels', err)
         )

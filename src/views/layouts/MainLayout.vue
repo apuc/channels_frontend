@@ -11,8 +11,8 @@
 <script>
   import Nav from '../../components/nav/Nav';
   import Advertisings from '../../components/ads/Advertisings';
-  import {connectSocket} from '../../services/socket/socket.service';
   import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import {connectSocket} from '../../services/socket/socket.service';
 
   export default {
     computed: {
@@ -20,6 +20,7 @@
         token: 'auth/token',
         userInfo: 'user/info',
         authStatus: 'auth/gettingTokenAndData',
+        channels: 'channels/channels',
       })
     },
     data() {
@@ -42,11 +43,15 @@
         getNav: 'user/GET_NAV',
       }),
     },
+    beforeMount() {
+        connectSocket(this.token)
+            .then(() => {
+              console.log('Socket connected!')
+            })
+            .catch(err => console.error(err));
+    },
     mounted() {
-      // connectSocket(this.token)
-      //     .then(() => console.log('Socket connected!'))
-      //     .catch(err => console.error(err));
-      // console.log(this.authStatus);
+      console.log(this.authStatus);
 
       if (!this.authStatus) {
         this.gettingUserData();
@@ -60,6 +65,7 @@
             }
           });
       }
+
     }
   }
 </script>

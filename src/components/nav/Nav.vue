@@ -65,7 +65,6 @@
 <script>
   import NavSection from './NavSection';
   import {mapGetters, mapMutations, mapActions} from 'vuex';
-  import {joinChannels} from '../../services/socket/channels.service'
 
   export default {
     computed: {
@@ -143,7 +142,6 @@
         channelsVisible: this.channels.length > 0,
         groupsVisible: this.groups.length > 0,
       };
-      joinChannels(this.channels);
     },
 
   }
