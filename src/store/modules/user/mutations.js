@@ -11,6 +11,9 @@ export default {
   'SET_USER_DATA_LOADING_FLAG': state => {
     state.isUserLoading = !state.isUserLoading;
   },
+  'SET_AVATAR_UPLOAD_PROGRESS': (state, percentage) => {
+    state.imageUploadPersentage = percentage;
+  },
   'SET_DEFAULT_USER_STATE': (state, data) => {
     state.info = {
       avatar: undefined,
@@ -25,5 +28,6 @@ export default {
       username: '',
     };
     state.isUserLoading = false;
+    state.imageUploadPersentage = 0;
   },
 };

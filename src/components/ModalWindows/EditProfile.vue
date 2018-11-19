@@ -48,6 +48,10 @@
         </div>
       </div>
 
+      <div>
+        <progress v-if="upLoadStarted" max="100" :value="imageUploadPersentage"></progress>
+      </div>
+
       <p v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</p>
 
       <button type="submit" class="btn btn-primary mr-1" @click="onSubmit">Save</button>
@@ -78,6 +82,7 @@
         img: '',
         imgSrc: '',
         notImage: '',
+        upLoadStarted: false,
       }
     },
     methods: {
@@ -93,7 +98,8 @@
         await this.setUserData(this.userData);
 
         if (this.img) {
-          await this.createUserAvatar(this.img);
+          this.upLoadStarted = true;
+          await this.createUserAvatar(this.img).then(() => this.upLoadStarted = false);
         }
         this.editProfile();
       },
@@ -110,6 +116,7 @@
         e.preventDefault();
         const files = e.dataTransfer.files;
         this.createImage(files[0]);
+        this.createFormData(files[0]);
       },
       onChange(e) {
         this.imgSrc = '';
@@ -202,7 +209,6 @@ input[type="file"] {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 300px;
   width: 100%;
 }
 
@@ -211,8 +217,8 @@ input[type="file"] {
 }
 
 .img {
-  width: auto;
-  height: 100%;
+  width: 100%;
+  height: auto;
 }
 
 .drop {
@@ -222,7 +228,6 @@ input[type="file"] {
   width: 100%;
   max-width: 600px;
   height: 100%;
-  max-height: 400px;
   min-height: 100px;
   margin-bottom: 15px;
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="modal-inside">
     <h2>You session expired.</h2>
     <p><button type="button" @click="exit">Log in</button> again please.</p>
   </div>
@@ -37,5 +37,11 @@
 
   button:hover {
     opacity: 0.7;
+  }
+
+  .modal-inside {
+    max-height: 90%;
+    padding: 30px;
+    overflow: auto;
   }
 </style>

@@ -65,6 +65,10 @@
         </div>
       </div>
 
+      <div>
+        <progress v-if="upLoadStarted" max="100" :value="imageUploadPersentage"></progress>
+      </div>
+
       <p v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</p>
 
       <button type="submit" class="btn btn-primary" v-if="isEdit">Save</button>
@@ -98,7 +102,7 @@
         img: '',
         imgSrc: '',
         notImage: '',
-        formSubmited: false
+        upLoadStarted: false,
       }
     },
     methods: {
@@ -119,7 +123,8 @@
         }
 
         if (this.img) {
-          await this.createGroupAvatar(this.img);
+          this.upLoadStarted = true;
+          await this.createGroupAvatar(this.img).then(() => this.upLoadStarted = false);
         }
 
         if (this.isEdit) {
@@ -147,6 +152,7 @@
         e.preventDefault();
         const files = e.dataTransfer.files;
         this.createImage(files[0]);
+        this.createFormData(files[0]);
       },
       onChange(e) {
         this.imgSrc = '';
@@ -254,7 +260,6 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 300px;
     width: 100%;
   }
 
@@ -263,8 +268,8 @@
   }
 
   .img {
-    width: auto;
-    height: 100%;
+    width: 100%;
+    height: auto;
   }
 
   .drop {
@@ -274,7 +279,6 @@
     width: 100%;
     max-width: 600px;
     height: 100%;
-    max-height: 400px;
     min-height: 100px;
     margin-bottom: 15px;
 

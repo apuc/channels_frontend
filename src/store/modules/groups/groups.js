@@ -25,6 +25,7 @@ const state = {
   },
   groupToDelete: '',
   isGroupsLoading: false,
+  imageUploadPersentage: 0,
 };
 
 export default {

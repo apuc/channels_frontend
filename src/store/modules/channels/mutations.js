@@ -45,6 +45,9 @@ export default {
       }
     }
   },
+  'SET_AVATAR_UPLOAD_PROGRESS': (state, percentage) => {
+    state.imageUploadPersentage = percentage;
+  },
   'SET_DEFAULT_CHANNELS_STATE': state => {
     state.channels = [];
     state.currentChannelData = {
@@ -71,5 +74,6 @@ export default {
     state.channelToDelete = '';
     state.isChannelsLoading = false;
     state.isChannelUsersLoading = true;
+    state.imageUploadPersentage = 0;
   }
 };

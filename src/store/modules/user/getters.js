@@ -3,4 +3,5 @@ export default {
   refreshTokenBody: state => state.refreshTokenBody,
   currentUserInfo: state => state.currentUserInfo,
   isUserLoading: state => state.isUserLoading,
+  imageUploadPersentage: state => state.imageUploadPersentage,
 };

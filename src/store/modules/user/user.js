@@ -16,6 +16,7 @@ const state = {
     username: '',
   },
   isUserLoading: false,
+  imageUploadPersentage: 0,
 };
 
 export default {

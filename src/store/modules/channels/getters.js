@@ -6,4 +6,5 @@ export default {
   channelToDelete: state => state.channelToDelete,
   isChannelsLoading: state => state.isChannelsLoading,
   isChannelUsersLoading: state => state.isChannelUsersLoading,
+  imageUploadPersentage: state => state.imageUploadPersentage,
 };

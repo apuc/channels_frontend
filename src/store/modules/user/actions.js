@@ -146,11 +146,17 @@ export default {
       await Vue.http.post(`${process.env.VUE_APP_API_URL}/user/avatar`, img, {
         headers: {
           "Content-Type": "multipart/form-data;"
+        },
+        progress(e) {
+          if (e.lengthComputable) {
+            commit('SET_AVATAR_UPLOAD_PROGRESS', e.loaded / e.total * 100);
+          }
         }
       })
         .then(
           async res => {
             commit('SET_USER_AVATAR_ID', res.body.data.avatar_id);
+            commit('SET_AVATAR_UPLOAD_PROGRESS', 0);
           },
           err => console.log(err)
         )
