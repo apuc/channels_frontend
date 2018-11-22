@@ -41,8 +41,10 @@ export default {
       },
       channel_id: payload.channelId,
       from: user_id,
-      text: payload.text
+      text: payload.text,
+      user_id
     };
+    console.log('messages/action')
     await ioSendMessage(messageData);
   },
   'ON_MESSAGE': async ({commit, dispatch, rootGetters}, message) => commit('SET_MESSAGE', message)

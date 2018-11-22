@@ -7,7 +7,7 @@
         </a>
 
         <h5 class="mt-0">
-          <a :href="'/user/'" @click="openUserProfile($event, messageData.user)">{{messageData.from}}</a>
+          <a :href="'/user/'" @click="openUserProfile($event, messageData.user)">{{messageData.from.username}}</a>
         </h5>
         <p class="text">{{messageData.text}}</p>
       </div>

@@ -44,6 +44,13 @@
         getNav: 'user/GET_NAV',
       }),
     },
+    beforeMount() {
+        connectSocket(this.token)
+            .then(() => {
+              console.log('Socket connected!')
+            })
+            .catch(err => console.error(err));
+    },
     mounted() {
       // connectSocket(this.token)
       //     .then(() => console.log('Socket connected!'))
