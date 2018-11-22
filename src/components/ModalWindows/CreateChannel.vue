@@ -105,7 +105,7 @@
         <div class="hidden" v-else :class="{ 'image': true }">
           <img :src="imgSrc" alt="" class="img"/>
 
-          <button class="button button_remove" @click="removeImage">REMOVE</button>
+          <button class="button button_remove" type="button" @click="removeImage">REMOVE</button>
         </div>
       </div>
 
@@ -115,8 +115,7 @@
 
       <p v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</p>
 
-      <button type="submit" class="btn btn-primary" v-if="isEdit">Save</button>
-      <button type="submit" class="btn btn-primary" v-else>Create</button>
+      <button type="submit" class="btn btn-primary">{{isEdit ? 'Save' : 'Create'}}</button>
     </form>
   </div>
 </template>
@@ -350,5 +349,9 @@
 
   .drop label {
     margin-bottom: 0;
+  }
+
+  progress::-webkit-progress-value {
+    transition: width 0.5s ease;
   }
 </style>

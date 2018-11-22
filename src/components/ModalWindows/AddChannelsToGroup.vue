@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="modal-inside">
     <form @submit.prevent="addChannels" class="form-group">
       <label for="ids"></label>
       <input class="form-control" id="ids" type="text" v-model="channel_ids">
@@ -37,5 +37,11 @@
 
   .form-control {
     margin-right: 15px;
+  }
+
+  .modal-inside {
+    max-height: 90%;
+    padding: 30px;
+    overflow: auto;
   }
 </style>

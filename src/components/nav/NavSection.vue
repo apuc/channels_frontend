@@ -1,11 +1,14 @@
 <template>
   <nav class="list-group">
     <section class="list-group__item" v-for="(item, index) in itemsList"
-             @click="setData($event, type === 'channel' ? item.channel_id : item.group_id)">
+          @click="setData($event, type === 'channel' ? item.channel_id : item.group_id)"
+          :transfer-data="item.channel_id"
+    >
       <router-link
         :to="type === 'channel' ? `/${item.slug}` : `/group/${item.slug}`"
         :key="index + item.slug"
-        class="list-group__link">
+        class="list-group__link"
+      >
         <img :src="item.avatar.small"
              alt=""
              class="avatar"
@@ -68,7 +71,7 @@
         setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
         setChannelEditing: 'channels/SET_CHANNEL_EDITING',
         setChannelDeleting: 'channels/SET_CHANNEL_DELETING',
-        setCurrentGroupData: 'groups/SET_CURRENT_GROUP_DATA',
+        getGroupData: 'groups/GET_GROUP_DATA',
         setGroupEditing: 'groups/SET_GROUP_EDITING',
         setGroupDeleting: 'groups/SET_GROUP_DELETING',
         setAddingChannelsToGroup: 'groups/SET_ADDING_CHANNELS_TO_GROUP',
@@ -76,12 +79,12 @@
       }),
       async setData(e, id) {
         if (!e.target.hasAttribute('type')) {
-          this.type === 'channel' ?
-            await this.setCurrentChannelData(Number(id))
-          :
-            await this.setCurrentGroupData(Number(id));
-
-          this.getMessages();
+          if (this.type === 'channel') {
+            await this.setCurrentChannelData(Number(id));
+            this.getMessages();
+          } else {
+            await this.getGroupData(Number(id));
+          }
           this.removeUsersFromStore();
         }
       },

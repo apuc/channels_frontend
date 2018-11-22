@@ -44,7 +44,7 @@
         <div class="hidden" v-else :class="{ 'image': true }">
           <img :src="imgSrc" alt="" class="img"/>
 
-          <button class="button button_remove" @click="removeImage">REMOVE</button>
+          <button class="button button_remove" type="button" @click="removeImage">REMOVE</button>
         </div>
       </div>
 

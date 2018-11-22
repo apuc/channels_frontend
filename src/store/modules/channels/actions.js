@@ -87,7 +87,7 @@ export default {
             const createdChannelData = res.body.data;
             router.push({path: `/${createdChannelData.slug}`});
             commit('modal/DELETE_MODAL', 'channel', {root: true});
-            dispatch('GET_USERS', createdChannelData.user_count);
+            dispatch('GET_USERS', createdChannelData.channel_id);
             commit('ADD_CREATED_CHANNEL', createdChannelData);
           },
           err => console.log(err)
