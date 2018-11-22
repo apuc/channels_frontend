@@ -15,8 +15,16 @@ export default {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/group`)
         .then(
           res => {
+            const groups = res.body.data;
+            const pathnameArray = location.pathname.split('/');
+            const slug = pathnameArray[pathnameArray.length - 1];
+            const currentGroup = groups.find(channel => channel.slug === slug);
             commit('SET_GROUPS_LOADING_FLAG');
-            commit('USER_GROUPS', res.body.data);
+            commit('USER_GROUPS', groups);
+
+            if (currentGroup) {
+              commit('SET_CURRENT_GROUP_DATA', currentGroup);
+            }
           },
           err => console.log('get groups', err)
         )
@@ -181,9 +189,12 @@ export default {
             if (getters.channelsToAdd.length > 0) {
               await commit('SET_GROUP_ID_FOR_ADDING_CHANNEL', getters.groupData.group_id);
               await dispatch('ADD_CHANNELS', getters.channelsToAdd);
+            } else {
+              commit('SET_EDITED_GROUP_DATA', newGroupData);
+              if (newGroupData.group_id === getters.currentGroupData.group_id) {
+                commit('SET_CURRENT_GROUP_DATA', newGroupData);
+              }
             }
-            commit('SET_EDITED_GROUP_DATA', newGroupData);
-            commit('SET_CURRENT_GROUP_DATA', newGroupData);
             dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'group', {root: true});
           },
           err => console.log(err)
@@ -264,7 +275,11 @@ export default {
       await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.groupForAddingChannels}/channels`, {channel_ids})
         .then(
           res => {
-            commit('SET_EDITED_GROUP_DATA', res.body.data);
+            const newGroupData = res.body.data;
+            if (getters.currentGroupData.group_id === newGroupData.group_id) {
+              commit('SET_CURRENT_GROUP_DATA', newGroupData);
+            }
+            commit('SET_EDITED_GROUP_DATA', newGroupData);
             dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'addChannelsToGroup', {root: true});
           },
           err => {

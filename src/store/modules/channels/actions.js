@@ -16,13 +16,15 @@ export default {
         .then(
           res => {
             const channels = res.body.data;
-            const slug = location.pathname;
-            const channelObj = channels.find(channel => channel.slug === slug.slice(1));
+            const pathnameArray = location.pathname.split('/');
+            const slug = pathnameArray[pathnameArray.length - 1];
+            const currentChannel = channels.find(channel => channel.slug === slug);
             commit('SET_CHANNELS_LOADING_FLAG');
             commit('USER_CHANNELS', channels);
 
-            if (channelObj) {
-              dispatch('SET_CURRENT_CHANNEL_DATA', channelObj.channel_id);
+            if (currentChannel) {
+              commit('SET_CURRENT_CHANNEL_DATA', currentChannel);
+              dispatch('GET_USERS', currentChannel.channel_id);
             }
           },
           err => console.log('get channels', err)
