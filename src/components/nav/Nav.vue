@@ -56,6 +56,8 @@
                 :itemsList="groups"
                 :type="'group'"
                 v-if="filters.groupsVisible && !isGroupsLoading"/>
+
+    <!--<drop class="drop-zone" @drop="handleDrop"></drop>-->
     <div class="placeholder" v-if="isChannelsLoading || isGroupsLoading"></div>
   </aside>
 </template>
@@ -134,6 +136,9 @@
             break;
         }
       },
+      // handleDrop(data, event) {
+      //   alert(`You dropped with data: ${JSON.stringify(data)}`);
+      // },
     },
     async created() {
       this.filter = {
@@ -263,5 +268,11 @@
     margin-right: 5px;
     border-radius: 50%;
     object-fit: cover;
+  }
+
+  .drop-zone {
+    width: 100%;
+    height: 100px;
+    border: 1px solid;
   }
 </style>

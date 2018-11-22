@@ -15,8 +15,16 @@ export default {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/group`)
         .then(
           res => {
+            const groups = res.body.data;
+            const pathnameArray = location.pathname.split('/');
+            const slug = pathnameArray[pathnameArray.length - 1];
+            const currentGroup = groups.find(channel => channel.slug === slug);
             commit('SET_GROUPS_LOADING_FLAG');
-            commit('USER_GROUPS', res.body.data);
+            commit('USER_GROUPS', groups);
+
+            if (currentGroup) {
+              commit('SET_CURRENT_GROUP_DATA', currentGroup);
+            }
           },
           err => console.log('get groups', err)
         )
@@ -26,6 +34,38 @@ export default {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
           .then(() => {
             dispatch('GET_USER_GROUPS');
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
+  },
+  /**
+   * Get one group data
+   *
+   * @param groupId {String || Number}
+   */
+  'GET_GROUP_DATA': async ({getters, commit, dispatch, rootGetters}, groupId) => {
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.get(`${process.env.VUE_APP_API_URL}/group/${groupId}`)
+        .then(
+          res => {
+            const groupData = res.body.data;
+            commit('SET_CURRENT_GROUP_DATA', groupData);
+            commit('SET_EDITED_GROUP_DATA', groupData)
+          },
+          err => console.log('get groups', err)
+        )
+        .catch(error => console.log('GET_GROUPS: ', error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('GET_GROUP');
           })
       } else {
         commit('modal/SET_MODAL', 'logout', {root: true});
@@ -49,7 +89,7 @@ export default {
             router.push({path: `/group/${createdGroupData.slug}`});
 
             if (getters.channelsToAdd.length > 0) {
-              await commit('SET_GROUP_ID_FOR_ADDING_CHANNEL', getters.groupData.group_id);
+              await commit('SET_GROUP_ID_FOR_ADDING_CHANNEL', createdGroupData.group_id);
               await dispatch('ADD_CHANNELS', getters.channelsToAdd);
             }
 
@@ -109,22 +149,11 @@ export default {
     }
   },
   /**
-   * Set current group data to the store and get this group users
-   *
-   * @param groupId {String || Number} - current group id
-   */
-  'SET_CURRENT_GROUP_DATA':
-    async ({getters, commit, dispatch}, groupId) => {
-      const editingGroup = await getters.groups.find(group => group.group_id === groupId);
-      await commit('SET_CURRENT_GROUP_DATA', editingGroup);
-    },
-  /**
    * Set edit mode
    *
    * @param groupId - editing group id
    */
-  'SET_GROUP_EDITING':
-    async ({commit, dispatch}, groupId) => {
+  'SET_GROUP_EDITING': async ({commit, dispatch}, groupId) => {
       dispatch('SET_EDITED_GROUP_DATA', groupId);
       dispatch('modal/OPEN_MODAL_EDIT_MODE', 'group', {root: true});
     },
@@ -133,8 +162,7 @@ export default {
    *
    * @param groupId {String || Number} - chosen group id
    */
-  'SET_EDITED_GROUP_DATA':
-    async ({getters, commit}, groupId) => {
+  'SET_EDITED_GROUP_DATA': async ({getters, commit}, groupId) => {
       const editingGroup = await getters.groups.find(group => group.group_id === groupId);
       await commit('SET_GROUP_DATA', editingGroup);
     },
@@ -153,6 +181,7 @@ export default {
         status: getters.groupData.status,
         user_ids: getters.groupData.user_ids,
         avatar: getters.groupData.avatar,
+        owner_id: getters.groupData.owner_id,
       })
         .then(
           async res => {
@@ -160,9 +189,12 @@ export default {
             if (getters.channelsToAdd.length > 0) {
               await commit('SET_GROUP_ID_FOR_ADDING_CHANNEL', getters.groupData.group_id);
               await dispatch('ADD_CHANNELS', getters.channelsToAdd);
+            } else {
+              commit('SET_EDITED_GROUP_DATA', newGroupData);
+              if (newGroupData.group_id === getters.currentGroupData.group_id) {
+                commit('SET_CURRENT_GROUP_DATA', newGroupData);
+              }
             }
-            commit('SET_EDITED_GROUP_DATA', newGroupData);
-            commit('SET_CURRENT_GROUP_DATA', newGroupData);
             dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'group', {root: true});
           },
           err => console.log(err)
@@ -220,6 +252,11 @@ export default {
       }
     }
   },
+  /**
+   * Set group id to the store and open adding channels modal
+   *
+   * @param groupId
+   */
   'SET_ADDING_CHANNELS_TO_GROUP': ({commit, dispatch}, groupId) => {
     commit('SET_GROUP_ID_FOR_ADDING_CHANNEL', groupId);
     dispatch('modal/OPEN_MODAL_EDIT_MODE', 'addChannelsToGroup', {root: true});
@@ -228,7 +265,6 @@ export default {
    * Add channels to group
    *
    * @param channel_ids {String || Number} - channels id's
-   * @constructor
    */
   'ADD_CHANNELS': async ({getters, commit, dispatch, rootGetters}, channel_ids) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
@@ -239,6 +275,11 @@ export default {
       await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.groupForAddingChannels}/channels`, {channel_ids})
         .then(
           res => {
+            const newGroupData = res.body.data;
+            if (getters.currentGroupData.group_id === newGroupData.group_id) {
+              commit('SET_CURRENT_GROUP_DATA', newGroupData);
+            }
+            commit('SET_EDITED_GROUP_DATA', newGroupData);
             dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'addChannelsToGroup', {root: true});
           },
           err => {

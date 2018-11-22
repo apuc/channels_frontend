@@ -17,13 +17,15 @@ export default {
         .then(
           res => {
             const channels = res.body.data;
-            const slug = location.pathname;
-            const channelObj = channels.find(channel => channel.slug === slug.slice(1));
+            const pathnameArray = location.pathname.split('/');
+            const slug = pathnameArray[pathnameArray.length - 1];
+            const currentChannel = channels.find(channel => channel.slug === slug);
             commit('SET_CHANNELS_LOADING_FLAG');
             commit('USER_CHANNELS', channels);
 
-            if (channelObj) {
-              dispatch('SET_CURRENT_CHANNEL_DATA', channelObj.channel_id);
+            if (currentChannel) {
+              commit('SET_CURRENT_CHANNEL_DATA', currentChannel);
+              dispatch('GET_USERS', currentChannel.channel_id);
             }
             console.log('GET_USER_CHANNELS')
             joinChannels(channels);
@@ -90,7 +92,7 @@ export default {
             const createdChannelData = res.body.data;
             router.push({path: `/${createdChannelData.slug}`});
             commit('modal/DELETE_MODAL', 'channel', {root: true});
-            dispatch('GET_USERS', createdChannelData.user_count);
+            dispatch('GET_USERS', createdChannelData.channel_id);
             commit('ADD_CREATED_CHANNEL', createdChannelData);
           },
           err => console.log(err)

@@ -9,6 +9,7 @@ const state = {
     title: '',
     slug: '',
     status: '',
+    owner_id: '',
     avatar: undefined,
   },
   groupData: {
@@ -17,6 +18,7 @@ const state = {
     slug: '',
     status: '',
     user_ids: [],
+    owner_id: '',
     avatar: undefined,
   },
   addingChannelsData: {

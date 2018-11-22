@@ -28,14 +28,15 @@ export default {
   },
   'SET_EDITED_GROUP_DATA': (state, data) => {
     for (let i = 0; i < state.groups.length; i++) {
-      if (state.groups[i].channel_id === data.channel_id) {
+      if (state.groups[i].group_id === data.group_id) {
         state.groups[i].title = data.title;
         state.groups[i].slug = data.slug;
         state.groups[i].status = data.status;
-        state.groups[i].user_ids = data.user_ids;
         state.groups[i].type = data.type;
         state.groups[i].private = data.private;
+        state.groups[i].owner_id = data.owner_id;
         state.groups[i].avatar = data.avatar;
+        state.groups[i].channels = data.channels;
       }
     }
   },
@@ -49,6 +50,7 @@ export default {
       title: '',
       slug: '',
       status: '',
+      owner_id: '',
       avatar: undefined,
     };
     state.groupData = {
@@ -57,6 +59,7 @@ export default {
       slug: '',
       status: '',
       user_ids: [],
+      owner_id: '',
       avatar: undefined,
     };
     state.addingChannelsData = {
