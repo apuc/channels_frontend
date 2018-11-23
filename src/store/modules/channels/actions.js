@@ -27,7 +27,6 @@ export default {
               commit('SET_CURRENT_CHANNEL_DATA', currentChannel);
               dispatch('GET_USERS', currentChannel.channel_id);
             }
-            console.log('GET_USER_CHANNELS')
             joinChannels(channels);
           },
           err => console.log('get channels', err)

@@ -47,17 +47,30 @@
       </div>
     </header>
 
+    <nav>
+      <drag v-for="(channel, index) in channels"
+            :transfer-data="channel.channel_id"
+      >
+        <NavSection v-if="filters.channelsVisible && !isChannelsLoading"
+                    :key="channel.channel_id"
+                    title="Каналы"
+                    :type="'channel'"
+                    :data="channel"
+        />
+      </drag>
 
-    <NavSection title="Каналы"
-                :itemsList="channels"
-                :type="'channel'"
-                v-if="filters.channelsVisible && !isChannelsLoading"/>
-    <NavSection title="Группы"
-                :itemsList="groups"
-                :type="'group'"
-                v-if="filters.groupsVisible && !isGroupsLoading"/>
+      <drop v-for="(group, index) in groups"
+            @drop="handleDrop(group.group_id, ...arguments)"
+      >
+        <NavSection v-if="filters.groupsVisible && !isGroupsLoading"
+                    :key="group.group_id"
+                    title="Группы"
+                    :type="'group'"
+                    :data="group"
+        />
+      </drop>
+    </nav>
 
-    <!--<drop class="drop-zone" @drop="handleDrop"></drop>-->
     <div class="placeholder" v-if="isChannelsLoading || isGroupsLoading"></div>
   </aside>
 </template>
@@ -107,9 +120,11 @@
     methods: {
       ...mapMutations({
         setModal: 'modal/SET_MODAL',
+        setGroupIdForAddingChannels: 'groups/SET_GROUP_ID_FOR_ADDING_CHANNEL',
       }),
       ...mapActions({
         getNav: 'user/GET_NAV',
+        addChannelsToGroup: 'groups/ADD_CHANNELS',
       }),
       openModal(e, modalType) {
         e.preventDefault();
@@ -136,9 +151,11 @@
             break;
         }
       },
-      // handleDrop(data, event) {
-      //   alert(`You dropped with data: ${JSON.stringify(data)}`);
-      // },
+      async handleDrop(group_id, data, event) {
+        await this.setGroupIdForAddingChannels(group_id);
+        await this.addChannelsToGroup([data]);
+        alert('surprise motherfucker')
+      },
     },
     async created() {
       this.filter = {
@@ -156,7 +173,7 @@
     height: 180px;
 
     background-image: radial-gradient(circle 15px at 20px, lightgray 99%, transparent 0),
-                      linear-gradient(lightgray 12px, transparent 0);
+    linear-gradient(lightgray 12px, transparent 0);
     background-size: 40px 45px, 80% 45px;
     background-position: 0 5px, 50px 21.5px;
     background-repeat: repeat-y;

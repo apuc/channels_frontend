@@ -1,22 +1,19 @@
 <template>
-  <nav class="list-group">
-    <section class="list-group__item" v-for="(item, index) in itemsList"
-          @click="setData($event, type === 'channel' ? item.channel_id : item.group_id)"
-          :transfer-data="item.channel_id"
+    <section class="list-group__item"
+             @click="setData($event, type === 'channel' ? data.channel_id : data.group_id)"
     >
       <router-link
-        :to="type === 'channel' ? `/${item.slug}` : `/group/${item.slug}`"
-        :key="index + item.slug"
+        :to="type === 'channel' ? `/${data.slug}` : `/group/${data.slug}`"
         class="list-group__link"
       >
-        <img :src="item.avatar.small"
+        <img :src="data.avatar.small"
              alt=""
              class="avatar"
              width="30"
              height="30"
-             v-if="item.avatar">
+             v-if="data.avatar">
 
-        <span>{{ item.title }}</span>
+        <span>{{ data.title }}</span>
 
         <v-icon scale="1" class="icon icon_mla" name="folder" v-if="type === 'group'"/>
       </router-link>
@@ -25,24 +22,23 @@
         <button type="button"
                 class="button"
                 v-if="type === 'group'"
-                @click="openChannelsAdding(item.group_id)">
+                @click="openChannelsAdding(data.group_id)">
           <v-icon scale="1" class="icon" name="plus-circle"/>
         </button>
 
         <button type="button"
                 class="button"
-                @click="editThis($event, type === 'channel' ? item.channel_id : item.group_id)">
+                @click="editThis($event, type === 'channel' ? data.channel_id : data.group_id)">
           <v-icon scale="1" class="icon" name="pen"/>
         </button>
 
         <button type="button"
                 class="button"
-                @click="deleteThis($event, type === 'channel' ? item.channel_id : item.group_id)">
+                @click="deleteThis($event, type === 'channel' ? data.channel_id : data.group_id)">
           <v-icon scale="1" class="icon" name="trash-alt"/>
         </button>
       </div>
     </section>
-  </nav>
 </template>
 
 <script>
@@ -56,9 +52,14 @@
       }),
     },
     props: {
-      title: String,
-      itemsList: Array,
-      type: String,
+      type: {
+        type: String,
+        required: true
+      },
+      data: {
+        type: Object,
+        required: true
+      }
     },
     data() {
       return {}
