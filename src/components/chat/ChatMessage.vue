@@ -1,16 +1,18 @@
 <template>
-  <b-card class="message mb-3" :class="messageData.from === myId ? 'dirRtl' : '' ">
+  <b-card class="message mb-3">
     <b-media>
       <div class="flex">
         <a :href="'/user/'" @click="openUserProfile($event, messageData.user)">
           <img :src="noavatar" width="64" alt="placeholder"/>
         </a>
 
-        <h5 class="mt-0">
+        <h5 class="mt-0 message-title" >
           <a :href="'/user/'" @click="openUserProfile($event, messageData.user)">{{messageData.from.username}}</a>
+          <span class="message-time">{{ messageData['created_at'] }}</span>
         </h5>
-        <p class="text">{{messageData.text}}</p>
+
       </div>
+      <pre class="text">{{messageData.text}}</pre>
     </b-media>
 
   </b-card>
@@ -61,18 +63,24 @@
   .message {
     flex-shrink: 0;
   }
-  .dirRtl {
-    direction: rtl;
-    text-align: right;
-  }
 
   .flex {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
   }
 
   .text {
+    font-family: cursive;
     width: 100%;
+    padding: 10px;
+    margin: 0;
+  }
+  .message-title {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .message-time {
+    font-size: 12px;
   }
 </style>
