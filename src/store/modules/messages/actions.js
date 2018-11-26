@@ -15,7 +15,6 @@ export default {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/messages`)
         .then(
           res => {
-            // console.log(res.body.data);
             commit('SET_MESSAGES', res.body.data);
           },
           err => console.log(err)
@@ -44,8 +43,10 @@ export default {
       text: payload.text,
       user_id
     };
-    console.log('messages/action')
     await ioSendMessage(messageData);
   },
-  'ON_MESSAGE': async ({commit, dispatch, rootGetters}, message) => commit('SET_MESSAGE', message)
+  'ON_MESSAGE': async ({commit, dispatch, rootGetters}, message) => {
+    console.log(message)
+    commit('SET_MESSAGE', message)
+  }
 };

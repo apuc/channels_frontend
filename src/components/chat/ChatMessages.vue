@@ -17,7 +17,7 @@
     methods:{
 
     },
-    mounted() {
+    updated() {
       this.$refs['messagesList'].scrollTo(0, this.$refs['messagesList'].scrollHeight);
     },
     components: {
