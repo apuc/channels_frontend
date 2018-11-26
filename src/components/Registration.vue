@@ -8,55 +8,13 @@
             <label :for="field.name">{{field.label}}</label>
             <input :type="field.type"
                    class="form-control"
+                   :class="field.class"
                    :id="field.name"
                    :value="field.value"
                    @input="test($event, index)"
             />
           </div>
 
-          <!--<div class="form-group">-->
-            <!--<label for="login">Логин</label>-->
-            <!--<input type="text"-->
-                   <!--class="form-control"-->
-                   <!--:class="isNameValid"-->
-                   <!--id="login"-->
-                   <!--:value="username"-->
-                   <!--@input="nameTest"-->
-            <!--/>-->
-          <!--</div>-->
-
-          <!--<div class="form-group">-->
-            <!--<label for="email">Email</label>-->
-            <!--<input type="email"-->
-                   <!--class="form-control"-->
-                   <!--:class="isEmailValid"-->
-                   <!--id="email"-->
-                   <!--:value="email"-->
-                   <!--@input="emailTest"-->
-            <!--/>-->
-          <!--</div>-->
-
-          <!--<div class="form-group">-->
-            <!--<label for="password">Пароль</label>-->
-            <!--<input type="password"-->
-                   <!--class="form-control"-->
-                   <!--:class="isPassValid"-->
-                   <!--id="password"-->
-                   <!--:value="password"-->
-                   <!--@input="passwordTest"-->
-            <!--/>-->
-          <!--</div>-->
-
-          <div class="form-group">
-            <label for="repeat-password">Повторите пароль</label>
-            <input type="password"
-                   class="form-control"
-                   :class="isPassRepeatValid"
-                   id="repeat-password"
-                   :value="password_confirmation"
-                   @input="repeatPasswordTest"
-            />
-          </div>
           <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-primary flex-fill mr-3">Зарегистрироваться</button>
             <router-link class="btn btn-warning" to="login">Вход</router-link>
@@ -75,85 +33,83 @@
     name: "Registration",
     data() {
       return {
-        data: [
-          {
+        data: {
+          username: {
             label: 'Логин',
             name: 'username',
             type: 'text',
             value: '',
             pattern: new RegExp('^[a-zA-Z][a-zA-Z0-9-_\\.]{1,20}$'),
+            class: '',
             isActive: false,
             isValid: false,
           },
-          {
+          email: {
             label: 'Email',
             name: 'email',
             type: 'email',
             value: '',
-            pattern: new RegExp('^[a-zA-Z][a-zA-Z0-9-_\\.]{1,20}$'),
+            pattern: new RegExp('^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$'),
+            class: '',
             isActive: false,
             isValid: false,
           },
-          {
+          password: {
             label: 'Пароль',
             name: 'password',
             type: 'password',
             value: '',
-            pattern: new RegExp('^[a-zA-Z][a-zA-Z0-9-_\\.]{1,20}$'),
+            pattern: new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})'),
+            class: '',
             isActive: false,
             isValid: false,
           },
-        ],
-        username: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        passPattern: new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})'),
-        namePatter: new RegExp('^[a-zA-Z][a-zA-Z0-9-_\\.]{1,20}$'),
-        emailPattern: new RegExp('^[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}$ '),
-        passValid: false,
-        passActive: false,
-        repeatPassValid: false,
-        repeatPassActive: false,
-        emailValid: false,
-        emailActive: false,
-        nameValid: false,
-        nameActive: false,
+          repeatPassword: {
+            label: 'Повторите пароль',
+            name: 'repeat-password',
+            type: 'password',
+            value: '',
+            pattern: new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})'),
+            class: '',
+            isActive: false,
+            isValid: false,
+          },
+      },
       }
     },
     computed: {
-      isPassValid() {
-        if (this.passActive && this.passValid) {
-          return 'valid'
-        } else if (this.passActive && !this.passValid) {
-          return 'invalid'
-        }
-        return ''
-      },
-      isPassRepeatValid() {
-        if (this.repeatPassActive && this.repeatPassValid) {
-          return 'valid'
-        } else if (this.repeatPassActive && !this.repeatPassValid) {
-          return 'invalid'
-        }
-        return ''
-      },
-      isNameValid() {
-        if (this.nameActive && this.nameValid) {
-          return 'valid'
-        } else if (this.nameActive && !this.nameValid) {
-          return 'invalid'
-        }
-        return ''
-      },
-      isEmailValid() {
-        if (this.emailActive && this.emailValid) {
-          return 'valid'
-        } else if (this.emailActive && !this.emailValid) {
-          return 'invalid'
-        }
-        return ''
-      }
+      // isPassValid() {
+      //   if (this.passActive && this.passValid) {
+      //     return 'valid'
+      //   } else if (this.passActive && !this.passValid) {
+      //     return 'invalid'
+      //   }
+      //   return ''
+      // },
+      // isPassRepeatValid() {
+      //   if (this.repeatPassActive && this.repeatPassValid) {
+      //     return 'valid'
+      //   } else if (this.repeatPassActive && !this.repeatPassValid) {
+      //     return 'invalid'
+      //   }
+      //   return ''
+      // },
+      // isNameValid() {
+      //   if (this.nameActive && this.nameValid) {
+      //     return 'valid'
+      //   } else if (this.nameActive && !this.nameValid) {
+      //     return 'invalid'
+      //   }
+      //   return ''
+      // },
+      // isEmailValid() {
+      //   if (this.emailActive && this.emailValid) {
+      //     return 'valid'
+      //   } else if (this.emailActive && !this.emailValid) {
+      //     return 'invalid'
+      //   }
+      //   return ''
+      // }
     },
     methods: {
       ...mapActions({
@@ -163,40 +119,27 @@
         const value = e.target.value;
         this.data[index].value = value;
         this.data[index].isActive = true;
-        this.data[index].isValid = this.data[index].pattern.test(value);
+        this.data[index].class = 'invalid';
+
+        if (this.data[index].name === 'repeat-password') {
+          this.data[index].isValid = this.data[index].pattern.test(value) && value === this.data.repeatPassword.value;
+        } else {
+          this.data[index].isValid = this.data[index].pattern.test(value);
+        }
+
+        if (this.data[index].isValid) {
+          this.data[index].class = 'valid';
+        } else {
+          this.data[index].class = 'invalid';
+        }
       },
       registration() {
-        const {username, password, password_confirmation, email} = this;
         this.userRegistration({
-          username,
-          password,
-          email,
-          password_confirmation
+          username: this.data.username.value,
+          password: this.data.password.value,
+          email: this.data.email.value,
+          password_confirmation: this.data.repeatPassword.value
         });
-      },
-      passwordTest(e) {
-        const value = e.target.value;
-        this.password = value;
-        this.passActive = true;
-        this.passValid = this.passPattern.test(value);
-      },
-      repeatPasswordTest(e) {
-        const value = e.target.value;
-        this.password_confirmation = value;
-        this.repeatPassActive = true;
-        this.repeatPassValid = this.password_confirmation === this.password && this.passPattern.test(value);
-      },
-      nameTest(e) {
-        const value = e.target.value;
-        this.name = value;
-        this.nameActive = true;
-        this.nameValid = this.namePatter.test(value);
-      },
-      emailTest(e) {
-        const value = e.target.value;
-        this.email = value;
-        this.emailActive = true;
-        this.emailValid = this.emailPattern.test(value);
       },
     },
   }
