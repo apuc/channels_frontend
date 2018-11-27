@@ -20,7 +20,7 @@ export default {
     state.user = user;
   },
   'ERROR': (state, error) => {
-    state.status = 'error';
+    state.status = error;
     console.log(error);
   },
   'LOGOUT': state => {

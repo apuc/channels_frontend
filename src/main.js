@@ -13,11 +13,15 @@ import MainLayout from './views/layouts/MainLayout';
 import AuthLayout from './views/layouts/AuthLayout';
 import VueResource from 'vue-resource';
 import VueDragDrop from 'vue-drag-drop';
+import VueLodash from 'vue-lodash'
 
+
+const options = { name: 'lodash' }; // customize the way you want to call it
 Vue.config.productionTip = process.env.NODE_ENV === 'production';
 Vue.use(VueResource);
 Vue.use(BootstrapVue);
 Vue.use(VueDragDrop);
+Vue.use(VueLodash, options); // options is optional
 
 Vue.component('v-icon', Icon);
 Vue.component('main-layout', MainLayout);
@@ -42,8 +46,11 @@ router.beforeEach((to, from, next) => {
       // console.log('authenticated');
       next();
     } else { // Если не авторизован - редиректим на логин
-      // next({path: '/login'});
-      store.commit('modal/SET_MODAL', 'logout')
+     if (localStorage.getItem('access_token')) {
+       store.commit('modal/SET_MODAL', 'logout');
+     } else {
+       next({path: '/login'});
+     }
     }
   } else { // если в роутинге в поле meta указано requiresAuth в false или не указан
     if (store.getters["auth/isAuthenticated"]) { // Если пользователь залогинен
