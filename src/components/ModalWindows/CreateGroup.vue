@@ -181,8 +181,8 @@
       },
     },
     created() {
-      this.settingGroupData.owner_id = this.userData.user_id;
       if (this.isEdit) {
+        this.settingGroupData.owner_id = this.groupData.owner_id;
         this.settingGroupData.group_id = this.groupData.group_id;
         this.settingGroupData.title = this.groupData.title;
         this.settingGroupData.slug = this.groupData.slug;
@@ -191,6 +191,8 @@
           this.imgSrc = this.groupData.avatar.average;
           this.settingGroupData.avatar = this.groupData.avatar.avatar_id;
         }
+      } else {
+        this.settingGroupData.owner_id = this.userData.user_id;
       }
     }
   }

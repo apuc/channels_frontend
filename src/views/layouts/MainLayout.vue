@@ -65,10 +65,6 @@
               if (this.currentDateInSeconds < this.refreshTokenExpiresIn) {
                 await this.getNav();
                 this.gettingUserData();
-
-                if (this.channels.length === 0) {
-                  this.setModal('channel');
-                }
               }
             }
           });

@@ -42,6 +42,7 @@ export default {
         state.channels[i].type = data.type;
         state.channels[i].private = data.private;
         state.channels[i].avatar = data.avatar;
+        state.channels[i].owner_id = data.owner_id;
       }
     }
   },
@@ -56,6 +57,7 @@ export default {
       slug: '',
       status: '',
       user_count: '',
+      owner_id: '',
       type: '',
       private: '',
       avatar: undefined,
@@ -66,6 +68,7 @@ export default {
       slug: '',
       status: '',
       user_ids: [],
+      owner_id: '',
       type: '',
       private: '',
       avatar: undefined,

@@ -27,6 +27,11 @@ export default {
               commit('SET_CURRENT_CHANNEL_DATA', currentChannel);
               dispatch('GET_USERS', currentChannel.channel_id);
             }
+
+            if (channels.length === 0) {
+              commit('modal/SET_MODAL', 'channel', {root: true});
+            }
+
             joinChannels(channels);
           },
           err => console.log('get channels', err)
@@ -91,8 +96,8 @@ export default {
             const createdChannelData = res.body.data;
             router.push({path: `/${createdChannelData.slug}`});
             commit('modal/DELETE_MODAL', 'channel', {root: true});
-            dispatch('GET_USERS', createdChannelData.channel_id);
             commit('ADD_CREATED_CHANNEL', createdChannelData);
+            dispatch('GET_USERS', createdChannelData.channel_id);
           },
           err => console.log(err)
         )
@@ -193,6 +198,7 @@ export default {
         type: getters.channelData.type,
         private: getters.channelData.private,
         avatar: getters.channelData.avatar,
+        owner_id: getters.channelData.owner_id,
       })
         .then(
           res => {

@@ -143,6 +143,7 @@
           slug: '',
           status: '',
           user_ids: [],
+          owner_id: '',
           type: '',
           private: '',
           avatar: '',
@@ -167,6 +168,7 @@
         if (!Array.isArray(this.settingChannelData.user_ids)) {
           this.settingChannelData.user_ids = this.makeSplitedArray(this.settingChannelData.user_ids);
         }
+        this.settingChannelData.user_ids.push(this.settingChannelData.owner_id);
         await this.setChannelData(this.settingChannelData);
 
         if (this.img) {
@@ -224,6 +226,7 @@
       },
     },
     created() {
+      this.settingChannelData.owner_id = this.userData.user_id;
       if (this.isEdit) {
         this.settingChannelData.channel_id = this.channelData.channel_id;
         this.settingChannelData.title = this.channelData.title;
@@ -232,11 +235,13 @@
         this.settingChannelData.type = this.channelData.type;
         this.settingChannelData.private = this.channelData.private;
         this.settingChannelData.user_count = this.channelData.user_count;
+        this.settingChannelData.owner_id = this.channelData.user_id;
         if (this.channelData.avatar) {
           this.imgSrc = this.channelData.avatar.average;
           this.settingChannelData.avatar = this.channelData.avatar.avatar_id;
         }
       }
+
       if (this.setCreateChannel.dialog) {
         if (this.userData.user_id === this.currentUserInfo.user_id) {
           this.settingChannelData.title = 'My own chat';
