@@ -14,7 +14,7 @@
                    @input="test($event, index)"
             />
 
-            <span :class="!field.isValid && !field.isActive || field.isValid ? 'hidden' : 'invalid'">
+            <span :class="!field.isActive || field.isValid ? 'hidden' : 'invalid'">
               {{field.errorMessage}}
             </span>
           </div>
@@ -81,7 +81,8 @@
         const value = e.target.value;
         this.data[index].value = value;
         this.data[index].isActive = true;
-        this.data[index].class = 'invalid';
+
+        this.data[index].isValid = this.data[index].pattern.test(value);
 
         if (this.data[index].isValid) {
           this.data[index].class = 'valid';

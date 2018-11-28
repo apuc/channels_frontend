@@ -15,7 +15,7 @@
                    @input="test($event, index)"
             />
 
-            <span :class="!field.isValid && !field.isActive || field.isValid ? 'hidden' : 'invalid'">
+            <span :class="!field.isActive || field.isValid ? 'hidden' : 'invalid'">
               {{field.errorMessage}}
             </span>
           </div>
@@ -44,7 +44,7 @@
             name: 'username',
             type: 'text',
             value: '',
-            pattern: new RegExp('^[a-zA-Z][a-zA-Z0-9-_\\.]{1,20}$'),
+            pattern: new RegExp('^[a-zA-Z][a-zA-Z0-9-_\\. ]{1,20}$'),
             class: '',
             errorMessage: 'Введите логин.',
             isActive: false,
@@ -95,7 +95,6 @@
         const value = e.target.value;
         this.data[index].value = value;
         this.data[index].isActive = true;
-        this.data[index].class = 'invalid';
 
         if (this.data[index].name === 'repeatPassword') {
           this.data[index].isValid = this.data[index].pattern.test(value) && value === this.data.repeatPassword.value;
