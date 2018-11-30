@@ -14,7 +14,6 @@ import AuthLayout from './views/layouts/AuthLayout';
 import VueResource from 'vue-resource';
 import VueDragDrop from 'vue-drag-drop';
 
-
 Vue.config.productionTip = process.env.NODE_ENV === 'production';
 Vue.use(VueResource);
 Vue.use(BootstrapVue);

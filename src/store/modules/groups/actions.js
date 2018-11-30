@@ -225,15 +225,16 @@ export default {
    * Delete chosen group
    */
   'DELETE_GROUP': async ({getters, commit, dispatch, rootGetters}) => {
+    const id = getters.groupToDelete;
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.delete(`${process.env.VUE_APP_API_URL}/group/${getters.groupToDelete}`)
+      await Vue.http.delete(`${process.env.VUE_APP_API_URL}/group/${id}`)
         .then(
           res => {
-            dispatch('GET_USER_GROUPS');
+            commit('REMOVE_DELETED_GROUP', id);
             dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'deleteGroup', {root: true});
           },
           err => {
@@ -296,5 +297,35 @@ export default {
         commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
-  }
+  },
+  /**
+   * Delete channel from group
+   */
+  'DELETE_CHANNEL_FROM_GROUP': async ({getters, commit, dispatch, rootGetters}) => {
+    const group_id = getters.currentGroupData.group_id;
+    const channel_id = getters.channelToDelete;
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.delete(`${process.env.VUE_APP_API_URL}/group/${group_id}/delete-channel?channel_id=${channel_id}`)
+        .then(
+          res => {
+            commit('REMOVE_DELETED_CHANNEL', channel_id);
+          },
+          err => console.log('get groups', err)
+        )
+        .catch(error => console.log('GET_GROUPS: ', error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('REMOVE_CHANNEL_FROM_GROUP');
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
+  },
 };

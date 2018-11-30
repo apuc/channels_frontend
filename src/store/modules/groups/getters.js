@@ -7,4 +7,5 @@ export default {
   channelsToAdd: state => state.addingChannelsData.channels,
   isGroupsLoading: state => state.isGroupsLoading,
   imageUploadPersentage: state => state.imageUploadPersentage,
+  channelToDelete: state => state.channelToDelete,
 };

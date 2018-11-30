@@ -17,6 +17,11 @@ const state = {
   },
   isUserLoading: false,
   imageUploadPersentage: 0,
+  userContacts: [
+    {
+
+    }
+  ]
 };
 
 export default {

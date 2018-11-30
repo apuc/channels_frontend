@@ -48,9 +48,19 @@
       </div>
 
       <div class="form-group">
-        <label for="channels">Channels (разделённые запятой)</label>
-        <input class="form-control" id="channels" type="text" @input="getChannels">
+        <v-select @input="addId"
+                  label="slug"
+                  :options="channels"
+                  :value="channels.slug"
+                  multiple
+        >
+        </v-select>
       </div>
+
+      <!--<div class="form-group">-->
+        <!--<label for="channels">Channels (разделённые запятой)</label>-->
+        <!--<input class="form-control" id="channels" type="text" @input="getChannels">-->
+      <!--</div>-->
 
       <div class="drop" @dragover.prevent @drop="onDrop">
         <div class="helper"></div>
@@ -78,14 +88,17 @@
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import vSelect from "vue-select";
 
   export default {
     name: "CreateGroup",
+    components: {vSelect},
     computed: {
       ...mapGetters({
         groupData: 'groups/groupData',
         isEdit: 'modal/editMode',
         userData: 'user/info',
+        channels: 'channels/channels',
       })
     },
     data() {
@@ -107,6 +120,11 @@
       }
     },
     methods: {
+      addId(val) {
+        for (let i = 0; i < val.length; i++) {
+          this.groupChannels.push(val[i].channel_id);
+        }
+      },
       ...mapMutations({
         setGroupData: 'groups/SET_GROUP_DATA',
         setChannelsToAdd: 'groups/SET_CHANNELS_TO_ADD',
@@ -181,6 +199,7 @@
       },
     },
     created() {
+      this.dataChannels = this.channels;
       if (this.isEdit) {
         this.settingGroupData.owner_id = this.groupData.owner_id;
         this.settingGroupData.group_id = this.groupData.group_id;

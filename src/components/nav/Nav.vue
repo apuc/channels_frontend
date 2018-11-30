@@ -6,8 +6,8 @@
           <v-icon scale="1" class="icon" name="plus-circle"/>
         </button>
 
-        <ul class="dropdown" v-if="addMenuVisible">
-          <li v-for="(elem, index) in info" class="dropdown__el">
+        <ul class="dropdown-settings" v-if="addMenuVisible">
+          <li v-for="(elem, index) in info" class="dropdown-settings__el">
             <button type="button" class="btn btn-link" @click="openModal($event, elem.modalTrigger)">{{elem.name}}
             </button>
           </li>
@@ -80,6 +80,7 @@
   import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
+    components: {NavSection},
     computed: {
       ...mapGetters({
         groups: 'groups/groups',
@@ -113,9 +114,6 @@
           groupsVisible: true,
         },
       }
-    },
-    components: {
-      NavSection
     },
     methods: {
       ...mapMutations({
@@ -239,7 +237,7 @@
     text-decoration: none;
   }
 
-  .dropdown {
+  .dropdown-settings {
     position: absolute;
     top: 85%;
     z-index: 1;
@@ -255,7 +253,7 @@
     border-top: 10px solid transparent;
   }
 
-  .dropdown__el {
+  .dropdown-settings__el {
     width: 100%;
     padding: 5px 15px;
 

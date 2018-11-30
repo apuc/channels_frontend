@@ -26,6 +26,26 @@ export default {
   'ADD_CREATED_GROUP': (state, data) => {
     state.groups.push(data);
   },
+  'REMOVE_DELETED_GROUP': (state, id) => {
+    const groups = state.groups;
+    const group = groups.find(group => group.group_id === id);
+    const groupIndex = groups.indexOf(group);
+    groups.splice(groupIndex, 1);
+  },
+  'REMOVE_DELETED_CHANNEL': (state, id) => {
+    const groups = state.groups;
+    const currentGroup = state.currentGroupData;
+    const groupChannels = currentGroup.channels;
+    const groupInStore = groups.find(group => group.group_id === currentGroup.group_id);
+    const groupIndex = groups.indexOf(groupInStore);
+    const channel = groupChannels.find(channel => channel.channel_id === id);
+    const channelIndex = groupChannels.indexOf(channel);
+    groupChannels.splice(channelIndex, 1);
+    groups[groupIndex] = currentGroup;
+  },
+  'SET_CHANNEL_TO_DELETE': (state, id) => {
+    state.channelToDelete = id;
+  },
   'SET_EDITED_GROUP_DATA': (state, data) => {
     for (let i = 0; i < state.groups.length; i++) {
       if (state.groups[i].group_id === data.group_id) {

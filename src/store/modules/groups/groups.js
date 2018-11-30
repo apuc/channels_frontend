@@ -26,6 +26,7 @@ const state = {
     channels: [],
   },
   groupToDelete: '',
+  channelToDelete: '',
   isGroupsLoading: false,
   imageUploadPersentage: 0,
 };

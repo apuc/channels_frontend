@@ -49,6 +49,36 @@ export default {
     }
   },
   /**
+   * Get concrete channel data
+   *
+   * @param channelId {String || Number}
+   */
+  'GET_CHANNEL_DATA': async ({commit, dispatch, rootGetters}, channelId) => {
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}`)
+        .then(
+          res => {
+            const channels = res.body.data;
+          },
+          err => console.log('get channels', err)
+        )
+        .catch(error => console.log('GET_CHANNELS: ', error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('GET_USER_CHANNELS');
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
+  },
+  /**
    * Get current channel users
    *
    * @param channelId {String || Number} - channel id
@@ -160,8 +190,8 @@ export default {
    */
   'SET_CURRENT_CHANNEL_DATA': async ({getters, commit, dispatch}, channelId) => {
     const editingChannel = await getters.channels.find(channel => channel.channel_id === channelId);
-    await commit('SET_CURRENT_CHANNEL_DATA', editingChannel);
-    dispatch('GET_USERS', channelId);
+      await commit('SET_CURRENT_CHANNEL_DATA', editingChannel);
+      dispatch('GET_USERS', channelId);
   },
   /**
    * Set edit mode
@@ -234,15 +264,16 @@ export default {
    * Delete chosen channel
    */
   'DELETE_CHANNEL': async ({getters, commit, dispatch}) => {
+    const id = getters.channelToDelete;
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/${getters.channelToDelete}`)
+      await Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/${id}`)
         .then(
           res => {
-            dispatch('GET_USER_CHANNELS');
+            commit('REMOVE_DELETED_CHANNEL', id);
             commit('modal/DELETE_MODAL', 'deleteChannel', {root: true});
           },
           err => console.log(err)
@@ -321,5 +352,5 @@ export default {
         commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
-  }
+  },
 };
