@@ -93,6 +93,8 @@
               </label>
             </div>
           </div>
+
+          <!--<v-select :options=""></v-select>-->
         </div>
       </div>
 
@@ -122,9 +124,11 @@
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import vSelect from "vue-select";
 
   export default {
     name: "CreateChannel",
+    components: {vSelect},
     computed: {
       ...mapGetters({
         channelData: 'channels/channelData',
