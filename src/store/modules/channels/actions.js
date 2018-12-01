@@ -26,6 +26,7 @@ export default {
             if (currentChannel) {
               commit('SET_CURRENT_CHANNEL_DATA', currentChannel);
               dispatch('GET_USERS', currentChannel.channel_id);
+              dispatch('messages/GET_MESSAGES', {}, {root: true});
             }
 
             if (channels.length === 0) {

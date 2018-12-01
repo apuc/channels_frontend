@@ -14,11 +14,16 @@
     data() {
       return { }
     },
-    methods:{
-
+    methods: {
+      scrollToBottom() {
+        this.$refs['messagesList'].scrollTo(0, this.$refs['messagesList'].scrollHeight);
+      }
+    },
+    mounted() {
+      this.scrollToBottom();
     },
     updated() {
-      this.$refs['messagesList'].scrollTo(0, this.$refs['messagesList'].scrollHeight);
+      this.scrollToBottom();
     },
     components: {
       ChatMessage
