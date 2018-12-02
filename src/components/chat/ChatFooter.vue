@@ -1,5 +1,6 @@
 <template>
   <div class="chat-footer bg-light">
+    <span class="chat-typing" ref="typingField">sdfadsf</span>
     <b-input-group>
       <b-form-textarea id="input_message"
                        class="input_message"
@@ -7,6 +8,7 @@
                        :placeholder="$ml.get('Chat.textareaPlaceholder')"
                        :rows="3"
                        :max-rows="5"
+                       @input="typingEvent"
                        @keyup.enter.prevent.native="onSubmit">
       </b-form-textarea>
       <b-input-group-append>
@@ -26,6 +28,7 @@
     computed: {
       ...mapGetters({
         currentChannel: 'channels/currentChannelData',
+        userInfo: 'user/info',
       })
     },
     data() {
@@ -49,6 +52,9 @@
           this.sendMessage(this.input, this.currentChannel.channel_id);
         }
       },
+      typingEvent() {
+          ioTyping(this.userInfo.username, this.currentChannel.channel_id);
+      }
     }
   }
 </script>
@@ -66,5 +72,12 @@
   .footer_sendBtn {
     min-width: 100px;
     font-size: 18px;
+  }
+  .chat-typing {
+    display: block;
+    height: 15px;
+    font-size: 15px;
+    line-height: 1;
+    color: #888;
   }
 </style>

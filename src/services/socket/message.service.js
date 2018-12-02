@@ -2,8 +2,8 @@ import { io } from './socket.service';
 import store from '../../store/store';
 
 
-export function ioTyping(user, channelId) {
-    io.emit('typing', {user, channelId});
+export function ioTyping(username, channelId) {
+    io.emit('typing', {username, channelId});
 }
 
 export function ioSendMessage(messageData) {
@@ -19,4 +19,8 @@ export function messageEventListenerInit() {
     io.on('userMessage', function (data) {
         store.dispatch('messages/ON_MESSAGE', data);
     });
+
+    io.on('typing', function (username) {
+        store.dispatch('messages/TYPING', username)
+    })
 }
