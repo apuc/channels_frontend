@@ -46,10 +46,15 @@ export default {
         await ioSendMessage(messageData);
     },
     'ON_MESSAGE': async ({commit, dispatch, rootGetters}, message) => {
-        console.log(message)
-        commit('SET_MESSAGE', message)
+        console.log(message);
+        commit('SET_MESSAGE', message);
     },
-    'TYPING': async ({commit, dispatch, rootGetters}, username) => {
-        console.log(username)
+    'TYPING': async ({commit, dispatch, rootGetters}, {user, isTyping}) => {
+        console.log({ user, isTyping});
+        if (isTyping) {
+            commit('PUSH_TYPING_USER', user);
+        } else {
+            commit('SLICE_TYPING_USER', user);
+        }
     }
 };

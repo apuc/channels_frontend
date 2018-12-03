@@ -1,6 +1,6 @@
 <template>
   <div class="chat-footer bg-light">
-    <span class="chat-typing" ref="typingField">sdfadsf</span>
+    <span class="chat-typing">is typing</span>
     <b-input-group>
       <b-form-textarea id="input_message"
                        class="input_message"
@@ -8,7 +8,7 @@
                        :placeholder="$ml.get('Chat.textareaPlaceholder')"
                        :rows="3"
                        :max-rows="5"
-                       @input="typingEvent"
+                       @input="checkIfUserTyping"
                        @keyup.enter.prevent.native="onSubmit">
       </b-form-textarea>
       <b-input-group-append>
@@ -29,11 +29,13 @@
       ...mapGetters({
         currentChannel: 'channels/currentChannelData',
         userInfo: 'user/info',
+        usersTyping: 'messages/usersTyping'
       })
     },
     data() {
       return {
-        input: ''
+        input: '',
+        timeout: '',
       }
     },
     methods: {
@@ -52,8 +54,27 @@
           this.sendMessage(this.input, this.currentChannel.channel_id);
         }
       },
-      typingEvent() {
-          ioTyping(this.userInfo.username, this.currentChannel.channel_id);
+      checkIfUserTyping() {
+        clearTimeout(this.timeout);
+        ioTyping({
+          user: {
+            name: this.userInfo.username,
+            id: this.userInfo.user_id
+          },
+          channelId: this.currentChannel.channel_id,
+          isTyping: true
+        });
+        this.timeout = setTimeout(() => {
+          ioTyping({
+            user: {
+              name: this.userInfo.username,
+              id: this.userInfo.user_id
+            },
+            channelId: this.currentChannel.channel_id,
+            isTyping: false
+          });
+        }, 2000);
+        console.log(this.usersTyping)
       }
     }
   }
