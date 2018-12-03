@@ -1,6 +1,11 @@
 <template>
   <div class="chat-footer bg-light">
-    <span class="chat-typing">is typing</span>
+    <span class="chat-typing">
+      <span v-if="usersTyping.length <= 2" v-for="user of usersTyping">{{ user.name }}{{usersTyping.length > 1 ? ', ': ' '}}</span>
+      <span v-else>Несколько пользователей печатают...</span>
+      <span v-if="usersTyping.length < 2 && usersTyping.length > 0">печатает</span>
+      <span v-if="usersTyping.length > 1">печатают</span>
+    </span>
     <b-input-group>
       <b-form-textarea id="input_message"
                        class="input_message"
@@ -8,7 +13,7 @@
                        :placeholder="$ml.get('Chat.textareaPlaceholder')"
                        :rows="3"
                        :max-rows="5"
-                       @input="checkIfUserTyping"
+                       @input="emitUserTyping"
                        @keyup.enter.prevent.native="onSubmit">
       </b-form-textarea>
       <b-input-group-append>
@@ -54,7 +59,7 @@
           this.sendMessage(this.input, this.currentChannel.channel_id);
         }
       },
-      checkIfUserTyping() {
+        emitUserTyping() {
         clearTimeout(this.timeout);
         ioTyping({
           user: {
@@ -74,7 +79,6 @@
             isTyping: false
           });
         }, 2000);
-        console.log(this.usersTyping)
       }
     }
   }
