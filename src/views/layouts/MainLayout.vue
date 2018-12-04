@@ -52,11 +52,6 @@
             .catch(err => console.error(err));
     },
     mounted() {
-      // connectSocket(this.token)
-      //     .then(() => console.log('Socket connected!'))
-      //     .catch(err => console.error(err));
-      // console.log(this.authStatus);
-
       if (!this.authStatus) {
         this.gettingUserData();
         this.getUser()

@@ -276,6 +276,10 @@ export default {
           res => {
             commit('REMOVE_DELETED_CHANNEL', id);
             commit('modal/DELETE_MODAL', 'deleteChannel', {root: true});
+
+            if (id === getters.currentChannelData.channel_id) {
+              router.push('/');
+            }
           },
           err => console.log(err)
         )

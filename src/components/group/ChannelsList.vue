@@ -9,7 +9,7 @@
           {{ channel.title }}
         </router-link>
 
-        <button type="button"
+        <button v-if="userData.user_id === currentGroupData.group_id" type="button"
                 class="btn btn-danger btn-sm btn_hidden"
                 @click="removeChannel(channel.channel_id)"
         >
@@ -31,6 +31,7 @@
     computed: {
       ...mapGetters({
         currentGroupData: 'groups/currentGroupData',
+        userData: 'user/info',
       })
     },
     data() {

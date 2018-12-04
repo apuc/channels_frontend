@@ -40,6 +40,7 @@
         <button type="button"
                 class="btn btn-primary filters__filter"
                 data-filter="group"
+                ref="btn"
                 @click="filter"
         >
           <v-icon scale="1" class="icon" name="folder"/>

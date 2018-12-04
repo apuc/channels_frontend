@@ -236,6 +236,10 @@ export default {
           res => {
             commit('REMOVE_DELETED_GROUP', id);
             dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'deleteGroup', {root: true});
+
+            if (id === getters.currentGroupData.group_id) {
+              router.push('/');
+            }
           },
           err => {
             console.log(err);

@@ -1,44 +1,49 @@
 <template>
-    <section class="list-group__item"
-             @click="setData($event, type === 'channel' ? data.channel_id : data.group_id)"
+  <section class="list-group__item"
+           @click="setData($event, type === 'channel' ? data.channel_id : data.group_id)"
+           ref="section"
+  >
+    <router-link :to="type === 'channel' ? `/${data.slug}` : `/group/${data.slug}`"
+                 class="list-group__link"
+                 :title="data.title"
+                 :style="calcWidth"
     >
-      <router-link
-        :to="type === 'channel' ? `/${data.slug}` : `/group/${data.slug}`"
-        class="list-group__link"
-      >
-        <img :src="data.avatar.small"
-             alt=""
-             class="avatar"
-             width="30"
-             height="30"
-             v-if="data.avatar">
+      <img :src="data.avatar.small"
+           alt=""
+           class="avatar"
+           width="30"
+           height="30"
+           v-if="data.avatar">
 
-        <span>{{ data.title }}</span>
+      <span class="name">{{ data.title }}</span>
 
-        <v-icon scale="1" class="icon icon_mla" name="folder" v-if="type === 'group'"/>
-      </router-link>
+      <v-icon scale="1" class="icon icon_mla" name="folder" v-if="type === 'group'"/>
+    </router-link>
 
-      <div class="control">
-        <button type="button"
-                class="button"
-                v-if="type === 'group'"
-                @click="openChannelsAdding(data.group_id)">
-          <v-icon scale="1" class="icon" name="plus-circle"/>
-        </button>
+    <div v-if="userData.user_id === data.owner_id || userData.user_id === data.owner_id"
+         class="control"
+         ref="controlBtns"
+    >
+      <button type="button"
+              class="button"
+              v-if="type === 'group'"
+              @click="openChannelsAdding(data.group_id)">
+        <v-icon scale="1" class="icon" name="plus-circle"/>
+      </button>
 
-        <button type="button"
-                class="button"
-                @click="editThis($event, type === 'channel' ? data.channel_id : data.group_id)">
-          <v-icon scale="1" class="icon" name="pen"/>
-        </button>
+      <button type="button"
+              class="button"
+              @click="editThis($event, type === 'channel' ? data.channel_id : data.group_id)">
+        <v-icon scale="1" class="icon" name="pen"/>
+      </button>
 
-        <button type="button"
-                class="button"
-                @click="deleteThis($event, type === 'channel' ? data.channel_id : data.group_id)">
-          <v-icon scale="1" class="icon" name="trash-alt"/>
-        </button>
-      </div>
-    </section>
+      <button type="button"
+              class="button"
+              @click="deleteThis($event, type === 'channel' ? data.channel_id : data.group_id)">
+        <v-icon scale="1" class="icon" name="trash-alt"/>
+      </button>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -49,7 +54,11 @@
       ...mapGetters({
         currentChannelData: 'channels/currentChannelData',
         currentGroupData: 'groups/currentGroupData',
+        userData: 'user/info'
       }),
+      calcWidth() {
+        return `width: ${this.sectionWidth - this.controlBtnsWidth}px`
+      }
     },
     props: {
       type: {
@@ -62,7 +71,10 @@
       }
     },
     data() {
-      return {}
+      return {
+        sectionWidth: 0,
+        controlBtnsWidth: 0
+      }
     },
     methods: {
       ...mapMutations({
@@ -105,6 +117,10 @@
         this.setAddingChannelsToGroup(group_id);
       },
     },
+    mounted() {
+      this.controlBtnsWidth = Number(this.$refs.controlBtns.clientWidth);
+      this.sectionWidth = Number(this.$refs.section.clientWidth);
+    }
   }
 </script>
 
@@ -132,10 +148,10 @@
   }
 
   .list-group__link {
+    flex-grow: 1;
     display: flex;
     align-items: center;
 
-    width: 100%;
     color: #495057;
   }
 
@@ -169,5 +185,11 @@
 
   .icon_mla {
     margin-left: auto;
+  }
+
+  .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>

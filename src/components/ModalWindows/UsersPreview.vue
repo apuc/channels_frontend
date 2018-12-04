@@ -20,7 +20,11 @@
         </div>
       </div>
 
-      <button type="button" class="btn btn-sm btn-danger" @click="removeUser(user.user_id)">
+      <button v-if="userData.user_id === currentChannelData.owner_id"
+              type="button"
+              class="btn btn-sm btn-danger"
+              @click="removeUser(user.user_id)"
+      >
         <v-icon scale="1" class="icon" name="user-minus"/>
       </button>
     </li>
@@ -37,6 +41,7 @@
         currentChannelUsers: 'channels/currentChannelUsers',
         isChannelUsersLoading: 'channels/isChannelUsersLoading',
         currentChannelData: 'channels/currentChannelData',
+        userData: 'user/info',
       }),
       calculatePlaceholders() {
         const height = 45;

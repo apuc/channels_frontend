@@ -57,11 +57,6 @@
         </v-select>
       </div>
 
-      <!--<div class="form-group">-->
-        <!--<label for="channels">Channels (разделённые запятой)</label>-->
-        <!--<input class="form-control" id="channels" type="text" @input="getChannels">-->
-      <!--</div>-->
-
       <div class="drop" @dragover.prevent @drop="onDrop">
         <div class="helper"></div>
         <label v-if="!imgSrc" class="button">

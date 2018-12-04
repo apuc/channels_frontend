@@ -97,7 +97,7 @@
           <!--<v-select :options=""></v-select>-->
         </div>
       </div>
-
+      
       <div class="drop" @dragover.prevent @drop="onDrop">
         <div class="helper"></div>
         <label v-if="!imgSrc" class="button">
@@ -239,7 +239,7 @@
         this.settingChannelData.type = this.channelData.type;
         this.settingChannelData.private = this.channelData.private;
         this.settingChannelData.user_count = this.channelData.user_count;
-        this.settingChannelData.owner_id = this.channelData.user_id;
+        this.settingChannelData.owner_id = this.channelData.owner_id;
         if (this.channelData.avatar) {
           this.imgSrc = this.channelData.avatar.average;
           this.settingChannelData.avatar = this.channelData.avatar.avatar_id;
