@@ -7,7 +7,7 @@
         </button>
 
         <ul class="dropdown-settings" v-if="addMenuVisible">
-          <li v-for="(elem, index) in info" class="dropdown-settings__el">
+          <li v-for="(elem, index) in info" class="dropdown-settings__el" :key="index">
             <button type="button" class="btn btn-link" @click="openModal($event, elem.modalTrigger)">{{elem.name}}
             </button>
           </li>
@@ -51,6 +51,7 @@
     <nav>
       <drag v-for="(channel, index) in channels"
             :transfer-data="channel.channel_id"
+            :key="index"
       >
         <NavSection v-if="filters.channelsVisible && !isChannelsLoading"
                     :key="channel.channel_id"
@@ -62,6 +63,7 @@
 
       <drop v-for="(group, index) in groups"
             @drop="handleDrop(group.group_id, ...arguments)"
+            :key="index"
       >
         <NavSection v-if="filters.groupsVisible && !isGroupsLoading"
                     :key="group.group_id"

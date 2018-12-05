@@ -7,7 +7,7 @@ export let io = null;
 export function connectSocket(token) {
     return new Promise((resolve, reject) => {
 
-        io = socketIo('/', {query: {token: token}}); // пробуем подключится к ноду
+        io = socketIo('https://mychannels.gq', {query: {token: token}}); // пробуем подключится к ноду
 
         io.on('connect', () => {
             socketEventListenerInit();
