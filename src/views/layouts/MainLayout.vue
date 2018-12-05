@@ -1,9 +1,11 @@
 <template>
   <div class="home">
     <Nav/>
+
     <main>
       <slot/>
     </main>
+
     <Advertisings/>
   </div>
 </template>

@@ -2,35 +2,23 @@
   <div class="modal-inside">
     <header class="modal__header">
       <h4>Редактирование профиля</h4>
+
+      <nav>
+        <button type="button" class="btn" @click="switchSettings">Общее</button>
+        <button type="button" class="btn" @click="switchSettings">Личное</button>
+      </nav>
     </header>
 
-    <form class="modal__content" @submit.prevent>
+    <form v-if="isGeneralSettings"
+          class="modal__content"
+          @submit.prevent="onSubmitGeneral"
+    >
       <div class="row">
-        <div class="col-6">
+        <div class="col">
           <div class="form-group">
             <label for="username">Username</label>
 
             <input type="text" id="username" class="form-control" v-model="userData.username">
-          </div>
-
-          <div class="form-group">
-            <label for="email">Email</label>
-
-            <input type="text" id="email" class="form-control" v-model="userData.email">
-          </div>
-        </div>
-
-        <div class="col-6">
-          <div class="form-group">
-            <label for="password">Password</label>
-
-            <input type="password" id="password" class="form-control" v-model="userData.password">
-          </div>
-
-          <div class="form-group">
-            <label for="password-repeat">Repeat Password</label>
-
-            <input type="password" id="password-repeat" class="form-control" v-model="userData.passwordRepeat">
           </div>
         </div>
       </div>
@@ -52,9 +40,38 @@
         <progress v-if="upLoadStarted" max="100" :value="imageUploadPersentage"></progress>
       </div>
 
-      <p v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</p>
+      <span v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</span>
 
-      <button type="submit" class="btn btn-primary mr-1" @click="onSubmit">Save</button>
+      <button type="submit" class="btn btn-primary mr-1">Save</button>
+    </form>
+
+    <form v-else
+          class="modal__content"
+          @submit.prevet="onSubmit"
+    >
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="password">Password</label>
+
+            <input type="password" id="password" class="form-control" v-model="userData.password">
+          </div>
+
+          <div class="form-group">
+            <label for="password-repeat">Repeat Password</label>
+
+            <input type="password" id="password-repeat" class="form-control" v-model="userData.passwordRepeat">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+
+            <input type="text" id="email" class="form-control" v-model="userData.email">
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary mr-1">Save</button>
       <button type="submit" class="btn btn-danger" @click="deleteUser">Delete</button>
     </form>
   </div>
@@ -83,6 +100,8 @@
         imgSrc: '',
         notImage: '',
         upLoadStarted: false,
+        isGeneralSettings: true,
+        isPrivateSettings: false,
       }
     },
     methods: {
@@ -90,18 +109,18 @@
         setUserData: 'user/SET_USER_INFO',
       }),
       ...mapActions({
-        editProfile: 'user/EDIT_PROFILE',
+        editGeneralUserData: 'user/EDIT_GENERAL_USER_DATA',
         deleteProfile: 'user/DELETE_USER',
         createUserAvatar: 'user/CREATE_USER_AVATAR',
       }),
-      async onSubmit() {
+      async onSubmitGeneral() {
         await this.setUserData(this.userData);
 
         if (this.img) {
           this.upLoadStarted = true;
           await this.createUserAvatar(this.img).then(() => this.upLoadStarted = false);
         }
-        this.editProfile();
+        this.editGeneralUserData();
       },
       deleteUser() {
         this.deleteProfile();
@@ -141,6 +160,10 @@
       },
       removeImage() {
         this.imgSrc = '';
+      },
+      switchSettings() {
+        this.isGeneralSettings = !this.isGeneralSettings;
+        this.isPrivateSettings = !this.isPrivateSettings;
       },
     },
     created() {

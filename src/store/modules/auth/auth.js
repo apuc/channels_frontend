@@ -12,6 +12,7 @@ const state = {
     client_secret: process.env.VUE_APP_CLIENT_SECRET,
     refresh_token: localStorage.getItem('refresh_token') || '',
   },
+  isWrongData: false,
 };
 
 export default {

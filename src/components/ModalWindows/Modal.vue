@@ -14,7 +14,7 @@
         <EditProfile v-else-if="editProfile"/>
         <ChannelUsers v-else-if="channelUsers"/>
         <AddChannelsToGroup v-else-if="addChannelsToGroup"/>
-        <SessionExpired v-else-if="logout"/>
+        <SessionExpired v-else-if="logoutModal"/>
       </div>
     </div>
   </div>

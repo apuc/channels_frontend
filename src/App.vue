@@ -1,10 +1,14 @@
 <template>
   <div id="app">
     <component :is="layout">
-      <router-view />
+      <transition name="fade" mode="out-in">
+        <router-view/>
+      </transition>
     </component>
 
-    <Modal v-if="modalStatus"/>
+    <transition name="fade" mode="out-in">
+      <Modal v-if="modalStatus"/>
+    </transition>
   </div>
 </template>
 
@@ -23,17 +27,28 @@
       },
     },
     data() {
-      return {
-      }
+      return {}
     }
   }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+  }
+
+  .modal__content {
+    margin-top: 30px;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 0.1s;
+  }
+
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
 </style>

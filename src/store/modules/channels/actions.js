@@ -4,7 +4,7 @@ import {joinChannels} from '../../../services/socket/channels.service'
 
 export default {
   /**
-   * Get user channels
+   * Get logined user channels
    */
   'GET_USER_CHANNELS': async ({getters, commit, dispatch, rootGetters}) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
@@ -22,6 +22,7 @@ export default {
             const currentChannel = channels.find(channel => channel.slug === slug);
             commit('SET_CHANNELS_LOADING_FLAG');
             commit('USER_CHANNELS', channels);
+            console.log(slug);
 
             if (currentChannel) {
               commit('SET_CURRENT_CHANNEL_DATA', currentChannel);
@@ -128,7 +129,7 @@ export default {
             router.push({path: `/${createdChannelData.slug}`});
             commit('modal/DELETE_MODAL', 'channel', {root: true});
             commit('ADD_CREATED_CHANNEL', createdChannelData);
-            dispatch('GET_USERS', createdChannelData.channel_id);
+            dispatch('SET_CURRENT_CHANNEL_DATA', createdChannelData.channel_id);
           },
           err => console.log(err)
         )

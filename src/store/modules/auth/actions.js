@@ -27,7 +27,6 @@ export default {
       )
       .catch(err => console.log('REGISTRATION catch err: ', err));
   },
-
   /**
    * Get token and log in user
    *
@@ -53,12 +52,16 @@ export default {
           await localStorage.setItem('T_expires_at', `${tokenExpiresIn}`);
           await localStorage.setItem('RT_expires_at', `${refreshTokenExpiresIn}`);
 
+          commit('SET_IS_AUTH_DATA_RIGHT', false);
           commit('SET_TOKEN', res.body.access_token);
           commit('SET_REFRESH_TOKEN', res.body.refresh_token);
           Vue.http.headers.common['Authorization'] = `Bearer ${res.body.access_token}`;
         },
         async err => {
           console.log('err from vue resource', err);
+          if (err.body.error === 'invalid_credentials') {
+            commit('SET_IS_AUTH_DATA_RIGHT', true);
+          }
           commit('ERROR', err.body);
         }
       )

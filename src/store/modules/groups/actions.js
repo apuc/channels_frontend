@@ -22,7 +22,7 @@ export default {
             commit('SET_GROUPS_LOADING_FLAG');
             commit('USER_GROUPS', groups);
 
-            if (currentGroup) {
+            if (currentGroup && pathnameArray.indexOf('group')) {
               commit('SET_CURRENT_GROUP_DATA', currentGroup);
             }
           },

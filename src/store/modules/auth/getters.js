@@ -4,4 +4,5 @@ export default {
   token: state => state.token,
   refreshTokenBody: state => state.refreshTokenBody,
   gettingTokenAndData: state => state.gettingTokenAndData,
+  isWrongData: state => state.isWrongData,
 };

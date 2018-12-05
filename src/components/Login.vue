@@ -19,6 +19,17 @@
             </span>
           </div>
 
+          <p v-if="isWrongData" class="wrong-data">Неверная пара логин пароль</p>
+
+          <div class="form-check">
+            <input id="alien-computer"
+                   class="form-check-input"
+                   type="checkbox"
+                   v-model="isSession"
+            >
+            <label for="alien-computer">Чужой компьютер?</label>
+          </div>
+
           <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-primary flex-fill mr-3">Войти</button>
             <router-link class="btn btn-warning" to="registration">Регистрация</router-link>
@@ -61,17 +72,20 @@
             isActive: false,
             isValid: false,
           },
-        }
+        },
+        isSession: false,
       }
     },
     computed: {
       ...mapGetters({
         authStatus: 'auth/gettingTokenAndData',
+        isWrongData: 'auth/isWrongData',
       })
     },
     methods: {
       ...mapMutations({
         gettingTokenData: 'auth/GETTING_TOKEN_AND_DATA',
+        setSessionStatus: 'auth/SET_SESSION_STATUS',
       }),
       ...mapActions({
         getToken: 'auth/GET_TOKEN',
@@ -93,6 +107,8 @@
       },
       async login() {
         if (this.data.password.isValid && this.data.email.isValid) {
+          localStorage.setItem('isSession', this.isSession.toString());
+
           if (!this.gettingTokenAndData) {
             this.gettingTokenData();
 
@@ -105,12 +121,14 @@
             })
               .then(
                 async () => {
-                  await this.getUser()
-                    .then(
-                      async () => {
-                        this.$router.push('/');
-                        await this.getNav();
-                      })
+                  if (!this.isWrongData) {
+                    await this.getUser()
+                      .then(
+                        async () => {
+                          this.$router.push('/');
+                          await this.getNav();
+                        })
+                  }
                 });
 
             this.$router.push('/');
@@ -168,5 +186,9 @@
 
   .hidden {
     display: none;
+  }
+
+  .wrong-data {
+    color: red;
   }
 </style>

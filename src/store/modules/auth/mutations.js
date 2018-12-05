@@ -19,6 +19,12 @@ export default {
     state.status = 'success login';
     state.user = user;
   },
+  /**
+   * @param isWrongData
+   */
+  'SET_IS_AUTH_DATA_RIGHT': (state, isWrongData) => {
+    state.isWrongData = isWrongData;
+  },
   'ERROR': (state, error) => {
     state.status = error;
     console.log(error);

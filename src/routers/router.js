@@ -68,7 +68,7 @@ export default new Router({
       meta: {requiresAuth: true},
     },
     {
-      path: '*',
+      path: '/not-found',
       component: NotFoundComponent,
     },
   ],
