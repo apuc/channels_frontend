@@ -1,12 +1,10 @@
 <template>
   <section class="list-group__item"
            @click="setData($event, type === 'channel' ? data.channel_id : data.group_id)"
-           ref="section"
   >
     <router-link :to="type === 'channel' ? `/${data.slug}` : `/group/${data.slug}`"
                  class="list-group__link"
                  :title="data.title"
-                 :style="calcWidth"
     >
       <img :src="data.avatar.small"
            alt=""
@@ -22,7 +20,6 @@
 
     <div v-if="userData.user_id === data.owner_id || userData.user_id === data.owner_id"
          class="control"
-         ref="controlBtns"
     >
       <button type="button"
               class="button"
@@ -56,9 +53,6 @@
         currentGroupData: 'groups/currentGroupData',
         userData: 'user/info'
       }),
-      calcWidth() {
-        return `width: ${this.sectionWidth - this.controlBtnsWidth}px`
-      }
     },
     props: {
       type: {
@@ -117,10 +111,6 @@
         this.setAddingChannelsToGroup(group_id);
       },
     },
-    mounted() {
-      this.controlBtnsWidth = Number(this.$refs.controlBtns.clientWidth);
-      this.sectionWidth = Number(this.$refs.section.clientWidth);
-    }
   }
 </script>
 
@@ -148,10 +138,13 @@
   }
 
   .list-group__link {
-    flex-grow: 1;
+    flex: 1 2 auto;
     display: flex;
     align-items: center;
 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     color: #495057;
   }
 
@@ -185,6 +178,7 @@
 
   .icon_mla {
     margin-left: auto;
+    flex-shrink: 0;
   }
 
   .name {
