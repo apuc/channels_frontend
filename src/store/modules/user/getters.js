@@ -4,4 +4,5 @@ export default {
   currentUserInfo: state => state.currentUserInfo,
   isUserLoading: state => state.isUserLoading,
   imageUploadPersentage: state => state.imageUploadPersentage,
+  userPosition: state => state.userPosition,
 };

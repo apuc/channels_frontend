@@ -21,7 +21,8 @@ const state = {
     {
 
     }
-  ]
+  ],
+  userPosition: '',
 };
 
 export default {

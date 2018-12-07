@@ -22,12 +22,12 @@ export default {
             const currentChannel = channels.find(channel => channel.slug === slug);
             commit('SET_CHANNELS_LOADING_FLAG');
             commit('USER_CHANNELS', channels);
-            console.log(slug);
 
-            if (currentChannel) {
+            if (currentChannel && pathnameArray.length === 2) {
               commit('SET_CURRENT_CHANNEL_DATA', currentChannel);
               dispatch('GET_USERS', currentChannel.channel_id);
               dispatch('messages/GET_MESSAGES', {}, {root: true});
+              commit('user/SET_USER_POSITION', 'channel', {root: true});
             }
 
             if (channels.length === 0) {

@@ -14,6 +14,13 @@ export default {
   'SET_AVATAR_UPLOAD_PROGRESS': (state, percentage) => {
     state.imageUploadPersentage = percentage;
   },
+  /**
+   * User position at site (channel/group/user profile)
+   * @param position {String}
+   */
+  'SET_USER_POSITION': (state, position) => {
+    state.userPosition = position;
+  },
   'SET_DEFAULT_USER_STATE': (state, data) => {
     state.info = {
       avatar: undefined,

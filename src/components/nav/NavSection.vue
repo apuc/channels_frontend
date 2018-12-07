@@ -5,6 +5,7 @@
     <router-link :to="type === 'channel' ? `/${data.slug}` : `/group/${data.slug}`"
                  class="list-group__link"
                  :title="data.title"
+                 @click.native="setUserPosition(type)"
     >
       <img :src="data.avatar.small"
            alt=""
@@ -73,6 +74,7 @@
     methods: {
       ...mapMutations({
         removeUsersFromStore: 'channels/REMOVE_USERS_FROM_STORE',
+        setUserPosition: 'user/SET_USER_POSITION',
       }),
       ...mapActions({
         setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',

@@ -51,18 +51,6 @@ export default new Router({
       meta: {requiresAuth: true}
     },
     {
-      path: '/create-group',
-      name: 'create_group',
-      component: CreateGroup,
-      meta: {requiresAuth: true}
-    },
-    {
-      path: '/create-channel',
-      name: 'create_channel',
-      component: CreateChannel,
-      meta: {requiresAuth: true}
-    },
-    {
       path: '/:id',
       component: Chat,
       meta: {requiresAuth: true},

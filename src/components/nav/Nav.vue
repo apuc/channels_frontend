@@ -51,10 +51,9 @@
     <nav>
       <drag v-for="(channel, index) in channels"
             :transfer-data="channel.channel_id"
-            :key="index"
+            :key="channel.channel_id"
       >
         <NavSection v-if="filters.channelsVisible && !isChannelsLoading"
-                    :key="channel.channel_id"
                     title="Каналы"
                     :type="'channel'"
                     :data="channel"
@@ -63,10 +62,9 @@
 
       <drop v-for="(group, index) in groups"
             @drop="handleDrop(group.group_id, ...arguments)"
-            :key="index"
+            :key="group.group_id"
       >
         <NavSection v-if="filters.groupsVisible && !isGroupsLoading"
-                    :key="group.group_id"
                     title="Группы"
                     :type="'group'"
                     :data="group"
@@ -155,7 +153,6 @@
       async handleDrop(group_id, data, event) {
         await this.setGroupIdForAddingChannels(group_id);
         await this.addChannelsToGroup([data]);
-        alert('surprise motherfucker')
       },
     },
     async created() {

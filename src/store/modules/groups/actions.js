@@ -24,6 +24,7 @@ export default {
 
             if (currentGroup && pathnameArray.indexOf('group')) {
               commit('SET_CURRENT_GROUP_DATA', currentGroup);
+              commit('user/SET_USER_POSITION', 'group', {root: true});
             }
           },
           err => console.log('get groups', err)
@@ -56,7 +57,7 @@ export default {
           res => {
             const groupData = res.body.data;
             commit('SET_CURRENT_GROUP_DATA', groupData);
-            commit('SET_EDITED_GROUP_DATA', groupData)
+            // commit('SET_EDITED_GROUP_DATA', groupData)
           },
           err => console.log('get groups', err)
         )
@@ -216,8 +217,7 @@ export default {
    *
    * @param groupId - group to edit
    */
-  'SET_GROUP_DELETING':
-    async ({commit, dispatch}, groupId) => {
+  'SET_GROUP_DELETING': async ({commit, dispatch}, groupId) => {
       commit('SET_GROUP_ID_TO_DELETE', groupId);
       dispatch('modal/OPEN_MODAL_EDIT_MODE', 'deleteGroup', {root: true});
     },
@@ -281,6 +281,9 @@ export default {
         .then(
           res => {
             const newGroupData = res.body.data;
+            for (let i = 0; i < channel_ids.length; i++) {
+              commit('channels/REMOVE_DELETED_CHANNEL', channel_ids[i], {root: true});
+            }
             if (getters.currentGroupData.group_id === newGroupData.group_id) {
               commit('SET_CURRENT_GROUP_DATA', newGroupData);
             }

@@ -1,44 +1,38 @@
 <template>
   <aside class="col-md-2 bg-light">
-    <section class="info" v-for="(ad, index) in ads" :key="index">
-      <div class="info__img">
-        <img :src="ad.img" alt="">
-      </div>
+    <div v-if="userPosition === 'channel'">
+      <img :src="channel.avatar ? channel.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
 
-      <div class="info__title">
-        <a :href="ad.link">{{ ad.title }}</a>
-      </div>
-    </section>
+      <p>{{channel.title}}</p>
+      <p>{{channel.status}}</p>
+      <p>{{channel.type}}</p>
+      <p>{{channel.private}}</p>
+    </div>
+
+    <div v-if="userPosition === 'group'">
+      <img :src="group.avatar ? group.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
+
+      <p>{{group.title}}</p>
+      <p>{{group.status}}</p>
+    </div>
   </aside>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
+
   export default {
     name: "Advertisings",
+    computed: {
+      ...mapGetters({
+        channel: 'channels/currentChannelData',
+        group: 'groups/currentGroupData',
+        userPosition: 'user/userPosition',
+      }),
+    },
     data() {
       return {
-        ads: [
-          {
-            img: 'https://s.newsweek.com/sites/www.newsweek.com/files/styles/lg/public/2018/09/05/beaver.jpg',
-            title: 'За бобров!',
-            link: 'https://github.com'
-          },
-          {
-            img: 'https://pp.userapi.com/c837721/v837721341/360d1/weQod8JmGwM.jpg',
-            title: 'Наша еда хороша.',
-            link: 'https://github.com'
-          },
-          {
-            img: 'https://pp.userapi.com/c837230/v837230616/41903/P0YVL7I3Z9w.jpg',
-            title: 'Покупайте наши велосипеды.',
-            link: 'https://github.com'
-          },
-          {
-            img: 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg',
-            title: 'За енотов!',
-            link: 'https://github.com'
-          },
-        ]
+
       }
     }
   }
@@ -68,7 +62,6 @@
 
   img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
   }
 </style>
