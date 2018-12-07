@@ -57,12 +57,41 @@ export default {
           },
           err => console.log(err)
         )
-        .catch(error => console.log('EDIT_PROFILE: ', error))
+        .catch(error => console.log('EDIT_GENERAL_USER_DATA: ', error))
     } else {
       if (currentDateInSeconds < refreshTokenExpiresIn) {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
           .then(() => {
-            dispatch('EDIT_PROFILE');
+            dispatch('EDIT_GENERAL_USER_DATA');
+          })
+      } else {
+        commit('modal/SET_MODAL', 'logout', {root: true});
+      }
+    }
+  },
+  'EDIT_PRIVATE_USER_DATA': async ({getters, commit, dispatch, rootGetters}) => {
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.put(`${process.env.VUE_APP_API_URL}/user/profile/${getters.info.user_id}`, {
+        email: getters.info.email,
+        password: getters.info.password,
+        password_confirmation: getters.info.passwordRepeat,
+      })
+        .then(
+          res => {
+            commit('modal/DELETE_MODAL', null, {root: true});
+          },
+          err => console.log(err)
+        )
+        .catch(error => console.log('EDIT_PRIVATE_USER_DATA: ', error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('EDIT_PRIVATE_USER_DATA');
           })
       } else {
         commit('modal/SET_MODAL', 'logout', {root: true});

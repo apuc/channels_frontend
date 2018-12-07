@@ -47,7 +47,7 @@
 
     <form v-else
           class="modal__content"
-          @submit.prevet="onSubmit"
+          @submit.prevet="onSubmitPrivate"
     >
       <div class="row">
         <div class="col">
@@ -110,6 +110,7 @@
       }),
       ...mapActions({
         editGeneralUserData: 'user/EDIT_GENERAL_USER_DATA',
+        editPrivateUserData: 'user/EDIT_PRIVATE_USER_DATA',
         deleteProfile: 'user/DELETE_USER',
         createUserAvatar: 'user/CREATE_USER_AVATAR',
       }),
@@ -121,6 +122,11 @@
           await this.createUserAvatar(this.img).then(() => this.upLoadStarted = false);
         }
         this.editGeneralUserData();
+      },
+
+      async onSubmitPrivate() {
+        await this.setUserData(this.userData);
+        this.editPrivateUserData();
       },
       deleteUser() {
         this.deleteProfile();
