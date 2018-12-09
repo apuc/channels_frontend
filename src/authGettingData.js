@@ -3,8 +3,7 @@ import router from "./routers/router";
 
 export default {
   methods: {
-    gettingData() {
-      console.log(321);
+    $_authGettingData_gettingData() {
       const pathnameArray = location.pathname.split('/');
       const slug = pathnameArray[pathnameArray.length - 1];
 

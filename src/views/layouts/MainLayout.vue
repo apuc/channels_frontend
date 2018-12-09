@@ -63,14 +63,14 @@
               if (this.currentDateInSeconds < this.refreshTokenExpiresIn) {
                 await this.getNav();
                 this.gettingUserData();
-                this.gettingData();
+                this.$_authGettingData_gettingData();
               }
             }
           })
           .catch(error => console.log(error));
       }
       if (!this.isAuthenticated) {
-        this.gettingData();
+        this.$_authGettingData_gettingData();
       }
     }
   }
