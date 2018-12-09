@@ -8,7 +8,7 @@
       <div class="profile__name">
         <span>{{currentUserInfo.username}}</span>
         <a :href="currentUserInfo.email">{{currentUserInfo.email}}</a>
-        <span class="online">Online</span>
+        <span :class="status">{{ status }}</span>
       </div>
     </header>
 
@@ -20,12 +20,14 @@
 
 <script>
   import {mapState, mapMutations, mapActions} from 'vuex';
+  import {ioGetUserStatus} from '../services/socket/status.service';
 
   export default {
     name: "UserProfile",
     computed: {
       ...mapState('user', ['currentUserInfo']),
-      ...mapState('channels', ['currentChannelUsers'])
+      ...mapState('channels', ['currentChannelUsers']),
+      ...mapState('status', ['status']),
     },
     methods: {
       ...mapMutations({
@@ -41,14 +43,13 @@
         history.pushState('', 'Title of page', modalLink);
       },
     },
-    created() {
+    async mounted() {
       if (!this.currentUserInfo.id) {
-        window.onload = () => {
           const pathArray = location.pathname.split('/');
           const user_id = pathArray[pathArray.length - 1];
-          this.getUserData(user_id);
+          await this.getUserData(user_id);
+          ioGetUserStatus(user_id);
         }
-      }
     }
   }
 </script>

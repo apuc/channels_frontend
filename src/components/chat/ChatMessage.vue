@@ -2,12 +2,12 @@
   <b-card class="message mb-3">
     <b-media>
       <div class="flex">
-        <a :href="'/user/'" @click="openUserProfile($event, messageData.user)">
+        <a :href="'/user/'" @click="openUserProfile($event, messageData.from)">
           <img :src="messageData.from.avatar || noavatar" width="64" alt="placeholder"/>
         </a>
 
         <h5 class="mt-0 message-title" >
-          <a :href="'/user/'" @click="openUserProfile($event, messageData.user)">{{messageData.from.username}}</a>
+          <a :href="'/user/'" @click="openUserProfile($event, messageData.from)">{{messageData.from.username}}</a>
           <span class="message-time">{{ messageData['created_at'] }}</span>
         </h5>
 
@@ -41,18 +41,17 @@
         setModal: 'modal/SET_MODAL',
       }),
       ...mapActions({
-        setCurrentUserInfo: 'modal/SET_CURRENT_USER_INFO',
+        setCurrentUserInfo: 'modal/OPEN_MODAL_EDIT_MODE',
       }),
-      openUserProfile(e) {
+      openUserProfile(e, user) {
         e.preventDefault();
         this.setModal('userProfile');
         this.setCurrentUserInfo({
-          name: this.user.name,
-          id: this.user.id,
-          avatar: this.user.avatar,
-          slug: this.user.slug
+          name: user.username,
+          id: user.user_id,
+          avatar: user.avatar
         });
-        history.pushState('', 'Title of page', `/user/${this.user.slug}`);
+        history.pushState('', 'Title of page', `/user/${user.user_id}`);
       },
     }
   }

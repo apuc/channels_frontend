@@ -8,7 +8,7 @@
 
 <script>
   import ChatMessage from './ChatMessage';
-  import { mapGetters } from 'vuex';
+  import { mapGetters, mapActions } from 'vuex';
 
   export default {
     data() {
@@ -17,7 +17,10 @@
     methods: {
       scrollToBottom() {
         this.$refs['messagesList'].scrollTo(0, this.$refs['messagesList'].scrollHeight);
-      }
+      },
+      ...mapActions({
+        offTyping: 'messages/OFF_TYPING',
+      }),
     },
     mounted() {
       this.scrollToBottom();
@@ -32,6 +35,9 @@
         ...mapGetters({
             messages: 'messages/messages'
         })
+    },
+    beforeDestroy() {
+      this.offTyping();
     }
   }
 </script>
