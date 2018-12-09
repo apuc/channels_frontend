@@ -14,7 +14,8 @@
   import Nav from '../../components/nav/Nav';
   import Advertisings from '../../components/ads/Advertisings';
   import {connectSocket} from '../../services/socket/socket.service';
-  import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import authGettingData from '../../authGettingData';
 
   export default {
     computed: {
@@ -22,9 +23,12 @@
         token: 'auth/token',
         userInfo: 'user/info',
         authStatus: 'auth/gettingTokenAndData',
+        channels: 'channels/channels',
+        groups: 'groups/groups',
+        isAuthenticated: 'auth/isAuthenticated',
       }),
-      ...mapState('channels', ['channels']),
     },
+    mixins: [authGettingData],
     data() {
       return {
         currentDateInSeconds: Math.round(Date.now() / 1000),
@@ -32,39 +36,41 @@
         refreshTokenExpiresIn: Number(localStorage.getItem('RT_expires_at')),
       }
     },
-    components: {
-      Advertisings,
-      Nav
-    },
+    components: {Advertisings, Nav},
     methods: {
       ...mapMutations({
         gettingUserData: 'auth/GETTING_TOKEN_AND_DATA',
         setModal: 'modal/SET_MODAL',
       }),
       ...mapActions({
-        getUser: 'user/GET_USER',
+        getUserMe: 'user/GET_USER_ME',
         getNav: 'user/GET_NAV',
       }),
     },
     beforeMount() {
-        connectSocket(this.token)
-            .then(() => {
-              console.log('Socket connected!')
-            })
-            .catch(err => console.error(err));
+      connectSocket(this.token)
+        .then(() => {
+          console.log('Socket connected!')
+        })
+        .catch(err => console.error(err));
     },
     mounted() {
       if (!this.authStatus) {
         this.gettingUserData();
-        this.getUser()
+        this.getUserMe()
           .then(async () => {
             if (this.authStatus) {
               if (this.currentDateInSeconds < this.refreshTokenExpiresIn) {
                 await this.getNav();
                 this.gettingUserData();
+                this.gettingData();
               }
             }
-          });
+          })
+          .catch(error => console.log(error));
+      }
+      if (!this.isAuthenticated) {
+        this.gettingData();
       }
     }
   }

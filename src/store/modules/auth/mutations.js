@@ -20,7 +20,9 @@ export default {
     state.user = user;
   },
   /**
-   * @param isWrongData
+   * После получения ответа от сервера при авторизации, говорит верны ли данные авторизации
+   *
+   * @param isWrongData {Boolean}: true - не верные данные, false - верные
    */
   'SET_IS_AUTH_DATA_RIGHT': (state, isWrongData) => {
     state.isWrongData = isWrongData;

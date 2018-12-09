@@ -2,7 +2,9 @@
   <div class="profile">
     <header class="profile__header">
       <div class="profile__pic">
-        <img :src="this.currentUserInfo.avatar ? this.currentUserInfo.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
+        <img
+          :src="this.currentUserInfo.avatar ? this.currentUserInfo.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
+          alt="">
       </div>
 
       <div class="profile__name">
@@ -13,7 +15,8 @@
     </header>
 
     <div class="controls">
-      <button type="button" class="btn btn-primary" @click="openModal($event, 'dialog')">Start chat with this user</button>
+      <button type="button" class="btn btn-primary" @click="openModal($event, 'dialog')">Start chat with this user
+      </button>
     </div>
   </div>
 </template>
@@ -25,7 +28,8 @@
     name: "UserProfile",
     computed: {
       ...mapState('user', ['currentUserInfo']),
-      ...mapState('channels', ['currentChannelUsers'])
+      ...mapState('channels', ['currentChannelUsers']),
+      ...mapState('user', ['isUserLoading']),
     },
     methods: {
       ...mapMutations({
@@ -41,14 +45,14 @@
         history.pushState('', 'Title of page', modalLink);
       },
     },
-    created() {
-      if (!this.currentUserInfo.id) {
-        window.onload = () => {
-          const pathArray = location.pathname.split('/');
-          const user_id = pathArray[pathArray.length - 1];
-          this.getUserData(user_id);
-        }
-      }
+    mounted() {
+      const pathnameArray = location.pathname.split('/');
+
+      // if (!this.currentUserInfo.user_id && pathnameArray.indexOf('user') !== -1 && !this.isUserLoading) {
+      //   console.log(456456);
+      //   const user_id = pathnameArray[pathnameArray.length - 1];
+      //   this.getUserData(user_id);
+      // }
     }
   }
 </script>

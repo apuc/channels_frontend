@@ -1,10 +1,11 @@
 import Vue from "vue";
+import router from "../../../routers/router";
 
 export default {
   /**
    * Get user data
    */
-  'GET_USER': async ({commit, dispatch, rootGetters}) => {
+  'GET_USER_ME': async ({commit, dispatch, rootGetters}) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
@@ -24,10 +25,8 @@ export default {
       if (currentDateInSeconds < refreshTokenExpiresIn) {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
           .then(() => {
-            dispatch('GET_USER');
+            dispatch('GET_USER_ME');
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -39,7 +38,7 @@ export default {
     await dispatch('channels/GET_USER_CHANNELS', null, {root: true});
   },
   /**
-   * Change general user data
+   * Change general user data - avatar, username
    */
   'EDIT_GENERAL_USER_DATA': async ({getters, commit, dispatch, rootGetters}) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
@@ -64,11 +63,12 @@ export default {
           .then(() => {
             dispatch('EDIT_GENERAL_USER_DATA');
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
+  /**
+   * Change private user data - password, email
+   */
   'EDIT_PRIVATE_USER_DATA': async ({getters, commit, dispatch, rootGetters}) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
@@ -93,8 +93,6 @@ export default {
           .then(() => {
             dispatch('EDIT_PRIVATE_USER_DATA');
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -121,8 +119,6 @@ export default {
           .then(() => {
             dispatch('DELETE_USER');
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -132,31 +128,33 @@ export default {
    * @param user_id {String || Number}
    */
   'GET_USER_DATA': async ({commit, dispatch, rootGetters}, user_id) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
-    if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/${user_id}`)
-        .then(
-          res => {
-            commit('SET_CURRENT_USER_DATA', res.body.data);
-          },
-          err => {
-            console.log(err);
+    // const currentDateInSeconds = Math.round(Date.now() / 1000);
+    // const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    // const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+    //
+    // if (currentDateInSeconds < tokenExpiresIn) {
+    commit('SET_USER_DATA_LOADING_FLAG');
+    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/${user_id}`)
+      .then(
+        res => {
+          commit('SET_CURRENT_USER_DATA', res.body.data);
+          commit('SET_USER_DATA_LOADING_FLAG');
+        },
+        err => {
+          if (err.status === 404) {
+            router.push({path: '/not-found'})
           }
-        )
-        .catch(error => console.log('GET_USER_DATA: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
-          .then(() => {
-            dispatch('GET_USER_DATA');
-          })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
-      }
-    }
+        }
+      )
+      .catch(error => console.log('GET_USER_DATA: ', error))
+    // } else {
+    //   if (currentDateInSeconds < refreshTokenExpiresIn) {
+    //     await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+    //       .then(() => {
+    //         dispatch('GET_USER_DATA');
+    //       })
+    //   }
+    // }
   },
   /**
    * Add avatar to the user profile and write avatar_id to the store
@@ -193,8 +191,6 @@ export default {
           .then(() => {
             dispatch('CREATE_USER_AVATAR', img);
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },

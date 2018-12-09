@@ -16,16 +16,8 @@ export default {
         .then(
           res => {
             const groups = res.body.data;
-            const pathnameArray = location.pathname.split('/');
-            const slug = pathnameArray[pathnameArray.length - 1];
-            const currentGroup = groups.find(channel => channel.slug === slug);
-            commit('SET_GROUPS_LOADING_FLAG');
             commit('USER_GROUPS', groups);
-
-            if (currentGroup && pathnameArray.indexOf('group')) {
-              commit('SET_CURRENT_GROUP_DATA', currentGroup);
-              commit('user/SET_USER_POSITION', 'group', {root: true});
-            }
+            commit('SET_GROUPS_LOADING_FLAG');
           },
           err => console.log('get groups', err)
         )
@@ -36,8 +28,6 @@ export default {
           .then(() => {
             dispatch('GET_USER_GROUPS');
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -47,11 +37,11 @@ export default {
    * @param groupId {String || Number}
    */
   'GET_GROUP_DATA': async ({getters, commit, dispatch, rootGetters}, groupId) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
-    if (currentDateInSeconds < tokenExpiresIn) {
+    // const currentDateInSeconds = Math.round(Date.now() / 1000);
+    // const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    // const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+    //
+    // if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/group/${groupId}`)
         .then(
           res => {
@@ -62,16 +52,14 @@ export default {
           err => console.log('get groups', err)
         )
         .catch(error => console.log('GET_GROUPS: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
-          .then(() => {
-            dispatch('GET_GROUP');
-          })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
-      }
-    }
+    // } else {
+    //   if (currentDateInSeconds < refreshTokenExpiresIn) {
+    //     await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+    //       .then(() => {
+    //         dispatch('GET_GROUP');
+    //       })
+    //   }
+    // }
   },
   /**
    * Create group and reload groups
@@ -104,8 +92,6 @@ export default {
           .then(() => {
             dispatch('CREATE_GROUP');
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -144,8 +130,6 @@ export default {
           .then(() => {
             dispatch('CREATE_GROUP_AVATAR', img);
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -207,8 +191,6 @@ export default {
           .then(() => {
             dispatch('EDIT_GROUP');
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -252,8 +234,6 @@ export default {
           .then(() => {
             dispatch('DELETE_GROUP');
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -300,8 +280,6 @@ export default {
           .then(() => {
             dispatch('ADD_CHANNELS', channel_ids);
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -330,8 +308,6 @@ export default {
           .then(() => {
             dispatch('REMOVE_CHANNEL_FROM_GROUP');
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },

@@ -17,23 +17,8 @@ export default {
         .then(
           res => {
             const channels = res.body.data;
-            const pathnameArray = location.pathname.split('/');
-            const slug = pathnameArray[pathnameArray.length - 1];
-            const currentChannel = channels.find(channel => channel.slug === slug);
-            commit('SET_CHANNELS_LOADING_FLAG');
             commit('USER_CHANNELS', channels);
-
-            if (currentChannel && pathnameArray.length === 2) {
-              commit('SET_CURRENT_CHANNEL_DATA', currentChannel);
-              dispatch('GET_USERS', currentChannel.channel_id);
-              dispatch('messages/GET_MESSAGES', {}, {root: true});
-              commit('user/SET_USER_POSITION', 'channel', {root: true});
-            }
-
-            if (channels.length === 0) {
-              commit('modal/SET_MODAL', 'channel', {root: true});
-            }
-
+            commit('SET_CHANNELS_LOADING_FLAG');
             joinChannels(channels);
           },
           err => console.log('get channels', err)
@@ -45,8 +30,6 @@ export default {
           .then(() => {
             dispatch('GET_USER_CHANNELS');
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -56,11 +39,11 @@ export default {
    * @param channelId {String || Number}
    */
   'GET_CHANNEL_DATA': async ({commit, dispatch, rootGetters}, channelId) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
-    if (currentDateInSeconds < tokenExpiresIn) {
+    // const currentDateInSeconds = Math.round(Date.now() / 1000);
+    // const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    // const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+    //
+    // if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}`)
         .then(
           res => {
@@ -69,16 +52,14 @@ export default {
           err => console.log('get channels', err)
         )
         .catch(error => console.log('GET_CHANNELS: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
-          .then(() => {
-            dispatch('GET_USER_CHANNELS');
-          })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
-      }
-    }
+    // } else {
+    //   if (currentDateInSeconds < refreshTokenExpiresIn) {
+    //     await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+    //       .then(() => {
+    //         dispatch('GET_USER_CHANNELS');
+    //       })
+    //   }
+    // }
   },
   /**
    * Get current channel users
@@ -108,8 +89,6 @@ export default {
           .then(() => {
             dispatch('GET_USERS', channelId);
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -140,8 +119,6 @@ export default {
           .then(() => {
             dispatch('CREATE_CHANNEL');
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -180,8 +157,6 @@ export default {
           .then(() => {
             dispatch('CREATE_CHANNEL_AVATAR', img);
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -248,8 +223,6 @@ export default {
           .then(() => {
             dispatch('EDIT_CHANNEL');
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -291,8 +264,6 @@ export default {
           .then(() => {
             dispatch('DELETE_CHANNEL');
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -321,8 +292,6 @@ export default {
           .then(() => {
             dispatch('DELETE_USER', userId);
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },
@@ -354,8 +323,6 @@ export default {
           .then(() => {
             dispatch('ADD_USER', userId);
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },

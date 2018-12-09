@@ -23,8 +23,6 @@ export default {
           .then(() => {
             dispatch('GET_MESSAGES', payload);
           })
-      } else {
-        commit('modal/SET_MODAL', 'logout', {root: true});
       }
     }
   },

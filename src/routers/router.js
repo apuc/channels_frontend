@@ -23,6 +23,11 @@ export default new Router({
       meta: {requiresAuth: true}
     },
     {
+      path: '/not-found',
+      name: 'not_found',
+      component: NotFoundComponent,
+    },
+    {
       path: '/group',
       redirect: '/',
       meta: {requiresAuth: true}
@@ -54,10 +59,6 @@ export default new Router({
       path: '/:id',
       component: Chat,
       meta: {requiresAuth: true},
-    },
-    {
-      path: '/not-found',
-      component: NotFoundComponent,
     },
   ],
 });

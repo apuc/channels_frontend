@@ -89,7 +89,7 @@
       }),
       ...mapActions({
         getToken: 'auth/GET_TOKEN',
-        getUser: 'user/GET_USER',
+        getUserMe: 'user/GET_USER_ME',
         getNav: 'user/GET_NAV',
       }),
       test(e, index) {
@@ -122,7 +122,7 @@
               .then(
                 async () => {
                   if (!this.isWrongData) {
-                    await this.getUser()
+                    await this.getUserMe()
                       .then(
                         async () => {
                           this.$router.push('/');

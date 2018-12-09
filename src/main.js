@@ -32,6 +32,7 @@ router.beforeEach((to, from, next) => {
   const currentDateInSeconds = Math.round(Date.now() / 1000);
   const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
+  // если рефреш токен истёк, но пользователь ещё авторизован - разлогинить
   if ((currentDateInSeconds > refreshTokenExpiresIn || !refreshTokenExpiresIn) && store.getters["auth/isAuthenticated"]) {
     localStorage.clear();
     store.commit('auth/LOGOUT');
@@ -41,12 +42,10 @@ router.beforeEach((to, from, next) => {
     if (store.getters["auth/isAuthenticated"]) { // Проверяем авторизован ли пользователь
       // console.log('authenticated');
       next();
-    } else { // Если не авторизован - редиректим на логин
-     if (localStorage.getItem('access_token')) {
-       store.commit('modal/SET_MODAL', 'logout');
-     } else {
-       next({path: '/login'});
-     }
+    }
+    else { // Если не авторизован - получаем данные о канале/группе/пользователе
+      next();
+      // Vue.mixin(authGettingData);
     }
   } else { // если в роутинге в поле meta указано requiresAuth в false или не указан
     if (store.getters["auth/isAuthenticated"]) { // Если пользователь залогинен
@@ -55,6 +54,7 @@ router.beforeEach((to, from, next) => {
         return
       }
     }
+    // Vue.mixin(authGettingData);
     next();
   }
 });
@@ -68,5 +68,6 @@ new Vue({
       "Content-Type": "application/json",
     }
   },
+  // mixins: [authGettingData],
   render: h => h(App)
 }).$mount('#app');
