@@ -36,30 +36,18 @@ export default {
   /**
    * Get concrete channel data
    *
-   * @param channelId {String || Number}
+   * @param channelId {String || Number} - channel id or slug
    */
   'GET_CHANNEL_DATA': async ({commit, dispatch, rootGetters}, channelId) => {
-    // const currentDateInSeconds = Math.round(Date.now() / 1000);
-    // const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    // const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-    //
-    // if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}`)
         .then(
           res => {
-            const channels = res.body.data;
+            const channel = res.body.data;
+            commit('SET_CURRENT_CHANNEL_DATA', channel);
           },
           err => console.log('get channels', err)
         )
         .catch(error => console.log('GET_CHANNELS: ', error))
-    // } else {
-    //   if (currentDateInSeconds < refreshTokenExpiresIn) {
-    //     await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
-    //       .then(() => {
-    //         dispatch('GET_USER_CHANNELS');
-    //       })
-    //   }
-    // }
   },
   /**
    * Get current channel users

@@ -3,7 +3,7 @@ import router from "./routers/router";
 
 export default {
   methods: {
-    $_authGettingData_gettingData() {
+    async $_authGettingData_gettingData() {
       const pathnameArray = location.pathname.split('/');
       const slug = pathnameArray[pathnameArray.length - 1];
 
@@ -40,7 +40,10 @@ export default {
           store.dispatch('channels/GET_USERS', currentChannel.channel_id);
           store.dispatch('messages/GET_MESSAGES');
         } else {
-          router.push('/not-found');
+          await store.dispatch('GET_CHANNEL_DATA', slug);
+          const currentChannel = store.getters['channels/channels'].find(channel => channel.slug === slug);
+          store.dispatch('channels/GET_USERS', currentChannel.channel_id);
+          store.dispatch('messages/GET_MESSAGES');
         }
       } else {
         router.push('/login');
