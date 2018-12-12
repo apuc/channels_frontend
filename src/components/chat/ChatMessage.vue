@@ -2,19 +2,18 @@
   <b-card class="message mb-3">
     <b-media>
       <div class="flex">
-        <a :href="'/user/'" @click="openUserProfile($event, messageData.from)">
+        <router-link :to="'/user/'+messageData.from.user_id" @click.native="setCurrentUserData(messageData.from.user_id)">
           <img :src="messageData.from.avatar || noavatar" width="64" alt="placeholder"/>
-        </a>
+        </router-link>
 
         <h5 class="mt-0 message-title" >
-          <a :href="'/user/'" @click="openUserProfile($event, messageData.from)">{{messageData.from.username}}</a>
+          <router-link :to="'/user/'+messageData.from.user_id" @click.native="setCurrentUserData(messageData.from.user_id)">{{messageData.from.username}}</router-link>
           <span class="message-time">{{ messageData['created_at'] }}</span>
         </h5>
 
       </div>
       <pre class="text">{{messageData.text}}</pre>
     </b-media>
-
   </b-card>
 </template>
 
@@ -25,7 +24,6 @@
     computed: {
       ...mapGetters({
         userInfo: 'modal/userProfileInfo',
-        modal: 'modal/setUserProfile'
       }),
     },
     data() {
@@ -38,21 +36,11 @@
     },
     methods: {
       ...mapMutations({
-        setModal: 'modal/SET_MODAL',
+        setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
       }),
       ...mapActions({
         setCurrentUserInfo: 'modal/OPEN_MODAL_EDIT_MODE',
       }),
-      openUserProfile(e, user) {
-        e.preventDefault();
-        this.setModal('userProfile');
-        this.setCurrentUserInfo({
-          name: user.username,
-          id: user.user_id,
-          avatar: user.avatar
-        });
-        history.pushState('', 'Title of page', `/user/${user.user_id}`);
-      },
     }
   }
 </script>
