@@ -52,18 +52,18 @@
         this.gettingUserData();
         this.getUser()
           .then(async () => {
-            await connectSocket(this.token, this.userInfo.user_id)
-              .then(() => {
-                console.log('Socket connected!');
-                ioStatusOnline(this.userInfo.user_id); // Сообщаем ноду, что пользователь онлайн
-              })
-              .catch(err => console.error(err));
             if (this.authStatus) {
               if (this.currentDateInSeconds < this.refreshTokenExpiresIn) {
                 await this.getNav();
                 this.gettingUserData();
               }
             }
+            connectSocket(this.token, this.userInfo.user_id)
+              .then(() => {
+                console.log('Socket connected!');
+                ioStatusOnline(this.userInfo.user_id); // Сообщаем ноду, что пользователь онлайн
+              })
+              .catch(err => console.error(err));
           });
       }
     },
