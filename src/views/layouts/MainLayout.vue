@@ -17,6 +17,7 @@
   import {ioStatusOnline} from '../../services/socket/status.service';
   import {mapGetters, mapMutations, mapActions} from 'vuex';
   import authGettingData from '../../authGettingData';
+  import {ioGetUserStatus} from '../../services/socket/status.service';
 
   export default {
     computed: {
@@ -60,11 +61,13 @@
                 this.$_authGettingData_gettingData();
               }
             }
-            connectSocket(this.token, this.userInfo.user_id)
+            console.log(this.userInfo.user_id);
+            await connectSocket(this.token, this.userInfo.user_id)
               .then(() => {
                 console.log('Socket connected!');
                 ioStatusOnline(this.userInfo.user_id); // Сообщаем ноду, что пользователь онлайн
-              })
+              });
+            await ioGetUserStatus(user_id);
           })
           .catch(error => console.log(error));
       }

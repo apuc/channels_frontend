@@ -1,5 +1,6 @@
 import store from "./store/store";
 import router from "./routers/router";
+import {ioGetUserStatus} from './services/socket/status.service';
 
 export default {
   methods: {
@@ -30,6 +31,7 @@ export default {
         } else {
           store.dispatch('user/GET_USER_DATA', slug);
         }
+        ioGetUserStatus(user_id);
       }
       else if (slug.length > 0 && slug !== 'not-found') {
         const currentChannel = store.getters['channels/channels'].find(channel => channel.slug === slug);

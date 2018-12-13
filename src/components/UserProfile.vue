@@ -10,7 +10,7 @@
       <div class="profile__name">
         <span>{{currentUserInfo.username}}</span>
         <a :href="currentUserInfo.email">{{currentUserInfo.email}}</a>
-        <span :class="status">{{ status }}</span>
+        <span :class="status.status">{{ status.status }}</span>
       </div>
     </header>
 
@@ -22,8 +22,8 @@
 </template>
 
 <script>
-  import {mapState, mapMutations, mapActions} from 'vuex';
-  import {ioGetUserStatus} from '../services/socket/status.service';
+  import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
+
 
   export default {
     name: "UserProfile",
@@ -31,7 +31,9 @@
       ...mapState('user', ['currentUserInfo']),
       ...mapState('channels', ['currentChannelUsers']),
       ...mapState('user', ['isUserLoading']),
-      ...mapState('status', ['status']),
+      ...mapGetters({
+        status: 'status/status'
+      })
     },
     methods: {
       ...mapMutations({
@@ -48,12 +50,7 @@
       },
     },
     async mounted() {
-      if (!this.currentUserInfo.id) {
-          const pathArray = location.pathname.split('/');
-          const user_id = pathArray[pathArray.length - 1];
-          await this.getUserData(user_id);
-          ioGetUserStatus(user_id);
-        }
+
     }
   }
 </script>
