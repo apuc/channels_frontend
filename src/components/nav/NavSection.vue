@@ -19,7 +19,7 @@
       <v-icon scale="1" class="icon icon_mla" name="folder" v-if="type === 'group'"/>
     </router-link>
 
-    <div v-if="userData.user_id === data.owner_id || userData.user_id === data.owner_id"
+    <div v-if="userData.user_id === data.owner_id"
          class="control"
     >
       <button type="button"
