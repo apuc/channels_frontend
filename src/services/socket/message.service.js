@@ -21,6 +21,6 @@ export function messageEventListenerInit() {
     });
 
     io.on('typing', function ({user, isTyping}) {
-        store.dispatch('messages/TYPING', {user, isTyping})
+        store.dispatch('messages/ON_TYPING', {user, isTyping})
     })
 }

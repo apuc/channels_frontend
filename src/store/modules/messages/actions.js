@@ -48,11 +48,14 @@ export default {
     'ON_MESSAGE': async ({commit, dispatch, rootGetters}, message) => {
         commit('SET_MESSAGE', message);
     },
-    'TYPING': async ({commit, dispatch, rootGetters}, {user, isTyping}) => {
+    'ON_TYPING': async ({commit, dispatch, rootGetters}, {user, isTyping}) => {
         if (isTyping) {
             commit('PUSH_TYPING_USER', user);
         } else {
             commit('SLICE_TYPING_USER', user);
         }
+    },
+    'OFF_TYPING': async ({commit, dispatch, rootGetters})  => {
+        commit('OFF_TYPING');
     }
 };

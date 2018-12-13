@@ -1,13 +1,14 @@
 import socketIo from 'socket.io-client';
 import {channelsEventListenerInit} from './channels.service'
 import {messageEventListenerInit} from './message.service'
+import {statusEventListenerInit} from './status.service'
 
 export let io = null;
 
-export function connectSocket(token) {
+export function connectSocket(token, user_id) {
     return new Promise((resolve, reject) => {
 
-        io = socketIo('https://mychannels.gq', {query: {token: token}}); // пробуем подключится к ноду
+        io = socketIo('localhost:2368', {query: {token, user_id}}); // пробуем подключится к ноду
 
         io.on('connect', () => {
             socketEventListenerInit();
@@ -22,5 +23,6 @@ export function connectSocket(token) {
 function socketEventListenerInit() {
     channelsEventListenerInit();
     messageEventListenerInit();
+    statusEventListenerInit();
 }
 

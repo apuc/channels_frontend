@@ -14,6 +14,7 @@
   import Nav from '../../components/nav/Nav';
   import Advertisings from '../../components/ads/Advertisings';
   import {connectSocket} from '../../services/socket/socket.service';
+  import {ioStatusOnline} from '../../services/socket/status.service';
   import {mapGetters, mapMutations, mapActions} from 'vuex';
   import authGettingData from '../../authGettingData';
 
@@ -47,14 +48,7 @@
         getNav: 'user/GET_NAV',
       }),
     },
-    beforeMount() {
-      connectSocket(this.token)
-        .then(() => {
-          console.log('Socket connected!')
-        })
-        .catch(err => console.error(err));
-    },
-    mounted() {
+    created() {
       if (!this.authStatus) {
         this.gettingUserData();
         this.getUserMe()
@@ -66,13 +60,18 @@
                 this.$_authGettingData_gettingData();
               }
             }
+            connectSocket(this.token, this.userInfo.user_id)
+              .then(() => {
+                console.log('Socket connected!');
+                ioStatusOnline(this.userInfo.user_id); // Сообщаем ноду, что пользователь онлайн
+              })
           })
           .catch(error => console.log(error));
       }
       if (!this.isAuthenticated) {
         this.$_authGettingData_gettingData();
       }
-    }
+    },
   }
 </script>
 
