@@ -61,13 +61,13 @@
                 this.$_authGettingData_gettingData();
               }
             }
-            console.log(this.userInfo.user_id);
+            console.log(this.userInfo);
             await connectSocket(this.token, this.userInfo.user_id)
               .then(() => {
                 console.log('Socket connected!');
                 ioStatusOnline(this.userInfo.user_id); // Сообщаем ноду, что пользователь онлайн
               });
-            await ioGetUserStatus(user_id);
+            await ioGetUserStatus(this.userInfo.user_id);
           })
           .catch(error => console.log(error));
       }
