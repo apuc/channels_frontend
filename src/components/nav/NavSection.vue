@@ -14,7 +14,9 @@
            height="30"
            v-if="data.avatar">
 
-      <span class="name">{{ data.title }}</span>
+      <span class="name">
+        {{ data.title }}
+      </span>
 
       <v-icon scale="1" class="icon icon_mla" name="folder" v-if="type === 'group'"/>
     </router-link>

@@ -61,7 +61,7 @@
                 this.$_authGettingData_gettingData();
               }
             }
-            console.log(this.userInfo);
+
             await connectSocket(this.token, this.userInfo.user_id)
               .then(() => {
                 console.log('Socket connected!');

@@ -1,12 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import store from '../store/store';
-import Login from '../components/Login';
-import Registration from '../components/Registration';
+import AuthLogin from '../components/Auth/AuthLogin';
+import AuthRegistration from '../components/Auth/AuthRegistration';
 import Group from '../components/group/Group';
-import CreateGroup from '../components/ModalWindows/CreateGroup';
-import CreateChannel from '../components/ModalWindows/CreateChannel';
 import Chat from '../components/chat/Chat';
+import NotAuthorizedChat from '../components/NotAuthorized/NotAuthorizedChat';
 import Empty from '../components/chat/Empty';
 import NotFoundComponent from '../views/NotFoundComponent';
 import UserProfile from '../components/UserProfile';
@@ -20,7 +19,10 @@ export default new Router({
     {
       path: '/',
       component: Empty,
-      meta: {requiresAuth: true}
+      meta: {
+        requiresAuth: true,
+        layout: 'main'
+      }
     },
     {
       path: '/not-found',
@@ -30,35 +32,55 @@ export default new Router({
     {
       path: '/group',
       redirect: '/',
-      meta: {requiresAuth: true}
+      meta: {
+        requiresAuth: true,
+        layout: 'main'
+      }
     },
     {
       path: '/group/:id',
       component: Group,
-      meta: {requiresAuth: true}
+      meta: {
+        requiresAuth: true,
+        layout: 'main'
+      }
     },
     {
       path: '/login',
       name: 'login',
       meta: {layout: 'auth'},
-      component: Login,
+      component: AuthLogin,
     },
     {
       path: '/registration',
       name: 'registration',
       meta: {layout: 'auth'},
-      component: Registration,
+      component: AuthRegistration,
+    },
+    {
+      path: '/:id',
+      component: NotAuthorizedChat,
+      meta: {
+        requiresAuth: false,
+        layout: 'not-authorized'
+      },
     },
     {
       path: '/user/:user_id',
       name: 'user_profile',
       component: UserProfile,
-      meta: {requiresAuth: true}
+      meta: {
+        requiresAuth: true,
+        layout: 'main'
+      }
     },
     {
       path: '/:id',
       component: Chat,
-      meta: {requiresAuth: true},
+      meta: {
+        requiresAuth: true,
+        layout: 'main'
+      },
     },
   ],
 });

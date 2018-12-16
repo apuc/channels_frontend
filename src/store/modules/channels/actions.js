@@ -36,16 +36,21 @@ export default {
   /**
    * Get concrete channel data
    *
-   * @param channelId {String || Number} - channel id or slug
+   * @param channelId {String || Number} - search id or slug
    */
   'GET_CHANNEL_DATA': async ({commit, dispatch, rootGetters}, channelId) => {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}`)
         .then(
-          res => {
+          async res => {
             const channel = res.body.data;
-            commit('SET_CURRENT_CHANNEL_DATA', channel);
+            await commit('SET_CURRENT_CHANNEL_DATA', channel);
           },
-          err => console.log('get channels', err)
+          err => {
+            if (err.body.includes('No query results for model')) {
+              router.push({path: '/not-found'})
+            }
+            console.log('get channels', err)
+          }
         )
         .catch(error => console.log('GET_CHANNELS: ', error))
   },
@@ -55,11 +60,6 @@ export default {
    * @param channelId {String || Number} - channel id
    */
   'GET_USERS': async ({getters, commit, dispatch, rootGetters}, channelId) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
-    if (currentDateInSeconds < tokenExpiresIn) {
       commit('SET_CHANNEL_USERS_LOADING');
       commit('SET_CHANNEL_USERS', []);
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/users`)
@@ -71,14 +71,6 @@ export default {
           err => console.log(err)
         )
         .catch(error => console.log(error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
-          .then(() => {
-            dispatch('GET_USERS', channelId);
-          })
-      }
-    }
   },
   /**
    * Create channel and reload channels

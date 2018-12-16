@@ -128,11 +128,6 @@ export default {
    * @param user_id {String || Number}
    */
   'GET_USER_DATA': async ({commit, dispatch, rootGetters}, user_id) => {
-    // const currentDateInSeconds = Math.round(Date.now() / 1000);
-    // const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    // const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-    //
-    // if (currentDateInSeconds < tokenExpiresIn) {
     commit('SET_USER_DATA_LOADING_FLAG');
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/${user_id}`)
       .then(
@@ -147,14 +142,7 @@ export default {
         }
       )
       .catch(error => console.log('GET_USER_DATA: ', error))
-    // } else {
-    //   if (currentDateInSeconds < refreshTokenExpiresIn) {
-    //     await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
-    //       .then(() => {
-    //         dispatch('GET_USER_DATA');
-    //       })
-    //   }
-    // }
+
   },
   /**
    * Add avatar to the user profile and write avatar_id to the store

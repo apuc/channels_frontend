@@ -34,14 +34,9 @@ export default {
   /**
    * Get one group data
    *
-   * @param groupId {String || Number}
+   * @param groupId {String || Number} - search by id or slug
    */
   'GET_GROUP_DATA': async ({getters, commit, dispatch, rootGetters}, groupId) => {
-    // const currentDateInSeconds = Math.round(Date.now() / 1000);
-    // const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    // const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-    //
-    // if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/group/${groupId}`)
         .then(
           res => {
@@ -52,14 +47,6 @@ export default {
           err => console.log('get groups', err)
         )
         .catch(error => console.log('GET_GROUPS: ', error))
-    // } else {
-    //   if (currentDateInSeconds < refreshTokenExpiresIn) {
-    //     await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
-    //       .then(() => {
-    //         dispatch('GET_GROUP');
-    //       })
-    //   }
-    // }
   },
   /**
    * Create group and reload groups

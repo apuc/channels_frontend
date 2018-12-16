@@ -1,24 +1,18 @@
 <template>
-  <div class="chat" @dragenter.prevent="dragSwitcher" @dragleave.prevent="dragSwitcher">
-    <ChatHeader/>
-    <ChatMessages/>
-    <ChatFooter/>
-    <div class="chat__drag-zone" v-if="over">
-      <p class="chat__drag-tip">Drop area</p>
-    </div>
+  <div class="chat">
+    <NotAuthorizedChatChatHeader/>
+    <NotAuthorizedChatChatMessages/>
   </div>
 </template>
 
 <script>
-  import ChatHeader from './ChatHeader';
-  import ChatMessages from './ChatMessages';
-  import ChatFooter from '../chat/ChatFooter';
+  import NotAuthorizedChatChatHeader from './NotAuthorizedChatHeader';
+  import NotAuthorizedChatChatMessages from './NotAuthorizedChatMessages';
 
   export default {
     components: {
-      ChatHeader,
-      ChatMessages,
-      ChatFooter
+      NotAuthorizedChatChatHeader,
+      NotAuthorizedChatChatMessages,
     },
     data() {
       return {
@@ -26,9 +20,6 @@
       }
     },
     methods: {
-      dragSwitcher() {
-        this.over = !this.over;
-      }
     }
   }
 

@@ -1,34 +1,32 @@
 <template>
-  <main>
-    <div class="container">
-      <div class="row">
-        <form @submit.prevent="registration" class="col-lg-6 col-12 offset-3 pt-lg-3">
+  <form @submit.prevent="registration">
 
-          <div class="form-group" v-for="(field, index) in data">
-            <label :for="field.name">{{field.label}}</label>
-            <input :type="field.type"
-                   class="form-control"
-                   :class="field.class"
-                   :id="field.name"
-                   :ref="field.name"
-                   :value="field.value"
-                   @input="test($event, index)"
-            />
+    <div class="form-group" v-for="(field, index) in data">
+      <label :for="field.name">{{field.label}}</label>
+      <input :type="field.type"
+             class="form-control"
+             :class="field.class"
+             :id="field.name"
+             :ref="field.name"
+             :value="field.value"
+             @input="test($event, index)"
+      />
 
-            <span :class="!field.isActive || field.isValid ? 'hidden' : 'invalid'">
+      <span :class="!field.isActive || field.isValid ? 'hidden' : 'invalid'">
               {{field.errorMessage}}
             </span>
-          </div>
-
-          <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary flex-fill mr-3">Зарегистрироваться</button>
-            <router-link class="btn btn-warning" to="login">Вход</router-link>
-          </div>
-
-        </form>
-      </div>
     </div>
-  </main>
+
+    <div class="d-flex justify-content-between">
+      <button type="submit" class="btn btn-primary flex-fill mr-3">Зарегистрироваться</button>
+      <button class="btn btn-warning"
+              type="button"
+              @click="switchBetweenLoginAndReg"
+      >
+        Вход
+      </button>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -124,6 +122,9 @@
             }
           }
         }
+      },
+      switchBetweenLoginAndReg() {
+        this.$emit('switch', 'Login')
       },
     },
   }

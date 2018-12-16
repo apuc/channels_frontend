@@ -9,13 +9,13 @@ export default {
       const slug = pathnameArray[pathnameArray.length - 1];
 
       if (pathnameArray.indexOf('group') !== -1) {
-        this.$_authGettingData_getChannelData(slug);
+        this.$_authGettingData_getGroupData(slug);
       }
       else if (pathnameArray.indexOf('user') !== -1) {
         this.$_authGettingData_getUserData(slug);
       }
       else if (slug.length > 0 && slug !== 'not-found') {
-        this.$_authGettingData_getGroupData(slug);
+        this.$_authGettingData_getChannelData(slug);
       } else {
         router.push('/login');
       }
@@ -29,10 +29,12 @@ export default {
         store.dispatch('channels/GET_USERS', currentChannel.channel_id);
         store.dispatch('messages/GET_MESSAGES');
       } else {
-        await store.dispatch('GET_CHANNEL_DATA', slug);
-        const currentChannel = store.getters['channels/channels'].find(channel => channel.slug === slug);
-        store.dispatch('channels/GET_USERS', currentChannel.channel_id);
-        store.dispatch('messages/GET_MESSAGES');
+        await store.dispatch('channels/GET_CHANNEL_DATA', slug);
+        const currentChannel = store.getters['channels/currentChannelData'];
+        if (!currentChannel.private) {
+          // store.dispatch('channels/GET_USERS', currentChannel.channel_id);
+          // store.dispatch('messages/GET_MESSAGES');
+        }
       }
     },
     async $_authGettingData_getUserData(slug) {
@@ -41,14 +43,14 @@ export default {
       if (isAuthenticated) {
         const userMe = store.getters['user/info'];
         if (slug === userMe.user_id) {
-          store.commit('SET_CURRENT_USER_DATA', userMe)
+          store.commit('user/SET_CURRENT_USER_DATA', userMe)
         } else {
-          store.dispatch('user/GET_USER_DATA', slug);
+          await store.dispatch('user/GET_USER_DATA', slug);
         }
       } else {
-        store.dispatch('user/GET_USER_DATA', slug);
+        await store.dispatch('user/GET_USER_DATA', slug);
+        ioGetUserStatus('user/user_id');
       }
-      // ioGetUserStatus('USERuser_id);
     },
     async $_authGettingData_getGroupData(slug) {
       const currentGroup = store.getters['groups/groups'].find(channel => channel.slug === slug);
@@ -57,7 +59,7 @@ export default {
       if (currentGroup) {
         store.commit('groups/SET_CURRENT_GROUP_DATA', currentGroup);
       } else {
-        router.push('/not-found');
+        await store.dispatch('groups/GET_GROUP_DATA', slug);
       }
     },
   }
