@@ -5,4 +5,5 @@ export default {
   isUserLoading: state => state.isUserLoading,
   imageUploadPersentage: state => state.imageUploadPersentage,
   userPosition: state => state.userPosition,
+  searchResults: state => state.searchResults,
 };

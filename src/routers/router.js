@@ -5,11 +5,9 @@ import AuthLogin from '../components/Auth/AuthLogin';
 import AuthRegistration from '../components/Auth/AuthRegistration';
 import Group from '../components/group/Group';
 import Chat from '../components/chat/Chat';
-import NotAuthorizedChat from '../components/NotAuthorized/NotAuthorizedChat';
-import Empty from '../components/chat/Empty';
+import ChatBlank from '../components/chat/ChatBlank';
 import NotFoundComponent from '../views/NotFoundComponent';
 import UserProfile from '../components/UserProfile';
-import MainLayout from '../views/layouts/MainLayout';
 
 Vue.use(Router);
 
@@ -19,11 +17,11 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: Empty,
+      component: ChatBlank,
       meta: {
         requiresAuth: true,
         layout: 'main'
-      }
+      },
     },
     {
       path: '/not-found',
@@ -31,19 +29,21 @@ export default new Router({
       component: NotFoundComponent,
     },
     {
-      path: '/group',
-      redirect: '/',
-      meta: {
-        requiresAuth: true,
-        layout: 'main'
-      }
-    },
-    {
       path: '/group/:id',
       component: Group,
       meta: {
         requiresAuth: true,
         layout: 'main'
+      },
+      beforeRouteLeave (to, from, next) {
+        store.commit('groups/SET_CURRENT_GROUP_DATA', {
+          group_id: '',
+          title: '',
+          slug: '',
+          status: '',
+          owner_id: '',
+          avatar: undefined,
+        })
       }
     },
     {
@@ -74,6 +74,19 @@ export default new Router({
         requiresAuth: true,
         layout: 'main'
       },
+      beforeRouteLeave (to, from, next) {
+        store.commit('channels/SET_CURRENT_CHANNEL_DATA', {
+          channel_id: '',
+          title: '',
+          slug: '',
+          status: '',
+          user_count: '',
+          owner_id: '',
+          type: '',
+          private: '',
+          avatar: undefined,
+        })
+      }
     },
   ],
 });

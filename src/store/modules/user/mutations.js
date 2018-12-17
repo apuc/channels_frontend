@@ -21,7 +21,10 @@ export default {
   'SET_USER_POSITION': (state, position) => {
     state.userPosition = position;
   },
-  'SET_DEFAULT_USER_STATE': (state, data) => {
+  'SET_SEARCH_RESULTS': (state, results) => {
+    state.searchResults = results;
+  },
+  'SET_DEFAULT_USER_STATE': state => {
     state.info = {
       avatar: undefined,
       email: '',
@@ -36,5 +39,6 @@ export default {
     };
     state.isUserLoading = false;
     state.imageUploadPersentage = 0;
+    state.searchResults = [];
   },
 };

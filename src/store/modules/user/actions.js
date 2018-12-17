@@ -182,4 +182,37 @@ export default {
       }
     }
   },
+  /**
+   * Global user search
+   */
+  'FIND_USERS': async ({commit}, ) => {
+    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/search_request=${search_request}&page=${page}`)
+      .then(
+        async res => {
+          commit('SET_SEARCH_RESULTS', res.body.data);
+        },
+        err => console.log('err login', err)
+      )
+      .catch(error => console.log('FIND_USERS: ', error));
+  },
+  /**
+   * Send friendship request
+   *
+   * @param data {Object}
+   * @param data.user_id {Number} - user which sending request
+   * @param data.contact_id {Number} - user that will receive request
+   */
+  'SEND_FRIENDSHIP_REQUEST': async ({commit}, data) => {
+    await Vue.http.post(`${process.env.VUE_APP_API_URL}/user/add-contact`, {
+      user_id: data.user_id,
+      contact_id: data.contact_id
+    })
+      .then(
+        async res => {
+          console.log(res);
+        },
+        err => console.log('err login', err)
+      )
+      .catch(error => console.log('GET_USER: ', error));
+  }
 };

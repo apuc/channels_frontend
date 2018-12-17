@@ -20,6 +20,13 @@
         </div>
       </div>
 
+      <button type="button"
+              class="btn btn-sm btn-primary"
+              @click="sendFriendshipRequest({user_id: userData.user_id, contact_id: user.user_id})"
+      >
+        <v-icon scale="1" class="icon" name="user-plus"/>
+      </button>
+
       <button v-if="userData.user_id === currentChannelData.owner_id"
               type="button"
               class="btn btn-sm btn-danger"
@@ -61,7 +68,8 @@
       }),
       ...mapActions({
         deleteUser: 'channels/DELETE_USER',
-        closeModal: 'modal/CLOSE_MODAL_EDIT_MODE'
+        closeModal: 'modal/CLOSE_MODAL_EDIT_MODE',
+        sendFriendshipRequest: 'user/SEND_FRIENDSHIP_REQUEST',
       }),
       removeUser(id) {
         this.deleteUser(id);

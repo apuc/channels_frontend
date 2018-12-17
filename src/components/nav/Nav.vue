@@ -11,6 +11,10 @@
             <button type="button" class="btn btn-link" @click="openModal($event, elem.modalTrigger)">{{elem.name}}
             </button>
           </li>
+
+          <li class="dropdown-settings__el">
+            <button class="btn btn-link" type="button" @click="logout">Exit</button>
+          </li>
         </ul>
       </div>
 
@@ -107,6 +111,10 @@
           {
             name: 'Редактировать профиль',
             modalTrigger: 'editProfile'
+          },
+          {
+            name: 'Поиск',
+            modalTrigger: 'search'
           }
         ],
         addMenuVisible: false,
@@ -124,6 +132,7 @@
       ...mapActions({
         getNav: 'user/GET_NAV',
         addChannelsToGroup: 'groups/ADD_CHANNELS',
+        logout: 'auth/LOGOUT',
       }),
       openModal(e, modalType) {
         e.preventDefault();

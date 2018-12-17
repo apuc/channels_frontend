@@ -131,8 +131,6 @@
   }
 
   .list-group__item {
-    padding: 3px 7px;
-
     background-color: #fff;
     border-bottom: 1px solid #ccc;
   }
@@ -145,6 +143,8 @@
     flex: 1 2 auto;
     display: flex;
     align-items: center;
+    min-height: 100%;
+    padding: 3px 7px;
 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -168,12 +168,15 @@
   }
 
   .button {
-    margin-right: 5px;
-    padding: 5px;
+    padding: 5px 7px;
 
     background-color: transparent;
     border: none;
     cursor: pointer;
+  }
+
+  .button:hover {
+    background-color: rgba(133, 133, 133, 0.23);
   }
 
   .icon {
