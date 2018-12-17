@@ -43,10 +43,9 @@
       ...mapActions({
         getUserData: 'user/GET_USER_DATA',
       }),
-      openModal(e, modalType, modalLink) {
+      openModal(e, modalType) {
         e.preventDefault();
         this.setModal(modalType);
-        history.pushState('', 'Title of page', modalLink);
       },
     },
     async mounted() {

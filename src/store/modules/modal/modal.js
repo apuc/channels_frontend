@@ -7,18 +7,6 @@ const state = {
     status: false,
     current: '',
   },
-  setCreateGroup: false,
-  setCreateChannel: {
-    status: false,
-    isDialog: false
-  },
-  setUserProfile: false,
-  setEditProfile: false,
-  deleteChannelOrGroup: false,
-  editMode: false,
-  channelUsers: false,
-  logout: false,
-  addChannelsToGroup: false,
 };
 
 export default {

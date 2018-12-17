@@ -8,13 +8,12 @@
       </button>
 
       <div class="modal_wrap">
-        <CreateGroup v-if="createGroup"/>
-        <CreateChannel v-else-if="createChannel.status"/>
-        <DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>
-        <EditProfile v-else-if="editProfile"/>
-        <ChannelUsers v-else-if="channelUsers"/>
-        <AddChannelsToGroup v-else-if="addChannelsToGroup"/>
-        <SessionExpired v-else-if="logoutModal"/>
+        <!--<DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>-->
+        <!--<EditProfile v-else-if="editProfile"/>-->
+        <!--<ChannelUsers v-else-if="channelUsers"/>-->
+        <!--<AddChannelsToGroup v-else-if="addChannelsToGroup"/>-->
+        <!--<SessionExpired v-else-if="logoutModal"/>-->
+        <component :is="currentModal"></component>
       </div>
     </div>
   </div>
@@ -68,13 +67,13 @@
         logout: 'auth/LOGOUT'
       }),
       onModalClose() {
-        if (this.editMode) {
-          this.toggleEditMode();
-        }
+        // if (this.editMode) {
+        //   this.toggleEditMode();
+        // }
 
-        if (this.logoutModal) {
-          this.logout();
-        }
+        // if (this.logoutModal) {
+        //   this.logout();
+        // }
         this.deleteModal(this.currentModal);
       }
     },

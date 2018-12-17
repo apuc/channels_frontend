@@ -102,11 +102,11 @@
         info: [
           {
             name: 'Создать канал',
-            modalTrigger: 'channel'
+            modalTrigger: 'CreateChannel'
           },
           {
             name: 'Создать группу',
-            modalTrigger: 'group'
+            modalTrigger: 'CreateGroup'
           },
           {
             name: 'Редактировать профиль',

@@ -188,7 +188,7 @@ export default {
    */
   'SET_GROUP_DELETING': async ({commit, dispatch}, groupId) => {
       commit('SET_GROUP_ID_TO_DELETE', groupId);
-      dispatch('modal/OPEN_MODAL_EDIT_MODE', 'deleteGroup', {root: true});
+      dispatch('modal/OPEN_MODAL_EDIT_MODE', 'DeleteChannelOrGroup', {root: true});
     },
   /**
    * Delete chosen group
@@ -204,7 +204,7 @@ export default {
         .then(
           res => {
             commit('REMOVE_DELETED_GROUP', id);
-            dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'deleteGroup', {root: true});
+            dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'DeleteChannelOrGroup', {root: true});
 
             if (id === getters.currentGroupData.group_id) {
               router.push('/');

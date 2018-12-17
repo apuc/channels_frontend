@@ -213,7 +213,7 @@ export default {
    */
   'SET_CHANNEL_DELETING': async ({commit, dispatch, rootGetters}, channelId) => {
     commit('SET_CHANNEL_ID_TO_DELETE', channelId);
-    dispatch('modal/OPEN_MODAL_EDIT_MODE', 'deleteChannel', {root: true});
+    dispatch('modal/OPEN_MODAL_EDIT_MODE', 'DeleteChannelOrGroup', {root: true});
   },
   /**
    * Delete chosen channel
@@ -229,7 +229,7 @@ export default {
         .then(
           res => {
             commit('REMOVE_DELETED_CHANNEL', id);
-            commit('modal/DELETE_MODAL', 'deleteChannel', {root: true});
+            commit('modal/DELETE_MODAL', 'DeleteChannelOrGroup', {root: true});
 
             if (id === getters.currentChannelData.channel_id) {
               router.push('/');
