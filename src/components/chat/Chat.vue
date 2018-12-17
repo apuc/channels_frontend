@@ -3,7 +3,7 @@
     <ChatHeader/>
     <ChatMessages/>
     <ChatFooter/>
-    <div class="chat__drag-zone" v-if="over">
+    <div class="chat__drag-zone" v-if="over" @dragover.prevent @drop.prevent.stop="onDrop">
       <p class="chat__drag-tip">Drop area</p>
     </div>
   </div>
@@ -13,9 +13,11 @@
   import ChatHeader from './ChatHeader';
   import ChatMessages from './ChatMessages';
   import ChatFooter from '../chat/ChatFooter';
+  import Attachment from '../attachment/Attachment';
 
   export default {
     components: {
+      Attachment,
       ChatHeader,
       ChatMessages,
       ChatFooter
@@ -28,6 +30,9 @@
     methods: {
       dragSwitcher() {
         this.over = !this.over;
+      },
+      onDrop(e) {
+        const file = e.dataTransfer.files[0];
       }
     }
   }
