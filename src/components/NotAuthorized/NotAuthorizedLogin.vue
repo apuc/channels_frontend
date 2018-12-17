@@ -84,7 +84,6 @@
     },
     methods: {
       ...mapMutations({
-        gettingTokenData: 'auth/GETTING_TOKEN_AND_DATA',
         setSessionStatus: 'auth/SET_SESSION_STATUS',
       }),
       ...mapActions({
@@ -108,33 +107,17 @@
       async login() {
         if (this.data.password.isValid && this.data.email.isValid) {
           localStorage.setItem('isSession', this.isSession.toString());
-
-          if (!this.gettingTokenAndData) {
-            this.gettingTokenData();
-
-            await this.getToken({
-              grant_type: 'password',
-              client_id: process.env.VUE_APP_CLIENT_ID,
-              client_secret: process.env.VUE_APP_CLIENT_SECRET,
-              username: this.data.email.value,
-              password: this.data.password.value
-            })
-              .then(
-                async () => {
-                  if (!this.isWrongData) {
-                    await this.getUserMe()
-                      .then(
-                        async () => {
-                          this.$router.push('/');
-                          await this.getNav();
-                        })
-                  }
-                });
-
-            this.$router.push('/');
-
-            this.gettingTokenData();
-          }
+          await this.getToken({
+            grant_type: 'password',
+            client_id: process.env.VUE_APP_CLIENT_ID,
+            client_secret: process.env.VUE_APP_CLIENT_SECRET,
+            username: this.data.email.value,
+            password: this.data.password.value
+          })
+            .then(
+              async () => {
+                this.$router.push('/');
+              });
         } else {
           for (let key in this.data) {
             if (!this.data[key].isValid) {

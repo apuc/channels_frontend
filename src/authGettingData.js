@@ -29,11 +29,13 @@ export default {
         store.dispatch('channels/GET_USERS', currentChannel.channel_id);
         store.dispatch('messages/GET_MESSAGES');
       } else {
-        await store.dispatch('channels/GET_CHANNEL_DATA', slug);
-        const currentChannel = store.getters['channels/currentChannelData'];
-        if (!currentChannel.private) {
-          // store.dispatch('channels/GET_USERS', currentChannel.channel_id);
-          // store.dispatch('messages/GET_MESSAGES');
+        if (slug !== 'login' && slug !== 'registration') {
+          await store.dispatch('channels/GET_CHANNEL_DATA', slug);
+          const currentChannel = store.getters['channels/currentChannelData'];
+          if (!currentChannel.private) {
+            // store.dispatch('channels/GET_USERS', currentChannel.channel_id);
+            // store.dispatch('messages/GET_MESSAGES');
+          }
         }
       }
     },

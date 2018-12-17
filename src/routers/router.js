@@ -16,6 +16,18 @@ export default new Router({
   mode: 'history',
   routes: [
     {
+      path: '/login',
+      name: 'login',
+      meta: {layout: 'auth'},
+      component: AuthLogin,
+    },
+    {
+      path: '/registration',
+      name: 'registration',
+      meta: {layout: 'auth'},
+      component: AuthRegistration,
+    },
+    {
       path: '/',
       component: ChatBlank,
       meta: {
@@ -45,18 +57,6 @@ export default new Router({
           avatar: undefined,
         })
       }
-    },
-    {
-      path: '/login',
-      name: 'login',
-      meta: {layout: 'auth'},
-      component: AuthLogin,
-    },
-    {
-      path: '/registration',
-      name: 'registration',
-      meta: {layout: 'auth'},
-      component: AuthRegistration,
     },
     {
       path: '/user/:user_id',

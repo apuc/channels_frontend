@@ -81,6 +81,9 @@
       goToUserProfile(id) {
         this.setUserData(id);
         this.closeModal('channelUsers');
+      },
+      makeFriendshipRequest(data) {
+        this.sendFriendshipRequest({user_id: data.user_id, contact_id: data.contact_id});
       }
     }
   }

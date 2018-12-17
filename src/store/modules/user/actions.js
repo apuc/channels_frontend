@@ -214,5 +214,46 @@ export default {
         err => console.log('err login', err)
       )
       .catch(error => console.log('GET_USER: ', error));
-  }
+  },
+  /**
+   * Accept friendship request
+   *
+   * @param data {Object}
+   * @param data.user_id {Number} - user which sending request
+   * @param data.contact_id {Number} - user that will receive request
+   */
+  'ACCEPT_FRIENDSHIP_REQUEST': async ({commit}, data) => {
+    await Vue.http.put(`${process.env.VUE_APP_API_URL}/user/confirm-contact`, {
+      user_id: data.user_id,
+      contact_id: data.contact_id
+    })
+      .then(
+        async res => {
+          console.log(res);
+        },
+        err => console.log('err login', err)
+      )
+      .catch(error => console.log('GET_USER: ', error));
+  },
+  /**
+   * Reject friendship request
+   *
+   * @param data {Object}
+   * @param data.user_id {Number} - user which sending request
+   * @param data.contact_id {Number} - user that will receive request
+   */
+  'REJECT_FRIENDSHIP_REQUEST': async ({commit}, data) => {
+    await Vue.http.delete(`${process.env.VUE_APP_API_URL}/user/reject-contact`, {
+      user_id: data.user_id,
+      contact_id: data.contact_id
+    })
+      .then(
+        async res => {
+          console.log(res);
+        },
+        err => console.log('err login', err)
+      )
+      .catch(error => console.log('GET_USER: ', error));
+  },
+
 };
