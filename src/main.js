@@ -11,7 +11,6 @@ import 'vue-awesome/icons';
 import Icon from 'vue-awesome/components/Icon';
 import MainLayout from './views/layouts/MainLayout';
 import AuthLayout from './views/layouts/AuthLayout';
-import NotAuthorizedLayout from './views/layouts/NotAuthorizedLayout';
 import VueResource from 'vue-resource';
 import VueDragDrop from 'vue-drag-drop';
 
@@ -23,7 +22,6 @@ Vue.use(VueDragDrop);
 Vue.component('v-icon', Icon);
 Vue.component('main-layout', MainLayout);
 Vue.component('auth-layout', AuthLayout);
-Vue.component('not-authorized-layout', NotAuthorizedLayout);
 
 const token = store.getters["auth/token"];
 if (token) {
@@ -47,7 +45,6 @@ router.beforeEach((to, from, next) => {
     }
     else { // Если не авторизован - получаем данные о канале/группе/пользователе
       next();
-      // Vue.mixin(authGettingData);
     }
   } else { // если в роутинге в поле meta указано requiresAuth в false или не указан
     if (store.getters["auth/isAuthenticated"]) { // Если пользователь залогинен
@@ -56,7 +53,6 @@ router.beforeEach((to, from, next) => {
         return
       }
     }
-    // Vue.mixin(authGettingData);
     next();
   }
 });

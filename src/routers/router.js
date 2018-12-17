@@ -9,6 +9,7 @@ import NotAuthorizedChat from '../components/NotAuthorized/NotAuthorizedChat';
 import Empty from '../components/chat/Empty';
 import NotFoundComponent from '../views/NotFoundComponent';
 import UserProfile from '../components/UserProfile';
+import MainLayout from '../views/layouts/MainLayout';
 
 Vue.use(Router);
 
@@ -56,14 +57,6 @@ export default new Router({
       name: 'registration',
       meta: {layout: 'auth'},
       component: AuthRegistration,
-    },
-    {
-      path: '/:id',
-      component: NotAuthorizedChat,
-      meta: {
-        requiresAuth: false,
-        layout: 'not-authorized'
-      },
     },
     {
       path: '/user/:user_id',

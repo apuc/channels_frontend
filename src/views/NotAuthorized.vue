@@ -1,25 +1,25 @@
 <template>
   <div class="home">
-    <NotAuthorizedSidebarAuth />
+    <NotAuthorizedSidebarAuth/>
 
-    <main>
-     <component :is="`NotAuthorizedChat${chooseChat}`"></component>
+    <main class="main">
+      <component :is="`NotAuthorizedChat${chooseChat}`"></component>
     </main>
 
-    <NotAuthorizedSidebarInfo />
+    <NotAuthorizedSidebarInfo/>
   </div>
 </template>
 
 <script>
-  import NotAuthorizedSidebarAuth from '../../components/NotAuthorized/NotAuthorizedSidebarAuth';
-  import authGettingData from '../../authGettingData';
-  import NotAuthorizedSidebarInfo from "../../components/NotAuthorized/NotAuthorizedSidebarInfo";
-  import NotAuthorizedChat from '../../components/NotAuthorized/NotAuthorizedChat';
-  import NotAuthorizedChatPrivate from '../../components/NotAuthorized/NotAuthorizedChatPrivate';
+  import NotAuthorizedSidebarAuth from '../components/NotAuthorized/NotAuthorizedSidebarAuth';
+  import authGettingData from '../authGettingData';
+  import NotAuthorizedSidebarInfo from "../components/NotAuthorized/NotAuthorizedSidebarInfo";
+  import NotAuthorizedChat from '../components/NotAuthorized/NotAuthorizedChat';
+  import NotAuthorizedChatPrivate from '../components/NotAuthorized/NotAuthorizedChatPrivate';
   import {mapGetters} from 'vuex';
 
   export default {
-    name: "NotAuthorizedLayout",
+    name: "NotAuthorized",
     components: {NotAuthorizedSidebarInfo, NotAuthorizedSidebarAuth,NotAuthorizedChat, NotAuthorizedChatPrivate},
     mixins: [authGettingData],
     computed: {
@@ -45,7 +45,7 @@
     height: 100vh;
   }
 
-  main {
+  .main {
     flex-grow: 1;
     height: 100%;
   }

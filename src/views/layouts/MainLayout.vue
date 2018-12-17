@@ -1,25 +1,20 @@
 <template>
-  <div class="home">
-    <Nav/>
-
-    <main>
-      <slot/>
-    </main>
-
-    <Advertisings/>
-  </div>
+  <component :is="chooseView"></component>
 </template>
 
 <script>
-  import Nav from '../../components/nav/Nav';
-  import Advertisings from '../../components/ads/Advertisings';
   import {connectSocket} from '../../services/socket/socket.service';
   import {ioStatusOnline} from '../../services/socket/status.service';
   import {mapGetters, mapMutations, mapActions} from 'vuex';
   import authGettingData from '../../authGettingData';
   import {ioGetUserStatus} from '../../services/socket/status.service';
+  import Authorized from '../Authorized';
+  import NotAuthorized from '../NotAuthorized';
 
   export default {
+    name: 'MainLayout',
+    components: {Authorized, NotAuthorized},
+    mixins: [authGettingData],
     computed: {
       ...mapGetters({
         token: 'auth/token',
@@ -29,8 +24,10 @@
         groups: 'groups/groups',
         isAuthenticated: 'auth/isAuthenticated',
       }),
+      chooseView() {
+        return this.isAuthenticated ? 'Authorized' : 'NotAuthorized'
+      }
     },
-    mixins: [authGettingData],
     data() {
       return {
         currentDateInSeconds: Math.round(Date.now() / 1000),
@@ -38,7 +35,6 @@
         refreshTokenExpiresIn: Number(localStorage.getItem('RT_expires_at')),
       }
     },
-    components: {Advertisings, Nav},
     methods: {
       ...mapMutations({
         gettingUserData: 'auth/GETTING_TOKEN_AND_DATA',
@@ -80,16 +76,4 @@
 
 
 <style scoped>
-  .home {
-    display: flex;
-    width: 100%;
-    overflow: hidden;
-    min-height: 600px;
-    height: 100vh;
-  }
-
-  main {
-    flex-grow: 1;
-    height: 100%;
-  }
 </style>
