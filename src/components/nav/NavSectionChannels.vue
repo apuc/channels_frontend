@@ -24,7 +24,7 @@
     >
       <button type="button"
               class="button"
-              @click="setChannelEditing(data.channel_id)">
+              @click="editingModal(data.channel_id)">
         <v-icon scale="1" class="icon" name="pen"/>
       </button>
 
@@ -46,7 +46,8 @@
       ...mapGetters({
         currentChannelData: 'channels/currentChannelData',
         currentGroupData: 'groups/currentGroupData',
-        userData: 'user/info'
+        userData: 'user/info',
+        channelToEdit: 'channels/channelToEdit',
       }),
     },
     props: {
@@ -67,13 +68,15 @@
       ...mapMutations({
         removeUsersFromStore: 'channels/REMOVE_USERS_FROM_STORE',
         setChannelIdToDelete: 'channels/SET_CHANNEL_ID_TO_DELETE',
+        setChannelData: 'channels/SET_CHANNEL_DATA',
+        setChannelUserIds: 'channels/SET_CHANNEL_USER_IDS',
         setUserPosition: 'user/SET_USER_POSITION',
         setModal: 'modal/SET_MODAL',
       }),
       ...mapActions({
         setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
-        setChannelEditing: 'channels/SET_CHANNEL_EDITING',
         getMessages: 'messages/GET_MESSAGES',
+        getChannelUsers: 'channels/GET_USERS',
       }),
       async setData(e, id) {
         if (!e.target.hasAttribute('type')) {
@@ -81,6 +84,17 @@
           this.getMessages();
           this.removeUsersFromStore();
         }
+      },
+      async editingModal(id) {
+        this.setModal('ModalChannelEdit');
+        await this.getChannelUsers(id).then(data => {
+          let user_ids = [];
+          for (let i = 0; i < data.length; i++) {
+            user_ids.push(data[i].user_id);
+          }
+          this.setChannelUserIds(user_ids);
+        });
+        this.setChannelData(this.channelToEdit(id));
       },
       deletingModal(id) {
         this.setChannelIdToDelete(id);
@@ -91,10 +105,6 @@
 </script>
 
 <style scoped>
-  .list-group {
-    max-height: calc(100% - 100px);
-  }
-
   .list-group__item,
   .control {
     display: flex;

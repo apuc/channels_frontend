@@ -52,9 +52,9 @@
           .then(async () => {
             if (this.authStatus) {
               if (this.currentDateInSeconds < this.refreshTokenExpiresIn) {
-                await this.getNav();
+                await this.getNav().then(() => this.$_authGettingData_gettingData());
                 this.gettingUserData();
-                this.$_authGettingData_gettingData();
+
               }
             }
 

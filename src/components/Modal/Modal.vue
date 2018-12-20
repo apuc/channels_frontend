@@ -17,7 +17,8 @@
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
   import CreateGroup from './CreateGroup';
-  import CreateChannel from './CreateChannel';
+  import ModalChannelCreate from './ModalChannelCreate';
+  import ModalChannelEdit from './ModalChannelEdit';
   import ModalGroupDelete from './ModalGroupDelete';
   import ModalChannelDelete from './ModalChannelDelete';
   import ModalEditProfile from './ModalProfileEdit';
@@ -35,7 +36,8 @@
       ModalChannelDelete,
       ModalEditProfile,
       CreateGroup,
-      CreateChannel,
+      ModalChannelCreate,
+      ModalChannelEdit
     },
     computed: {
       ...mapGetters({

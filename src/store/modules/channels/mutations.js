@@ -14,7 +14,7 @@ export default {
   'SET_CHANNEL_ID_TO_DELETE': (state, id) => {
     state.channelToDelete = id;
   },
-  'SET_CHANNEL_USERS': (state, users) => {
+  'SET_CURRENT_CHANNEL_USERS': (state, users) => {
     state.currentChannelUsers = users;
   },
   'REMOVE_USERS_FROM_STORE': state => {
@@ -37,6 +37,9 @@ export default {
     const channel = state.channels.find(channel => channel.channel_id === id);
     const groupIndex = channels.indexOf(channel);
     channels.splice(groupIndex, 1);
+  },
+  'SET_CHANNEL_USER_IDS': (state, user_ids) => {
+    state.channelData.user_ids = user_ids;
   },
   'SET_EDITED_CHANNEL_DATA': (state, data) => {
     for (let i = 0; i < state.channels.length; i++) {

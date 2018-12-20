@@ -61,16 +61,16 @@ export default {
    */
   'GET_USERS': async ({getters, commit, dispatch, rootGetters}, channelId) => {
       commit('SET_CHANNEL_USERS_LOADING');
-      commit('SET_CHANNEL_USERS', []);
-      await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/users`)
+      commit('SET_CURRENT_CHANNEL_USERS', []);
+      return await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/users`)
         .then(
           async res => {
-            await commit('SET_CHANNEL_USERS', res.body.data);
             commit('SET_CHANNEL_USERS_LOADED');
+            return res.body.data
           },
           err => console.log(err)
         )
-        .catch(error => console.log(error))
+        .catch(error => console.log(error));
   },
   /**
    * Create channel and reload channels
@@ -148,16 +148,7 @@ export default {
   'SET_CURRENT_CHANNEL_DATA': async ({getters, commit, dispatch}, channelId) => {
     const editingChannel = await getters.channels.find(channel => channel.channel_id === channelId);
       await commit('SET_CURRENT_CHANNEL_DATA', editingChannel);
-      dispatch('GET_USERS', channelId);
-  },
-  /**
-   * Set edit mode
-   *
-   * @param channelId - editing channel id
-   */
-  'SET_CHANNEL_EDITING': async ({commit, dispatch}, channelId) => {
-    dispatch('SET_EDITED_CHANNEL_DATA', channelId);
-    dispatch('modal/OPEN_MODAL_EDIT_MODE', 'channel', {root: true});
+      dispatch('GET_USERS', channelId).then(data => commit('SET_CURRENT_CHANNEL_USERS', data));
   },
   /**
    * Set data of editing channel to the store
@@ -171,21 +162,21 @@ export default {
   /**
    * Edit chosen channel
    */
-  'EDIT_CHANNEL': async ({getters, commit, dispatch, rootGetters}) => {
+  'EDIT_CHANNEL': async ({getters, commit, dispatch, rootGetters}, data) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelData.channel_id}`, {
-        title: getters.channelData.title,
-        slug: getters.channelData.slug,
-        status: getters.channelData.status,
-        user_ids: getters.channelData.user_ids,
-        type: getters.channelData.type,
-        private: getters.channelData.private,
-        avatar: getters.channelData.avatar,
-        owner_id: getters.channelData.owner_id,
+        title: data.title,
+        slug: data.slug,
+        status: data.status,
+        user_ids: data.user_ids,
+        type: data.type,
+        private: data.private,
+        avatar: data.avatar,
+        owner_id: data.owner_id,
       })
         .then(
           res => {

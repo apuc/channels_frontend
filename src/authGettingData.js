@@ -26,7 +26,7 @@ export default {
 
       if (currentChannel) {
         store.commit('channels/SET_CURRENT_CHANNEL_DATA', currentChannel);
-        store.dispatch('channels/GET_USERS', currentChannel.channel_id);
+        store.dispatch('channels/GET_USERS', currentChannel.channel_id).then(data => store.commit('channels/SET_CURRENT_CHANNEL_USERS', data));
         store.dispatch('messages/GET_MESSAGES');
       } else {
         if (slug !== 'login' && slug !== 'registration') {

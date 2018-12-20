@@ -233,10 +233,6 @@
     align-items: center;
   }
 
-  textarea {
-    resize: none;
-  }
-
   .btn-file input[type=file] {
     position: absolute;
     top: 0;

@@ -103,7 +103,7 @@
         info: [
           {
             name: 'Создать канал',
-            modalTrigger: 'CreateChannel'
+            modalTrigger: 'ModalChannelCreate'
           },
           {
             name: 'Создать группу',

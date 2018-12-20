@@ -2,6 +2,7 @@ export default {
   channels: state => state.channels,
   currentChannelData: state => state.currentChannelData,
   channelData: state => state.channelData,
+  channelToEdit: state => id => state.channels.find(channel => channel.channel_id === id),
   currentChannelUsers: state => state.currentChannelUsers,
   channelToDelete: state => state.channelToDelete,
   isChannelsLoading: state => state.isChannelsLoading,
