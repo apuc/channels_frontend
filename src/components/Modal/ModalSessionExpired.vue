@@ -9,7 +9,7 @@
   import {mapMutations, mapActions} from 'vuex';
 
   export default {
-    name: "SessionExpired",
+    name: "ModalSessionExpired",
     methods: {
       ...mapMutations({
         closeModal: 'modal/DELETE_MODAL',

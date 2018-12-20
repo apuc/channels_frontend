@@ -1,5 +1,7 @@
 <template>
-  
+  <div class="modal-inside">
+
+  </div>
 </template>
 
 <script>

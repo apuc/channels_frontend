@@ -81,7 +81,7 @@
   import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
-    name: "EditProfile",
+    name: "ModalEditProfile",
     computed: {
       ...mapGetters({
         userInfo: 'user/info'

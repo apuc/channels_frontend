@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import Modal from './components/ModalWindows/Modal';
+  import Modal from './components/Modal/Modal';
   import {mapGetters} from 'vuex';
 
   export default {

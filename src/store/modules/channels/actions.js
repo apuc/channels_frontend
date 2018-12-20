@@ -207,15 +207,6 @@ export default {
     }
   },
   /**
-   * Set delete mode
-   *
-   * @param channelId - channel to edit
-   */
-  'SET_CHANNEL_DELETING': async ({commit, dispatch, rootGetters}, channelId) => {
-    commit('SET_CHANNEL_ID_TO_DELETE', channelId);
-    dispatch('modal/OPEN_MODAL_EDIT_MODE', 'DeleteChannelOrGroup', {root: true});
-  },
-  /**
    * Delete chosen channel
    */
   'DELETE_CHANNEL': async ({getters, commit, dispatch}) => {
@@ -228,8 +219,8 @@ export default {
       await Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/${id}`)
         .then(
           res => {
-            commit('REMOVE_DELETED_CHANNEL', id);
-            commit('modal/DELETE_MODAL', 'DeleteChannelOrGroup', {root: true});
+            commit('REMOVE_DELETED_CHANNEL_FROM_STORE', id);
+            commit('modal/DELETE_MODAL', null, {root: true});
 
             if (id === getters.currentChannelData.channel_id) {
               router.push('/');

@@ -32,7 +32,7 @@ export default {
   'ADD_CREATED_CHANNEL': (state, data) => {
     state.channels.push(data);
   },
-  'REMOVE_DELETED_CHANNEL': (state, id) => {
+  'REMOVE_DELETED_CHANNEL_FROM_STORE': (state, id) => {
     const channels = state.channels;
     const channel = state.channels.find(channel => channel.channel_id === id);
     const groupIndex = channels.indexOf(channel);

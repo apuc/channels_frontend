@@ -26,7 +26,7 @@ export default {
   'ADD_CREATED_GROUP': (state, data) => {
     state.groups.push(data);
   },
-  'REMOVE_DELETED_GROUP': (state, id) => {
+  'REMOVE_DELETED_GROUP_FROM_STORE': (state, id) => {
     const groups = state.groups;
     const group = groups.find(group => group.group_id === id);
     const groupIndex = groups.indexOf(group);

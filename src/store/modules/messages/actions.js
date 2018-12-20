@@ -26,7 +26,7 @@ export default {
                         dispatch('GET_MESSAGES');
                     })
             } else {
-                commit('modal/SET_MODAL', 'SessionExpired', {root: true});
+                commit('modal/SET_MODAL', 'ModalSessionExpired', {root: true});
             }
         }
     },

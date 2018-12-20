@@ -19,17 +19,17 @@
       <p class="user-exist" v-if="isUserInChannel">This user exist.</p>
     </div>
 
-    <UsersPreview/>
+    <ModalChannelUsersPreview/>
   </div>
 </template>
 
 <script>
   import {mapGetters, mapActions} from 'vuex';
-  import UsersPreview from './UsersPreview';
+  import ModalChannelUsersPreview from './ModalChannelUsersPreview';
 
   export default {
-    name: "ChannelUsers",
-    components: {UsersPreview},
+    name: "ModalChannelUsers",
+    components: {ModalChannelUsersPreview},
     computed: {
       ...mapGetters({
         currentChannelUsers: 'channels/currentChannelUsers'

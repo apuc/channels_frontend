@@ -1,7 +1,7 @@
 <template>
   <div class="modal-inside">
     <header class="modal__header">
-      <h4>{{isEdit ? 'Редактировать' : 'Создать'}} канал</h4>
+      <h4>Создать канал</h4>
     </header>
 
     <form class="modal__content" @submit.prevent="onSubmit">
@@ -95,7 +95,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="drop" @dragover.prevent @drop="onDrop">
         <div class="helper"></div>
         <label v-if="!imgSrc" class="button">
@@ -115,7 +115,7 @@
 
       <p v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</p>
 
-      <button type="submit" class="btn btn-primary">{{isEdit ? 'Save' : 'Create'}}</button>
+      <button type="submit" class="btn btn-primary">Create</button>
     </form>
   </div>
 </template>
@@ -132,7 +132,6 @@
         channelData: 'channels/channelData',
         userData: 'user/info',
         currentUserInfo: 'user/currentUserInfo',
-        isEdit: 'modal/editMode',
         setCreateChannel: 'modal/setCreateChannel',
         imageUploadPersentage: 'channels/imageUploadPersentage',
       })
@@ -162,7 +161,6 @@
         setChannelData: 'channels/SET_CHANNEL_DATA',
       }),
       ...mapActions({
-        editChannel: 'channels/EDIT_CHANNEL',
         createChannel: 'channels/CREATE_CHANNEL',
         createChannelAvatar: 'channels/CREATE_CHANNEL_AVATAR',
       }),
@@ -178,11 +176,7 @@
           await this.createChannelAvatar(this.img).then(() => this.upLoadStarted = false);
         }
 
-        if (this.isEdit) {
-          this.editChannel();
-        } else {
-          this.createChannel();
-        }
+        this.createChannel();
       },
       getUsers(e) {
         this.settingChannelData.user_ids = this.makeSplitedArray(e.target.value);
@@ -195,7 +189,7 @@
         formData.append('avatar', file);
         this.img = formData;
       },
-      onDrop: function(e) {
+      onDrop: function (e) {
         e.stopPropagation();
         e.preventDefault();
         const files = e.dataTransfer.files;
@@ -229,34 +223,6 @@
     },
     created() {
       this.settingChannelData.owner_id = this.userData.user_id;
-      if (this.isEdit) {
-        this.settingChannelData.channel_id = this.channelData.channel_id;
-        this.settingChannelData.title = this.channelData.title;
-        this.settingChannelData.slug = this.channelData.slug;
-        this.settingChannelData.status = this.channelData.status;
-        this.settingChannelData.type = this.channelData.type;
-        this.settingChannelData.private = this.channelData.private;
-        this.settingChannelData.user_count = this.channelData.user_count;
-        this.settingChannelData.owner_id = this.channelData.owner_id;
-        if (this.channelData.avatar) {
-          this.imgSrc = this.channelData.avatar.average;
-          this.settingChannelData.avatar = this.channelData.avatar.avatar_id;
-        }
-      }
-
-      if (this.setCreateChannel.dialog) {
-        if (this.userData.user_id === this.currentUserInfo.user_id) {
-          this.settingChannelData.title = 'My own chat';
-          this.settingChannelData.user_ids = this.userData.user_id;
-        } else {
-          this.settingChannelData.title = `${this.userData.username} and ${this.currentUserInfo.username} dialog`;
-          this.settingChannelData.user_ids = `${this.userData.user_id},${this.currentUserInfo.user_id}`
-        }
-        this.settingChannelData.type = 'dialog';
-        this.settingChannelData.private = 1;
-        this.settingChannelData.status = 'active';
-
-      }
     }
   }
 </script>

@@ -3,6 +3,7 @@
        v-if="isChannelUsersLoading"
        :style="calculatePlaceholders"
   ></div>
+
   <ul class="users-list" v-else>
     <li v-for="(user, index) in currentChannelUsers" :key="index">
       <div>
@@ -42,7 +43,7 @@
   import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
-    name: "UsersPreview",
+    name: "ModalChannelUsersPreview",
     computed: {
       ...mapGetters({
         currentChannelUsers: 'channels/currentChannelUsers',
@@ -80,7 +81,7 @@
       },
       goToUserProfile(id) {
         this.setUserData(id);
-        this.closeModal('channelUsers');
+        this.closeModal('ModalChannelUsers');
       },
       makeFriendshipRequest(data) {
         this.sendFriendshipRequest({user_id: data.user_id, contact_id: data.contact_id});

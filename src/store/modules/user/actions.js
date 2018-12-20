@@ -34,8 +34,8 @@ export default {
    * Get channels and groups
    */
   'GET_NAV': async ({dispatch}) => {
-    await dispatch('groups/GET_USER_GROUPS', null, {root: true});
-    await dispatch('channels/GET_USER_CHANNELS', null, {root: true});
+    dispatch('groups/GET_USER_GROUPS', null, {root: true});
+    dispatch('channels/GET_USER_CHANNELS', null, {root: true});
   },
   /**
    * Change general user data - avatar, username
@@ -108,7 +108,7 @@ export default {
       await Vue.http.delete(`${process.env.VUE_APP_API_URL}/user/${getters.info.user_id}`)
         .then(
           res => {
-            commit('modal/SET_MODAL', 'editProfile', {root: true});
+            commit('modal/SET_MODAL', 'ModalEditProfile', {root: true});
           },
           err => console.log(err)
         )

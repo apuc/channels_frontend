@@ -63,7 +63,7 @@
                 console.log('Socket connected!');
                 ioStatusOnline(this.userInfo.user_id); // Сообщаем ноду, что пользователь онлайн
               });
-            await ioGetUserStatus(this.userInfo.user_id);
+            ioGetUserStatus(this.userInfo.user_id);
           })
           .catch(error => console.log(error));
       }

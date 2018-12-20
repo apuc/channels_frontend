@@ -22,7 +22,7 @@
       <div class="user">
         <div class="placeholder placeholder_user" v-if="isUserLoading"></div>
 
-        <button type="button" class="btn btn-link" @click="openModal($event, 'editProfile')" v-else>
+        <button type="button" class="btn btn-link" @click="openModal($event, 'ModalEditProfile')" v-else>
           <img class="user__avatar-img"
                :src="userData.avatar ? userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
                alt="">
@@ -57,7 +57,7 @@
             :transfer-data="channel.channel_id"
             :key="channel.channel_id"
       >
-        <NavSection v-if="filters.channelsVisible && !isChannelsLoading"
+        <NavSectionChannels v-if="filters.channelsVisible && !isChannelsLoading"
                     title="Каналы"
                     :type="'channel'"
                     :data="channel"
@@ -68,7 +68,7 @@
             @drop="handleDrop(group.group_id, ...arguments)"
             :key="group.group_id"
       >
-        <NavSection v-if="filters.groupsVisible && !isGroupsLoading"
+        <NavSectionGroups v-if="filters.groupsVisible && !isGroupsLoading"
                     title="Группы"
                     :type="'group'"
                     :data="group"
@@ -81,11 +81,12 @@
 </template>
 
 <script>
-  import NavSection from './NavSection';
+  import NavSectionChannels from './NavSectionChannels';
+  import NavSectionGroups from './NavSectionGroups';
   import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
-    components: {NavSection},
+    components: {NavSectionChannels ,NavSectionGroups},
     computed: {
       ...mapGetters({
         groups: 'groups/groups',
@@ -110,7 +111,7 @@
           },
           {
             name: 'Редактировать профиль',
-            modalTrigger: 'editProfile'
+            modalTrigger: 'ModalEditProfile'
           },
           {
             name: 'Поиск',

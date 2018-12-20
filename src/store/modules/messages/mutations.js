@@ -8,5 +8,5 @@ export default {
     state.usersTyping.push(user)
   },
   'SLICE_TYPING_USER': (state, userObj) => state.usersTyping = state.usersTyping.filter(user => user.id !== userObj.id),
-  'OFF_TYPING': (state) => state.usersTyping = []
+  'OFF_TYPING': state => state.usersTyping = []
 };

@@ -1,8 +1,8 @@
 <template>
   <section class="list-group__item"
-           @click="setData($event, type === 'channel' ? data.channel_id : data.group_id)"
+           @click="setData($event, data.group_id)"
   >
-    <router-link :to="type === 'channel' ? `/${data.slug}` : `/group/${data.slug}`"
+    <router-link :to="`/group/${data.slug}`"
                  class="list-group__link"
                  :title="data.title"
                  @click.native="setUserPosition(type)"
@@ -33,13 +33,14 @@
 
       <button type="button"
               class="button"
-              @click="editThis($event, type === 'channel' ? data.channel_id : data.group_id)">
+              @click="editThis(data.group_id)">
         <v-icon scale="1" class="icon" name="pen"/>
       </button>
 
       <button type="button"
               class="button"
-              @click="deleteThis($event, type === 'channel' ? data.channel_id : data.group_id)">
+              @click="deletingModal(data.group_id)"
+      >
         <v-icon scale="1" class="icon" name="trash-alt"/>
       </button>
     </div>
@@ -50,6 +51,7 @@
   import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
+    name: "NavSectionGroups",
     computed: {
       ...mapGetters({
         currentChannelData: 'channels/currentChannelData',
@@ -77,39 +79,26 @@
       ...mapMutations({
         removeUsersFromStore: 'channels/REMOVE_USERS_FROM_STORE',
         setUserPosition: 'user/SET_USER_POSITION',
+        setModal: 'modal/SET_MODAL',
+        setGroupIdToDelete: 'groups/SET_GROUP_ID_TO_DELETE',
       }),
       ...mapActions({
-        setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
-        setChannelEditing: 'channels/SET_CHANNEL_EDITING',
-        setChannelDeleting: 'channels/SET_CHANNEL_DELETING',
         getGroupData: 'groups/GET_GROUP_DATA',
         setGroupEditing: 'groups/SET_GROUP_EDITING',
-        setGroupDeleting: 'groups/SET_GROUP_DELETING',
         setAddingChannelsToGroup: 'groups/SET_ADDING_CHANNELS_TO_GROUP',
-        getMessages: 'messages/GET_MESSAGES',
       }),
       async setData(e, id) {
         if (!e.target.hasAttribute('type')) {
-          if (this.type === 'channel') {
-            await this.setCurrentChannelData(Number(id));
-            this.getMessages();
-          } else {
-            await this.getGroupData(Number(id));
-          }
+          await this.getGroupData(Number(id));
           this.removeUsersFromStore();
         }
       },
-      editThis(e, id) {
-        this.type === 'channel' ?
-          this.setChannelEditing(Number(id))
-          :
-          this.setGroupEditing(Number(id))
+      editThis(id) {
+        this.setGroupEditing(Number(id))
       },
-      deleteThis(e, id) {
-        this.type === 'channel' ?
-          this.setChannelDeleting(Number(id))
-          :
-          this.setGroupDeleting(Number(id))
+      deletingModal(id) {
+        this.setModal('ModalGroupDelete');
+        this.setGroupIdToDelete(id);
       },
       openChannelsAdding(group_id) {
         this.setAddingChannelsToGroup(group_id);

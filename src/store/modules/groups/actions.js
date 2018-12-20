@@ -182,15 +182,6 @@ export default {
     }
   },
   /**
-   * Set delete mode
-   *
-   * @param groupId - group to edit
-   */
-  'SET_GROUP_DELETING': async ({commit, dispatch}, groupId) => {
-      commit('SET_GROUP_ID_TO_DELETE', groupId);
-      dispatch('modal/OPEN_MODAL_EDIT_MODE', 'DeleteChannelOrGroup', {root: true});
-    },
-  /**
    * Delete chosen group
    */
   'DELETE_GROUP': async ({getters, commit, dispatch, rootGetters}) => {
@@ -203,8 +194,8 @@ export default {
       await Vue.http.delete(`${process.env.VUE_APP_API_URL}/group/${id}`)
         .then(
           res => {
-            commit('REMOVE_DELETED_GROUP', id);
-            dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'DeleteChannelOrGroup', {root: true});
+            commit('REMOVE_DELETED_GROUP_FROM_STORE', id);
+            dispatch('modal/DELETE_MODAL', null, {root: true});
 
             if (id === getters.currentGroupData.group_id) {
               router.push('/');
@@ -231,7 +222,7 @@ export default {
    */
   'SET_ADDING_CHANNELS_TO_GROUP': ({commit, dispatch}, groupId) => {
     commit('SET_GROUP_ID_FOR_ADDING_CHANNEL', groupId);
-    dispatch('modal/OPEN_MODAL_EDIT_MODE', 'addChannelsToGroup', {root: true});
+    dispatch('modal/OPEN_MODAL_EDIT_MODE', 'ModalAddChannelsToGroup', {root: true});
   },
   /**
    * Add channels to group
@@ -255,7 +246,7 @@ export default {
               commit('SET_CURRENT_GROUP_DATA', newGroupData);
             }
             commit('SET_EDITED_GROUP_DATA', newGroupData);
-            dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'addChannelsToGroup', {root: true});
+            dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'ModalAddChannelsToGroup', {root: true});
           },
           err => {
             console.log(err);

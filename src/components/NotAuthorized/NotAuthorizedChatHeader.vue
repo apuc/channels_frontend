@@ -68,7 +68,7 @@
         return five;
       },
       openModal() {
-        this.setModal('ChannelUsers');
+        this.setModal('ModalChannelUsers');
       },
     },
   }

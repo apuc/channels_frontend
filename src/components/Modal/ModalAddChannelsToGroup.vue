@@ -11,7 +11,7 @@
 <script>
   import {mapMutations, mapActions} from 'vuex';
   export default {
-    name: "AddChannelsToGroup",
+    name: "ModalAddChannelsToGroup",
     data() {
       return {
         channel_ids: []

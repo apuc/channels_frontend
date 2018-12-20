@@ -8,11 +8,6 @@
       </button>
 
       <div class="modal_wrap">
-        <!--<DeleteChannelOrGroup v-else-if="deleteChannelOrGroup"/>-->
-        <!--<EditProfile v-else-if="editProfile"/>-->
-        <!--<ChannelUsers v-else-if="channelUsers"/>-->
-        <!--<AddChannelsToGroup v-else-if="addChannelsToGroup"/>-->
-        <!--<SessionExpired v-else-if="logoutModal"/>-->
         <component :is="currentModal"></component>
       </div>
     </div>
@@ -23,35 +18,28 @@
   import {mapGetters, mapMutations, mapActions} from 'vuex';
   import CreateGroup from './CreateGroup';
   import CreateChannel from './CreateChannel';
-  import DeleteChannelOrGroup from './DeleteChannelOrGroup';
-  import EditProfile from './EditProfile';
-  import ChannelUsers from "./ChannelUsers";
-  import AddChannelsToGroup from "./AddChannelsToGroup";
-  import SessionExpired from "./SessionExpired";
+  import ModalGroupDelete from './ModalGroupDelete';
+  import ModalChannelDelete from './ModalChannelDelete';
+  import ModalEditProfile from './ModalProfileEdit';
+  import ModalChannelUsers from "./ModalChannelUsers";
+  import ModalAddChannelsToGroup from "./ModalAddChannelsToGroup";
+  import ModalSessionExpired from "./ModalSessionExpired";
 
   export default {
     name: "Modal",
     components: {
-      SessionExpired,
-      AddChannelsToGroup,
-      ChannelUsers,
-      DeleteChannelOrGroup,
+      ModalSessionExpired,
+      ModalAddChannelsToGroup,
+      ModalChannelUsers,
+      ModalGroupDelete,
+      ModalChannelDelete,
+      ModalEditProfile,
       CreateGroup,
       CreateChannel,
-      EditProfile,
     },
     computed: {
       ...mapGetters({
-        createGroup: 'modal/setCreateGroup',
-        createChannel: 'modal/setCreateChannel',
-        userProfile: 'modal/setUserProfile',
-        editMode: 'modal/editMode',
         currentModal: 'modal/currentModal',
-        deleteChannelOrGroup: 'modal/deleteChannelOrGroup',
-        editProfile: 'modal/setEditProfile',
-        channelUsers: 'modal/channelUsers',
-        logoutModal: 'modal/logout',
-        addChannelsToGroup: 'modal/addChannelsToGroup',
       }),
     },
     data() {
@@ -67,14 +55,7 @@
         logout: 'auth/LOGOUT'
       }),
       onModalClose() {
-        // if (this.editMode) {
-        //   this.toggleEditMode();
-        // }
-
-        // if (this.logoutModal) {
-        //   this.logout();
-        // }
-        this.deleteModal(this.currentModal);
+        this.deleteModal();
       }
     },
   }

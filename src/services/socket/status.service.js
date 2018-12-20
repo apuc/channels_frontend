@@ -7,7 +7,7 @@ export function ioStatusOnline(userId) {
 }
 
 export function ioGetUserStatus(userId) {
-    console.log(123);
+    // console.log(123);
     io.emit('get_user_status', userId);
 }
 
