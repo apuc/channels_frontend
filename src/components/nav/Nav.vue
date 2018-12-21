@@ -107,7 +107,7 @@
           },
           {
             name: 'Создать группу',
-            modalTrigger: 'CreateGroup'
+            modalTrigger: 'ModalGroupCreate'
           },
           {
             name: 'Редактировать профиль',

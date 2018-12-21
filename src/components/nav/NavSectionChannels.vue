@@ -2,7 +2,7 @@
   <section class="list-group__item"
            @click="setData($event, data.channel_id)"
   >
-    <router-link :to="data.slug"
+    <router-link :to="`/${data.slug}`"
                  class="list-group__link"
                  :title="data.title"
                  @click.native="setUserPosition(type)"
@@ -69,14 +69,12 @@
         removeUsersFromStore: 'channels/REMOVE_USERS_FROM_STORE',
         setChannelIdToDelete: 'channels/SET_CHANNEL_ID_TO_DELETE',
         setChannelData: 'channels/SET_CHANNEL_DATA',
-        setChannelUserIds: 'channels/SET_CHANNEL_USER_IDS',
         setUserPosition: 'user/SET_USER_POSITION',
         setModal: 'modal/SET_MODAL',
       }),
       ...mapActions({
         setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
         getMessages: 'messages/GET_MESSAGES',
-        getChannelUsers: 'channels/GET_USERS',
       }),
       async setData(e, id) {
         if (!e.target.hasAttribute('type')) {
@@ -87,13 +85,6 @@
       },
       async editingModal(id) {
         this.setModal('ModalChannelEdit');
-        await this.getChannelUsers(id).then(data => {
-          let user_ids = [];
-          for (let i = 0; i < data.length; i++) {
-            user_ids.push(data[i].user_id);
-          }
-          this.setChannelUserIds(user_ids);
-        });
         this.setChannelData(this.channelToEdit(id));
       },
       deletingModal(id) {

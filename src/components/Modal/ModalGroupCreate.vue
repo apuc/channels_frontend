@@ -1,7 +1,7 @@
 <template>
   <div class="modal-inside">
     <header class="modal__header">
-      <h4>{{isEdit ? 'Редактировать' : 'Создать'}} группу</h4>
+      <h4>Создать группу</h4>
     </header>
 
     <form class="modal__content" @submit.prevent="onSubmit">
@@ -32,14 +32,16 @@
 
             <div class="form-check-inline">
               <label for="active" class="form-check-label">
-                <input type="radio" id="active" class="form-check-input" value="active" v-model="settingGroupData.status">
+                <input type="radio" id="active" class="form-check-input" value="active"
+                       v-model="settingGroupData.status">
                 <span>active</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="disable" class="form-check-label">
-                <input type="radio" id="disable" class="form-check-input" value="disable" v-model="settingGroupData.status">
+                <input type="radio" id="disable" class="form-check-input" value="disable"
+                       v-model="settingGroupData.status">
                 <span>disable</span>
               </label>
             </div>
@@ -76,7 +78,7 @@
 
       <p v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</p>
 
-      <button type="submit" class="btn btn-primary">{{isEdit ? 'Save' : 'Create'}}</button>
+      <button type="submit" class="btn btn-primary">Create</button>
     </form>
   </div>
 </template>
@@ -86,12 +88,11 @@
   import vSelect from "vue-select";
 
   export default {
-    name: "CreateGroup",
+    name: "ModalGroupCreate",
     components: {vSelect},
     computed: {
       ...mapGetters({
         groupData: 'groups/groupData',
-        isEdit: 'modal/editMode',
         userData: 'user/info',
         channels: 'channels/channels',
       })
@@ -125,7 +126,6 @@
         setChannelsToAdd: 'groups/SET_CHANNELS_TO_ADD',
       }),
       ...mapActions({
-        editGroup: 'groups/EDIT_GROUP',
         createGroup: 'groups/CREATE_GROUP',
         createGroupAvatar: 'groups/CREATE_GROUP_AVATAR',
       }),
@@ -141,11 +141,7 @@
           await this.createGroupAvatar(this.img).then(() => this.upLoadStarted = false);
         }
 
-        if (this.isEdit) {
-          this.editGroup();
-        } else {
-          this.createGroup()
-        }
+        this.createGroup()
       },
       makeSplitedArray(string) {
         return string.split(',')
@@ -161,7 +157,7 @@
         formData.append('avatar', file);
         this.img = formData;
       },
-      onDrop: function(e) {
+      onDrop: function (e) {
         e.stopPropagation();
         e.preventDefault();
         const files = e.dataTransfer.files;
@@ -194,20 +190,7 @@
       },
     },
     created() {
-      this.dataChannels = this.channels;
-      if (this.isEdit) {
-        this.settingGroupData.owner_id = this.groupData.owner_id;
-        this.settingGroupData.group_id = this.groupData.group_id;
-        this.settingGroupData.title = this.groupData.title;
-        this.settingGroupData.slug = this.groupData.slug;
-        this.settingGroupData.status = this.groupData.status;
-        if (this.groupData.avatar) {
-          this.imgSrc = this.groupData.avatar.average;
-          this.settingGroupData.avatar = this.groupData.avatar.avatar_id;
-        }
-      } else {
-        this.settingGroupData.owner_id = this.userData.user_id;
-      }
+      this.settingGroupData.owner_id = this.userData.user_id;
     }
   }
 </script>

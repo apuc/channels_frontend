@@ -1,5 +1,5 @@
 <template>
-  <div class="my-modal">
+  <div class="my-modal" @keyup.esc="onModalClose">
     <div class="backdrop" @click="onModalClose"></div>
 
     <div class="modal__container ">
@@ -16,7 +16,8 @@
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
-  import CreateGroup from './CreateGroup';
+  import ModalGroupCreate from './ModalGroupCreate';
+  import ModalGroupEdit from './ModalGroupEdit';
   import ModalChannelCreate from './ModalChannelCreate';
   import ModalChannelEdit from './ModalChannelEdit';
   import ModalGroupDelete from './ModalGroupDelete';
@@ -35,7 +36,8 @@
       ModalGroupDelete,
       ModalChannelDelete,
       ModalEditProfile,
-      CreateGroup,
+      ModalGroupCreate,
+      ModalGroupEdit,
       ModalChannelCreate,
       ModalChannelEdit
     },

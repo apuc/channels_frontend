@@ -1,40 +1,39 @@
 <template>
   <div class="modal-inside">
     <header class="modal__header">
-      <h4>Создать канал</h4>
+      <h4>Редактировать группу</h4>
     </header>
 
     <form class="modal__content" @submit.prevent="onSubmit">
       <div class="row">
         <div class="col-6">
           <div class="form-group">
-            <label for="title">Channel name</label>
+            <label for="title">Group name</label>
 
-            <input type="text" id="title" class="form-control" v-model="settingChannelData.title">
+            <input type="text" id="title" class="form-control" v-model="settingGroupData.title">
           </div>
 
           <div class="form-group">
-            <label for="slug">Channel slug</label>
+            <label for="slug">Group slug</label>
 
-            <input type="text" id="slug" class="form-control" v-model="settingChannelData.slug">
-          </div>
-
-          <div class="form-group">
-            <label for="user_ids">Users (через запятую)</label>
-
-            <input type="text" id="user_ids" class="form-control" :value="settingChannelData.user_ids"
-                   @input="getUsers">
+            <input type="text" id="slug" class="form-control" v-model="settingGroupData.slug">
           </div>
         </div>
 
         <div class="col-6">
           <div class="form-group">
-            <p>Channel status</p>
+            <label for="user_ids">Users (через запятую)</label>
+
+            <input type="text" id="user_ids" class="form-control" @input="getUsers">
+          </div>
+
+          <div class="form-group">
+            <p>Group status</p>
 
             <div class="form-check-inline">
               <label for="active" class="form-check-label">
                 <input type="radio" id="active" class="form-check-input" value="active"
-                       v-model="settingChannelData.status">
+                       v-model="settingGroupData.status">
                 <span>active</span>
               </label>
             </div>
@@ -42,58 +41,22 @@
             <div class="form-check-inline">
               <label for="disable" class="form-check-label">
                 <input type="radio" id="disable" class="form-check-input" value="disable"
-                       v-model="settingChannelData.status">
+                       v-model="settingGroupData.status">
                 <span>disable</span>
               </label>
             </div>
           </div>
-
-          <div class="form-group">
-            <p>Channel type</p>
-
-            <div class="form-check-inline">
-              <label for="chat" class="form-check-label">
-                <input type="radio" id="chat" class="form-check-input" value="chat" v-model="settingChannelData.type">
-                <span>chat</span>
-              </label>
-            </div>
-
-            <div class="form-check-inline">
-              <label for="wall" class="form-check-label">
-                <input type="radio" id="wall" class="form-check-input" value="wall" v-model="settingChannelData.type">
-                <span>wall</span>
-              </label>
-            </div>
-
-            <div class="form-check-inline">
-              <label for="dialog" class="form-check-label">
-                <input type="radio" id="dialog" class="form-check-input" value="dialog"
-                       v-model="settingChannelData.type">
-                <span>dialog</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <p>Privacy (0/1)</p>
-
-            <div class="form-check-inline">
-              <label for="private" class="form-check-label">
-                <input type="radio" id="private" class="form-check-input" value="1"
-                       v-model="settingChannelData.private">
-                <span>1</span>
-              </label>
-            </div>
-
-            <div class="form-check-inline">
-              <label for="not-private" class="form-check-label">
-                <input type="radio" id="not-private" class="form-check-input" value="0"
-                       v-model="settingChannelData.private">
-                <span>0</span>
-              </label>
-            </div>
-          </div>
         </div>
+      </div>
+
+      <div class="form-group">
+        <v-select label="slug"
+                  :options="grChannels"
+                  @input="addId"
+                  :value="groupChannels"
+                  multiple
+        >
+        </v-select>
       </div>
 
       <div class="drop" @dragover.prevent @drop="onDrop">
@@ -115,7 +78,7 @@
 
       <p v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</p>
 
-      <button type="submit" class="btn btn-primary">Create</button>
+      <button type="submit" class="btn btn-primary">Save</button>
     </form>
   </div>
 </template>
@@ -125,64 +88,72 @@
   import vSelect from "vue-select";
 
   export default {
-    name: "CreateChannel",
+    name: "ModalGroupEdit",
     components: {vSelect},
     computed: {
       ...mapGetters({
-        channelData: 'channels/channelData',
+        groupData: 'groups/groupData',
         userData: 'user/info',
-        currentUserInfo: 'user/currentUserInfo',
-        setCreateChannel: 'modal/setCreateChannel',
-        imageUploadPersentage: 'channels/imageUploadPersentage',
+        // channels: 'channels/channels',
       })
     },
     data() {
       return {
-        settingChannelData: {
-          channel_id: undefined,
+        settingGroupData: {
+          group_id: undefined,
           title: '',
           slug: '',
           status: '',
           user_ids: [],
           owner_id: '',
-          type: '',
-          private: '',
           avatar: '',
         },
+        grChannels: [],
+        groupChannels: [],
+        groupChannelsId: [],
         img: '',
         imgSrc: '',
         notImage: '',
-        image: '',
         upLoadStarted: false,
       }
     },
     methods: {
       ...mapMutations({
-        setChannelData: 'channels/SET_CHANNEL_DATA',
+        setGroupData: 'groups/SET_GROUP_DATA',
+        setChannelsToAdd: 'groups/SET_CHANNELS_TO_ADD',
       }),
       ...mapActions({
-        createChannel: 'channels/CREATE_CHANNEL',
-        createChannelAvatar: 'channels/CREATE_CHANNEL_AVATAR',
+        editGroup: 'groups/EDIT_GROUP',
+        createGroupAvatar: 'groups/CREATE_GROUP_AVATAR',
       }),
+      addId(val) {
+        this.groupChannels = val;
+      },
       async onSubmit() {
-        if (!Array.isArray(this.settingChannelData.user_ids)) {
-          this.settingChannelData.user_ids = this.makeSplitedArray(this.settingChannelData.user_ids);
+        await this.setGroupData(this.settingGroupData);
+
+        if (this.groupChannels.length > 0) {
+          for (let i = 0; this.groupChannels.length; i++) {
+            this.groupChannelsId.push(this.groupChannels[i].channel_id);
+          }
+          this.setChannelsToAdd(this.groupChannels);
         }
-        this.settingChannelData.user_ids.push(this.settingChannelData.owner_id);
-        await this.setChannelData(this.settingChannelData);
 
         if (this.img) {
           this.upLoadStarted = true;
-          await this.createChannelAvatar(this.img).then(() => this.upLoadStarted = false);
+          await this.createGroupAvatar(this.img).then(() => this.upLoadStarted = false);
         }
 
-        this.createChannel();
-      },
-      getUsers(e) {
-        this.settingChannelData.user_ids = this.makeSplitedArray(e.target.value);
+        this.editGroup();
       },
       makeSplitedArray(string) {
         return string.split(',')
+      },
+      getUsers(e) {
+        this.settingGroupData.user_ids = this.makeSplitedArray(e.target.value);
+      },
+      getChannels(e) {
+        this.groupChannels = this.makeSplitedArray(e.target.value);
       },
       createFormData(file) {
         let formData = new FormData();
@@ -222,7 +193,19 @@
       },
     },
     created() {
-      this.settingChannelData.owner_id = this.userData.user_id;
+      this.grChannels = this.$store.state.channels.channels;
+      // this.groupChannels = this.groupData.channels;
+
+      this.settingGroupData.owner_id = this.groupData.owner_id;
+      this.settingGroupData.group_id = this.groupData.group_id;
+      this.settingGroupData.title = this.groupData.title;
+      this.settingGroupData.slug = this.groupData.slug;
+      this.settingGroupData.status = this.groupData.status;
+
+      if (this.groupData.avatar) {
+        this.imgSrc = this.groupData.avatar.average;
+        this.settingGroupData.avatar = this.groupData.avatar.avatar_id;
+      }
     }
   }
 </script>
@@ -231,6 +214,10 @@
   .modal__header {
     display: flex;
     align-items: center;
+  }
+
+  textarea {
+    resize: none;
   }
 
   .btn-file input[type=file] {
@@ -318,9 +305,5 @@
 
   .drop label {
     margin-bottom: 0;
-  }
-
-  progress::-webkit-progress-value {
-    transition: width 0.5s ease;
   }
 </style>

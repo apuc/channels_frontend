@@ -66,10 +66,10 @@
     methods: {
       ...mapMutations({
         setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
+        deleteModal: 'modal/DELETE_MODAL',
       }),
       ...mapActions({
         deleteUser: 'channels/DELETE_USER',
-        closeModal: 'modal/CLOSE_MODAL_EDIT_MODE',
         sendFriendshipRequest: 'user/SEND_FRIENDSHIP_REQUEST',
       }),
       removeUser(id) {
@@ -81,7 +81,7 @@
       },
       goToUserProfile(id) {
         this.setUserData(id);
-        this.closeModal('ModalChannelUsers');
+        this.deleteModal();
       },
       makeFriendshipRequest(data) {
         this.sendFriendshipRequest({user_id: data.user_id, contact_id: data.contact_id});

@@ -216,15 +216,6 @@ export default {
     }
   },
   /**
-   * Set group id to the store and open adding channels modal
-   *
-   * @param groupId
-   */
-  'SET_ADDING_CHANNELS_TO_GROUP': ({commit, dispatch}, groupId) => {
-    commit('SET_GROUP_ID_FOR_ADDING_CHANNEL', groupId);
-    dispatch('modal/OPEN_MODAL_EDIT_MODE', 'ModalAddChannelsToGroup', {root: true});
-  },
-  /**
    * Add channels to group
    *
    * @param channel_ids {String || Number} - channels id's

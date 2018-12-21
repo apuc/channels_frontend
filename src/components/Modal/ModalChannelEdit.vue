@@ -159,10 +159,12 @@
     methods: {
       ...mapMutations({
         setChannelData: 'channels/SET_CHANNEL_DATA',
+        setChannelUserIds: 'channels/SET_CHANNEL_USER_IDS',
       }),
       ...mapActions({
         createChannel: 'channels/CREATE_CHANNEL',
         createChannelAvatar: 'channels/CREATE_CHANNEL_AVATAR',
+        getChannelUsers: 'channels/GET_USERS',
       }),
       async onSubmit() {
         if (!Array.isArray(this.settingChannelData.user_ids)) {
@@ -223,16 +225,26 @@
     },
     created() {
       this.settingChannelData.title = this.channelData.title;
+      this.settingChannelData.channel_id = this.channelData.channel_id;
       this.settingChannelData.slug = this.channelData.slug;
       this.settingChannelData.status = this.channelData.status;
-      this.settingChannelData.user_ids = this.channelData.user_ids;
       this.settingChannelData.owner_id = this.userData.user_id;
       this.settingChannelData.type = this.channelData.type;
       this.settingChannelData.private = this.channelData.private;
+
       if (this.channelData.avatar) {
         this.settingChannelData.avatar = this.channelData.avatar.avatar_id;
         this.imgSrc = this.channelData.avatar.average;
       }
+
+      this.getChannelUsers(this.channelData.channel_id).then(data => {
+        let user_ids = [];
+        for (let i = 0; i < data.length; i++) {
+          user_ids.push(data[i].user_id);
+        }
+        this.setChannelUserIds(user_ids);
+        this.settingChannelData.user_ids = user_ids;
+      });
     }
   }
 </script>

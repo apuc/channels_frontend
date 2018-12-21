@@ -56,7 +56,8 @@
       ...mapGetters({
         currentChannelData: 'channels/currentChannelData',
         currentGroupData: 'groups/currentGroupData',
-        userData: 'user/info'
+        groupToEdit: 'groups/groupToEdit',
+        userData: 'user/info',
       }),
     },
     props: {
@@ -79,12 +80,13 @@
       ...mapMutations({
         removeUsersFromStore: 'channels/REMOVE_USERS_FROM_STORE',
         setUserPosition: 'user/SET_USER_POSITION',
+        setGroupData: 'groups/SET_GROUP_DATA',
         setModal: 'modal/SET_MODAL',
         setGroupIdToDelete: 'groups/SET_GROUP_ID_TO_DELETE',
+        setGroupIdForAddingChannels: 'groups/SET_GROUP_ID_FOR_ADDING_CHANNEL',
       }),
       ...mapActions({
         getGroupData: 'groups/GET_GROUP_DATA',
-        setGroupEditing: 'groups/SET_GROUP_EDITING',
         setAddingChannelsToGroup: 'groups/SET_ADDING_CHANNELS_TO_GROUP',
       }),
       async setData(e, id) {
@@ -94,14 +96,16 @@
         }
       },
       editThis(id) {
-        this.setGroupEditing(Number(id))
+        this.setModal('ModalGroupEdit');
+        this.setGroupData(this.groupToEdit(id));
       },
       deletingModal(id) {
         this.setModal('ModalGroupDelete');
         this.setGroupIdToDelete(id);
       },
       openChannelsAdding(group_id) {
-        this.setAddingChannelsToGroup(group_id);
+        this.setModal('ModalAddChannelsToGroup');
+        this.setGroupIdForAddingChannels(group_id);
       },
     },
   }
