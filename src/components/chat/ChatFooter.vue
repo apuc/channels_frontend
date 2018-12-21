@@ -10,7 +10,7 @@
 
     <div class="input_message-group">
       <label class="attach-file">
-        <input type="file">
+        <input type="file" multiple @change="addAttachments">
         <v-icon scale="1.6" name="archive"/>
       </label>
 
@@ -31,20 +31,29 @@
       </b-input-group-append>
     </div>
 
+    <div class="message-attachment">
+      <Attachment v-for="(attachment, index) in attachments" :attachment="attachment" :key="index" />
+    </div>
+
   </div>
 </template>
 
 <script>
   import {ioTyping} from '../../services/socket/message.service'
   import {mapGetters, mapActions} from 'vuex'
+  import Attachment from '../../components/attachment/Attachment'
 
   export default {
     computed: {
       ...mapGetters({
         currentChannel: 'channels/currentChannelData',
         userInfo: 'user/info',
-        usersTyping: 'messages/usersTyping'
+        usersTyping: 'messages/usersTyping',
+        attachments: 'messages/attachments'
       })
+    },
+    components: {
+      Attachment
     },
     data() {
       return {
@@ -54,7 +63,8 @@
     },
     methods: {
       ...mapActions({
-        SEND_MESSAGE: 'messages/SEND_MESSAGE'
+        SEND_MESSAGE: 'messages/SEND_MESSAGE',
+        ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENTS'
       }),
       ioTyping,
       sendMessage(text, channelId) {
@@ -68,7 +78,7 @@
           this.sendMessage(this.input, this.currentChannel.channel_id);
         }
       },
-        emitUserTyping() {
+      emitUserTyping() {
         clearTimeout(this.timeout);
         ioTyping({
           user: {
@@ -88,6 +98,9 @@
             isTyping: false
           });
         }, 2000);
+  },
+      addAttachments(e) {
+        this.ADD_ATTACHMENTS(e.target.files)
       }
     }
   }
