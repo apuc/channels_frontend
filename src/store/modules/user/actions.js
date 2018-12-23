@@ -185,10 +185,11 @@ export default {
   /**
    * Global user search
    */
-  'FIND_USERS': async ({commit}, ) => {
+  'FIND_USERS': async ({commit}, {search_request, page}) => {
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/search_request=${search_request}&page=${page}`)
       .then(
         async res => {
+          console.log(res.body.data);
           commit('SET_SEARCH_RESULTS', res.body.data);
         },
         err => console.log('err login', err)
@@ -255,5 +256,32 @@ export default {
       )
       .catch(error => console.log('GET_USER: ', error));
   },
-
+  /**
+   * Get user contacts
+   */
+  'GET_USER_CONTACTS': async ({commit}) => {
+    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/contacts`)
+      .then(
+        async res => {
+          console.log(res.body.data);
+          commit('SET_USER_CONTACTS', res.body.data);
+        },
+        err => console.log('err login', err)
+      )
+      .catch(error => console.log('FIND_USERS: ', error));
+  },
+  /**
+   * Get user friendship requests
+   */
+  'GET_USER_FRIENDSHIP_REQUESTS': async ({commit}) => {
+    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/senders`)
+      .then(
+        async res => {
+          console.log(res.body.data);
+          commit('SET_USER_FRIENDSHIP_REQUESTS', res.body.data);
+        },
+        err => console.log('err login', err)
+      )
+      .catch(error => console.log('FIND_USERS: ', error));
+  },
 };

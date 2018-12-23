@@ -86,12 +86,6 @@
     pointer-events: none;
   }
 
-  .modal-inside {
-    max-height: 90%;
-    padding: 30px;
-    overflow: auto;
-  }
-
   .user-exist {
     color: rgba(255, 0, 0, 0.64);
   }

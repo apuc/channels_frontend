@@ -24,6 +24,12 @@ export default {
   'SET_SEARCH_RESULTS': (state, results) => {
     state.searchResults = results;
   },
+  'SET_USER_CONTACTS': (state, contacts) => {
+    state.userContacts = contacts;
+  },
+  'SET_USER_FRIENDSHIP_REQUESTS': (state, requests) => {
+    state.friendshipRequests = requests;
+  },
   'SET_DEFAULT_USER_STATE': state => {
     state.info = {
       avatar: undefined,

@@ -39,9 +39,4 @@
     opacity: 0.7;
   }
 
-  .modal-inside {
-    max-height: 90%;
-    padding: 30px;
-    overflow: auto;
-  }
 </style>

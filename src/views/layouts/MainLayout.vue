@@ -43,6 +43,8 @@
       ...mapActions({
         getUserMe: 'user/GET_USER_ME',
         getNav: 'user/GET_NAV',
+        getUserContacts: 'user/GET_USER_CONTACTS',
+        getUserFriendshipRequests: 'user/GET_USER_FRIENDSHIP_REQUESTS',
       }),
     },
     created() {
@@ -52,9 +54,10 @@
           .then(async () => {
             if (this.authStatus) {
               if (this.currentDateInSeconds < this.refreshTokenExpiresIn) {
+                this.getUserContacts();
+                this.getUserFriendshipRequests();
                 await this.getNav().then(() => this.$_authGettingData_gettingData());
                 this.gettingUserData();
-
               }
             }
 

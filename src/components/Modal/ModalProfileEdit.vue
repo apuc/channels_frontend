@@ -181,12 +181,6 @@
 </script>
 
 <style scoped>
-.modal-inside {
-  max-height: 90%;
-  padding: 30px;
-  overflow: auto;
-}
-
 .btn-file input[type=file] {
   position: absolute;
   top: 0;

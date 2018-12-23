@@ -26,9 +26,4 @@
 </script>
 
 <style scoped>
-  .modal-inside {
-    max-height: 90%;
-    padding: 30px;
-    overflow: auto;
-  }
 </style>

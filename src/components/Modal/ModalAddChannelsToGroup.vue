@@ -56,11 +56,6 @@
     align-items: center;
   }
 
-  .modal-inside {
-    max-height: 90%;
-    padding: 30px;
-    overflow: auto;
-  }
 
   .v-select {
     flex: 1 1 auto;

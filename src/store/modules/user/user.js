@@ -12,18 +12,36 @@ const state = {
   currentUserInfo: {
     avatar: undefined,
     email: '',
-    user_id: '',
+    user_id: null,
     username: '',
   },
   isUserLoading: false,
   imageUploadPersentage: 0,
   userContacts: [
     {
-
+      user_id: null,
+      email: '',
+      username: '',
+      avatar: undefined
     }
   ],
   userPosition: '',
-  searchResults: []
+  searchResults: [
+    {
+      user_id: null,
+      email: '',
+      username: '',
+      avatar: undefined
+    }
+  ],
+  friendshipRequests: [
+    {
+      user_id: null,
+      email: '',
+      username: '',
+      avatar: undefined
+    }
+  ]
 };
 
 export default {

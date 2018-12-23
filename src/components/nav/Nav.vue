@@ -115,7 +115,7 @@
           },
           {
             name: 'Поиск',
-            modalTrigger: 'search'
+            modalTrigger: 'ModalSearchUsers'
           }
         ],
         addMenuVisible: false,

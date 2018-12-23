@@ -1,12 +1,10 @@
 <template>
-  <div class="modal-inside">
-
-  </div>
+  
 </template>
 
 <script>
   export default {
-    name: "ModalSearch"
+    name: "ModalUserFriendshipRequests"
   }
 </script>
 

@@ -26,20 +26,22 @@
   import ModalChannelUsers from "./ModalChannelUsers";
   import ModalAddChannelsToGroup from "./ModalAddChannelsToGroup";
   import ModalSessionExpired from "./ModalSessionExpired";
+  import ModalSearchUsers from "./ModalSearchUsers";
 
   export default {
     name: "Modal",
     components: {
       ModalSessionExpired,
-      ModalAddChannelsToGroup,
       ModalChannelUsers,
-      ModalGroupDelete,
+      ModalChannelCreate,
+      ModalChannelEdit,
       ModalChannelDelete,
       ModalEditProfile,
+      ModalAddChannelsToGroup,
       ModalGroupCreate,
       ModalGroupEdit,
-      ModalChannelCreate,
-      ModalChannelEdit
+      ModalGroupDelete,
+      ModalSearchUsers
     },
     computed: {
       ...mapGetters({

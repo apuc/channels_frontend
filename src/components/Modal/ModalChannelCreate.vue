@@ -249,11 +249,6 @@
     display: block;
   }
 
-  .modal-inside {
-    max-height: 90%;
-    padding: 30px;
-    overflow: auto;
-  }
 
   .button {
     position: relative;

@@ -40,6 +40,12 @@
     color: #2c3e50;
   }
 
+  .modal-inside {
+    max-height: 90%;
+    padding: 30px;
+    overflow: auto;
+  }
+
   .modal__content {
     margin-top: 30px;
   }
