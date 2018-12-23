@@ -10,6 +10,7 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex'
   import ChatHeader from './ChatHeader';
   import ChatMessages from './ChatMessages';
   import ChatFooter from '../chat/ChatFooter';
@@ -28,11 +29,15 @@
       }
     },
     methods: {
+      ...mapActions({
+        ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENTS'
+      }),
       dragSwitcher() {
         this.over = !this.over;
       },
       onDrop(e) {
-        const file = e.dataTransfer.files[0];
+        this.dragSwitcher();
+        this.ADD_ATTACHMENTS(e.dataTransfer.files);
       }
     }
   }

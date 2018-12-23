@@ -61,17 +61,18 @@ export default {
 
     // Attachments
     'ADD_ATTACHMENTS': async ({commit, dispatch, rootGetters}, attachments) => {
-        for (let i = 0; i < attachments.length; i++) {
-            const data = new FormData;
-            data.append('attachment', attachments[i]);
-            // Vue.http.post(`${process.env.VUE_APP_API_URL}`, data)
-            //     .then(
-            //         res => {
-            //             commit('ADD_ATTACHMENT', res.body.data);
-            //         },
-            //         err => console.log(err)
-            //     )
-        }
+        console.log('Message action ADD_ATTACHMENTS: ', attachments);
+        // for (let i = 0; i < attachments.length; i++) {
+        //     const data = new FormData;
+        //     data.append('attachment', attachments[i]);
+        //     // Vue.http.post(`${process.env.VUE_APP_API_URL}`, data)
+        //     //     .then(
+        //     //         res => {
+        //     //             commit('ADD_ATTACHMENT', res.body.data);
+        //     //         },
+        //     //         err => console.log(err)
+        //     //     )
+        // }
 
     },
     'CLEAR_ATTACHMENTS': async ({commit}) => {
