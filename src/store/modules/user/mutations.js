@@ -38,6 +38,9 @@ export default {
       }
     }
   },
+  'ADD_USER_TO_CONTACTS': (state, user) => {
+    state.userContacts.push(user);
+  },
   'SET_DEFAULT_USER_STATE': state => {
     state.info = {
       avatar: undefined,

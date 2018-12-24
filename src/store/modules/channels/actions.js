@@ -243,7 +243,8 @@ export default {
       await Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/delete-user?channel_id=${getters.currentChannelData.channel_id}&user_id=${userId}`)
         .then(
           res => {
-            dispatch('GET_USERS', getters.currentChannelData.channel_id);
+            dispatch('GET_USERS', getters.currentChannelData.channel_id)
+              .then(users => commit('SET_CURRENT_CHANNEL_USERS', users));
           },
           err => console.log(err)
         )
@@ -274,7 +275,8 @@ export default {
       })
         .then(
           res => {
-            dispatch('GET_USERS', getters.currentChannelData.channel_id);
+            dispatch('GET_USERS', getters.currentChannelData.channel_id)
+              .then(users => commit('SET_CURRENT_CHANNEL_USERS', users));
           },
           err => console.log(err)
         )

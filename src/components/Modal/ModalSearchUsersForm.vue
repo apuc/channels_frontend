@@ -5,6 +5,7 @@
       <input class="form-control"
              id="user-search"
              type="text"
+             ref="searchInput"
              v-model="search_request"
       >
     </div>
@@ -31,6 +32,9 @@
       onSubmit() {
         this.findUsers({search_request: this.search_request, page: this.page})
       }
+    },
+    mounted() {
+      this.$refs.searchInput.focus();
     }
   }
 </script>

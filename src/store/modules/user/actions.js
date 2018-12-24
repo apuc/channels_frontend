@@ -260,7 +260,7 @@ export default {
         async res => {
           console.log(res);
         },
-        err => console.log('err login', err)
+        err => console.log('err accept friendship', err)
       )
       .catch(error => console.log('GET_USER: ', error));
   },
@@ -272,12 +272,12 @@ export default {
    * @param data.contact_id {Number} - user that will receive request
    */
   'REJECT_FRIENDSHIP_REQUEST': async ({commit}, data) => {
-    await Vue.http.delete(`${process.env.VUE_APP_API_URL}/user/reject-contact/user_id=${data.user_id}&contact_id=${data.contact_id}`)
+    await Vue.http.delete(`${process.env.VUE_APP_API_URL}/user/reject-contact?user_id=${data.user_id}&contact_id=${data.contact_id}`)
       .then(
         async res => {
           console.log(res);
         },
-        err => console.log('err login', err)
+        err => console.log('err reject friendship ', err)
       )
       .catch(error => console.log('GET_USER: ', error));
   },

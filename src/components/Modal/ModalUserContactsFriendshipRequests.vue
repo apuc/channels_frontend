@@ -24,7 +24,7 @@
       <div>
         <button type="button"
                 class="btn btn-sm btn-primary mr10"
-                @click="acceptRequest(user.user_id)"
+                @click="acceptRequest(user)"
         >
           <v-icon scale="1" class="icon" name="user-plus"/>
         </button>
@@ -56,6 +56,7 @@
         setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
         removeUserRequestFromStore: 'user/REMOVE_USER_REQUEST_FROM_STORE',
         deleteModal: 'modal/DELETE_MODAL',
+        addUserToContacts: 'user/ADD_USER_TO_CONTACTS',
       }),
       ...mapActions({
         acceptFriendshipRequest: 'user/ACCEPT_FRIENDSHIP_REQUEST',
@@ -70,15 +71,16 @@
         this.setUserData(id);
         this.deleteModal();
       },
-      acceptRequest(id) {
+      acceptRequest(user) {
         this.acceptFriendshipRequest({
-          user_id: id,
+          user_id: user.user_id,
           contact_id: this.userData.user_id
         })
           .then(() => {
-            this.removeUserRequestFromStore(id);
+            this.removeUserRequestFromStore(user.user_id);
             this.getUserFriendshipRequests();
           });
+        this.addUserToContacts(user);
       },
       rejectRequest(id) {
         this.rejectFriendshipRequest({

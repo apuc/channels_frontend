@@ -3,7 +3,6 @@
     <header>
       <button class="btn btn-group mr10"
               type="button"
-              v-if="userContacts.length > 0"
               @click="changeContactsList('ModalUserContactsList')"
       >
         Контакты

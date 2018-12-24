@@ -46,12 +46,10 @@
         deleteModal: 'modal/DELETE_MODAL',
       }),
       ...mapActions({
-        acceptFriendshipRequest: 'user/ACCEPT_FRIENDSHIP_REQUEST',
-        rejectFriendshipRequest: 'user/REJECT_FRIENDSHIP_REQUEST',
-        getUserFriendshipRequests: 'user/GET_USER_FRIENDSHIP_REQUESTS',
+        sendFriendshipRequest: 'user/SEND_FRIENDSHIP_REQUEST',
       }),
       setUserData(id) {
-        const getUser = this.friendshipRequests.find(user => user.user_id === id);
+        const getUser = this.searchResults.find(user => user.user_id === id);
         this.setCurrentUserData(getUser);
       },
       goToUserProfile(id) {

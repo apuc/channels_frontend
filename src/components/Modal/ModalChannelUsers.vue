@@ -53,7 +53,7 @@
         for (let i = 0; i < this.currentChannelUsers.length; i++) {
           this.isUserInChannel = this.currentChannelUsers[i].user_id === Number(this.add_user);
         }
-      }
+      },
     },
   }
 </script>

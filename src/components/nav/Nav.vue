@@ -28,6 +28,14 @@
                alt="">
           {{userData.username}}
         </button>
+
+        <button type="button"
+                class="requests"
+                v-if="friendshipRequests.length > 0"
+                @click="openRequests"
+        >
+          {{friendshipRequests.length}}
+        </button>
       </div>
 
       <div class="filters" v-if="channels.length > 0 && groups.length > 0">
@@ -96,6 +104,7 @@
         isGroupsLoading: 'groups/isGroupsLoading',
         isChannelsLoading: 'channels/isChannelsLoading',
         isUserLoading: 'user/isUserLoading',
+        friendshipRequests: 'user/friendshipRequests',
       }),
     },
     data() {
@@ -168,6 +177,9 @@
         await this.setGroupIdForAddingChannels(group_id);
         await this.addChannelsToGroup([data]);
       },
+      openRequests() {
+        this.setModal('ModalUserContacts')
+      }
     },
     async created() {
       this.filter = {
@@ -297,6 +309,19 @@
     margin-right: 5px;
     border-radius: 50%;
     object-fit: cover;
+  }
+
+  .requests {
+    width: 22px;
+    padding: 2px;
+
+    font-size: 12px;
+    color: white;
+
+    background-color: #ff5c43;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
   }
 
   .drop-zone {
