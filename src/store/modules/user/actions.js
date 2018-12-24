@@ -38,6 +38,56 @@ export default {
     dispatch('channels/GET_USER_CHANNELS', null, {root: true});
   },
   /**
+   * Get user contacts
+   */
+  'GET_USER_CONTACTS': async ({commit}) => {
+    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/contacts`)
+      .then(
+        async res => {
+          console.log(res.body.data);
+          commit('SET_USER_CONTACTS', res.body.data);
+        },
+        err => console.log('err login', err)
+      )
+      .catch(error => console.log('FIND_USERS: ', error));
+  },
+  /**
+   * Get user friendship requests
+   */
+  'GET_USER_FRIENDSHIP_REQUESTS': async ({commit}) => {
+    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/senders`)
+      .then(
+        async res => {
+          console.log(res.body.data);
+          commit('SET_USER_FRIENDSHIP_REQUESTS', res.body.data);
+        },
+        err => console.log('err login', err)
+      )
+      .catch(error => console.log('FIND_USERS: ', error));
+  },
+  /**
+   * Get specific user data and save it to store
+   *
+   * @param user_id {String || Number}
+   */
+  'GET_USER_DATA': async ({commit, dispatch, rootGetters}, user_id) => {
+    commit('SET_USER_DATA_LOADING_FLAG');
+    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/${user_id}`)
+      .then(
+        res => {
+          commit('SET_CURRENT_USER_DATA', res.body.data);
+          commit('SET_USER_DATA_LOADING_FLAG');
+        },
+        err => {
+          if (err.status === 404) {
+            router.push({path: '/not-found'})
+          }
+        }
+      )
+      .catch(error => console.log('GET_USER_DATA: ', error))
+
+  },
+  /**
    * Change general user data - avatar, username
    */
   'EDIT_GENERAL_USER_DATA': async ({getters, commit, dispatch, rootGetters}) => {
@@ -123,28 +173,6 @@ export default {
     }
   },
   /**
-   * Get specific user data and save it to store
-   *
-   * @param user_id {String || Number}
-   */
-  'GET_USER_DATA': async ({commit, dispatch, rootGetters}, user_id) => {
-    commit('SET_USER_DATA_LOADING_FLAG');
-    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/${user_id}`)
-      .then(
-        res => {
-          commit('SET_CURRENT_USER_DATA', res.body.data);
-          commit('SET_USER_DATA_LOADING_FLAG');
-        },
-        err => {
-          if (err.status === 404) {
-            router.push({path: '/not-found'})
-          }
-        }
-      )
-      .catch(error => console.log('GET_USER_DATA: ', error))
-
-  },
-  /**
    * Add avatar to the user profile and write avatar_id to the store
    *
    * @param img - image form data
@@ -186,7 +214,7 @@ export default {
    * Global user search
    */
   'FIND_USERS': async ({commit}, {search_request, page}) => {
-    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/search_request=${search_request}&page=${page}`)
+    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/?search_request=${search_request}&page=${page}`)
       .then(
         async res => {
           console.log(res.body.data);
@@ -244,10 +272,7 @@ export default {
    * @param data.contact_id {Number} - user that will receive request
    */
   'REJECT_FRIENDSHIP_REQUEST': async ({commit}, data) => {
-    await Vue.http.delete(`${process.env.VUE_APP_API_URL}/user/reject-contact`, {
-      user_id: data.user_id,
-      contact_id: data.contact_id
-    })
+    await Vue.http.delete(`${process.env.VUE_APP_API_URL}/user/reject-contact/user_id=${data.user_id}&contact_id=${data.contact_id}`)
       .then(
         async res => {
           console.log(res);
@@ -255,33 +280,5 @@ export default {
         err => console.log('err login', err)
       )
       .catch(error => console.log('GET_USER: ', error));
-  },
-  /**
-   * Get user contacts
-   */
-  'GET_USER_CONTACTS': async ({commit}) => {
-    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/contacts`)
-      .then(
-        async res => {
-          console.log(res.body.data);
-          commit('SET_USER_CONTACTS', res.body.data);
-        },
-        err => console.log('err login', err)
-      )
-      .catch(error => console.log('FIND_USERS: ', error));
-  },
-  /**
-   * Get user friendship requests
-   */
-  'GET_USER_FRIENDSHIP_REQUESTS': async ({commit}) => {
-    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/senders`)
-      .then(
-        async res => {
-          console.log(res.body.data);
-          commit('SET_USER_FRIENDSHIP_REQUESTS', res.body.data);
-        },
-        err => console.log('err login', err)
-      )
-      .catch(error => console.log('FIND_USERS: ', error));
   },
 };

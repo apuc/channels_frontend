@@ -30,6 +30,14 @@ export default {
   'SET_USER_FRIENDSHIP_REQUESTS': (state, requests) => {
     state.friendshipRequests = requests;
   },
+  'REMOVE_USER_REQUEST_FROM_STORE': (state, user_id) => {
+    const requests = state.friendshipRequests;
+    for (let i = 0; i < requests.length; i++) {
+      if (requests[i] === user_id) {
+        requests.splice(i, 1);
+      }
+    }
+  },
   'SET_DEFAULT_USER_STATE': state => {
     state.info = {
       avatar: undefined,

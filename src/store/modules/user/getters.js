@@ -6,4 +6,6 @@ export default {
   imageUploadPersentage: state => state.imageUploadPersentage,
   userPosition: state => state.userPosition,
   searchResults: state => state.searchResults,
+  userContacts: state => state.userContacts,
+  friendshipRequests: state => state.friendshipRequests,
 };

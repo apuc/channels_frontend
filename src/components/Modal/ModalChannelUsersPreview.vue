@@ -5,13 +5,15 @@
   ></div>
 
   <ul class="users-list" v-else>
-    <li v-for="(user, index) in currentChannelUsers" :key="index">
+    <li class="user"
+        v-for="(user, index) in currentChannelUsers"
+        :key="user.email">
       <div>
         <div class="user-info">
           <div class="image-wrap">
-            <img
-              :src="user.avatar ? user.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
-              width="30" height="30" alt="">
+            <img class="img"
+                 :src="user.avatar ? user.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
+                 width="30" height="30" alt="">
           </div>
 
           <div>
@@ -21,20 +23,22 @@
         </div>
       </div>
 
-      <button type="button"
-              class="btn btn-sm btn-primary"
-              @click="sendFriendshipRequest({user_id: userData.user_id, contact_id: user.user_id})"
-      >
-        <v-icon scale="1" class="icon" name="user-plus"/>
-      </button>
+      <div>
+        <button type="button"
+                class="btn btn-sm btn-primary mr10"
+                @click="makeFriendshipRequest($event.target, {user_id: userData.user_id, contact_id: user.user_id})"
+        >
+          <v-icon scale="1" class="icon" name="user-plus"/>
+        </button>
 
-      <button v-if="userData.user_id === currentChannelData.owner_id"
-              type="button"
-              class="btn btn-sm btn-danger"
-              @click="removeUser(user.user_id)"
-      >
-        <v-icon scale="1" class="icon" name="user-minus"/>
-      </button>
+        <button v-if="userData.user_id === currentChannelData.owner_id"
+                type="button"
+                class="btn btn-sm btn-danger"
+                @click="removeUser(user.user_id)"
+        >
+          <v-icon scale="1" class="icon" name="user-minus"/>
+        </button>
+      </div>
     </li>
   </ul>
 </template>
@@ -83,15 +87,24 @@
         this.setUserData(id);
         this.deleteModal();
       },
-      makeFriendshipRequest(data) {
+      makeFriendshipRequest(target, data) {
         this.sendFriendshipRequest({user_id: data.user_id, contact_id: data.contact_id});
+        target.remove();
       }
     }
   }
 </script>
 
 <style scoped>
-  li {
+  .users-list {
+    max-height: 300px;
+    margin: 0;
+    margin-top: 10px;
+    padding: 0;
+    overflow: auto;
+  }
+
+  .user {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -112,7 +125,7 @@
     border-radius: 50%;
   }
 
-  img {
+  .img {
     display: block;
   }
 
@@ -128,6 +141,7 @@
 
     animation: shine 1.5s infinite;
   }
+
   @keyframes shine {
     0% {
       opacity: 1;

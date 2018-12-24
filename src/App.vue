@@ -50,6 +50,10 @@
     margin-top: 30px;
   }
 
+  .mr10 {
+    margin-right: 10px;
+  }
+
   .fade-enter-active, .fade-leave-active {
     transition: opacity 0.1s;
   }

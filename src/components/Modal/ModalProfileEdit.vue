@@ -4,7 +4,7 @@
       <h4>Редактирование профиля</h4>
 
       <nav>
-        <button type="button" class="btn" @click="switchSettings">Общее</button>
+        <button type="button" class="btn mr10" @click="switchSettings">Общее</button>
         <button type="button" class="btn" @click="switchSettings">Личное</button>
       </nav>
     </header>

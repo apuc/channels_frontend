@@ -65,14 +65,6 @@
     flex-direction: column;
   }
 
-  .users-list {
-    max-height: 300px;
-    margin: 0;
-    margin-top: 10px;
-    padding: 0;
-    overflow: auto;
-  }
-
   .add-user,
   .input-wrap {
     display: flex;

@@ -17,31 +17,10 @@ const state = {
   },
   isUserLoading: false,
   imageUploadPersentage: 0,
-  userContacts: [
-    {
-      user_id: null,
-      email: '',
-      username: '',
-      avatar: undefined
-    }
-  ],
+  userContacts: [],
   userPosition: '',
-  searchResults: [
-    {
-      user_id: null,
-      email: '',
-      username: '',
-      avatar: undefined
-    }
-  ],
-  friendshipRequests: [
-    {
-      user_id: null,
-      email: '',
-      username: '',
-      avatar: undefined
-    }
-  ]
+  searchResults: [],
+  friendshipRequests: []
 };
 
 export default {

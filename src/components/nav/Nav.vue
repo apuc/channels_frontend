@@ -102,6 +102,10 @@
       return {
         info: [
           {
+            name: 'Контакты',
+            modalTrigger: 'ModalUserContacts'
+          },
+          {
             name: 'Создать канал',
             modalTrigger: 'ModalChannelCreate'
           },
@@ -116,7 +120,7 @@
           {
             name: 'Поиск',
             modalTrigger: 'ModalSearchUsers'
-          }
+          },
         ],
         addMenuVisible: false,
         filters: {

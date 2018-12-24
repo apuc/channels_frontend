@@ -27,6 +27,7 @@
   import ModalAddChannelsToGroup from "./ModalAddChannelsToGroup";
   import ModalSessionExpired from "./ModalSessionExpired";
   import ModalSearchUsers from "./ModalSearchUsers";
+  import ModalUserContacts from "./ModalUserContacts";
 
   export default {
     name: "Modal",
@@ -41,7 +42,8 @@
       ModalGroupCreate,
       ModalGroupEdit,
       ModalGroupDelete,
-      ModalSearchUsers
+      ModalSearchUsers,
+      ModalUserContacts
     },
     computed: {
       ...mapGetters({
@@ -88,6 +90,7 @@
 
     width: 100%;
     height: 100%;
+    min-height: 300px;
 
     direction: ltr;
     text-align: left;
