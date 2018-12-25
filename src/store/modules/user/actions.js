@@ -44,7 +44,6 @@ export default {
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/contacts`)
       .then(
         async res => {
-          console.log(res.body.data);
           commit('SET_USER_CONTACTS', res.body.data);
         },
         err => console.log('err login', err)
@@ -58,7 +57,6 @@ export default {
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/senders`)
       .then(
         async res => {
-          console.log(res.body.data);
           commit('SET_USER_FRIENDSHIP_REQUESTS', res.body.data);
         },
         err => console.log('err login', err)
@@ -238,7 +236,7 @@ export default {
     })
       .then(
         async res => {
-          console.log(res);
+          // console.log(res);
         },
         err => console.log('err login', err)
       )
@@ -258,7 +256,7 @@ export default {
     })
       .then(
         async res => {
-          console.log(res);
+          // console.log(res);
         },
         err => console.log('err accept friendship', err)
       )

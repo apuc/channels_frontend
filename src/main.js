@@ -29,6 +29,33 @@ if (token) {
 }
 
 router.beforeEach((to, from, next) => {
+  store.commit('channels/SET_CURRENT_CHANNEL_DATA', {
+    channel_id: '',
+    title: '',
+    slug: '',
+    status: '',
+    user_count: '',
+    owner_id: '',
+    type: '',
+    private: '',
+    avatar: undefined,
+  });
+  store.commit('channels/SET_CURRENT_CHANNEL_USERS', []);
+  store.commit('groups/SET_CURRENT_GROUP_DATA', {
+    group_id: '',
+    title: '',
+    slug: '',
+    status: '',
+    owner_id: '',
+    avatar: undefined,
+  });
+  store.commit('user/SET_CURRENT_USER_DATA', {
+    avatar: undefined,
+    email: '',
+    user_id: null,
+    username: '',
+  });
+  store.commit('messages/SET_MESSAGES', []);
   const currentDateInSeconds = Math.round(Date.now() / 1000);
   const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 

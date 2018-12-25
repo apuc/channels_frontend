@@ -47,16 +47,6 @@ export default new Router({
         requiresAuth: true,
         layout: 'main'
       },
-      beforeRouteLeave (to, from, next) {
-        store.commit('groups/SET_CURRENT_GROUP_DATA', {
-          group_id: '',
-          title: '',
-          slug: '',
-          status: '',
-          owner_id: '',
-          avatar: undefined,
-        })
-      }
     },
     {
       path: '/user/:user_id',
@@ -65,7 +55,7 @@ export default new Router({
       meta: {
         requiresAuth: true,
         layout: 'main'
-      }
+      },
     },
     {
       path: '/:id',
@@ -74,19 +64,6 @@ export default new Router({
         requiresAuth: true,
         layout: 'main'
       },
-      beforeRouteLeave (to, from, next) {
-        store.commit('channels/SET_CURRENT_CHANNEL_DATA', {
-          channel_id: '',
-          title: '',
-          slug: '',
-          status: '',
-          user_count: '',
-          owner_id: '',
-          type: '',
-          private: '',
-          avatar: undefined,
-        })
-      }
     },
   ],
 });

@@ -16,7 +16,7 @@
       <p>{{group.status}}</p>
     </div>
 
-    <section class="channel-users">
+    <section class="channel-users" v-if="currentChannelData.channel_id">
       <h3>Пользователи канала</h3>
       <button type="button" class="btn btn-primary" @click="openModal">Все</button>
 
@@ -60,6 +60,7 @@
       ...mapGetters({
         channel: 'channels/currentChannelData',
         currentChannelUsers: 'channels/currentChannelUsers',
+        currentChannelData: 'channels/currentChannelData',
         group: 'groups/currentGroupData',
         userPosition: 'user/userPosition',
         userData: 'user/info',
