@@ -1,5 +1,5 @@
 <template>
-  <section class="messages" ref="messagesList">
+  <section class="messages" ref="messagesList" v-scroll>
     <ChatMessage v-for="(message, index) in messages"
                  :messageData="message"
                  :key="index" />
@@ -8,25 +8,20 @@
 
 <script>
   import ChatMessage from './ChatMessage';
+  import {scroll} from '../../directives/scroll';
   import { mapGetters, mapActions } from 'vuex';
 
   export default {
     data() {
       return { }
     },
+    directives: {
+      scroll
+    },
     methods: {
-      scrollToBottom() {
-        this.$refs['messagesList'].scrollTo(0, this.$refs['messagesList'].scrollHeight);
-      },
       ...mapActions({
         offTyping: 'messages/OFF_TYPING',
       }),
-    },
-    mounted() {
-      this.scrollToBottom();
-    },
-    updated() {
-      this.scrollToBottom();
     },
     components: {
       ChatMessage

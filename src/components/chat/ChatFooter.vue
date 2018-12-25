@@ -21,7 +21,8 @@
                        :rows="1"
                        :max-rows="3"
                        @input="emitUserTyping"
-                       @keyup.enter.prevent.native="onSubmit">
+                       @keyup.enter.prevent.native="onSubmit"
+      >
       </b-form-textarea>
 
       <b-input-group-append class="input_message-button">
@@ -68,8 +69,10 @@
       }),
       ioTyping,
       sendMessage(text, channelId) {
-        this.SEND_MESSAGE({text, channelId});
-        this.input = ''
+        if (this.input.trim() !== '') {
+          this.SEND_MESSAGE({text, channelId});
+          this.input = ''
+        }
       },
       onSubmit(event) {
         if (event.shiftKey) {
