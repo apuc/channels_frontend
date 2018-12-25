@@ -13,7 +13,7 @@ const state = {
     avatar: undefined,
   },
   groupData: {
-    group_id: '',
+    group_id: undefined,
     title: '',
     slug: '',
     status: '',

@@ -79,28 +79,28 @@ export default {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
-    if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.channelData)
-        .then(
-          res => {
-            const createdChannelData = res.body.data;
-            router.push({path: `/${createdChannelData.slug}`});
-            commit('modal/DELETE_MODAL', 'channel', {root: true});
-            commit('ADD_CREATED_CHANNEL', createdChannelData);
-            dispatch('SET_CURRENT_CHANNEL_DATA', createdChannelData.channel_id);
-          },
-          err => console.log(err)
-        )
-        .catch(error => console.log(error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
-          .then(() => {
-            dispatch('CREATE_CHANNEL');
-          })
-      }
-    }
+    console.log(getters.channelData);
+    // if (currentDateInSeconds < tokenExpiresIn) {
+    //   await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.channelData)
+    //     .then(
+    //       res => {
+    //         const createdChannelData = res.body.data;
+    //         router.push({path: `/${createdChannelData.slug}`});
+    //         commit('modal/DELETE_MODAL', 'channel', {root: true});
+    //         commit('ADD_CREATED_CHANNEL', createdChannelData);
+    //         dispatch('SET_CURRENT_CHANNEL_DATA', createdChannelData.channel_id);
+    //       },
+    //       err => console.log(err)
+    //     )
+    //     .catch(error => console.log(error))
+    // } else {
+    //   if (currentDateInSeconds < refreshTokenExpiresIn) {
+    //     await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+    //       .then(() => {
+    //         dispatch('CREATE_CHANNEL');
+    //       })
+    //   }
+    // }
   },
   /**
    * Add avatar to the channel and write avatar_id to the store

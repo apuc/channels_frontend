@@ -10,22 +10,38 @@
           <div class="form-group">
             <label for="title">Channel name</label>
 
-            <input type="text" id="title" class="form-control" v-model="settingChannelData.title">
+            <input type="text"
+                   id="title"
+                   class="form-control"
+                   :value="channelData.title"
+                   @input="setChannelTitle($event.target.value)"
+            >
           </div>
 
           <div class="form-group">
             <label for="slug">Channel slug</label>
 
-            <input type="text" id="slug" class="form-control" v-model="settingChannelData.slug">
+            <input type="text"
+                   id="slug"
+                   class="form-control"
+                   :value="channelData.slug"
+                   @input="setChannelSlug($event.target.value)"
+            >
           </div>
 
           <div class="form-group">
-            <label for="user_ids">Users (через запятую)</label>
+            <!--<label for="user_ids">Users (через запятую)</label>-->
 
-            <input type="text" id="user_ids"
-                   class="form-control"
-                   :value="usersToAdd"
-            >
+            <!--<input type="text" id="user_ids"-->
+                   <!--class="form-control"-->
+                   <!--:value="channelData.user_ids"-->
+            <!--&gt;-->
+            <v-select label="username"
+                      :options="userContacts"
+                      :value="usersToAdd"
+                      @input="setUsers"
+                      multiple
+            ></v-select>
           </div>
         </div>
 
@@ -35,16 +51,26 @@
 
             <div class="form-check-inline">
               <label for="active" class="form-check-label">
-                <input type="radio" id="active" class="form-check-input" value="active"
-                       v-model="settingChannelData.status">
+                <input type="radio"
+                       id="active"
+                       class="form-check-input"
+                       value="active"
+                       name="channel-status"
+                       @input="setChannelStatus($event.target.value)"
+                >
                 <span>active</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="disable" class="form-check-label">
-                <input type="radio" id="disable" class="form-check-input" value="disable"
-                       v-model="settingChannelData.status">
+                <input type="radio"
+                       id="disable"
+                       class="form-check-input"
+                       value="disable"
+                       name="channel-status"
+                       @input="setChannelStatus($event.target.value)"
+                >
                 <span>disable</span>
               </label>
             </div>
@@ -55,22 +81,39 @@
 
             <div class="form-check-inline">
               <label for="chat" class="form-check-label">
-                <input type="radio" id="chat" class="form-check-input" value="chat" v-model="settingChannelData.type">
+                <input type="radio"
+                       id="chat"
+                       class="form-check-input"
+                       value="chat"
+                       name="channel-type"
+                       @input="setChannelType($event.target.value)"
+                >
                 <span>chat</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="wall" class="form-check-label">
-                <input type="radio" id="wall" class="form-check-input" value="wall" v-model="settingChannelData.type">
+                <input type="radio"
+                       id="wall"
+                       class="form-check-input"
+                       value="wall"
+                       name="channel-type"
+                       @input="setChannelType($event.target.value)"
+                >
                 <span>wall</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="dialog" class="form-check-label">
-                <input type="radio" id="dialog" class="form-check-input" value="dialog"
-                       v-model="settingChannelData.type">
+                <input type="radio"
+                       id="dialog"
+                       class="form-check-input"
+                       value="dialog"
+                       name="channel-type"
+                       @input="setChannelType($event.target.value)"
+                >
                 <span>dialog</span>
               </label>
             </div>
@@ -81,29 +124,32 @@
 
             <div class="form-check-inline">
               <label for="private" class="form-check-label">
-                <input type="radio" id="private" class="form-check-input" value="1"
-                       v-model="settingChannelData.private">
+                <input type="radio"
+                       id="private" class=
+                         "form-check-input"
+                       value="1"
+                       name="channel-privacy"
+                       @input="setChannelPrivate($event.target.value)"
+                >
                 <span>1</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="not-private" class="form-check-label">
-                <input type="radio" id="not-private" class="form-check-input" value="0"
-                       v-model="settingChannelData.private">
+                <input type="radio"
+                       id="not-private"
+                       class="form-check-input"
+                       value="0"
+                       name="channel-privacy"
+                       @input="setChannelPrivate($event.target.value)"
+                >
                 <span>0</span>
               </label>
             </div>
           </div>
         </div>
       </div>
-
-      <v-select label="username"
-                :options="userContacts"
-                @input="addId"
-                :value="settingChannelData.user_ids"
-                multiple
-      ></v-select>
 
       <div class="drop" @dragover.prevent @drop="onDrop">
         <div class="helper"></div>
@@ -148,17 +194,6 @@
     },
     data() {
       return {
-        settingChannelData: {
-          channel_id: undefined,
-          title: '',
-          slug: '',
-          status: '',
-          user_ids: [],
-          owner_id: '',
-          type: '',
-          private: '',
-          avatar: '',
-        },
         usersToAdd: [],
         img: '',
         imgSrc: '',
@@ -170,34 +205,31 @@
     methods: {
       ...mapMutations({
         setChannelData: 'channels/SET_CHANNEL_DATA',
+        setChannelTitle: 'channels/SET_CHANNEL_TITLE',
+        setChannelSlug: 'channels/SET_CHANNEL_SLUG',
+        setChannelStatus: 'channels/SET_CHANNEL_STATUS',
+        setChannelUserIds: 'channels/SET_CHANNEL_USER_IDS',
+        setChannelOwnerId: 'channels/SET_CHANNEL_OWNER_ID',
+        setChannelType: 'channels/SET_CHANNEL_TYPE',
+        setChannelPrivate: 'channels/SET_CHANNEL_PRIVATE',
       }),
       ...mapActions({
         createChannel: 'channels/CREATE_CHANNEL',
         createChannelAvatar: 'channels/CREATE_CHANNEL_AVATAR',
       }),
-      addId(val) {
+      setUsers(val) {
         this.usersToAdd = val;
-        console.log(this.usersToAdd);
-        for (let i = 0; i < this.usersToAdd.length; i++) {
-          // this.settingChannelData.user_ids.push(this.usersToAdd[i].user_id);
-          console.log('chan',this.settingChannelData.user_ids[i].user_id);
-          console.log(this.usersToAdd[i].user_id)
-        }
+        this.setChannelUserIds(val);
       },
       async onSubmit() {
-        // console.log(this.usersToAdd);
+        this.setChannelOwnerId(this.userData.user_id);
 
-        // this.settingChannelData.user_ids = this.usersToAdd;
-        this.settingChannelData.user_ids.push(this.settingChannelData.owner_id);
-        console.log(this.settingChannelData.user_ids);
-        // await this.setChannelData(this.settingChannelData);
-        //
-        // if (this.img) {
-        //   this.upLoadStarted = true;
-        //   await this.createChannelAvatar(this.img).then(() => this.upLoadStarted = false);
-        // }
-        //
-        // this.createChannel();
+        if (this.img) {
+          this.upLoadStarted = true;
+          await this.createChannelAvatar(this.img).then(() => this.upLoadStarted = false);
+        }
+
+        this.createChannel();
       },
       createFormData(file) {
         let formData = new FormData();
@@ -236,9 +268,6 @@
         this.imgSrc = '';
       },
     },
-    created() {
-      this.settingChannelData.owner_id = this.userData.user_id;
-    }
   }
 </script>
 

@@ -121,15 +121,6 @@ export default {
     }
   },
   /**
-   * Set edit mode
-   *
-   * @param groupId - editing group id
-   */
-  'SET_GROUP_EDITING': async ({commit, dispatch}, groupId) => {
-      dispatch('SET_EDITED_GROUP_DATA', groupId);
-      dispatch('modal/OPEN_MODAL_EDIT_MODE', 'group', {root: true});
-    },
-  /**
    * Set data of editing group to the store
    *
    * @param groupId {String || Number} - chosen group id
@@ -220,17 +211,17 @@ export default {
    *
    * @param channel_ids {String || Number} - channels id's
    */
-  'ADD_CHANNELS': async ({getters, commit, dispatch, rootGetters}, channel_ids) => {
+  'ADD_CHANNELS': async ({getters, commit, dispatch, rootGetters}) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.groupForAddingChannels}/channels`, {channel_ids})
+      await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.groupForAddingChannels}/channels`, {channels_ids: getters.channelsToAdd})
         .then(
           res => {
             const newGroupData = res.body.data;
-            for (let i = 0; i < channel_ids.length; i++) {
+            for (let i = 0; i < getters.channelsToAdd.length; i++) {
               commit('channels/REMOVE_DELETED_CHANNEL', channel_ids[i], {root: true});
             }
             if (getters.currentGroupData.group_id === newGroupData.group_id) {

@@ -5,6 +5,37 @@ export default {
   'SET_CHANNEL_DATA': (state, data) => {
     state.channelData = data;
   },
+  'SET_CHANNEL_TITLE': (state, title) => {
+    state.channelData.title = title;
+  },
+  'SET_CHANNEL_SLUG': (state, slug) => {
+    state.channelData.slug = slug;
+  },
+  'SET_CHANNEL_STATUS': (state, status) => {
+    state.channelData.status = status;
+  },
+  /**
+   * Добавление id'шников пользователей для создания/редактирования канала
+   *
+   * @param state
+   * @param users {Array}
+   */
+  'SET_CHANNEL_USER_IDS': (state, users) => {
+    let usersArr = [];
+    for (let i = 0; i < users.length; i++) {
+      usersArr.push(users[i].user_id);
+    }
+    state.channelData.user_ids = usersArr;
+  },
+  'SET_CHANNEL_OWNER_ID': (state, owner_id) => {
+    state.channelData.owner_id = owner_id;
+  },
+  'SET_CHANNEL_TYPE': (state, type) => {
+    state.channelData.type = type;
+  },
+  'SET_CHANNEL_PRIVATE': (state, isPrivate) => {
+    state.channelData.private = isPrivate;
+  },
   'SET_CURRENT_CHANNEL_DATA': (state, data) => {
     state.currentChannelData = data;
   },
@@ -37,9 +68,6 @@ export default {
     const channel = state.channels.find(channel => channel.channel_id === id);
     const groupIndex = channels.indexOf(channel);
     channels.splice(groupIndex, 1);
-  },
-  'SET_CHANNEL_USER_IDS': (state, user_ids) => {
-    state.channelData.user_ids = user_ids;
   },
   'SET_EDITED_CHANNEL_DATA': (state, data) => {
     for (let i = 0; i < state.channels.length; i++) {

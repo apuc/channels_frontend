@@ -18,7 +18,23 @@ export default {
     state.addingChannelsData.group_id = group_id;
   },
   'SET_CHANNELS_TO_ADD': (state, channels) => {
-    state.addingChannelsData.channels = channels;
+    let channelsArr = [];
+    for (let i = 0; i < channels.length; i++) {
+      channelsArr.push(channels[i].user_id);
+    }
+    state.addingChannelsData.channels = channelsArr;
+  },
+  'SET_GROUP_TITLE': (state, title) => {
+    state.groupData.title = title;
+  },
+  'SET_GROUP_SLUG': (state, slug) => {
+    state.groupData.slug = slug;
+  },
+  'SET_GROUP_STATUS': (state, status) => {
+    state.groupData.status = status;
+  },
+  'SET_GROUP_OWNER_ID': (state, owner_id) => {
+    state.groupData.owner_id = owner_id;
   },
   'SET_GROUPS_LOADING_FLAG': state => {
     state.isGroupsLoading = !state.isGroupsLoading;

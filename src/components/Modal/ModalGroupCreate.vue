@@ -10,21 +10,36 @@
           <div class="form-group">
             <label for="title">Group name</label>
 
-            <input type="text" id="title" class="form-control" v-model="settingGroupData.title">
+            <input type="text"
+                   id="title"
+                   class="form-control"
+                   :value="groupData.title"
+                   @input="setGroupTitle($event.target.value)"
+            >
           </div>
 
           <div class="form-group">
             <label for="slug">Group slug</label>
 
-            <input type="text" id="slug" class="form-control" v-model="settingGroupData.slug">
+            <input type="text"
+                   id="slug"
+                   class="form-control"
+                   :value="groupData.slug"
+                   @input="setGroupSlug($event.target.value)"
+            >
           </div>
         </div>
 
         <div class="col-6">
           <div class="form-group">
-            <label for="user_ids">Users (через запятую)</label>
-
-            <input type="text" id="user_ids" class="form-control" @input="getUsers">
+            <span>Channels to add</span>
+            <v-select label="title"
+                      :options="channels"
+                      @input="addId"
+                      :value="groupChannels"
+                      multiple
+            >
+            </v-select>
           </div>
 
           <div class="form-group">
@@ -32,31 +47,31 @@
 
             <div class="form-check-inline">
               <label for="active" class="form-check-label">
-                <input type="radio" id="active" class="form-check-input" value="active"
-                       v-model="settingGroupData.status">
+                <input type="radio"
+                       id="active"
+                       class="form-check-input"
+                       value="active"
+                       name="group-status"
+                       @input="setGroupStatus($event.target.value)"
+                >
                 <span>active</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="disable" class="form-check-label">
-                <input type="radio" id="disable" class="form-check-input" value="disable"
-                       v-model="settingGroupData.status">
+                <input type="radio"
+                       id="disable"
+                       class="form-check-input"
+                       value="disable"
+                       name="group-status"
+                       @input="setGroupStatus($event.target.value)"
+                >
                 <span>disable</span>
               </label>
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="form-group">
-        <v-select @input="addId"
-                  label="slug"
-                  :options="channels"
-                  :value="channels.slug"
-                  multiple
-        >
-        </v-select>
       </div>
 
       <div class="drop" @dragover.prevent @drop="onDrop">
@@ -99,15 +114,6 @@
     },
     data() {
       return {
-        settingGroupData: {
-          group_id: undefined,
-          title: '',
-          slug: '',
-          status: '',
-          user_ids: [],
-          owner_id: '',
-          avatar: '',
-        },
         groupChannels: [],
         img: '',
         imgSrc: '',
@@ -116,26 +122,24 @@
       }
     },
     methods: {
-      addId(val) {
-        for (let i = 0; i < val.length; i++) {
-          this.groupChannels.push(val[i].channel_id);
-        }
-      },
       ...mapMutations({
         setGroupData: 'groups/SET_GROUP_DATA',
         setChannelsToAdd: 'groups/SET_CHANNELS_TO_ADD',
+        setGroupTitle: 'groups/SET_GROUP_TITLE',
+        setGroupSlug: 'groups/SET_GROUP_SLUG',
+        setGroupStatus: 'groups/SET_GROUP_STATUS',
+        setGroupOwnerId: 'groups/SET_GROUP_OWNER_ID',
       }),
       ...mapActions({
         createGroup: 'groups/CREATE_GROUP',
         createGroupAvatar: 'groups/CREATE_GROUP_AVATAR',
       }),
+      addId(val) {
+        this.groupChannels = val;
+        this.setChannelsToAdd(val);
+      },
       async onSubmit() {
-        await this.setGroupData(this.settingGroupData);
-
-        if (this.groupChannels.length > 0) {
-          this.setChannelsToAdd(this.groupChannels);
-        }
-
+        this.setGroupOwnerId(this.userData.user_id);
         if (this.img) {
           this.upLoadStarted = true;
           await this.createGroupAvatar(this.img).then(() => this.upLoadStarted = false);
@@ -189,9 +193,6 @@
         this.imgSrc = '';
       },
     },
-    created() {
-      this.settingGroupData.owner_id = this.userData.user_id;
-    }
   }
 </script>
 
