@@ -12,7 +12,7 @@
           </div>
 
           <div>
-            <router-link :to="`/user/${user.user_id}`" @click.native="goToUserProfile(user.user_id)">{{user.username}}
+            <router-link :to="`/user/${user.user_id}`" @click.native="goToProfile(user.user_id)">{{user.username}}
             </router-link>
           </div>
         </div>
@@ -47,13 +47,10 @@
       }),
       ...mapActions({
         sendFriendshipRequest: 'user/SEND_FRIENDSHIP_REQUEST',
+        getCurrentUserData: 'user/GET_USER_DATA',
       }),
-      setUserData(id) {
-        const getUser = this.searchResults.find(user => user.user_id === id);
-        this.setCurrentUserData(getUser);
-      },
-      goToUserProfile(id) {
-        this.setUserData(id);
+      goToProfile(id) {
+        this.getCurrentUserData(id);
         this.deleteModal();
       },
       makeFriendshipRequest(target, data) {

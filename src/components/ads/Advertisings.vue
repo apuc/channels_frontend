@@ -33,7 +33,7 @@
               </div>
 
               <div>
-                <router-link :to="`/user/${user.user_id}`" @click.native="goToUserProfile(user.user_id)">{{user.username}}
+                <router-link :to="`/user/${user.user_id}`" @click.native="getCurrentUserData(user.user_id)">{{user.username}}
                 </router-link>
               </div>
             </div>
@@ -73,29 +73,21 @@
     },
     methods: {
       ...mapMutations({
-        setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
         removeUserRequestFromStore: 'user/REMOVE_USER_REQUEST_FROM_STORE',
         deleteModal: 'modal/DELETE_MODAL',
         setModal: 'modal/SET_MODAL',
       }),
       ...mapActions({
         sendFriendshipRequest: 'user/SEND_FRIENDSHIP_REQUEST',
+        getCurrentUserData: 'user/GET_USER_DATA',
       }),
       openModal() {
         this.setModal('ModalChannelUsers');
       },
-      setUserData(id) {
-        const getUser = this.currentChannelUsers.find(user => user.user_id === id);
-        this.setCurrentUserData(getUser);
-      },
-      goToUserProfile(id) {
-        this.setUserData(id);
-        this.deleteModal();
-      },
       makeFriendshipRequest(target, data) {
         this.sendFriendshipRequest({user_id: data.user_id, contact_id: data.contact_id});
         target.remove();
-      }
+      },
     }
   }
 </script>

@@ -24,7 +24,7 @@
   import ModalChannelDelete from './ModalChannelDelete';
   import ModalEditProfile from './ModalProfileEdit';
   import ModalChannelUsers from "./ModalChannelUsers";
-  import ModalAddChannelsToGroup from "./ModalAddChannelsToGroup";
+  import ModalGroupAddChannels from "./ModalGroupAddChannels";
   import ModalSessionExpired from "./ModalSessionExpired";
   import ModalSearchUsers from "./ModalSearchUsers";
   import ModalUserContacts from "./ModalUserContacts";
@@ -38,7 +38,7 @@
       ModalChannelEdit,
       ModalChannelDelete,
       ModalEditProfile,
-      ModalAddChannelsToGroup,
+      ModalGroupAddChannels,
       ModalGroupCreate,
       ModalGroupEdit,
       ModalGroupDelete,

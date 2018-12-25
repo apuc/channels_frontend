@@ -21,34 +21,44 @@
 </template>
 
 <script>
-  import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
+  import {mapGetters, mapMutations} from 'vuex';
 
 
   export default {
     name: "UserProfile",
     computed: {
-      ...mapState('user', ['currentUserInfo']),
-      ...mapState('channels', ['currentChannelUsers']),
-      ...mapState('user', ['isUserLoading']),
       ...mapGetters({
-        status: 'status/status'
+        status: 'status/status',
+        currentUserInfo: 'user/currentUserInfo',
+        currentChannelUsers: 'channels/currentChannelUsers',
+        isUserLoading: 'user/isUserLoading',
       })
     },
     methods: {
       ...mapMutations({
         setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
         setModal: 'modal/SET_MODAL',
-      }),
-      ...mapActions({
-        getUserData: 'user/GET_USER_DATA',
+        setUserPosition: 'user/SET_USER_POSITION',
       }),
       openModal(e, modalType) {
         e.preventDefault();
         this.setModal(modalType);
       },
     },
-    async mounted() {
+    beforeRouteEnter (to, from, next) {
+      next(vm => {
+        vm.setUserPosition('user')
+      })
+    },
+    beforeRouteLeave(to, from, next) {
+      this.setCurrentUserData({
+        avatar: undefined,
+        email: '',
+        user_id: null,
+        username: '',
+      });
 
+      next();
     }
   }
 </script>

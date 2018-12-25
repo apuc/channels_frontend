@@ -20,7 +20,7 @@
 
           <div>
             <router-link :to="`/user/${user.user_id}`"
-                         @click.native="goToUserProfile(user.user_id)"
+                         @click.native="goToProfile(user.user_id)"
             >
               {{user.username}}
             </router-link>
@@ -61,13 +61,10 @@
       }),
       ...mapActions({
         rejectFriendshipRequest: 'user/REJECT_FRIENDSHIP_REQUEST',
+        getCurrentUserData: 'user/GET_USER_DATA',
       }),
-      setUserData(id) {
-        const getUser = this.friendshipRequests.find(user => user.user_id === id);
-        this.setCurrentUserData(getUser);
-      },
-      goToUserProfile(id) {
-        this.setUserData(id);
+      goToProfile(id) {
+        this.getCurrentUserData(id);
         this.deleteModal();
       },
       removeUserFromContacts(id) {

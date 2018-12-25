@@ -20,7 +20,7 @@
   import vSelect from "vue-select";
 
   export default {
-    name: "ModalAddChannelsToGroup",
+    name: "ModalGroupAddChannels",
     components: {vSelect},
     data() {
       return {

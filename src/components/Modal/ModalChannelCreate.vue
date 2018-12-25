@@ -22,8 +22,10 @@
           <div class="form-group">
             <label for="user_ids">Users (через запятую)</label>
 
-            <input type="text" id="user_ids" class="form-control" :value="settingChannelData.user_ids"
-                   @input="getUsers">
+            <input type="text" id="user_ids"
+                   class="form-control"
+                   :value="usersToAdd"
+            >
           </div>
         </div>
 
@@ -96,6 +98,13 @@
         </div>
       </div>
 
+      <v-select label="username"
+                :options="userContacts"
+                @input="addId"
+                :value="settingChannelData.user_ids"
+                multiple
+      ></v-select>
+
       <div class="drop" @dragover.prevent @drop="onDrop">
         <div class="helper"></div>
         <label v-if="!imgSrc" class="button">
@@ -132,6 +141,7 @@
         channelData: 'channels/channelData',
         userData: 'user/info',
         currentUserInfo: 'user/currentUserInfo',
+        userContacts: 'user/userContacts',
         setCreateChannel: 'modal/setCreateChannel',
         imageUploadPersentage: 'channels/imageUploadPersentage',
       })
@@ -149,6 +159,7 @@
           private: '',
           avatar: '',
         },
+        usersToAdd: [],
         img: '',
         imgSrc: '',
         notImage: '',
@@ -164,25 +175,29 @@
         createChannel: 'channels/CREATE_CHANNEL',
         createChannelAvatar: 'channels/CREATE_CHANNEL_AVATAR',
       }),
+      addId(val) {
+        this.usersToAdd = val;
+        console.log(this.usersToAdd);
+        for (let i = 0; i < this.usersToAdd.length; i++) {
+          // this.settingChannelData.user_ids.push(this.usersToAdd[i].user_id);
+          console.log('chan',this.settingChannelData.user_ids[i].user_id);
+          console.log(this.usersToAdd[i].user_id)
+        }
+      },
       async onSubmit() {
-        if (!Array.isArray(this.settingChannelData.user_ids)) {
-          this.settingChannelData.user_ids = this.makeSplitedArray(this.settingChannelData.user_ids);
-        }
+        // console.log(this.usersToAdd);
+
+        // this.settingChannelData.user_ids = this.usersToAdd;
         this.settingChannelData.user_ids.push(this.settingChannelData.owner_id);
-        await this.setChannelData(this.settingChannelData);
-
-        if (this.img) {
-          this.upLoadStarted = true;
-          await this.createChannelAvatar(this.img).then(() => this.upLoadStarted = false);
-        }
-
-        this.createChannel();
-      },
-      getUsers(e) {
-        this.settingChannelData.user_ids = this.makeSplitedArray(e.target.value);
-      },
-      makeSplitedArray(string) {
-        return string.split(',')
+        console.log(this.settingChannelData.user_ids);
+        // await this.setChannelData(this.settingChannelData);
+        //
+        // if (this.img) {
+        //   this.upLoadStarted = true;
+        //   await this.createChannelAvatar(this.img).then(() => this.upLoadStarted = false);
+        // }
+        //
+        // this.createChannel();
       },
       createFormData(file) {
         let formData = new FormData();
@@ -248,7 +263,6 @@
     cursor: inherit;
     display: block;
   }
-
 
   .button {
     position: relative;

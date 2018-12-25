@@ -237,7 +237,7 @@ export default {
               commit('SET_CURRENT_GROUP_DATA', newGroupData);
             }
             commit('SET_EDITED_GROUP_DATA', newGroupData);
-            dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'ModalAddChannelsToGroup', {root: true});
+            dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'ModalGroupAddChannels', {root: true});
           },
           err => {
             console.log(err);

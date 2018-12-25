@@ -104,7 +104,7 @@
         this.setGroupIdToDelete(id);
       },
       openChannelsAdding(group_id) {
-        this.setModal('ModalAddChannelsToGroup');
+        this.setModal('ModalGroupAddChannels');
         this.setGroupIdForAddingChannels(group_id);
       },
     },

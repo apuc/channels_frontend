@@ -17,7 +17,7 @@
           </div>
 
           <div>
-            <router-link :to="`/user/${user.user_id}`" @click.native="goToUserProfile(user.user_id)">{{user.username}}
+            <router-link :to="`/user/${user.user_id}`" @click.native="goToProfile(user.user_id)">{{user.username}}
             </router-link>
           </div>
         </div>
@@ -75,17 +75,14 @@
       ...mapActions({
         deleteUser: 'channels/DELETE_USER',
         sendFriendshipRequest: 'user/SEND_FRIENDSHIP_REQUEST',
+        getCurrentUserData: 'user/GET_USER_DATA',
       }),
+      goToProfile(id) {
+        this.getCurrentUserData(id);
+        this.deleteModal();
+      },
       removeUser(id) {
         this.deleteUser(id);
-      },
-      setUserData(id) {
-        const getUser = this.currentChannelUsers.find(user => user.user_id === id);
-        this.setCurrentUserData(getUser);
-      },
-      goToUserProfile(id) {
-        this.setUserData(id);
-        this.deleteModal();
       },
       makeFriendshipRequest(target, data) {
         this.sendFriendshipRequest({user_id: data.user_id, contact_id: data.contact_id});

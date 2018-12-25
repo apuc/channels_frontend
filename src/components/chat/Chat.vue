@@ -10,7 +10,7 @@
 </template>
 
 <script>
-  import {mapActions} from 'vuex'
+  import {mapMutations, mapActions} from 'vuex'
   import ChatHeader from './ChatHeader';
   import ChatMessages from './ChatMessages';
   import ChatFooter from '../chat/ChatFooter';
@@ -29,6 +29,12 @@
       }
     },
     methods: {
+      ...mapMutations({
+        setMessages: 'messages/SET_MESSAGES',
+        setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
+        setCurrentGroupData: 'groups/SET_CURRENT_GROUP_DATA',
+        setCurrentChannelUsers: 'channels/SET_CURRENT_CHANNEL_USERS',
+      }),
       ...mapActions({
         ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENTS'
       }),
@@ -39,6 +45,29 @@
         this.dragSwitcher();
         this.ADD_ATTACHMENTS(e.dataTransfer.files);
       }
+    },
+    beforeRouteLeave(to, from, next) {
+      this.setCurrentChannelData({
+        channel_id: '',
+        title: '',
+        slug: '',
+        status: '',
+        user_count: '',
+        owner_id: '',
+        type: '',
+        private: '',
+        avatar: undefined,
+      });
+      this.setCurrentChannelUsers({
+        group_id: '',
+        title: '',
+        slug: '',
+        status: '',
+        owner_id: '',
+        avatar: undefined,
+      });
+      this.setMessages([]);
+      next();
     }
   }
 
