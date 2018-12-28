@@ -3,7 +3,6 @@
     <Nav/>
 
     <main class="main">
-      <!--<slot/>-->
       <router-view></router-view>
     </main>
 

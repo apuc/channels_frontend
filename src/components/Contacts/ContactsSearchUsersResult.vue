@@ -32,7 +32,7 @@
   import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
-    name: "ModalSearchUsersResult",
+    name: "ContactsSearchUsersResult",
     computed: {
       ...mapGetters({
         userData: 'user/info',
@@ -63,7 +63,6 @@
 
 <style scoped>
   .users-list {
-    max-height: 300px;
     margin: 0;
     margin-top: 10px;
     padding: 0;

@@ -26,8 +26,6 @@
   import ModalChannelUsers from "./ModalChannelUsers";
   import ModalGroupAddChannels from "./ModalGroupAddChannels";
   import ModalSessionExpired from "./ModalSessionExpired";
-  import ModalSearchUsers from "./ModalSearchUsers";
-  import ModalUserContacts from "./ModalUserContacts";
   import ModalChannelAddUsers from "./ModalChannelAddUsers";
 
   export default {
@@ -43,8 +41,6 @@
       ModalGroupCreate,
       ModalGroupEdit,
       ModalGroupDelete,
-      ModalSearchUsers,
-      ModalUserContacts,
       ModalChannelAddUsers,
     },
     computed: {

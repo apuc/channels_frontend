@@ -16,7 +16,7 @@
   import _ from 'lodash';
 
   export default {
-    name: "ModalSearchUsersForm",
+    name: "ContactsSearchUsersForm",
     data() {
       return {
         search_request: '',

@@ -8,14 +8,16 @@ export default {
       const pathnameArray = location.pathname.split('/');
       const slug = pathnameArray[pathnameArray.length - 1];
 
+      console.log(slug);
+
       if (pathnameArray.indexOf('group') !== -1) {
         this.$_authGettingData_getGroupData(slug);
       }
       else if (pathnameArray.indexOf('user') !== -1) {
         this.$_authGettingData_getUserData(slug);
       }
-      else if (slug.length > 0 && slug !== 'not-found') {
-        // this.$_authGettingData_getChannelData(slug);
+      else if (slug.length > 0 && (slug !== 'not-found' || pathnameArray.indexOf('contacts') !== -1)) {
+        this.$_authGettingData_getChannelData(slug);
       } else {
         router.push('/login');
       }

@@ -8,8 +8,15 @@ import Chat from '../components/chat/Chat';
 import ChatBlank from '../components/chat/ChatBlank';
 import NotFoundComponent from '../views/NotFoundComponent';
 import UserProfile from '../components/UserProfile';
+import Contacts from '../components/Contacts/Contacts';
+import ContactsList from '../components/Contacts/ContactsList';
+import ContactsSearchUsers from '../components/Contacts/ContactsSearchUsers';
+import ContactsFriendshipRequests from '../components/Contacts/ContactsFriendshipRequests';
+import {ioGetUserStatus} from "../services/socket/status.service";
 
 Vue.use(Router);
+const pathnameArray = location.pathname.split('/');
+const slug = pathnameArray[pathnameArray.length - 1];
 
 export default new Router({
   base: process.env.BASE_URL,
@@ -36,6 +43,19 @@ export default new Router({
       },
     },
     {
+      path: '/contacts',
+      component: Contacts,
+      meta: {
+        requiresAuth: true,
+        layout: 'main'
+      },
+      children: [
+        {path: '', component: ContactsList},
+        {path: 'search', component: ContactsSearchUsers},
+        {path: 'requests', component: ContactsFriendshipRequests}
+      ]
+    },
+    {
       path: '/not-found',
       name: 'not_found',
       component: NotFoundComponent,
@@ -44,7 +64,6 @@ export default new Router({
       path: '/group/:id',
       component: Group,
       meta: {
-        requiresAuth: true,
         layout: 'main'
       },
     },
@@ -53,7 +72,6 @@ export default new Router({
       name: 'user_profile',
       component: UserProfile,
       meta: {
-        requiresAuth: true,
         layout: 'main'
       },
     },
@@ -61,29 +79,8 @@ export default new Router({
       path: '/:id',
       component: Chat,
       meta: {
-        requiresAuth: true,
         layout: 'main'
       },
-      beforeEnter: async (to, from, next) => {
-        const pathnameArray = location.pathname.split('/');
-        const slug = pathnameArray[pathnameArray.length - 1];
-        const currentChannel = store.getters['channels/channels'].find(channel => channel.slug === slug);
-        store.commit('user/SET_USER_POSITION', 'channel');
-
-        if (currentChannel) {
-          store.commit('channels/SET_CURRENT_CHANNEL_DATA', currentChannel);
-          store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id)
-            .then(data => store.commit('channels/SET_CURRENT_CHANNEL_USERS', data));
-          store.dispatch('messages/GET_MESSAGES');
-        } else {
-          await store.dispatch('channels/GET_CHANNEL_DATA', slug);
-          const currentChannel = store.getters['channels/currentChannelData'];
-          if (!currentChannel.private) {
-            // store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id);
-            // store.dispatch('messages/GET_MESSAGES');
-          }
-        }
-      }
     },
   ],
 });

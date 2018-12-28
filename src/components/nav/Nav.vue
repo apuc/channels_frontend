@@ -7,9 +7,17 @@
         </button>
 
         <ul class="dropdown-settings" v-if="addMenuVisible">
+          <li class="dropdown-settings__el">
+            <router-link class="btn btn-link" to="contacts">Контакты</router-link>
+          </li>
+
           <li v-for="(elem, index) in info" class="dropdown-settings__el" :key="index">
             <button type="button" class="btn btn-link" @click="openModal($event, elem.modalTrigger)">{{elem.name}}
             </button>
+          </li>
+
+          <li class="dropdown-settings__el">
+            <router-link class="btn btn-link" to="/contacts/search" @click="logout">Поиск</router-link>
           </li>
 
           <li class="dropdown-settings__el">
@@ -39,12 +47,12 @@
       </div>
 
       <div class="filters" v-if="channels.length > 0 && groups.length > 0">
-        <button type="button" class="btn btn-primary filters__filter" data-filter="all" @click="filter">All</button>
+        <button type="button" class="btn btn-primary filters__filter" data-filter="all" @click="navFilter">All</button>
 
         <button type="button"
                 class="btn btn-primary filters__filter"
                 data-filter="channel"
-                @click="filter"
+                @click="navFilter"
         >
           <v-icon scale="1" class="icon" name="bullhorn"/>
         </button>
@@ -52,8 +60,7 @@
         <button type="button"
                 class="btn btn-primary filters__filter"
                 data-filter="group"
-                ref="btn"
-                @click="filter"
+                @click="navFilter"
         >
           <v-icon scale="1" class="icon" name="folder"/>
         </button>
@@ -111,10 +118,6 @@
       return {
         info: [
           {
-            name: 'Контакты',
-            modalTrigger: 'ModalUserContacts'
-          },
-          {
             name: 'Создать канал',
             modalTrigger: 'ModalChannelCreate'
           },
@@ -125,10 +128,6 @@
           {
             name: 'Редактировать профиль',
             modalTrigger: 'ModalEditProfile'
-          },
-          {
-            name: 'Поиск',
-            modalTrigger: 'ModalSearchUsers'
           },
         ],
         addMenuVisible: false,
@@ -152,7 +151,7 @@
         e.preventDefault();
         this.setModal(modalType);
       },
-      filter(e) {
+      navFilter(e) {
         const target = e.target;
         const filterType = target.getAttribute('data-filter');
 

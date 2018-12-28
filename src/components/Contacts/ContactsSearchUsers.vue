@@ -1,18 +1,18 @@
 <template>
-  <div class="modal-inside">
-    <ModalSearchUsersForm />
-    <ModalSearchUsersResult v-if="searchResultsUsers.length"/>
+  <div class="mt-4">
+    <ContactsSearchUsersForm />
+    <ContactsSearchUsersResult v-if="searchResultsUsers.length"/>
   </div>
 </template>
 
 <script>
-  import ModalSearchUsersForm from './ModalSearchUsersForm';
-  import ModalSearchUsersResult from "./ModalSearchUsersResult";
+  import ContactsSearchUsersForm from './ContactsSearchUsersForm';
+  import ContactsSearchUsersResult from "./ContactsSearchUsersResult";
   import {mapGetters, mapActions} from 'vuex';
 
   export default {
-    name: "ModalSearchUsers",
-    components: {ModalSearchUsersResult, ModalSearchUsersForm},
+    name: "ContactsSearchUsers",
+    components: {ContactsSearchUsersResult, ContactsSearchUsersForm},
     computed: {
       ...mapGetters({
         searchResultsUsers: 'user/searchResultsUsers'
@@ -30,5 +30,4 @@
 </script>
 
 <style scoped>
-
 </style>

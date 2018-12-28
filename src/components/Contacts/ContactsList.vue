@@ -6,42 +6,55 @@
     <ModalSearchUsersResult v-if="searchResultsUsers"/>
   </div>
 
-  <ul class="users-list" v-else>
-    <li class="user"
-        v-for="(user, index) in userContacts"
-        :key="user.email">
-      <div>
-        <div class="user-info">
-          <div class="image-wrap">
-            <img class="img"
-                 :src="user.avatar ? user.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
-                 width="30" height="30" alt="">
-          </div>
+  <div class="mt-4" v-else>
+    <div class="form-group">
+      <label for="user">Поиск по пользователям канала</label>
+      <input id="user"
+             class="form-control"
+             type="text"
+             ref="searchInput"
+             :value="searchValue"
+             @input="searchUser($event.target.value)"
+      >
+    </div>
 
-          <div>
-            <router-link :to="`/user/${user.user_id}`"
-                         @click.native="goToProfile(user.user_id)"
-            >
-              {{user.username}}
-            </router-link>
+    <ul class="users-list">
+      <li class="user"
+          v-for="(user, index) in userContacts"
+          :key="user.email">
+        <div>
+          <div class="user-info">
+            <div class="image-wrap">
+              <img class="img"
+                   :src="user.avatar ? user.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
+                   width="30" height="30" alt="">
+            </div>
+
+            <div>
+              <router-link :to="`/user/${user.user_id}`"
+                           @click.native="goToProfile(user.user_id)"
+              >
+                {{user.username}}
+              </router-link>
+            </div>
           </div>
         </div>
-      </div>
 
-      <button type="button"
-              class="btn btn-sm btn-danger"
-              @click="removeUserFromContacts(user.user_id)"
-      >
-        <v-icon scale="1" class="icon" name="user-minus"/>
-      </button>
-    </li>
-  </ul>
+        <button type="button"
+                class="btn btn-sm btn-danger"
+                @click="removeUserFromContacts(user.user_id)"
+        >
+          <v-icon scale="1" class="icon" name="user-minus"/>
+        </button>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
-  import ModalSearchUsersForm from "./ModalSearchUsersForm";
-  import ModalSearchUsersResult from "./ModalSearchUsersResult";
+  import ModalSearchUsersForm from "./ContactsSearchUsersForm";
+  import ModalSearchUsersResult from "./ContactsSearchUsersResult";
 
   export default {
     name: "ModalUserContactsList",

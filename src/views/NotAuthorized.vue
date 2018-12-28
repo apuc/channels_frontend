@@ -3,8 +3,10 @@
     <NotAuthorizedSidebarAuth/>
 
     <main class="main">
-      <component :is="`NotAuthorizedChat${chooseChat}`"></component>
+      <component :is="`NotAuthorizedChat${chooseChat}`" v-if="currentChannel.channel_id"></component>
+      <router-view v-else></router-view>
     </main>
+
 
     <NotAuthorizedSidebarInfo/>
   </div>
@@ -31,7 +33,7 @@
       }
     },
     created() {
-      this.$_authGettingData_gettingData();
+      // this.$_authGettingData_gettingData();
     }
   }
 </script>

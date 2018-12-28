@@ -1,50 +1,50 @@
 <template>
-  <ul class="users-list">
-    <li class="user"
-        v-for="(user, index) in friendshipRequests"
-        :key="user.email">
-      <div>
-        <div class="user-info">
-          <div class="image-wrap">
-            <img class="img"
-                 :src="user.avatar ? user.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
-                 width="30" height="30" alt="">
-          </div>
+    <ul class="users-list">
+      <li class="user"
+          v-for="(user, index) in friendshipRequests"
+          :key="user.email">
+        <div>
+          <div class="user-info">
+            <div class="image-wrap">
+              <img class="img"
+                   :src="user.avatar ? user.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
+                   width="30" height="30" alt="">
+            </div>
 
-          <div>
-            <router-link :to="`/user/${user.user_id}`"
-                         @click.native="goToProfile(user.user_id)"
-            >
-              {{user.username}}
-            </router-link>
+            <div>
+              <router-link :to="`/user/${user.user_id}`"
+                           @click.native="goToProfile(user.user_id)"
+              >
+                {{user.username}}
+              </router-link>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div>
-        <button type="button"
-                class="btn btn-sm btn-primary mr10"
-                @click="acceptRequest(user)"
-        >
-          <v-icon scale="1" class="icon" name="user-plus"/>
-        </button>
+        <div>
+          <button type="button"
+                  class="btn btn-sm btn-primary mr10"
+                  @click="acceptRequest(user)"
+          >
+            <v-icon scale="1" class="icon" name="user-plus"/>
+          </button>
 
-        <button type="button"
-                class="btn btn-sm btn-danger"
-                @click="rejectRequest(user.user_id)"
-        >
-          <v-icon scale="1" class="icon" name="user-minus"/>
-        </button>
-      </div>
-    </li>
-  </ul>
+          <button type="button"
+                  class="btn btn-sm btn-danger"
+                  @click="rejectRequest(user.user_id)"
+          >
+            <v-icon scale="1" class="icon" name="user-minus"/>
+          </button>
+        </div>
+      </li>
+    </ul>
 </template>
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
-    name: "ModalUserContactsFriendshipRequests",
+    name: "ContactsFriendshipRequests",
     computed: {
       ...mapGetters({
         userData: 'user/info',
