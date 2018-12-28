@@ -28,21 +28,6 @@
                    @input="setChannelSlug($event.target.value)"
             >
           </div>
-
-          <div class="form-group">
-            <!--<label for="user_ids">Users (через запятую)</label>-->
-
-            <!--<input type="text" id="user_ids"-->
-                   <!--class="form-control"-->
-                   <!--:value="channelData.user_ids"-->
-            <!--&gt;-->
-            <v-select label="username"
-                      :options="userContacts"
-                      :value="usersToAdd"
-                      @input="setUsers"
-                      multiple
-            ></v-select>
-          </div>
         </div>
 
         <div class="col-6">
@@ -176,13 +161,14 @@
 </template>
 
 <script>
-  import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
   import vSelect from "vue-select";
 
   export default {
     name: "ModalChannelCreate",
     components: {vSelect},
     computed: {
+      // ...mapState('channels', ['usersToAdd']),
       ...mapGetters({
         channelData: 'channels/channelData',
         userData: 'user/info',
@@ -194,7 +180,6 @@
     },
     data() {
       return {
-        usersToAdd: [],
         img: '',
         imgSrc: '',
         notImage: '',
@@ -212,16 +197,14 @@
         setChannelOwnerId: 'channels/SET_CHANNEL_OWNER_ID',
         setChannelType: 'channels/SET_CHANNEL_TYPE',
         setChannelPrivate: 'channels/SET_CHANNEL_PRIVATE',
+        setModal: 'modal/SET_MODAL',
       }),
       ...mapActions({
         createChannel: 'channels/CREATE_CHANNEL',
         createChannelAvatar: 'channels/CREATE_CHANNEL_AVATAR',
       }),
-      setUsers(val) {
-        this.usersToAdd = val;
-        this.setChannelUserIds(val);
-      },
       async onSubmit() {
+        this.setChannelUserIds([this.userData]);
         this.setChannelOwnerId(this.userData.user_id);
 
         if (this.img) {
@@ -229,7 +212,8 @@
           await this.createChannelAvatar(this.img).then(() => this.upLoadStarted = false);
         }
 
-        this.createChannel();
+        this.createChannel()
+          .then(() => this.setModal('ModalChannelAddUsers'));
       },
       createFormData(file) {
         let formData = new FormData();
@@ -268,6 +252,19 @@
         this.imgSrc = '';
       },
     },
+    beforeDestroy() {
+      this.setChannelData({
+        channel_id: '',
+        title: '',
+        slug: '',
+        status: '',
+        user_ids: [],
+        owner_id: '',
+        type: '',
+        private: '',
+        avatar: undefined,
+      })
+    }
   }
 </script>
 

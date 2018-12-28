@@ -21,8 +21,14 @@ export default {
   'SET_USER_POSITION': (state, position) => {
     state.userPosition = position;
   },
-  'SET_SEARCH_RESULTS': (state, results) => {
-    state.searchResults = results;
+  'SET_SEARCH_RESULTS_USERS': (state, results) => {
+    state.searchResults.users = results;
+  },
+  'SET_SEARCH_RESULTS_PAGES': (state, results) => {
+    state.searchResults.pages = results.last_page;
+  },
+  'SET_SEARCH_RESULTS_CURRENT_PAGE': (state, results) => {
+    state.searchResults.currentPage = results.current_page;
   },
   'SET_USER_CONTACTS': (state, contacts) => {
     state.userContacts = contacts;
@@ -56,6 +62,9 @@ export default {
     };
     state.isUserLoading = false;
     state.imageUploadPersentage = 0;
-    state.searchResults = [];
+    state.searchResults = {
+      users: [],
+      pages: 0,
+    };
   },
 };

@@ -38,9 +38,6 @@
       ...mapMutations({
         setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
       }),
-      ...mapActions({
-        setCurrentUserInfo: 'modal/OPEN_MODAL_EDIT_MODE',
-      }),
     }
   }
 </script>

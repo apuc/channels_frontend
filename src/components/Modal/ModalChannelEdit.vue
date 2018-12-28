@@ -10,20 +10,32 @@
           <div class="form-group">
             <label for="title">Channel name</label>
 
-            <input type="text" id="title" class="form-control" v-model="settingChannelData.title">
+            <input type="text"
+                   id="title"
+                   class="form-control"
+                   :value="channelData.title"
+                   @input="setChannelTitle($event.target.value)"
+            >
           </div>
 
           <div class="form-group">
             <label for="slug">Channel slug</label>
 
-            <input type="text" id="slug" class="form-control" v-model="settingChannelData.slug">
+            <input type="text"
+                   id="slug"
+                   class="form-control"
+                   :value="channelData.slug"
+                   @input="setChannelSlug($event.target.value)"
+            >
           </div>
 
           <div class="form-group">
-            <label for="user_ids">Users (через запятую)</label>
-
-            <input type="text" id="user_ids" class="form-control" :value="settingChannelData.user_ids"
-                   @input="getUsers">
+            <button type="button"
+                    class="btn btn-primary"
+                    @click="setModal('ModalChannelAddUsers')"
+            >
+              Add users
+            </button>
           </div>
         </div>
 
@@ -33,16 +45,28 @@
 
             <div class="form-check-inline">
               <label for="active" class="form-check-label">
-                <input type="radio" id="active" class="form-check-input" value="active"
-                       v-model="settingChannelData.status">
+                <input type="radio"
+                       id="active"
+                       class="form-check-input"
+                       value="active"
+                       name="channel-status"
+                       v-model="channelData.status"
+                       @input="setChannelStatus($event.target.value)"
+                >
                 <span>active</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="disable" class="form-check-label">
-                <input type="radio" id="disable" class="form-check-input" value="disable"
-                       v-model="settingChannelData.status">
+                <input type="radio"
+                       id="disable"
+                       class="form-check-input"
+                       value="disable"
+                       name="channel-status"
+                       v-model="channelData.status"
+                       @input="setChannelStatus($event.target.value)"
+                >
                 <span>disable</span>
               </label>
             </div>
@@ -53,22 +77,42 @@
 
             <div class="form-check-inline">
               <label for="chat" class="form-check-label">
-                <input type="radio" id="chat" class="form-check-input" value="chat" v-model="settingChannelData.type">
+                <input type="radio"
+                       id="chat"
+                       class="form-check-input"
+                       value="chat"
+                       name="channel-type"
+                       v-model="channelData.type"
+                       @input="setChannelType($event.target.value)"
+                >
                 <span>chat</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="wall" class="form-check-label">
-                <input type="radio" id="wall" class="form-check-input" value="wall" v-model="settingChannelData.type">
+                <input type="radio"
+                       id="wall"
+                       class="form-check-input"
+                       value="wall"
+                       name="channel-type"
+                       v-model="channelData.type"
+                       @input="setChannelType($event.target.value)"
+                >
                 <span>wall</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="dialog" class="form-check-label">
-                <input type="radio" id="dialog" class="form-check-input" value="dialog"
-                       v-model="settingChannelData.type">
+                <input type="radio"
+                       id="dialog"
+                       class="form-check-input"
+                       value="dialog"
+                       name="channel-type"
+                       v-model="channelData.type"
+                       @input="setChannelType($event.target.value)"
+                >
                 <span>dialog</span>
               </label>
             </div>
@@ -79,16 +123,27 @@
 
             <div class="form-check-inline">
               <label for="private" class="form-check-label">
-                <input type="radio" id="private" class="form-check-input" value="1"
-                       v-model="settingChannelData.private">
+                <input type="radio"
+                       id="private" class="form-check-input"
+                       value="1"
+                       name="channel-privacy"
+                       v-model="channelData.private"
+                       @input="setChannelPrivate($event.target.value)"
+                >
                 <span>1</span>
               </label>
             </div>
 
             <div class="form-check-inline">
               <label for="not-private" class="form-check-label">
-                <input type="radio" id="not-private" class="form-check-input" value="0"
-                       v-model="settingChannelData.private">
+                <input type="radio"
+                       id="not-private"
+                       class="form-check-input"
+                       value="0"
+                       name="channel-privacy"
+                       v-model="channelData.private"
+                       @input="setChannelPrivate($event.target.value)"
+                >
                 <span>0</span>
               </label>
             </div>
@@ -121,7 +176,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
   import vSelect from "vue-select";
 
   export default {
@@ -131,24 +186,16 @@
       ...mapGetters({
         channelData: 'channels/channelData',
         userData: 'user/info',
+        userContacts: 'user/userContacts',
         currentUserInfo: 'user/currentUserInfo',
         setCreateChannel: 'modal/setCreateChannel',
         imageUploadPersentage: 'channels/imageUploadPersentage',
-      })
+        usersToAdd: 'channels/usersToAdd',
+      }),
+
     },
     data() {
       return {
-        settingChannelData: {
-          channel_id: undefined,
-          title: '',
-          slug: '',
-          status: '',
-          user_ids: [],
-          owner_id: '',
-          type: '',
-          private: '',
-          avatar: '',
-        },
         img: '',
         imgSrc: '',
         notImage: '',
@@ -159,32 +206,32 @@
     methods: {
       ...mapMutations({
         setChannelData: 'channels/SET_CHANNEL_DATA',
+        setChannelTitle: 'channels/SET_CHANNEL_TITLE',
+        setChannelSlug: 'channels/SET_CHANNEL_SLUG',
+        setChannelStatus: 'channels/SET_CHANNEL_STATUS',
         setChannelUserIds: 'channels/SET_CHANNEL_USER_IDS',
+        setChannelOwnerId: 'channels/SET_CHANNEL_OWNER_ID',
+        setChannelType: 'channels/SET_CHANNEL_TYPE',
+        setChannelPrivate: 'channels/SET_CHANNEL_PRIVATE',
+        setChannelIdToEdit: 'channels/SET_CHANNEL_ID_TO_EDIT',
+        setChannelUsers: 'channels/SET_CHANNEL_USERS',
+        setModal: 'modal/SET_MODAL',
       }),
       ...mapActions({
-        createChannel: 'channels/CREATE_CHANNEL',
+        editChannel: 'channels/EDIT_CHANNEL',
         createChannelAvatar: 'channels/CREATE_CHANNEL_AVATAR',
-        getChannelUsers: 'channels/GET_USERS',
+        getChannelUsers: 'channels/GET_CHANNEL_USERS',
       }),
       async onSubmit() {
-        if (!Array.isArray(this.settingChannelData.user_ids)) {
-          this.settingChannelData.user_ids = this.makeSplitedArray(this.settingChannelData.user_ids);
-        }
-        this.settingChannelData.user_ids.push(this.settingChannelData.owner_id);
-        await this.setChannelData(this.settingChannelData);
+        this.setChannelUserIds(this.usersToAdd);
+        this.setChannelOwnerId(this.userData.user_id);
 
         if (this.img) {
           this.upLoadStarted = true;
           await this.createChannelAvatar(this.img).then(() => this.upLoadStarted = false);
         }
 
-        this.createChannel();
-      },
-      getUsers(e) {
-        this.settingChannelData.user_ids = this.makeSplitedArray(e.target.value);
-      },
-      makeSplitedArray(string) {
-        return string.split(',')
+        this.editChannel();
       },
       createFormData(file) {
         let formData = new FormData();
@@ -223,28 +270,19 @@
         this.imgSrc = '';
       },
     },
-    created() {
-      this.settingChannelData.title = this.channelData.title;
-      this.settingChannelData.channel_id = this.channelData.channel_id;
-      this.settingChannelData.slug = this.channelData.slug;
-      this.settingChannelData.status = this.channelData.status;
-      this.settingChannelData.owner_id = this.userData.user_id;
-      this.settingChannelData.type = this.channelData.type;
-      this.settingChannelData.private = this.channelData.private;
-
-      if (this.channelData.avatar) {
-        this.settingChannelData.avatar = this.channelData.avatar.avatar_id;
-        this.imgSrc = this.channelData.avatar.average;
-      }
-
-      this.getChannelUsers(this.channelData.channel_id).then(data => {
-        let user_ids = [];
-        for (let i = 0; i < data.length; i++) {
-          user_ids.push(data[i].user_id);
-        }
-        this.setChannelUserIds(user_ids);
-        this.settingChannelData.user_ids = user_ids;
-      });
+    beforeDestroy() {
+      this.setChannelUsers([]);
+      this.setChannelData({
+        channel_id: '',
+        title: '',
+        slug: '',
+        status: '',
+        user_ids: [],
+        owner_id: '',
+        type: '',
+        private: '',
+        avatar: undefined,
+      })
     }
   }
 </script>

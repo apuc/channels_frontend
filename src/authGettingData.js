@@ -15,7 +15,7 @@ export default {
         this.$_authGettingData_getUserData(slug);
       }
       else if (slug.length > 0 && slug !== 'not-found') {
-        this.$_authGettingData_getChannelData(slug);
+        // this.$_authGettingData_getChannelData(slug);
       } else {
         router.push('/login');
       }
@@ -26,14 +26,14 @@ export default {
 
       if (currentChannel) {
         store.commit('channels/SET_CURRENT_CHANNEL_DATA', currentChannel);
-        store.dispatch('channels/GET_USERS', currentChannel.channel_id).then(data => store.commit('channels/SET_CURRENT_CHANNEL_USERS', data));
+        store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id).then(data => store.commit('channels/SET_CURRENT_CHANNEL_USERS', data));
         store.dispatch('messages/GET_MESSAGES');
       } else {
         if (slug !== 'login' && slug !== 'registration') {
           await store.dispatch('channels/GET_CHANNEL_DATA', slug);
           const currentChannel = store.getters['channels/currentChannelData'];
           if (!currentChannel.private) {
-            // store.dispatch('channels/GET_USERS', currentChannel.channel_id);
+            // store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id);
             // store.dispatch('messages/GET_MESSAGES');
           }
         }

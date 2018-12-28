@@ -3,7 +3,7 @@
     <p>Ваш список контактов пуст, вы можете найти своих друзей:</p>
 
     <ModalSearchUsersForm/>
-    <ModalSearchUsersResult v-if="searchResults"/>
+    <ModalSearchUsersResult v-if="searchResultsUsers"/>
   </div>
 
   <ul class="users-list" v-else>
@@ -50,7 +50,7 @@
       ...mapGetters({
         userData: 'user/info',
         userContacts: 'user/userContacts',
-        searchResults: 'user/searchResults'
+        searchResultsUsers: 'user/searchResultsUsers'
       }),
     },
     methods: {

@@ -19,7 +19,11 @@ const state = {
   imageUploadPersentage: 0,
   userContacts: [],
   userPosition: '',
-  searchResults: [],
+  searchResults: {
+    users: [],
+    currentPage: 1,
+    pages: 1,
+  },
   friendshipRequests: []
 };
 

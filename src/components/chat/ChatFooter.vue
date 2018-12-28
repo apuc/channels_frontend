@@ -16,10 +16,11 @@
 
       <b-form-textarea id="input_message"
                        class="input_message"
-                       v-model="input"
-                       :placeholder="$ml.get('Chat.textareaPlaceholder')"
                        :rows="1"
                        :max-rows="3"
+                       :placeholder="$ml.get('Chat.textareaPlaceholder')"
+                       ref="textarea"
+                       v-model="input"
                        @input="emitUserTyping"
                        @keyup.enter.prevent.native="onSubmit"
       >
@@ -105,6 +106,9 @@
       addAttachments(e) {
         this.ADD_ATTACHMENTS(e.target.files)
       }
+    },
+    mounted() {
+      this.$refs.textarea.focus();
     }
   }
 </script>

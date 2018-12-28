@@ -14,6 +14,9 @@ export default {
   'SET_CHANNEL_STATUS': (state, status) => {
     state.channelData.status = status;
   },
+  'SET_CHANNEL_USER_SEARCH_RESULTS': (status, users) => {
+    status.searchUsers = users;
+  },
   /**
    * Добавление id'шников пользователей для создания/редактирования канала
    *
@@ -39,8 +42,24 @@ export default {
   'SET_CURRENT_CHANNEL_DATA': (state, data) => {
     state.currentChannelData = data;
   },
+  'SET_CHANNEL_ID_TO_EDIT': (state, id) => {
+    state.currentChannelData.channel_id = id;
+  },
   'SET_CHANNEL_AVATAR_ID': (state, avatar_id) => {
     state.channelData.avatar = avatar_id;
+  },
+  'SET_CHANNEL_USERS': (state, users) => {
+    state.channelUsers = users;
+  },
+  'SET_CONTACTS_FREE_TO_ADD': (state, contacts) => {
+    state.contactsToAdd = contacts.filter(contact => {
+      return !state.channelUsers.some(user => {
+        return contact.user_id === user.user_id;
+      });
+    });
+  },
+  'REMOVE_USER_FROM_CONTACTS_TO_ADD': (state, user_id) => {
+    state.contactsToAdd = state.contactsToAdd.filter(user => user.user_id !== user_id);
   },
   'SET_CHANNEL_ID_TO_DELETE': (state, id) => {
     state.channelToDelete = id;
@@ -48,7 +67,7 @@ export default {
   'SET_CURRENT_CHANNEL_USERS': (state, users) => {
     state.currentChannelUsers = users;
   },
-  'REMOVE_USERS_FROM_STORE': state => {
+  'REMOVE_CURRENT_CHANNEL_USERS_FROM_STORE': state => {
     state.currentChannelUsers = []
   },
   'SET_CHANNELS_LOADING_FLAG': state => {

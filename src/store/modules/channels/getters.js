@@ -8,4 +8,7 @@ export default {
   isChannelsLoading: state => state.isChannelsLoading,
   isChannelUsersLoading: state => state.isChannelUsersLoading,
   imageUploadPersentage: state => state.imageUploadPersentage,
+  channelUsers: state => state.channelUsers,
+  contactsToAdd: state => state.contactsToAdd,
+  channelSearchUsers: state => state.searchUsers,
 };

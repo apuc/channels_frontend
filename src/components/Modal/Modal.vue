@@ -28,6 +28,7 @@
   import ModalSessionExpired from "./ModalSessionExpired";
   import ModalSearchUsers from "./ModalSearchUsers";
   import ModalUserContacts from "./ModalUserContacts";
+  import ModalChannelAddUsers from "./ModalChannelAddUsers";
 
   export default {
     name: "Modal",
@@ -43,7 +44,8 @@
       ModalGroupEdit,
       ModalGroupDelete,
       ModalSearchUsers,
-      ModalUserContacts
+      ModalUserContacts,
+      ModalChannelAddUsers,
     },
     computed: {
       ...mapGetters({
@@ -56,7 +58,6 @@
     },
     methods: {
       ...mapMutations({
-        toggleEditMode: 'modal/TOGGLE_EDIT_MODE',
         deleteModal: 'modal/DELETE_MODAL',
       }),
       ...mapActions({

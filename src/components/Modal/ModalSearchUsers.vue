@@ -1,22 +1,30 @@
 <template>
   <div class="modal-inside">
     <ModalSearchUsersForm />
-    <ModalSearchUsersResult v-if="searchResults.length"/>
+    <ModalSearchUsersResult v-if="searchResultsUsers.length"/>
   </div>
 </template>
 
 <script>
   import ModalSearchUsersForm from './ModalSearchUsersForm';
   import ModalSearchUsersResult from "./ModalSearchUsersResult";
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapActions} from 'vuex';
 
   export default {
     name: "ModalSearchUsers",
     components: {ModalSearchUsersResult, ModalSearchUsersForm},
     computed: {
       ...mapGetters({
-        searchResults: 'user/searchResults'
-      })
+        searchResultsUsers: 'user/searchResultsUsers'
+      }),
+    },
+    methods: {
+      ...mapActions({
+        findUsers: 'user/FIND_USERS',
+      }),
+    },
+    created() {
+      this.findUsers({search_request: '', page: 0});
     }
   }
 </script>

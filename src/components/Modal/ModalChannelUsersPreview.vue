@@ -6,7 +6,7 @@
 
   <ul class="users-list" v-else>
     <li class="user"
-        v-for="(user, index) in currentChannelUsers"
+        v-for="(user, index) in channelSearchUsers"
         :key="user.email">
       <div>
         <div class="user-info">
@@ -53,6 +53,7 @@
         currentChannelUsers: 'channels/currentChannelUsers',
         isChannelUsersLoading: 'channels/isChannelUsersLoading',
         currentChannelData: 'channels/currentChannelData',
+        channelSearchUsers: 'channels/channelSearchUsers',
         userData: 'user/info',
       }),
       calculatePlaceholders() {

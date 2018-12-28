@@ -24,6 +24,12 @@
     >
       <button type="button"
               class="button"
+              @click="setAddUsersModal(data.channel_id)">
+        <v-icon scale="1" class="icon" name="plus-circle"/>
+      </button>
+
+      <button type="button"
+              class="button"
               @click="editingModal(data.channel_id)">
         <v-icon scale="1" class="icon" name="pen"/>
       </button>
@@ -45,9 +51,9 @@
     computed: {
       ...mapGetters({
         currentChannelData: 'channels/currentChannelData',
-        currentGroupData: 'groups/currentGroupData',
-        userData: 'user/info',
         channelToEdit: 'channels/channelToEdit',
+        userData: 'user/info',
+        userContacts: 'user/userContacts',
       }),
     },
     props: {
@@ -66,30 +72,41 @@
     },
     methods: {
       ...mapMutations({
-        removeUsersFromStore: 'channels/REMOVE_USERS_FROM_STORE',
+        removeCurrentChannelUsersFromStore: 'channels/REMOVE_CURRENT_CHANNEL_USERS_FROM_STORE',
         setChannelIdToDelete: 'channels/SET_CHANNEL_ID_TO_DELETE',
         setChannelData: 'channels/SET_CHANNEL_DATA',
+        setChannelUsers: 'channels/SET_CHANNEL_USERS',
+        setContactsFreeToAdd: 'channels/SET_CONTACTS_FREE_TO_ADD',
         setUserPosition: 'user/SET_USER_POSITION',
         setModal: 'modal/SET_MODAL',
       }),
       ...mapActions({
         setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
+        getChannelUsers: 'channels/GET_CHANNEL_USERS',
         getMessages: 'messages/GET_MESSAGES',
       }),
       async setData(e, id) {
         if (!e.target.hasAttribute('type')) {
           await this.setCurrentChannelData(Number(id));
           this.getMessages();
-          this.removeUsersFromStore();
+          this.removeCurrentChannelUsersFromStore();
         }
       },
       async editingModal(id) {
+        this.getChannelUsers(id)
+          .then(data => this.setChannelUsers(data));
         this.setModal('ModalChannelEdit');
         this.setChannelData(this.channelToEdit(id));
       },
       deletingModal(id) {
         this.setChannelIdToDelete(id);
         this.setModal('ModalChannelDelete');
+      },
+      setAddUsersModal(id) {
+        this.setModal('ModalChannelAddUsers');
+        this.getChannelUsers(id)
+          .then(data => this.setChannelUsers(data))
+          .then(() => this.setContactsFreeToAdd(this.userContacts));
       }
     },
   }
@@ -154,11 +171,6 @@
 
   .icon {
     color: #495057;
-  }
-
-  .icon_mla {
-    margin-left: auto;
-    flex-shrink: 0;
   }
 
   .name {

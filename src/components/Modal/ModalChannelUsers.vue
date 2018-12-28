@@ -2,14 +2,25 @@
   <div class="modal-inside">
     <header class="form-group">
       <label for="user">Поиск по пользователям канала</label>
-      <input id="user" class="form-control" type="text">
+      <input id="user"
+             class="form-control"
+             type="text"
+             ref="searchInput"
+             :value="searchValue"
+             @input="searchUser($event.target.value)"
+      >
     </header>
 
     <div class="add-user">
       <label for="add-user" style="margin-right: 10px">Добавить пользователя</label>
 
       <div class="input-wrap">
-        <input id="add-user" class="form-control add-user__input" type="text" :value="add_user" @input="findUser">
+        <input id="add-user"
+               class="form-control add-user__input"
+               type="text"
+               :value="add_user"
+               @input="findUserToAdd"
+        >
 
         <button type="button" class="btn" :class="disableButton" @click="addUser(add_user)">
           <v-icon scale="1" class="icon" name="plus-square"/>
@@ -19,12 +30,13 @@
       <p class="user-exist" v-if="isUserInChannel">This user exist.</p>
     </div>
 
-    <ModalChannelUsersPreview/>
+    <p v-if="noUsers">В данном канале нет пользователя с таким именем.</p>
+    <ModalChannelUsersPreview v-else/>
   </div>
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
   import ModalChannelUsersPreview from './ModalChannelUsersPreview';
 
   export default {
@@ -32,7 +44,9 @@
     components: {ModalChannelUsersPreview},
     computed: {
       ...mapGetters({
-        currentChannelUsers: 'channels/currentChannelUsers'
+        currentChannelUsers: 'channels/currentChannelUsers',
+        isSearchActive: 'channels/isSearchActive',
+        channelSearchUsers: 'channels/channelSearchUsers',
       }),
       disableButton() {
         return this.add_user.length > 0 && !this.isUserInChannel ? 'btn-primary' : 'btn-default disable';
@@ -41,20 +55,53 @@
     data() {
       return {
         add_user: '',
-        isUserInChannel: false
+        searchValue: '',
+        isUserInChannel: false,
+        noUsers: false,
       }
     },
     methods: {
+      ...mapMutations({
+        changeChannelUserSearchStatus:'channels/CHANGE_CHANNEL_USER_SEARCH_STATUS',
+        setChannelUserSearchResults:'channels/SET_CHANNEL_USER_SEARCH_RESULTS',
+      }),
       ...mapActions({
         addUser: 'channels/ADD_USER',
       }),
-      findUser(e) {
+      findUserToAdd(e) {
         this.add_user = e.target.value;
         for (let i = 0; i < this.currentChannelUsers.length; i++) {
           this.isUserInChannel = this.currentChannelUsers[i].user_id === Number(this.add_user);
         }
       },
+      findUser(value) {
+        let currentUserName = '';
+        let searchValue = value.toLowerCase();
+        let searchResult = [];
+        for (let i = 0; i < this.currentChannelUsers.length; i++) {
+          currentUserName = this.currentChannelUsers[i].username.toLowerCase();
+          if (currentUserName.includes(searchValue)) {
+            searchResult.push(this.currentChannelUsers[i]);
+          }
+        }
+        return searchResult;
+      },
+      searchUser(value) {
+        this.searchValue = value;
+        const searchResult = this.findUser(value);
+        this.noUsers = searchResult.length === 0;
+
+        if (value) {
+          this.setChannelUserSearchResults(searchResult);
+        } else {
+          this.setChannelUserSearchResults(this.currentChannelUsers);
+        }
+
+      }
     },
+    mounted() {
+      this.$refs.searchInput.focus();
+    }
   }
 </script>
 

@@ -46,7 +46,8 @@ export default {
             await commit('SET_CURRENT_CHANNEL_DATA', channel);
           },
           err => {
-            if (err.body.includes('No query results for model')) {
+            console.log(err);
+            if (err.bodyText.includes('No query results for model')) {
               router.push({path: '/not-found'})
             }
             console.log('get channels', err)
@@ -59,7 +60,7 @@ export default {
    *
    * @param channelId {String || Number} - channel id
    */
-  'GET_USERS': async ({getters, commit, dispatch, rootGetters}, channelId) => {
+  'GET_CHANNEL_USERS': async ({getters, commit, dispatch, rootGetters}, channelId) => {
       commit('SET_CHANNEL_USERS_LOADING');
       commit('SET_CURRENT_CHANNEL_USERS', []);
       return await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/users`)
@@ -79,28 +80,28 @@ export default {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-    console.log(getters.channelData);
-    // if (currentDateInSeconds < tokenExpiresIn) {
-    //   await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.channelData)
-    //     .then(
-    //       res => {
-    //         const createdChannelData = res.body.data;
-    //         router.push({path: `/${createdChannelData.slug}`});
-    //         commit('modal/DELETE_MODAL', 'channel', {root: true});
-    //         commit('ADD_CREATED_CHANNEL', createdChannelData);
-    //         dispatch('SET_CURRENT_CHANNEL_DATA', createdChannelData.channel_id);
-    //       },
-    //       err => console.log(err)
-    //     )
-    //     .catch(error => console.log(error))
-    // } else {
-    //   if (currentDateInSeconds < refreshTokenExpiresIn) {
-    //     await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
-    //       .then(() => {
-    //         dispatch('CREATE_CHANNEL');
-    //       })
-    //   }
-    // }
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.channelData)
+        .then(
+          res => {
+            const createdChannelData = res.body.data;
+            router.push({path: `/${createdChannelData.slug}`});
+            commit('modal/DELETE_MODAL', 'channel', {root: true});
+            commit('ADD_CREATED_CHANNEL', createdChannelData);
+            dispatch('SET_CURRENT_CHANNEL_DATA', createdChannelData.channel_id);
+          },
+          err => console.log(err)
+        )
+        .catch(error => console.log(error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+          .then(() => {
+            dispatch('CREATE_CHANNEL');
+          })
+      }
+    }
   },
   /**
    * Add avatar to the channel and write avatar_id to the store
@@ -148,7 +149,10 @@ export default {
   'SET_CURRENT_CHANNEL_DATA': async ({getters, commit, dispatch}, channelId) => {
     const editingChannel = await getters.channels.find(channel => channel.channel_id === channelId);
       await commit('SET_CURRENT_CHANNEL_DATA', editingChannel);
-      dispatch('GET_USERS', channelId).then(data => commit('SET_CURRENT_CHANNEL_USERS', data));
+      dispatch('GET_CHANNEL_USERS', channelId).then(data => {
+        commit('SET_CURRENT_CHANNEL_USERS', data);
+        commit('SET_CHANNEL_USER_SEARCH_RESULTS', data);
+      });
   },
   /**
    * Set data of editing channel to the store
@@ -162,28 +166,28 @@ export default {
   /**
    * Edit chosen channel
    */
-  'EDIT_CHANNEL': async ({getters, commit, dispatch, rootGetters}, data) => {
+  'EDIT_CHANNEL': async ({getters, commit, dispatch, rootGetters}) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelData.channel_id}`, {
-        title: data.title,
-        slug: data.slug,
-        status: data.status,
-        user_ids: data.user_ids,
-        type: data.type,
-        private: data.private,
-        avatar: data.avatar,
-        owner_id: data.owner_id,
+        title: getters.channelData.title,
+        slug: getters.channelData.slug,
+        status: getters.channelData.status,
+        user_ids: getters.channelData.user_ids,
+        type: getters.channelData.type,
+        private: getters.channelData.private,
+        avatar: getters.channelData.avatar,
+        owner_id: getters.channelData.owner_id,
       })
         .then(
           res => {
             const newChannelData = res.body.data;
             commit('SET_CURRENT_CHANNEL_DATA', newChannelData);
             commit('SET_EDITED_CHANNEL_DATA', newChannelData);
-            dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'channel', {root: true})
+            dispatch('modal/DELETE_MODAL', null, {root: true})
           },
           err => console.log(err)
         )
@@ -243,7 +247,7 @@ export default {
       await Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/delete-user?channel_id=${getters.currentChannelData.channel_id}&user_id=${userId}`)
         .then(
           res => {
-            dispatch('GET_USERS', getters.currentChannelData.channel_id)
+            dispatch('GET_CHANNEL_USERS', getters.currentChannelData.channel_id)
               .then(users => commit('SET_CURRENT_CHANNEL_USERS', users));
           },
           err => console.log(err)
@@ -275,7 +279,7 @@ export default {
       })
         .then(
           res => {
-            dispatch('GET_USERS', getters.currentChannelData.channel_id)
+            dispatch('GET_CHANNEL_USERS', getters.currentChannelData.channel_id)
               .then(users => commit('SET_CURRENT_CHANNEL_USERS', users));
           },
           err => console.log(err)

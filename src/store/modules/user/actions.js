@@ -216,7 +216,9 @@ export default {
       .then(
         async res => {
           console.log(res.body.data);
-          commit('SET_SEARCH_RESULTS', res.body.data);
+          commit('SET_SEARCH_RESULTS_USERS', res.body.data);
+          commit('SET_SEARCH_RESULTS_PAGES', res.body.meta);
+          commit('SET_SEARCH_RESULTS_CURRENT_PAGE', res.body.meta);
         },
         err => console.log('err login', err)
       )

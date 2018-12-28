@@ -1,7 +1,7 @@
 <template>
   <ul class="users-list">
     <li class="user"
-        v-for="(user, index) in searchResults"
+        v-for="(user, index) in searchResultsUsers"
         :key="user.email">
       <div>
         <div class="user-info">
@@ -36,7 +36,7 @@
     computed: {
       ...mapGetters({
         userData: 'user/info',
-        searchResults: 'user/searchResults'
+        searchResultsUsers: 'user/searchResultsUsers'
       })
     },
     methods: {

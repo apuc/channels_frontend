@@ -158,7 +158,7 @@ export default {
                 commit('SET_CURRENT_GROUP_DATA', newGroupData);
               }
             }
-            dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'group', {root: true});
+            dispatch('modal/DELETE_MODAL', null, {root: true});
           },
           err => console.log(err)
         )
@@ -228,7 +228,7 @@ export default {
               commit('SET_CURRENT_GROUP_DATA', newGroupData);
             }
             commit('SET_EDITED_GROUP_DATA', newGroupData);
-            dispatch('modal/CLOSE_MODAL_EDIT_MODE', 'ModalGroupAddChannels', {root: true});
+            dispatch('modal/DELETE_MODAL', null, {root: true});
           },
           err => {
             console.log(err);

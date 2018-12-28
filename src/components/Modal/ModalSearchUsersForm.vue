@@ -1,21 +1,19 @@
 <template>
-  <form @submit.prevent="onSubmit">
-    <div class="form-group">
-      <label for="user-search">Поиск пользователей</label>
-      <input class="form-control"
-             id="user-search"
-             type="text"
-             ref="searchInput"
-             v-model="search_request"
-      >
-    </div>
-
-    <button type="submit" class="btn btn-primary">Поиск</button>
+  <form @submit.prevent="onSubmit" class="form-group">
+    <label for="user-search">Поиск пользователей</label>
+    <input class="form-control"
+           id="user-search"
+           type="text"
+           ref="searchInput"
+           :value="search_request"
+           @input="search($event.target.value)"
+    >
   </form>
 </template>
 
 <script>
   import {mapActions} from 'vuex';
+  import _ from 'lodash';
 
   export default {
     name: "ModalSearchUsersForm",
@@ -29,9 +27,10 @@
       ...mapActions({
         findUsers: 'user/FIND_USERS',
       }),
-      onSubmit() {
-        this.findUsers({search_request: this.search_request, page: this.page})
-      }
+      search:
+        _.debounce(function (value) {
+          this.findUsers({search_request: value, page: this.page})
+        }, 300)
     },
     mounted() {
       this.$refs.searchInput.focus();

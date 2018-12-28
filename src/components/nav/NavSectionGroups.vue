@@ -26,7 +26,6 @@
     >
       <button type="button"
               class="button"
-              v-if="type === 'group'"
               @click="openChannelsAdding(data.group_id)">
         <v-icon scale="1" class="icon" name="plus-circle"/>
       </button>
@@ -78,7 +77,7 @@
     },
     methods: {
       ...mapMutations({
-        removeUsersFromStore: 'channels/REMOVE_USERS_FROM_STORE',
+        removeCurrentChannelUsersFromStore: 'channels/REMOVE_CURRENT_CHANNEL_USERS_FROM_STORE',
         setUserPosition: 'user/SET_USER_POSITION',
         setGroupData: 'groups/SET_GROUP_DATA',
         setModal: 'modal/SET_MODAL',
@@ -92,7 +91,7 @@
       async setData(e, id) {
         if (!e.target.hasAttribute('type')) {
           await this.getGroupData(Number(id));
-          this.removeUsersFromStore();
+          this.removeCurrentChannelUsersFromStore();
         }
       },
       editThis(id) {

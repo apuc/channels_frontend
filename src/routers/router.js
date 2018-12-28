@@ -64,6 +64,26 @@ export default new Router({
         requiresAuth: true,
         layout: 'main'
       },
+      beforeEnter: async (to, from, next) => {
+        const pathnameArray = location.pathname.split('/');
+        const slug = pathnameArray[pathnameArray.length - 1];
+        const currentChannel = store.getters['channels/channels'].find(channel => channel.slug === slug);
+        store.commit('user/SET_USER_POSITION', 'channel');
+
+        if (currentChannel) {
+          store.commit('channels/SET_CURRENT_CHANNEL_DATA', currentChannel);
+          store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id)
+            .then(data => store.commit('channels/SET_CURRENT_CHANNEL_USERS', data));
+          store.dispatch('messages/GET_MESSAGES');
+        } else {
+          await store.dispatch('channels/GET_CHANNEL_DATA', slug);
+          const currentChannel = store.getters['channels/currentChannelData'];
+          if (!currentChannel.private) {
+            // store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id);
+            // store.dispatch('messages/GET_MESSAGES');
+          }
+        }
+      }
     },
   ],
 });
