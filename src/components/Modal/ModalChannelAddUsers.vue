@@ -53,9 +53,8 @@
       addUserToChannel(user_id) {
         this.addUser(user_id)
           .then(() => this.removeUserFromContactsToAdd(user_id));
-
       }
-    }
+    },
   }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <aside class="ads col-md-2 bg-light">
+  <aside class="ads bg-light">
     <div class="wrap">
       <div v-if="userPosition === 'channel'">
         <img :src="channel.avatar ? channel.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
@@ -23,7 +23,7 @@
 
         <ul class="users-list">
           <li class="user"
-              v-for="(user, index) in currentChannelUsers.slice(0, 5)"
+              v-for="(user, index) in currentChannelUsersToShow"
               :key="user.email">
             <div>
               <div class="user-info">
@@ -43,6 +43,7 @@
             <button type="button"
                     class="btn btn-sm btn-primary mr10"
                     @click="makeFriendshipRequest($event.target, {user_id: userData.user_id, contact_id: user.user_id})"
+                    v-if="userData.user_id !== currentChannelData.owner_id"
             >
               <v-icon scale="1" class="icon" name="user-plus"/>
             </button>
@@ -67,6 +68,13 @@
         userPosition: 'user/userPosition',
         userData: 'user/info',
       }),
+      currentChannelUsersToShow() {
+        if (this.currentChannelUsers.length > 4) {
+          return this.currentChannelUsers.slice(0, 5)
+        } else {
+          return this.currentChannelUsers
+        }
+      }
     },
     data() {
       return {

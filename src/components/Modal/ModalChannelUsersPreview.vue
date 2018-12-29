@@ -27,6 +27,7 @@
         <button type="button"
                 class="btn btn-sm btn-primary mr10"
                 @click="makeFriendshipRequest($event.target, {user_id: userData.user_id, contact_id: user.user_id})"
+                v-if="userData.user_id !== currentChannelData.owner_id"
         >
           <v-icon scale="1" class="icon" name="user-plus"/>
         </button>

@@ -1,5 +1,5 @@
 <template>
-  <aside class="nav d-flex flex-column col-md-2 p-0 bg-light">
+  <aside class="nav d-flex flex-column p-0 bg-light">
     <div class="wrap">
       <header class="nav-header">
         <div @mouseover="addMenuVisible = true" @mouseout="addMenuVisible = false">
@@ -9,7 +9,7 @@
 
           <ul class="dropdown-settings" v-if="addMenuVisible">
             <li class="dropdown-settings__el">
-              <router-link class="btn btn-link" to="contacts">Контакты</router-link>
+              <router-link class="btn btn-link" to="/contacts">Контакты</router-link>
             </li>
 
             <li v-for="(elem, index) in info" class="dropdown-settings__el" :key="index">

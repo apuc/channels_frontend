@@ -5,6 +5,9 @@ export default {
   'SET_CHANNEL_DATA': (state, data) => {
     state.channelData = data;
   },
+  'SET_CHANNEL_ID': (state, id) => {
+    state.channelData.channel_id = id;
+  },
   'SET_CHANNEL_TITLE': (state, title) => {
     state.channelData.title = title;
   },

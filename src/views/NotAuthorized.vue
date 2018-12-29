@@ -32,23 +32,19 @@
         return this.currentChannel.private ? 'Private' : '';
       }
     },
-    created() {
-      // this.$_authGettingData_gettingData();
-    }
   }
 </script>
 
 <style scoped>
   .home {
-    display: flex;
+    display: grid;
+    grid-template-columns: 16.7% auto 16.7%;
     width: 100%;
-    /*overflow: hidden;*/
-    height: 600px;
-    /*height: 100vh;*/
+    min-height: 100vh;
   }
 
   .main {
-    flex-grow: 1;
+    display: grid;
     height: 100%;
   }
 </style>

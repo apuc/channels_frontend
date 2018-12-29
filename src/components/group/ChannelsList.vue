@@ -9,8 +9,8 @@
           {{ channel.title }}
         </router-link>
 
-        <button v-if="userData.user_id === currentGroupData.group_id" type="button"
-                class="btn btn-danger btn-sm btn_hidden"
+        <button type="button"
+                class="btn btn-danger btn-sm"
                 @click="removeChannel(channel.channel_id)"
         >
           <v-icon scale="1"
@@ -86,13 +86,5 @@
   .channels-list__channel:hover {
     background-color: #dddddd;
     transition: background-color 0.2s;
-  }
-
-  .btn_hidden {
-    display: none;
-  }
-
-  .channels-list__channel:hover > .btn {
-    display: inline-block;
   }
 </style>

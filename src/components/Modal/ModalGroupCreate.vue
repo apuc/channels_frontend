@@ -32,17 +32,6 @@
 
         <div class="col-6">
           <div class="form-group">
-            <span>Channels to add</span>
-            <v-select label="title"
-                      :options="channels"
-                      @input="addId"
-                      :value="groupChannels"
-                      multiple
-            >
-            </v-select>
-          </div>
-
-          <div class="form-group">
             <p>Group status</p>
 
             <div class="form-check-inline">
@@ -114,7 +103,6 @@
     },
     data() {
       return {
-        groupChannels: [],
         img: '',
         imgSrc: '',
         notImage: '',
@@ -134,27 +122,19 @@
         createGroup: 'groups/CREATE_GROUP',
         createGroupAvatar: 'groups/CREATE_GROUP_AVATAR',
       }),
-      addId(val) {
-        this.groupChannels = val;
-        this.setChannelsToAdd(val);
-      },
       async onSubmit() {
         this.setGroupOwnerId(this.userData.user_id);
+        this.setChannelsToAdd([this.userData.user_id]);
+
         if (this.img) {
           this.upLoadStarted = true;
           await this.createGroupAvatar(this.img).then(() => this.upLoadStarted = false);
         }
 
-        this.createGroup()
+        this.createGroup();
       },
       makeSplitedArray(string) {
         return string.split(',')
-      },
-      getUsers(e) {
-        this.settingGroupData.user_ids = this.makeSplitedArray(e.target.value);
-      },
-      getChannels(e) {
-        this.groupChannels = this.makeSplitedArray(e.target.value);
       },
       createFormData(file) {
         let formData = new FormData();
