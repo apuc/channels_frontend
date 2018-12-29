@@ -42,9 +42,9 @@
   .home {
     display: flex;
     width: 100%;
-    overflow: hidden;
-    min-height: 600px;
-    height: 100vh;
+    /*overflow: hidden;*/
+    height: 600px;
+    /*height: 100vh;*/
   }
 
   .main {

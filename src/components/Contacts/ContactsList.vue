@@ -1,14 +1,13 @@
 <template>
-  <div v-if="userContacts.length === 0">
+  <div class="mt-4" v-if="userContacts.length === 0">
     <p>Ваш список контактов пуст, вы можете найти своих друзей:</p>
 
-    <ModalSearchUsersForm/>
-    <ModalSearchUsersResult v-if="searchResultsUsers"/>
+    <ContactsSearchUsers />
   </div>
 
   <div class="mt-4" v-else>
     <div class="form-group">
-      <label for="user">Поиск по пользователям канала</label>
+      <label for="user">Поиск по контактам</label>
       <input id="user"
              class="form-control"
              type="text"
@@ -20,7 +19,7 @@
 
     <ul class="users-list">
       <li class="user"
-          v-for="(user, index) in userContacts"
+          v-for="(user, index) in userContactsSearch"
           :key="user.email">
         <div>
           <div class="user-info">
@@ -53,23 +52,33 @@
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
-  import ModalSearchUsersForm from "./ContactsSearchUsersForm";
-  import ModalSearchUsersResult from "./ContactsSearchUsersResult";
+  import ContactsSearchUsersForm from "./ContactsSearchUsersForm";
+  import ContactsSearchUsersResult from "./ContactsSearchUsersResult";
+  import ContactsSearchUsers from "./ContactsSearchUsers";
+  import Contacts from "./Contacts";
 
   export default {
-    name: "ModalUserContactsList",
-    components: {ModalSearchUsersResult, ModalSearchUsersForm},
+    name: "ContactsList",
+    components: {Contacts, ContactsSearchUsersResult, ContactsSearchUsersForm, ContactsSearchUsers},
+    data() {
+      return {
+        searchValue: '',
+        noUsers: false,
+      }
+    },
     computed: {
       ...mapGetters({
         userData: 'user/info',
         userContacts: 'user/userContacts',
-        searchResultsUsers: 'user/searchResultsUsers'
+        userContactsSearch: 'user/userContactsSearch',
+        searchResultsUsers: 'user/searchResultsUsers',
       }),
     },
     methods: {
       ...mapMutations({
         setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
         removeUserRequestFromStore: 'user/REMOVE_USER_REQUEST_FROM_STORE',
+        setUsersContactsSearch: 'user/SET_USER_CONTACTS_SEARCH',
         deleteModal: 'modal/DELETE_MODAL',
       }),
       ...mapActions({
@@ -86,6 +95,29 @@
           contact_id: id
         })
           .then(() => this.removeUserRequestFromStore(id));
+      },
+      findUser(value) {
+        let currentUserName = '';
+        let searchValue = value.toLowerCase();
+        let searchResult = [];
+        for (let i = 0; i < this.userContacts.length; i++) {
+          currentUserName = this.userContacts[i].username.toLowerCase();
+          if (currentUserName.includes(searchValue)) {
+            searchResult.push(this.userContacts[i]);
+          }
+        }
+        return searchResult;
+      },
+      searchUser(value) {
+        this.searchValue = value;
+        const searchResult = this.findUser(value);
+        this.noUsers = searchResult.length === 0;
+
+        if (value) {
+          this.setUsersContactsSearch(searchResult);
+        } else {
+          this.setUsersContactsSearch(this.userContacts);
+        }
       }
     },
   }
@@ -93,7 +125,6 @@
 
 <style scoped>
   .users-list {
-    max-height: 300px;
     margin: 0;
     margin-top: 10px;
     padding: 0;

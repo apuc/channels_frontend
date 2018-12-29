@@ -53,12 +53,20 @@ export default new Router({
         {path: '', component: ContactsList},
         {path: 'search', component: ContactsSearchUsers},
         {path: 'requests', component: ContactsFriendshipRequests}
-      ]
+      ],
+      beforeEnter: (to, from, next) => {
+        store.commit('user/SET_USER_POSITION', 'contacts');
+        next();
+      }
     },
     {
       path: '/not-found',
       name: 'not_found',
       component: NotFoundComponent,
+      beforeEnter: (to, from, next) => {
+        store.commit('user/SET_USER_POSITION', 'not-found');
+        next();
+      }
     },
     {
       path: '/group/:id',
@@ -66,6 +74,10 @@ export default new Router({
       meta: {
         layout: 'main'
       },
+      beforeEnter: (to, from, next) => {
+        store.commit('user/SET_USER_POSITION', 'group');
+        next();
+      }
     },
     {
       path: '/user/:user_id',
@@ -74,6 +86,10 @@ export default new Router({
       meta: {
         layout: 'main'
       },
+      beforeEnter: (to, from, next) => {
+        store.commit('user/SET_USER_POSITION', 'user');
+        next();
+      }
     },
     {
       path: '/:id',
@@ -81,6 +97,10 @@ export default new Router({
       meta: {
         layout: 'main'
       },
+      beforeEnter: (to, from, next) => {
+        store.commit('user/SET_USER_POSITION', 'channel');
+        next();
+      }
     },
   ],
 });

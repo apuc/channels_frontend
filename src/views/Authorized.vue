@@ -24,9 +24,9 @@
   .home {
     display: flex;
     width: 100%;
-    overflow: hidden;
-    min-height: 600px;
-    height: 100vh;
+    /*overflow: hidden;*/
+    min-height: 100vh;
+    /*height: 100vh;*/
   }
 
   .main {

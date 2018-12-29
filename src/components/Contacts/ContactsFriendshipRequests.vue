@@ -77,6 +77,9 @@
             this.removeUserRequestFromStore(user.user_id);
             this.getUserFriendshipRequests();
           });
+        if (this.friendshipRequests.length === 0) {
+          this.$router.push({path: '/contacts'})
+        }
         this.addUserToContacts(user);
       },
       rejectRequest(id) {
@@ -85,6 +88,9 @@
           contact_id: id
         })
           .then(() => this.removeUserRequestFromStore(id));
+        if (this.friendshipRequests.length === 0) {
+          this.$router.push({path: '/contacts'})
+        }
       }
     }
   }
@@ -92,7 +98,6 @@
 
 <style scoped>
   .users-list {
-    max-height: 300px;
     margin: 0;
     margin-top: 10px;
     padding: 0;

@@ -8,21 +8,19 @@ export default {
       const pathnameArray = location.pathname.split('/');
       const slug = pathnameArray[pathnameArray.length - 1];
 
-      console.log(slug);
-
-      if (pathnameArray.indexOf('group') !== -1) {
+      if (pathnameArray[1] === 'group') {
         this.$_authGettingData_getGroupData(slug);
       }
-      else if (pathnameArray.indexOf('user') !== -1) {
+      else if (pathnameArray[1] === 'user') {
         this.$_authGettingData_getUserData(slug);
       }
-      else if (slug.length > 0 && (slug !== 'not-found' || pathnameArray.indexOf('contacts') !== -1)) {
-        this.$_authGettingData_getChannelData(slug);
+      else if (slug.length > 0 && slug !== 'not-found') {
+        this.$_authGettingData_getChannelData(pathnameArray, slug);
       } else {
         router.push('/login');
       }
     },
-    async $_authGettingData_getChannelData(slug) {
+    async $_authGettingData_getChannelData(pathnameArray, slug) {
       const currentChannel = store.getters['channels/channels'].find(channel => channel.slug === slug);
       store.commit('user/SET_USER_POSITION', 'channel');
 
@@ -31,7 +29,7 @@ export default {
         store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id).then(data => store.commit('channels/SET_CURRENT_CHANNEL_USERS', data));
         store.dispatch('messages/GET_MESSAGES');
       } else {
-        if (slug !== 'login' && slug !== 'registration') {
+        if (slug !== 'login' && slug !== 'registration' && pathnameArray[1] === 'user') {
           await store.dispatch('channels/GET_CHANNEL_DATA', slug);
           const currentChannel = store.getters['channels/currentChannelData'];
           if (!currentChannel.private) {

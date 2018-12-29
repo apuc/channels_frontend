@@ -34,8 +34,8 @@ export default {
    * Get channels and groups
    */
   'GET_NAV': async ({dispatch}) => {
-    dispatch('groups/GET_USER_GROUPS', null, {root: true});
-    dispatch('channels/GET_USER_CHANNELS', null, {root: true});
+    await dispatch('groups/GET_USER_GROUPS', null, {root: true});
+    await dispatch('channels/GET_USER_CHANNELS', null, {root: true});
   },
   /**
    * Get user contacts
@@ -45,6 +45,7 @@ export default {
       .then(
         async res => {
           commit('SET_USER_CONTACTS', res.body.data);
+          commit('SET_USER_CONTACTS_SEARCH', res.body.data);
         },
         err => console.log('err login', err)
       )

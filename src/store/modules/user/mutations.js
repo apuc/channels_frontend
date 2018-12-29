@@ -22,7 +22,10 @@ export default {
     state.userPosition = position;
   },
   'SET_SEARCH_RESULTS_USERS': (state, results) => {
-    state.searchResults.users = results;
+    for (let i = 0; i < results.length; i++) {
+      state.searchResults.users.push(results[i]);
+    }
+    // state.searchResults.users.push(users);
   },
   'SET_SEARCH_RESULTS_PAGES': (state, results) => {
     state.searchResults.pages = results.last_page;
@@ -46,6 +49,9 @@ export default {
   },
   'ADD_USER_TO_CONTACTS': (state, user) => {
     state.userContacts.push(user);
+  },
+  'SET_USER_CONTACTS_SEARCH': (state, users) => {
+    state.userContactsSearch = users;
   },
   'SET_DEFAULT_USER_STATE': state => {
     state.info = {

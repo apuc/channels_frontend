@@ -23,6 +23,18 @@ Vue.component('v-icon', Icon);
 Vue.component('main-layout', MainLayout);
 Vue.component('auth-layout', AuthLayout);
 
+Vue.directive('scroll', {
+  inserted(el, binding) {
+    let f = function (evt) {
+      if (binding.value(evt, el)) {
+        window.removeEventListener('scroll', f);
+      }
+    };
+
+    window.addEventListener('scroll', f);
+  }
+});
+
 const token = store.getters["auth/token"];
 if (token) {
   Vue.http.headers.common['Authorization'] = `Bearer ${token}`;

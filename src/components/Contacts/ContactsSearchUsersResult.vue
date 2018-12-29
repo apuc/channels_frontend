@@ -1,5 +1,5 @@
 <template>
-  <ul class="users-list">
+  <ul class="users-list" ref="usersList">
     <li class="user"
         v-for="(user, index) in searchResultsUsers"
         :key="user.email">
@@ -33,10 +33,22 @@
 
   export default {
     name: "ContactsSearchUsersResult",
+    data() {
+      return {
+        options: {
+          rootMargin: '0px',
+          threshold: 1.0
+        },
+        usersList: this.$refs.usersList,
+        observer: {}
+      }
+    },
     computed: {
       ...mapGetters({
         userData: 'user/info',
-        searchResultsUsers: 'user/searchResultsUsers'
+        searchResultsUsers: 'user/searchResultsUsers',
+        searchResultsPages: 'user/searchResultsPages',
+        searchResultsCurrentPage: 'user/searchResultsCurrentPage',
       })
     },
     methods: {
@@ -48,6 +60,7 @@
       ...mapActions({
         sendFriendshipRequest: 'user/SEND_FRIENDSHIP_REQUEST',
         getCurrentUserData: 'user/GET_USER_DATA',
+        findUsers: 'user/FIND_USERS',
       }),
       goToProfile(id) {
         this.getCurrentUserData(id);
@@ -56,7 +69,19 @@
       makeFriendshipRequest(target, data) {
         this.sendFriendshipRequest({user_id: data.user_id, contact_id: data.contact_id});
         target.remove();
+      },
+      observerMethod(entries, observer) {
+        if (this.searchResultsCurrentPage <= this.searchResultsPages) {
+          this.findUsers({search_request: '', page: this.searchResultsCurrentPage + 1})
+        }
       }
+    },
+    mounted() {
+      this.observer = new IntersectionObserver(this.observerMethod, this.options);
+      this.usersList = this.$refs.usersList;
+      const users = this.usersList.querySelectorAll('.user');
+      const lastUser = users[users.length - 1];
+      this.observer.observe(lastUser);
     }
   }
 </script>

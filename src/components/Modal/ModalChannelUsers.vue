@@ -62,7 +62,6 @@
     },
     methods: {
       ...mapMutations({
-        changeChannelUserSearchStatus:'channels/CHANGE_CHANNEL_USER_SEARCH_STATUS',
         setChannelUserSearchResults:'channels/SET_CHANNEL_USER_SEARCH_RESULTS',
       }),
       ...mapActions({
@@ -96,7 +95,6 @@
         } else {
           this.setChannelUserSearchResults(this.currentChannelUsers);
         }
-
       }
     },
     mounted() {

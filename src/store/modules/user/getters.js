@@ -9,5 +9,6 @@ export default {
   searchResultsPages: state => state.searchResults.pages,
   searchResultsCurrentPage: state => state.searchResults.currentPage,
   userContacts: state => state.userContacts,
+  userContactsSearch: state => state.userContactsSearch,
   friendshipRequests: state => state.friendshipRequests,
 };

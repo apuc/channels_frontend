@@ -1,97 +1,99 @@
 <template>
   <aside class="nav d-flex flex-column col-md-2 p-0 bg-light">
-    <header class="nav-header">
-      <div @mouseover="addMenuVisible = true" @mouseout="addMenuVisible = false">
-        <button class="addButton" type="button">
-          <v-icon scale="1" class="icon" name="plus-circle"/>
-        </button>
+    <div class="wrap">
+      <header class="nav-header">
+        <div @mouseover="addMenuVisible = true" @mouseout="addMenuVisible = false">
+          <button class="addButton" type="button">
+            <v-icon scale="1" class="icon" name="plus-circle"/>
+          </button>
 
-        <ul class="dropdown-settings" v-if="addMenuVisible">
-          <li class="dropdown-settings__el">
-            <router-link class="btn btn-link" to="contacts">Контакты</router-link>
-          </li>
+          <ul class="dropdown-settings" v-if="addMenuVisible">
+            <li class="dropdown-settings__el">
+              <router-link class="btn btn-link" to="contacts">Контакты</router-link>
+            </li>
 
-          <li v-for="(elem, index) in info" class="dropdown-settings__el" :key="index">
-            <button type="button" class="btn btn-link" @click="openModal($event, elem.modalTrigger)">{{elem.name}}
-            </button>
-          </li>
+            <li v-for="(elem, index) in info" class="dropdown-settings__el" :key="index">
+              <button type="button" class="btn btn-link" @click="openModal($event, elem.modalTrigger)">{{elem.name}}
+              </button>
+            </li>
 
-          <li class="dropdown-settings__el">
-            <router-link class="btn btn-link" to="/contacts/search" @click="logout">Поиск</router-link>
-          </li>
+            <li class="dropdown-settings__el">
+              <router-link class="btn btn-link" to="/contacts/search" @click="logout">Поиск</router-link>
+            </li>
 
-          <li class="dropdown-settings__el">
-            <button class="btn btn-link" type="button" @click="logout">Exit</button>
-          </li>
-        </ul>
-      </div>
+            <li class="dropdown-settings__el">
+              <button class="btn btn-link" type="button" @click="logout">Exit</button>
+            </li>
+          </ul>
+        </div>
 
 
-      <div class="user">
-        <div class="placeholder placeholder_user" v-if="isUserLoading"></div>
+        <div class="user">
+          <div class="placeholder placeholder_user" v-if="isUserLoading"></div>
 
-        <button type="button" class="btn btn-link" @click="openModal($event, 'ModalEditProfile')" v-else>
-          <img class="user__avatar-img"
-               :src="userData.avatar ? userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
-               alt="">
-          {{userData.username}}
-        </button>
+          <button type="button" class="btn btn-link" @click="openModal($event, 'ModalEditProfile')" v-else>
+            <img class="user__avatar-img"
+                 :src="userData.avatar ? userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
+                 alt="">
+            {{userData.username}}
+          </button>
 
-        <button type="button"
-                class="requests"
-                v-if="friendshipRequests.length > 0"
-                @click="openRequests"
+          <router-link to="/contacts/requests"
+                  class="requests"
+                  v-if="friendshipRequests.length > 0"
+                  @click="openRequests"
+          >
+            {{friendshipRequests.length}}
+          </router-link>
+        </div>
+
+        <div class="filters" v-if="channels.length > 0 && groups.length > 0">
+          <button type="button" class="btn btn-primary filters__filter" data-filter="all" @click="navFilter">All</button>
+
+          <button type="button"
+                  class="btn btn-primary filters__filter"
+                  data-filter="channel"
+                  @click="navFilter"
+          >
+            <v-icon scale="1" class="icon" name="bullhorn"/>
+          </button>
+
+          <button type="button"
+                  class="btn btn-primary filters__filter"
+                  data-filter="group"
+                  @click="navFilter"
+          >
+            <v-icon scale="1" class="icon" name="folder"/>
+          </button>
+        </div>
+      </header>
+
+      <nav>
+        <drag v-for="(channel, index) in channels"
+              :transfer-data="channel.channel_id"
+              :key="channel.channel_id"
         >
-          {{friendshipRequests.length}}
-        </button>
-      </div>
+          <NavSectionChannels v-if="filters.channelsVisible && !isChannelsLoading"
+                              title="Каналы"
+                              :type="'channel'"
+                              :data="channel"
+          />
+        </drag>
 
-      <div class="filters" v-if="channels.length > 0 && groups.length > 0">
-        <button type="button" class="btn btn-primary filters__filter" data-filter="all" @click="navFilter">All</button>
-
-        <button type="button"
-                class="btn btn-primary filters__filter"
-                data-filter="channel"
-                @click="navFilter"
+        <drop v-for="(group, index) in groups"
+              @drop="handleDrop(group.group_id, ...arguments)"
+              :key="group.group_id"
         >
-          <v-icon scale="1" class="icon" name="bullhorn"/>
-        </button>
+          <NavSectionGroups v-if="filters.groupsVisible && !isGroupsLoading"
+                            title="Группы"
+                            :type="'group'"
+                            :data="group"
+          />
+        </drop>
+      </nav>
 
-        <button type="button"
-                class="btn btn-primary filters__filter"
-                data-filter="group"
-                @click="navFilter"
-        >
-          <v-icon scale="1" class="icon" name="folder"/>
-        </button>
-      </div>
-    </header>
-
-    <nav>
-      <drag v-for="(channel, index) in channels"
-            :transfer-data="channel.channel_id"
-            :key="channel.channel_id"
-      >
-        <NavSectionChannels v-if="filters.channelsVisible && !isChannelsLoading"
-                    title="Каналы"
-                    :type="'channel'"
-                    :data="channel"
-        />
-      </drag>
-
-      <drop v-for="(group, index) in groups"
-            @drop="handleDrop(group.group_id, ...arguments)"
-            :key="group.group_id"
-      >
-        <NavSectionGroups v-if="filters.groupsVisible && !isGroupsLoading"
-                    title="Группы"
-                    :type="'group'"
-                    :data="group"
-        />
-      </drop>
-    </nav>
-
-    <div class="placeholder" v-if="isChannelsLoading || isGroupsLoading"></div>
+      <div class="placeholder" v-if="isChannelsLoading || isGroupsLoading"></div>
+    </div>
   </aside>
 </template>
 
@@ -224,6 +226,16 @@
     }
   }
 
+  .nav {
+    flex-wrap: nowrap !important;
+    /*overflow: auto;*/
+  }
+
+  .wrap {
+    position: sticky;
+    top: 0;
+  }
+
   .nav-header {
     position: relative;
     z-index: 2;
@@ -232,12 +244,6 @@
     align-items: center;
     height: 50px;
     padding: 0 5px;
-  }
-
-  .nav {
-    flex-wrap: nowrap !important;
-    height: 100%;
-    overflow: auto;
   }
 
   .addButton {
@@ -311,6 +317,9 @@
   }
 
   .requests {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     width: 22px;
     padding: 2px;
 
@@ -321,6 +330,10 @@
     border: none;
     border-radius: 50%;
     cursor: pointer;
+  }
+
+  .requests:hover {
+    text-decoration: none;
   }
 
   .drop-zone {
