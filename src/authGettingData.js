@@ -29,7 +29,7 @@ export default {
         store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id).then(data => store.commit('channels/SET_CURRENT_CHANNEL_USERS', data));
         store.dispatch('messages/GET_MESSAGES');
       } else {
-        if (slug !== 'login' && slug !== 'registration' && pathnameArray[1] === 'user') {
+        if (slug !== 'login' && slug !== 'registration' && pathnameArray[1] !== 'user') {
           await store.dispatch('channels/GET_CHANNEL_DATA', slug);
           const currentChannel = store.getters['channels/currentChannelData'];
           if (!currentChannel.private) {

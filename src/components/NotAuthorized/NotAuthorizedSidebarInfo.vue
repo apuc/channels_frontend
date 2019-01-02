@@ -1,5 +1,5 @@
 <template>
-  <aside class="col-md-2 p-3 bg-light">
+  <aside class="p-3 bg-light">
     <div v-if="userPosition === 'channel'">
       <img :src="channel.avatar ? channel.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
 
@@ -48,7 +48,8 @@
     padding: 30px;
 
     box-sizing: border-box;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .info {

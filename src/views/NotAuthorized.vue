@@ -45,6 +45,7 @@
 
   .main {
     display: grid;
-    height: 100%;
+    height: 100vh;
+    overflow-y: auto;
   }
 </style>

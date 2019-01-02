@@ -228,7 +228,9 @@
 
   .nav {
     flex-wrap: nowrap !important;
-    /*overflow: auto;*/
+    max-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .wrap {

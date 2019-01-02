@@ -80,6 +80,7 @@
 
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
   }
 
   .chat__drag-zone {

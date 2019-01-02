@@ -1,5 +1,5 @@
 <template>
-  <aside class="nav d-flex flex-column col-md-2 p-3 bg-light">
+  <aside class="nav d-flex flex-column p-3 bg-light">
     <transition name="fade" mode="out-in">
       <component :is="`NotAuthorized${currentComponent}`" v-on:switch="switchBetweenLoginAndReg"></component>
     </transition>

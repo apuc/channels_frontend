@@ -107,16 +107,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /*max-height: 100vh;*/
+    max-height: 100vh;
     padding: 30px;
 
     box-sizing: border-box;
-    /*overflow: auto;*/
   }
 
   .wrap {
     position: sticky;
     top: 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   img {

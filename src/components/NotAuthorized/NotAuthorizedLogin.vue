@@ -1,180 +1,175 @@
 <template>
   <form @submit.prevent="login">
-
-    <div class="form-group" v-for="(field, index) in data">
+    <div class="form-group" v-for="(field, index) in data" :key="field.name">
       <label :for="field.name">{{field.label}}</label>
-      <input :type="field.type"
-             class="form-control"
-             :class="field.class"
-             :id="field.name"
-             :value="field.value"
-             @input="test($event, index)"
-      />
-
-      <span :class="!field.isActive || field.isValid ? 'hidden' : 'invalid'">
-              {{field.errorMessage}}
-            </span>
+      <input
+        :type="field.type"
+        class="form-control"
+        :class="field.class"
+        :id="field.name"
+        :value="field.value"
+        @input="test($event, index)"
+      >
+      
+      <span :class="!field.isActive || field.isValid ? 'hidden' : 'invalid'">{{field.errorMessage}}</span>
     </div>
 
     <p v-if="isWrongData" class="wrong-data">Неверная пара логин пароль</p>
 
     <div class="form-check">
-      <input id="alien-computer"
-             class="form-check-input"
-             type="checkbox"
-             v-model="isSession"
-      >
+      <input id="alien-computer" class="form-check-input" type="checkbox" v-model="isSession">
       <label for="alien-computer">Чужой компьютер?</label>
     </div>
 
     <div class="d-flex justify-content-between">
       <button type="submit" class="btn btn-primary flex-fill mr-3">Войти</button>
-
-      <button class="btn btn-warning"
-              type="button"
-              @click="switchBetweenLoginAndReg"
-      >
-        Регистрация
-      </button>
+      
+      <button class="btn btn-warning" type="button" @click="switchBetweenLoginAndReg">Регистрация</button>
     </div>
-
   </form>
 </template>
 
 <script>
-  import {mapGetters, mapMutations, mapActions} from 'vuex';
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import authGettingData from "../../authGettingData";
 
-  export default {
-    name: "Login",
-    data() {
-      return {
-        data: {
-          email: {
-            label: 'Email',
-            name: 'email',
-            type: 'email',
-            value: '',
-            pattern: new RegExp('^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$'),
-            class: '',
-            errorMessage: 'Введите корректный email.',
-            isActive: false,
-            isValid: false,
-          },
-          password: {
-            label: 'Пароль (пароль должен содержать не менее 8 символов, одна заглавная, одна строчная буквы, цифра и спец. символ)',
-            name: 'password',
-            type: 'password',
-            value: '',
-            // pattern: new RegExp('(?=.*[a-z])(?=.*[0-9])(?=.{5,})'),
-            pattern: new RegExp('.'),
-            class: '',
-            errorMessage: 'Введите корректный пароль.',
-            isActive: false,
-            isValid: false,
-          },
+export default {
+  name: "Login",
+  mixins: [authGettingData],
+  data() {
+    return {
+      data: {
+        email: {
+          label: "Email",
+          name: "email",
+          type: "email",
+          value: "",
+          pattern: new RegExp(
+            '^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$'
+          ),
+          class: "",
+          errorMessage: "Введите корректный email.",
+          isActive: false,
+          isValid: false
         },
-        isSession: false,
+        password: {
+          label:
+            "Пароль (пароль должен содержать не менее 8 символов, одна заглавная, одна строчная буквы, цифра и спец. символ)",
+          name: "password",
+          type: "password",
+          value: "",
+          // pattern: new RegExp('(?=.*[a-z])(?=.*[0-9])(?=.{5,})'),
+          pattern: new RegExp("."),
+          class: "",
+          errorMessage: "Введите корректный пароль.",
+          isActive: false,
+          isValid: false
+        }
+      },
+      isSession: false
+    };
+  },
+  computed: {
+    ...mapGetters({
+      authStatus: "auth/gettingTokenAndData",
+      isWrongData: "auth/isWrongData"
+    })
+  },
+  methods: {
+    ...mapMutations({
+      setSessionStatus: "auth/SET_SESSION_STATUS"
+    }),
+    ...mapActions({
+      getToken: "auth/GET_TOKEN",
+      getUserMe: "user/GET_USER_ME",
+      getNav: "user/GET_NAV"
+    }),
+    test(e, index) {
+      const value = e.target.value;
+      this.data[index].value = value;
+      this.data[index].isActive = true;
+
+      this.data[index].isValid = this.data[index].pattern.test(value);
+
+      if (this.data[index].isValid) {
+        this.data[index].class = "valid";
+      } else {
+        this.data[index].class = "invalid";
       }
     },
-    computed: {
-      ...mapGetters({
-        authStatus: 'auth/gettingTokenAndData',
-        isWrongData: 'auth/isWrongData',
-      })
-    },
-    methods: {
-      ...mapMutations({
-        setSessionStatus: 'auth/SET_SESSION_STATUS',
-      }),
-      ...mapActions({
-        getToken: 'auth/GET_TOKEN',
-        getUserMe: 'user/GET_USER_ME',
-        getNav: 'user/GET_NAV',
-      }),
-      test(e, index) {
-        const value = e.target.value;
-        this.data[index].value = value;
-        this.data[index].isActive = true;
-
-        this.data[index].isValid = this.data[index].pattern.test(value);
-
-        if (this.data[index].isValid) {
-          this.data[index].class = 'valid';
-        } else {
-          this.data[index].class = 'invalid';
-        }
-      },
-      async login() {
-        if (this.data.password.isValid && this.data.email.isValid) {
-          localStorage.setItem('isSession', this.isSession.toString());
-          await this.getToken({
-            grant_type: 'password',
-            client_id: process.env.VUE_APP_CLIENT_ID,
-            client_secret: process.env.VUE_APP_CLIENT_SECRET,
-            username: this.data.email.value,
-            password: this.data.password.value
-          })
-            .then(
-              async () => {
-                this.$router.push('/');
-              });
-        } else {
-          for (let key in this.data) {
-            if (!this.data[key].isValid) {
-              this.data[key].isActive = true;
-              this.data[key].class = 'invalid';
-            }
+    async login() {
+      if (this.data.password.isValid && this.data.email.isValid) {
+        localStorage.setItem("isSession", this.isSession.toString());
+        await this.getToken({
+          grant_type: "password",
+          client_id: process.env.VUE_APP_CLIENT_ID,
+          client_secret: process.env.VUE_APP_CLIENT_SECRET,
+          username: this.data.email.value,
+          password: this.data.password.value
+        }).then(async () => {
+          this.getUserMe().then(() => {
+            this.getNav();
+            this.$_authGettingData_gettingData();
+          });
+          // this.$router.push('/');
+        });
+      } else {
+        for (let key in this.data) {
+          if (!this.data[key].isValid) {
+            this.data[key].isActive = true;
+            this.data[key].class = "invalid";
           }
         }
-      },
-      switchBetweenLoginAndReg() {
-        this.$emit('switch', 'Registration')
-      },
+      }
+    },
+    switchBetweenLoginAndReg() {
+      this.$emit("switch", "Registration");
     }
   }
+};
 </script>
 
 <style scoped>
-  .form-group {
-    position: relative;
-    z-index: 1;
+.form-group {
+  position: relative;
+  z-index: 1;
 
-    padding-bottom: 10px;
-  }
+  padding-bottom: 10px;
+}
 
-  .valid {
-    border-color: rgba(0, 178, 86, 0.3) !important;
-    box-shadow: 0 0 0.2rem rgba(0, 178, 86, 0.6) !important;
-  }
+.valid {
+  border-color: rgba(0, 178, 86, 0.3) !important;
+  box-shadow: 0 0 0.2rem rgba(0, 178, 86, 0.6) !important;
+}
 
-  .invalid {
-    border-color: rgba(255, 0, 0, 0.3) !important;
-    box-shadow: 0 0 0.2rem rgba(255, 0, 0, 0.6) !important;
-  }
+.invalid {
+  border-color: rgba(255, 0, 0, 0.3) !important;
+  box-shadow: 0 0 0.2rem rgba(255, 0, 0, 0.6) !important;
+}
 
-  span.invalid {
-    position: absolute;
-    bottom: -5px;
-    right: 5px;
-    z-index: 1;
+span.invalid {
+  position: absolute;
+  bottom: -5px;
+  right: 5px;
+  z-index: 1;
 
-    padding: 2px 5px;
-    padding-bottom: 3px;
+  padding: 2px 5px;
+  padding-bottom: 3px;
 
-    font-size: 10px;
-    line-height: 1;
-    color: white;
+  font-size: 10px;
+  line-height: 1;
+  color: white;
 
-    background-color: rgba(255, 0, 0, 0.6);
-    border-bottom-right-radius: 2px;
-    border-bottom-left-radius: 2px;
-  }
+  background-color: rgba(255, 0, 0, 0.6);
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
 
-  .hidden {
-    display: none;
-  }
+.hidden {
+  display: none;
+}
 
-  .wrong-data {
-    color: red;
-  }
+.wrong-data {
+  color: red;
+}
 </style>
