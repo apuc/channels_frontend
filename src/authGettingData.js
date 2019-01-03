@@ -1,6 +1,8 @@
 import store from "./store/store";
 import router from "./routers/router";
-import {ioGetUserStatus} from './services/socket/status.service';
+import {
+  ioGetUserStatus
+} from './services/socket/status.service';
 
 export default {
   methods: {
@@ -10,11 +12,9 @@ export default {
 
       if (pathnameArray[1] === 'group') {
         this.$_authGettingData_getGroupData(slug);
-      }
-      else if (pathnameArray[1] === 'user') {
+      } else if (pathnameArray[1] === 'user') {
         this.$_authGettingData_getUserData(slug);
-      }
-      else if (slug.length > 0 && slug !== 'not-found') {
+      } else if (slug.length > 0 && slug !== 'not-found') {
         this.$_authGettingData_getChannelData(pathnameArray, slug);
       } else {
         router.push('/login');
@@ -26,14 +26,20 @@ export default {
 
       if (currentChannel) {
         store.commit('channels/SET_CURRENT_CHANNEL_DATA', currentChannel);
-        store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id).then(data => store.commit('channels/SET_CURRENT_CHANNEL_USERS', data));
+        store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id).then(data => {
+          store.commit('channels/SET_CURRENT_CHANNEL_USERS', data);
+          store.commit('channels/SET_CHANNEL_USER_SEARCH_RESULTS', data);
+        });
         store.dispatch('messages/GET_MESSAGES');
       } else {
         if (slug !== 'login' && slug !== 'registration' && pathnameArray[1] !== 'user') {
           await store.dispatch('channels/GET_CHANNEL_DATA', slug);
           const currentChannel = store.getters['channels/currentChannelData'];
           if (!currentChannel.private) {
-            // store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id);
+            // store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id).then(data => {
+              // store.commit('channels/SET_CURRENT_CHANNEL_USERS', data);
+              // store.commit('channels/SET_CHANNEL_USER_SEARCH_RESULTS', data);
+            // });
             // store.dispatch('messages/GET_MESSAGES');
           }
         }

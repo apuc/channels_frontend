@@ -1,5 +1,16 @@
 <template>
   <div class="modal-inside">
+    <header class="form-group">
+      <label for="user">Добавить пользователя</label>
+      <input id="user"
+             class="form-control"
+             type="text"
+             ref="searchInput"
+             :value="searchValue"
+             @input="searchUser($event.target.value)"
+      >
+    </header>
+
     <ul class="users-list">
       <li class="user"
           v-for="(user, index) in contactsToAdd"
@@ -38,6 +49,13 @@
 
   export default {
     name: "ModalChannelAddUsers",
+    data() {
+      return {
+        searchValue: '',
+        isUserInChannel: false,
+        noUsers: false,
+      }
+    },
     computed: {
       ...mapGetters({
         contactsToAdd: 'channels/contactsToAdd',
@@ -50,10 +68,36 @@
       ...mapActions({
         addUser: 'channels/ADD_USER',
       }),
+      findUser(value) {
+        let currentUserName = '';
+        let searchValue = value.toLowerCase();
+        let searchResult = [];
+        for (let i = 0; i < this.currentChannelUsers.length; i++) {
+          currentUserName = this.currentChannelUsers[i].username.toLowerCase();
+          if (currentUserName.includes(searchValue)) {
+            searchResult.push(this.currentChannelUsers[i]);
+          }
+        }
+        return searchResult;
+      },
+      searchUser(value) {
+        this.searchValue = value;
+        const searchResult = this.findUser(value);
+        this.noUsers = searchResult.length === 0;
+
+        if (value) {
+          this.setChannelUserSearchResults(searchResult);
+        } else {
+          this.setChannelUserSearchResults(this.currentChannelUsers);
+        }
+      },
       addUserToChannel(user_id) {
         this.addUser(user_id)
           .then(() => this.removeUserFromContactsToAdd(user_id));
       }
+    },
+    mounted() {
+      this.$refs.searchInput.focus();
     },
   }
 </script>

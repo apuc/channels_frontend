@@ -29,7 +29,7 @@
 
       <p class="user-exist" v-if="isUserInChannel">This user exist.</p>
     </div>
-
+    
     <p v-if="noUsers">В данном канале нет пользователя с таким именем.</p>
     <ModalChannelUsersPreview v-else/>
   </div>

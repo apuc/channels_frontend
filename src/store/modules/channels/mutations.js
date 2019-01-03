@@ -18,7 +18,7 @@ export default {
     state.channelData.status = status;
   },
   'SET_CHANNEL_USER_SEARCH_RESULTS': (status, users) => {
-    status.searchUsers = users;
+    status.currentChannelData.searchUsers = users;
   },
   /**
    * Добавление id'шников пользователей для создания/редактирования канала
@@ -68,10 +68,10 @@ export default {
     state.channelToDelete = id;
   },
   'SET_CURRENT_CHANNEL_USERS': (state, users) => {
-    state.currentChannelUsers = users;
+    state.currentChannelData.currentChannelUsers = users;
   },
   'REMOVE_CURRENT_CHANNEL_USERS_FROM_STORE': state => {
-    state.currentChannelUsers = []
+    state.currentChannelData.currentChannelUsers = []
   },
   'SET_CHANNELS_LOADING_FLAG': state => {
     state.isChannelsLoading = !state.isChannelsLoading;

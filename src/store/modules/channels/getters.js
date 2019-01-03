@@ -9,6 +9,6 @@ export default {
   isChannelUsersLoading: state => state.isChannelUsersLoading,
   imageUploadPersentage: state => state.imageUploadPersentage,
   channelUsers: state => state.channelUsers,
-  contactsToAdd: state => state.contactsToAdd,
-  channelSearchUsers: state => state.searchUsers,
+  contactsToAdd: state => state.currentChannelData.contactsToAdd,
+  channelSearchUsers: state => state.currentChannelData.searchUsers,
 };
