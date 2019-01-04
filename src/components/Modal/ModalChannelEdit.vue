@@ -220,7 +220,6 @@
       ...mapActions({
         editChannel: 'channels/EDIT_CHANNEL',
         createChannelAvatar: 'channels/CREATE_CHANNEL_AVATAR',
-        getChannelUsers: 'channels/GET_CHANNEL_USERS',
       }),
       async onSubmit() {
         this.setChannelUserIds(this.usersToAdd);

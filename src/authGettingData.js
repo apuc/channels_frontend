@@ -26,19 +26,25 @@ export default {
 
       if (currentChannel) {
         store.commit('channels/SET_CURRENT_CHANNEL_DATA', currentChannel);
-        store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id).then(data => {
+
+        store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id).then( async data => {
           store.commit('channels/SET_CURRENT_CHANNEL_USERS', data);
           store.commit('channels/SET_CHANNEL_USER_SEARCH_RESULTS', data);
+          await store.commit('channels/SET_CONTACTS_FREE_TO_ADD', store.getters['user/userContacts']);
+          store.commit('channels/SET_CONTACTS_FREE_TO_ADD_SEARCH', store.getters['channels/contactsToAdd']);
         });
         store.dispatch('messages/GET_MESSAGES');
       } else {
         if (slug !== 'login' && slug !== 'registration' && pathnameArray[1] !== 'user') {
           await store.dispatch('channels/GET_CHANNEL_DATA', slug);
           const currentChannel = store.getters['channels/currentChannelData'];
+          
           if (!currentChannel.private) {
             // store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id).then(data => {
               // store.commit('channels/SET_CURRENT_CHANNEL_USERS', data);
               // store.commit('channels/SET_CHANNEL_USER_SEARCH_RESULTS', data);
+              // await store.commit('channels/SET_CONTACTS_FREE_TO_ADD', store.getters('user/userContacts'));
+              // store.commit('channels/SET_CONTACTS_FREE_TO_ADD_SEARCH', store.getters('channels/contactsToAdd'))
             // });
             // store.dispatch('messages/GET_MESSAGES');
           }

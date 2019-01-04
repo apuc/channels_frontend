@@ -54,8 +54,8 @@
           .then(async () => {
             if (this.authStatus) {
               if (this.currentDateInSeconds < this.refreshTokenExpiresIn) {
-                this.getUserContacts();
                 this.getUserFriendshipRequests();
+                await this.getUserContacts();
                 await this.getNav().then(() => this.$_authGettingData_gettingData());
                 this.gettingUserData();
               }

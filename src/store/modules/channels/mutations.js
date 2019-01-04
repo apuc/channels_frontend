@@ -18,7 +18,7 @@ export default {
     state.channelData.status = status;
   },
   'SET_CHANNEL_USER_SEARCH_RESULTS': (status, users) => {
-    status.currentChannelData.searchUsers = users;
+    status.currentChannelUsers.searchUsers = users;
   },
   /**
    * Добавление id'шников пользователей для создания/редактирования канала
@@ -55,23 +55,27 @@ export default {
     state.channelUsers = users;
   },
   'SET_CONTACTS_FREE_TO_ADD': (state, contacts) => {
-    state.contactsToAdd = contacts.filter(contact => {
+    state.contactsToAdd.users = contacts.filter(contact => {
       return !state.channelUsers.some(user => {
         return contact.user_id === user.user_id;
       });
     });
   },
+  'SET_CONTACTS_FREE_TO_ADD_SEARCH': (state, contacts) => {
+    state.contactsToAdd.searchUsers = contacts;
+  },
   'REMOVE_USER_FROM_CONTACTS_TO_ADD': (state, user_id) => {
-    state.contactsToAdd = state.contactsToAdd.filter(user => user.user_id !== user_id);
+    state.contactsToAdd.users = state.contactsToAdd.users.filter(user => user.user_id !== user_id);
+    console.log(state.contactsToAdd.users);
   },
   'SET_CHANNEL_ID_TO_DELETE': (state, id) => {
     state.channelToDelete = id;
   },
   'SET_CURRENT_CHANNEL_USERS': (state, users) => {
-    state.currentChannelData.currentChannelUsers = users;
+    state.currentChannelUsers.users = users;
   },
   'REMOVE_CURRENT_CHANNEL_USERS_FROM_STORE': state => {
-    state.currentChannelData.currentChannelUsers = []
+    state.currentChannelUsers.users = []
   },
   'SET_CHANNELS_LOADING_FLAG': state => {
     state.isChannelsLoading = !state.isChannelsLoading;
@@ -132,7 +136,6 @@ export default {
       private: '',
       avatar: undefined,
     };
-    state.currentChannelUsers = [];
     state.channelToDelete = '';
     state.isChannelsLoading = false;
     state.isChannelUsersLoading = true;

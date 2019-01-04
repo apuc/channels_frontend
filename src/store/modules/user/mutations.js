@@ -25,7 +25,6 @@ export default {
     for (let i = 0; i < results.length; i++) {
       state.searchResults.users.push(results[i]);
     }
-    // state.searchResults.users.push(users);
   },
   'SET_SEARCH_RESULTS_PAGES': (state, results) => {
     state.searchResults.pages = results.last_page;

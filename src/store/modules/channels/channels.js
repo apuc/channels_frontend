@@ -14,8 +14,6 @@ const state = {
     type: '',
     private: '',
     avatar: undefined,
-  currentChannelUsers: [],
-  searchUsers: [],
   },
   channelData: {
     channel_id: undefined,
@@ -28,7 +26,14 @@ const state = {
     private: '',
     avatar: undefined,
   },
-  contactsToAdd: [],
+  currentChannelUsers: {
+    users: [],
+    searchUsers: [],
+  },
+  contactsToAdd: {
+    users: [],
+    searchUsers: [],
+  },
   channelUsers: [],
   channelToDelete: '',
   isChannelsLoading: false,

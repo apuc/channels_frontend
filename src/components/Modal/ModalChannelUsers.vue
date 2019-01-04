@@ -46,7 +46,7 @@
       ...mapGetters({
         currentChannelUsers: 'channels/currentChannelUsers',
         isSearchActive: 'channels/isSearchActive',
-        channelSearchUsers: 'channels/channelSearchUsers',
+        currentChannelSearchUsers: 'channels/currentChannelSearchUsers',
       }),
       disableButton() {
         return this.add_user.length > 0 && !this.isUserInChannel ? 'btn-primary' : 'btn-default disable';

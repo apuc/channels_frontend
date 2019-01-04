@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapMutations} from 'vuex';
 
   export default {
     name: "Contacts",
@@ -21,6 +21,14 @@
       ...mapGetters({
         friendshipRequests: 'user/friendshipRequests',
       })
+    },
+    methods: {
+      ...mapMutations({
+        setSearchResultsUsers: 'user/SET_SEARCH_RESULTS_USERS',
+      }),
+    },
+    beforeRouteLeave(to, from, next) {
+      this.setSearchResultsUsers([]);
     }
   }
 </script>

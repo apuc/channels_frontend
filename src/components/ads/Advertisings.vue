@@ -73,19 +73,17 @@ export default {
   computed: {
     ...mapGetters({
       channel: "channels/currentChannelData",
-      currentChannelUsers: "channels/currentChannelUsers",
       currentChannelData: "channels/currentChannelData",
+      currentChannelUsers: "channels/currentChannelUsers",
       group: "groups/currentGroupData",
       userPosition: "user/userPosition",
       userData: "user/info"
     }),
     currentChannelUsersToShow() {
-      if (this.currentChannelUsers) {
-        if (this.currentChannelUsers.length > 4) {
-          return this.currentChannelUsers.slice(0, 5);
-        } else {
-          return this.currentChannelUsers;
-        }
+      if (this.currentChannelUsers.length > 4) {
+        return this.currentChannelUsers.slice(0, 5);
+      } else {
+        return this.currentChannelUsers;
       }
     }
   },

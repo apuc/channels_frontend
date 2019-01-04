@@ -15,7 +15,7 @@
     </header>
 
     <div class="controls">
-      <button type="button" class="btn btn-primary" @click="">Start chat with this user</button>
+      <button type="button" class="btn btn-primary">Start chat with this user</button>
     </div>
   </div>
 </template>
@@ -30,7 +30,6 @@
       ...mapGetters({
         status: 'status/status',
         currentUserInfo: 'user/currentUserInfo',
-        currentChannelUsers: 'channels/currentChannelUsers',
         isUserLoading: 'user/isUserLoading',
       })
     },

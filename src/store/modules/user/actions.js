@@ -216,7 +216,6 @@ export default {
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/?search_request=${search_request}&page=${page}`)
       .then(
         async res => {
-          console.log(res.body.data);
           commit('SET_SEARCH_RESULTS_USERS', res.body.data);
           commit('SET_SEARCH_RESULTS_PAGES', res.body.meta);
           commit('SET_SEARCH_RESULTS_CURRENT_PAGE', res.body.meta);
