@@ -69,7 +69,7 @@
       </header>
 
       <nav>
-        <drag v-for="(channel, index) in channels"
+        <drag v-for="channel in channels"
               :transfer-data="channel.channel_id"
               :key="channel.channel_id"
         >
@@ -80,7 +80,7 @@
           />
         </drag>
 
-        <drop v-for="(group, index) in groups"
+        <drop v-for="group in groups"
               @drop="handleDrop(group.group_id, ...arguments)"
               :key="group.group_id"
         >

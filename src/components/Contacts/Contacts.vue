@@ -29,6 +29,7 @@
     },
     beforeRouteLeave(to, from, next) {
       this.setSearchResultsUsers([]);
+      next();
     }
   }
 </script>
