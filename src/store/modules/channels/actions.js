@@ -239,7 +239,7 @@ export default {
             const newChannelData = res.body.data;
             commit('SET_CURRENT_CHANNEL_DATA', newChannelData);
             commit('SET_EDITED_CHANNEL_DATA', newChannelData);
-            dispatch('modal/DELETE_MODAL', null, {
+            commit('modal/DELETE_MODAL', null, {
               root: true
             })
           },

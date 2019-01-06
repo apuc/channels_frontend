@@ -4,6 +4,18 @@ export default {
   },
   'SET_GROUP_DATA': (state, data) => {
     state.groupData = data;
+  }, 
+  'SET_GROUP_ID': (state, id) => {
+    state.groupData.group_id = id;
+  },
+  'SET_GROUP_TITLE': (state, title) => {
+    state.groupData.title = title;
+  },
+  'SET_GROUP_SLUG': (state, slug) => {
+    state.groupData.slug = slug;
+  },
+  'SET_GROUP_STATUS': (state, status) => {
+    state.groupData.status = status;
   },
   'SET_CURRENT_GROUP_DATA': (state, data) => {
     state.currentGroupData = data;
@@ -11,6 +23,11 @@ export default {
   'SET_GROUP_AVATAR_ID': (state, avatar_id) => {
     state.groupData.avatar = avatar_id;
   },
+  'SET_GROUP_USER_IDS': (state, users) => {
+    for (let i = 0; i < users.length; i++) {
+      state.groupData.user_ids.push(users[i]);
+    }
+  },  
   'SET_GROUP_ID_TO_DELETE': (state, id) => {
     state.groupToDelete = id;
   },
