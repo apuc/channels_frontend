@@ -53,9 +53,10 @@
     name: "NavSectionGroups",
     computed: {
       ...mapGetters({
-        currentChannelData: 'channels/currentChannelData',
+        channels: 'channels/channels',
         currentGroupData: 'groups/currentGroupData',
         groupToEdit: 'groups/groupToEdit',
+        addingChannelsData: 'groups/addingChannelsData',
         userData: 'user/info',
       }),
     },
@@ -77,12 +78,15 @@
     },
     methods: {
       ...mapMutations({
-        removeCurrentChannelUsersFromStore: 'channels/REMOVE_CURRENT_CHANNEL_USERS_FROM_STORE',
         setUserPosition: 'user/SET_USER_POSITION',
         setGroupData: 'groups/SET_GROUP_DATA',
+        setCurrentGroupData: 'groups/SET_CURRENT_GROUP_DATA',
+        setCurrentGroupChannelsToSearch: 'groups/SET_CURRENT_GROUP_CHANNELS_TO_SEARCH',
         setModal: 'modal/SET_MODAL',
         setGroupIdToDelete: 'groups/SET_GROUP_ID_TO_DELETE',
         setGroupIdForAddingChannels: 'groups/SET_GROUP_ID_FOR_ADDING_CHANNEL',
+        setAvailableChannelsToAdd: 'groups/SET_AVAILABLE_CHANNELS_TO_ADD',
+        setChannelsToSearch: 'groups/SET_CHANNELS_TO_SEARCH',
       }),
       ...mapActions({
         getGroupData: 'groups/GET_GROUP_DATA',
@@ -90,8 +94,11 @@
       }),
       async setData(e, id) {
         if (!e.target.hasAttribute('type')) {
-          await this.getGroupData(Number(id));
-          this.removeCurrentChannelUsersFromStore();
+          await this.getGroupData(Number(id)).then(data => {
+            console.log(data);
+            this.setCurrentGroupData(data);
+            this.setCurrentGroupChannelsToSearch(data.channels);
+          });
         }
       },
       editThis(id) {
@@ -102,9 +109,11 @@
         this.setModal('ModalGroupDelete');
         this.setGroupIdToDelete(id);
       },
-      openChannelsAdding(group_id) {
+      async openChannelsAdding(group_id) {
         this.setModal('ModalGroupAddChannels');
+        await this.setAvailableChannelsToAdd({group_id: group_id, channels: this.channels});
         this.setGroupIdForAddingChannels(group_id);
+        this.setChannelsToSearch(this.addingChannelsData.avalaibleChannels);
       },
     },
   }

@@ -6,6 +6,8 @@ const state = {
   groups: [],
   currentGroupData: {
     group_id: '',
+    channels: [],
+    channelsToSearch: [],
     title: '',
     slug: '',
     status: '',
@@ -23,7 +25,9 @@ const state = {
   },
   addingChannelsData: {
     group_id: '',
-    channels: [],
+    avalaibleChannels: [],
+    channelsToSearch: [],
+    channelsToAdd: [],
   },
   groupToDelete: '',
   channelToDelete: '',

@@ -1,7 +1,7 @@
 <template>
     <ul class="users-list">
       <li class="user"
-          v-for="(user, index) in friendshipRequests"
+          v-for="user in friendshipRequests"
           :key="user.email">
         <div>
           <div class="user-info">

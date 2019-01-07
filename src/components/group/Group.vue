@@ -24,6 +24,8 @@
     beforeRouteLeave(to, from, next) {
       this.setCurrentGroupData({
         group_id: '',
+        channels: [],
+        channelsToSearch: [],
         title: '',
         slug: '',
         status: '',

@@ -49,12 +49,11 @@ export default {
     dispatch,
     rootGetters
   }, groupId) => {
-    await Vue.http.get(`${process.env.VUE_APP_API_URL}/group/${groupId}`)
+    return await Vue.http.get(`${process.env.VUE_APP_API_URL}/group/${groupId}`)
       .then(
         res => {
-          const groupData = res.body.data;
-          commit('SET_CURRENT_GROUP_DATA', groupData);
-          // commit('SET_EDITED_GROUP_DATA', groupData)
+          console.log(res.body.data);
+          return res.body.data;
         },
         err => console.log('get groups', err)
       )
@@ -183,6 +182,7 @@ export default {
               commit('SET_EDITED_GROUP_DATA', newGroupData);
               if (newGroupData.group_id === getters.currentGroupData.group_id) {
                 commit('SET_CURRENT_GROUP_DATA', newGroupData);
+                commit('SET_CURRENT_GROUP_CHANNELS_TO_SEARCH', newGroupData.channels);
               }
               commit('modal/DELETE_MODAL', null, {root: true});
             },
@@ -259,8 +259,8 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.groupForAddingChannels}/channels`, {
-          channels_ids: getters.channelsToAdd
+      await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.addingChannelsData.group_id}/channels`, {
+          channels_ids: getters.addingChannelsData.channelsToAdd
         })
         .then(
           res => {
@@ -272,11 +272,12 @@ export default {
             }
             if (getters.currentGroupData.group_id === newGroupData.group_id) {
               commit('SET_CURRENT_GROUP_DATA', newGroupData);
+              commit('SET_CURRENT_GROUP_CHANNELS_TO_SEARCH', newGroupData.channels);
             }
             commit('SET_EDITED_GROUP_DATA', newGroupData);
-            dispatch('modal/DELETE_MODAL', null, {
-              root: true
-            });
+            // dispatch('modal/DELETE_MODAL', null, {
+            //   root: true
+            // });
           },
           err => {
             console.log(err);

@@ -19,7 +19,7 @@
     </p>
 
     <ul class="users-list" v-else>
-      <li class="user" v-for="(user, index) in contactsToAddSearch" :key="user.email">
+      <li class="user" v-for="user in contactsToAddSearch" :key="user.email">
         <div>
           <div class="user-info">
             <div class="image-wrap">
@@ -107,9 +107,10 @@ export default {
       }
     },
     addUserToChannel(user_id) {
-      this.addUser(user_id).then(() =>
-        this.removeUserFromContactsToAdd(user_id)
-      );
+      this.addUser(user_id).then( async () => {
+        await this.removeUserFromContactsToAdd(user_id);
+        this.setContactsFreeToAddSearch(this.contactsToAdd);
+      });
     }
   },
   mounted() {

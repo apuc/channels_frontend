@@ -1,7 +1,7 @@
 <template>
   <ul class="users-list" ref="usersList">
     <li class="user"
-        v-for="(user, index) in searchResultsUsers"
+        v-for="user in searchResultsUsers"
         :key="user.email">
       <div>
         <div class="user-info">

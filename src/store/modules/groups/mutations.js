@@ -20,6 +20,9 @@ export default {
   'SET_CURRENT_GROUP_DATA': (state, data) => {
     state.currentGroupData = data;
   },
+  'SET_CURRENT_GROUP_CHANNELS_TO_SEARCH': (state, channels) => {
+    state.currentGroupData.channelsToSearch = channels;
+  },
   'SET_GROUP_AVATAR_ID': (state, avatar_id) => {
     state.groupData.avatar = avatar_id;
   },
@@ -34,12 +37,26 @@ export default {
   'SET_GROUP_ID_FOR_ADDING_CHANNEL': (state, group_id) => {
     state.addingChannelsData.group_id = group_id;
   },
+  /**
+   * @param state  {Object}
+   * @param data  {Object}
+   * @param data.group_id {Number} - group id
+   * @param data.channels {Array} - users channels
+   */
+  'SET_AVAILABLE_CHANNELS_TO_ADD': (state, data) => {
+    const group = state.groups.find(group => group.group_id === data.group_id);
+
+    state.addingChannelsData.avalaibleChannels = data.channels.filter(channel => {
+      return !group.channels.some(groupChannel => {
+        return channel.channel_id === groupChannel.channel_id;
+      });
+    });
+  },
+  'SET_CHANNELS_TO_SEARCH': (state, channels) => {
+    state.addingChannelsData.channelsToSearch = channels;
+  },
   'SET_CHANNELS_TO_ADD': (state, channels) => {
-    let channelsArr = [];
-    for (let i = 0; i < channels.length; i++) {
-      channelsArr.push(channels[i].user_id);
-    }
-    state.addingChannelsData.channels = channelsArr;
+    state.addingChannelsData.channelsToAdd = channels;
   },
   'SET_GROUP_TITLE': (state, title) => {
     state.groupData.title = title;

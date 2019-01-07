@@ -32,7 +32,6 @@
       ...mapMutations({
         setMessages: 'messages/SET_MESSAGES',
         setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
-        setCurrentGroupData: 'groups/SET_CURRENT_GROUP_DATA',
         setCurrentChannelUsers: 'channels/SET_CURRENT_CHANNEL_USERS',
       }),
       ...mapActions({

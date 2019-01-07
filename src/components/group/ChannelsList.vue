@@ -1,11 +1,19 @@
 <template>
   <section class="groups">
+    <header class="form-group">
+      <h2 class="channels-search__title">Поиск по каналам</h2>
+      <input class="form-control" type="text" :value="searchValue" @input="searchChannel($event.target.value)">
+    </header>
+    
+    <p v-if="noChannels">К сожалению в данной группе нет канала с таким названием.</p>
+
     <ul class="channels-list">
-      <li v-for="(channel, index) in currentGroupData.channels"
+      <li v-for="channel in currentGroupData.channelsToSearch"
           :key="channel.id"
           class="col-3 channels-list__channel"
       >
         <router-link :to="`/${channel.slug}`" @click.native="setData($event, channel.channel_id)">
+        <img class="channel-avatar" :src="channel.avatar ? channel.avatar.small : 'https://pp.userapi.com/c846524/v846524878/e3cbe/QHn1Jw-tZfA.jpg'" alt="">
           {{ channel.title }}
         </router-link>
 
@@ -35,11 +43,15 @@
       })
     },
     data() {
-      return {}
+      return {
+        searchValue: '',
+        noChannels: false,
+      }
     },
     methods: {
       ...mapMutations({
         setChannelToDelete: 'groups/SET_CHANNEL_TO_DELETE',
+        setCurrentGroupChannelsToSearch: 'groups/SET_CURRENT_GROUP_CHANNELS_TO_SEARCH',
       }),
       ...mapActions({
         setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
@@ -53,6 +65,30 @@
       async removeChannel(channelId) {
         await this.setChannelToDelete(channelId);
         this.deleteChannel();
+      },
+      findChannel(value) {
+        let currentUserName = '';
+        let searchValue = value.toLowerCase();
+        let searchResult = [];
+        for (let i = 0; i < this.currentGroupData.channelsToSearch.length; i++) {
+          currentUserName = this.currentGroupData.channelsToSearch[i].slug.toLowerCase();
+          if (currentUserName.includes(searchValue)) {
+            searchResult.push(this.currentGroupData.channelsToSearch[i]);
+          }
+        }
+        console.log(searchResult);
+        return searchResult;
+      },
+      searchChannel(value) {
+        this.searchValue = value;
+        const searchResult = this.findChannel(value);
+        this.noChannels = searchResult.length === 0;
+
+        if (value) {
+          this.setCurrentGroupChannelsToSearch(searchResult);
+        } else {
+          this.setCurrentGroupChannelsToSearch(this.currentGroupData.channels);
+        }
       }
     }
   }
@@ -86,5 +122,10 @@
   .channels-list__channel:hover {
     background-color: #dddddd;
     transition: background-color 0.2s;
+  }
+
+  .channel-avatar {
+    width: 30px;
+    height: 30px;
   }
 </style>

@@ -3,7 +3,7 @@ export default {
   currentGroupData: state => state.currentGroupData,
   groupData: state => state.groupData,
   groupToDelete: state => state.groupToDelete,
-  groupForAddingChannels: state => state.addingChannelsData.group_id,
+  addingChannelsData: state => state.addingChannelsData,
   channelsToAdd: state => state.addingChannelsData.channels,
   isGroupsLoading: state => state.isGroupsLoading,
   imageUploadPersentage: state => state.imageUploadPersentage,

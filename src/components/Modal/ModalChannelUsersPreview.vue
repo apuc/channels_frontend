@@ -1,17 +1,12 @@
 <template>
-  <div class="placeholder"
-       v-if="isChannelUsersLoading"
-       :style="calculatePlaceholders"
-  ></div>
+<div class="placeholder" v-if="isChannelUsersLoading" :style="calculatePlaceholders"></div>
 
-  <ul class="users-list" v-else>
-    <li class="user"
-        v-for="(user, index) in currentChannelSearchUsers"
-        :key="user.email">
-      <div>
-        <div class="user-info">
-          <div class="image-wrap">
-            <img class="img"
+<ul class="users-list" v-else>
+  <li class="user" v-for="user in currentChannelSearchUsers" :key="user.email">
+    <div>
+      <div class="user-info">
+        <div class="image-wrap">
+          <img class="img"
                  :src="user.avatar ? user.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
                  width="30" height="30" alt="">
           </div>
@@ -45,111 +40,120 @@
 </template>
 
 <script>
-  import {mapGetters, mapMutations, mapActions} from 'vuex';
+import {
+  mapGetters,
+  mapMutations,
+  mapActions
+} from 'vuex';
 
-  export default {
-    name: "ModalChannelUsersPreview",
-    computed: {
-      ...mapGetters({
-        currentChannelUsers: 'channels/currentChannelUsers',
-        isChannelUsersLoading: 'channels/isChannelUsersLoading',
-        currentChannelData: 'channels/currentChannelData',
-        currentChannelSearchUsers: 'channels/currentChannelSearchUsers',
-        userData: 'user/info',
-      }),
-      calculatePlaceholders() {
-        const height = 45;
-        if (this.currentChannelData.user_count < 5 && this.currentChannelData.user_count > 0) {
-          return `height: ${height * this.currentChannelData.user_count}px`
-        } else {
-          return 'height: 135px'
-        }
-      }
-    },
-    data() {
-      return {}
-    },
-    methods: {
-      ...mapMutations({
-        setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
-        deleteModal: 'modal/DELETE_MODAL',
-      }),
-      ...mapActions({
-        deleteUser: 'channels/DELETE_USER',
-        sendFriendshipRequest: 'user/SEND_FRIENDSHIP_REQUEST',
-        getCurrentUserData: 'user/GET_USER_DATA',
-      }),
-      goToProfile(id) {
-        this.getCurrentUserData(id);
-        this.deleteModal();
-      },
-      removeUser(id) {
-        this.deleteUser(id);
-      },
-      makeFriendshipRequest(target, data) {
-        this.sendFriendshipRequest({user_id: data.user_id, contact_id: data.contact_id});
-        target.remove();
+export default {
+  name: "ModalChannelUsersPreview",
+  computed: {
+    ...mapGetters({
+      currentChannelUsers: 'channels/currentChannelUsers',
+      isChannelUsersLoading: 'channels/isChannelUsersLoading',
+      currentChannelData: 'channels/currentChannelData',
+      currentChannelSearchUsers: 'channels/currentChannelSearchUsers',
+      userData: 'user/info',
+    }),
+    calculatePlaceholders() {
+      const height = 45;
+      if (this.currentChannelData.user_count < 5 && this.currentChannelData.user_count > 0) {
+        return `height: ${height * this.currentChannelData.user_count}px`
+      } else {
+        return 'height: 135px'
       }
     }
+  },
+  data() {
+    return {}
+  },
+  methods: {
+    ...mapMutations({
+      setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
+      deleteModal: 'modal/DELETE_MODAL',
+    }),
+    ...mapActions({
+      deleteUser: 'channels/DELETE_USER',
+      sendFriendshipRequest: 'user/SEND_FRIENDSHIP_REQUEST',
+      getCurrentUserData: 'user/GET_USER_DATA',
+    }),
+    goToProfile(id) {
+      this.getCurrentUserData(id);
+      this.deleteModal();
+    },
+    removeUser(id) {
+      this.deleteUser(id);
+    },
+    makeFriendshipRequest(target, data) {
+      this.sendFriendshipRequest({
+        user_id: data.user_id,
+        contact_id: data.contact_id
+      });
+      target.remove();
+    }
   }
+}
 </script>
 
 <style scoped>
-  .users-list {
-    max-height: 300px;
-    margin: 0;
-    margin-top: 10px;
-    padding: 0;
-    overflow: auto;
-  }
+.users-list {
+  max-height: 300px;
+  margin: 0;
+  margin-top: 10px;
+  padding: 0;
+  overflow: auto;
+}
 
-  .user {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 3px;
-  }
+.user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 3px;
+}
 
-  .user-info {
-    display: flex;
-    align-items: center;
-  }
+.user-info {
+  display: flex;
+  align-items: center;
+}
 
-  .image-wrap {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
+.image-wrap {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
 
-    background-color: #cccccc;
-    border-radius: 50%;
-  }
+  background-color: #cccccc;
+  border-radius: 50%;
+}
 
-  .img {
-    display: block;
-  }
+.img {
+  display: block;
+}
 
-  .placeholder {
-    width: 100%;
-    height: 180px;
+.placeholder {
+  width: 100%;
+  height: 180px;
 
-    background-image: radial-gradient(circle 15px at 20px, lightgray 99%, transparent 0),
+  background-image: radial-gradient(circle 15px at 20px, lightgray 99%, transparent 0),
     linear-gradient(lightgray 12px, transparent 0);
-    background-size: 40px 45px, 80% 45px;
-    background-position: 0 5px, 50px 21.5px;
-    background-repeat: repeat-y;
+  background-size: 40px 45px, 80% 45px;
+  background-position: 0 5px, 50px 21.5px;
+  background-repeat: repeat-y;
 
-    animation: shine 1.5s infinite;
+  animation: shine 1.5s infinite;
+}
+
+@keyframes shine {
+  0% {
+    opacity: 1;
   }
 
-  @keyframes shine {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.6;
-    }
-    100% {
-      opacity: 1;
-    }
+  50% {
+    opacity: 0.6;
   }
+
+  100% {
+    opacity: 1;
+  }
+}
 </style>

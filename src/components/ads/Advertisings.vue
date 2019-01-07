@@ -13,22 +13,12 @@
         <p>{{channel.private}}</p>
       </div>
 
-      <div v-if="userPosition === 'group'">
-        <img
-          :src="group.avatar ? group.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
-          alt
-        >
-
-        <p>{{group.title}}</p>
-        <p>{{group.status}}</p>
-      </div>
-
-      <section class="channel-users" v-if="currentChannelData.channel_id">
+      <div class="channel-users" v-if="currentChannelData.user_count > 0">
         <h3>Пользователи канала</h3>
         <button type="button" class="btn btn-primary" @click="openModal">Все</button>
 
         <ul class="users-list">
-          <li class="user" v-for="(user, index) in currentChannelUsersToShow" :key="user.email">
+          <li class="user" v-for="user in currentChannelUsersToShow" :key="user.email">
             <div>
               <div class="user-info">
                 <div class="image-wrap">
@@ -60,7 +50,17 @@
             </button>
           </li>
         </ul>
-      </section>
+      </div>
+
+      <div v-if="userPosition === 'group'">
+        <img
+          :src="group.avatar ? group.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
+          alt
+        >
+
+        <p>{{group.title}}</p>
+        <p>{{group.status}}</p>
+      </div>
     </div>
   </aside>
 </template>

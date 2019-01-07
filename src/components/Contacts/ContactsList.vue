@@ -19,7 +19,7 @@
 
     <ul class="users-list">
       <li class="user"
-          v-for="(user, index) in userContactsSearch"
+          v-for="user in userContactsSearch"
           :key="user.email">
         <div>
           <div class="user-info">
