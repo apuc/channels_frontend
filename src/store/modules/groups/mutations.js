@@ -6,7 +6,7 @@ export default {
     state.groupData = data;
   }, 
   'SET_GROUP_ID': (state, id) => {
-    state.groupData.group_id = id;
+    state.groupData.id = id;
   },
   'SET_GROUP_TITLE': (state, title) => {
     state.groupData.title = title;
@@ -35,7 +35,7 @@ export default {
     state.groupToDelete = id;
   },
   'SET_GROUP_ID_FOR_ADDING_CHANNEL': (state, group_id) => {
-    state.addingChannelsData.group_id = group_id;
+    state.addingChannelsData.id = group_id;
   },
   /**
    * @param state  {Object}
@@ -44,11 +44,11 @@ export default {
    * @param data.channels {Array} - users channels
    */
   'SET_AVAILABLE_CHANNELS_TO_ADD': (state, data) => {
-    const group = state.groups.find(group => group.group_id === data.group_id);
+    const group = state.groups.find(group => group.id === data.group_id);
 
     state.addingChannelsData.avalaibleChannels = data.channels.filter(channel => {
       return !group.channels.some(groupChannel => {
-        return channel.channel_id === groupChannel.channel_id;
+        return channel.id === groupChannel.id;
       });
     });
   },
@@ -78,7 +78,7 @@ export default {
   },
   'REMOVE_DELETED_GROUP_FROM_STORE': (state, id) => {
     const groups = state.groups;
-    const group = groups.find(group => group.group_id === id);
+    const group = groups.find(group => group.id === id);
     const groupIndex = groups.indexOf(group);
     groups.splice(groupIndex, 1);
   },
@@ -86,9 +86,9 @@ export default {
     const groups = state.groups;
     const currentGroup = state.currentGroupData;
     const groupChannels = currentGroup.channels;
-    const groupInStore = groups.find(group => group.group_id === currentGroup.group_id);
+    const groupInStore = groups.find(group => group.id === currentGroup.id);
     const groupIndex = groups.indexOf(groupInStore);
-    const channel = groupChannels.find(channel => channel.channel_id === id);
+    const channel = groupChannels.find(channel => channel.id === id);
     const channelIndex = groupChannels.indexOf(channel);
     groupChannels.splice(channelIndex, 1);
     groups[groupIndex] = currentGroup;
@@ -98,7 +98,7 @@ export default {
   },
   'SET_EDITED_GROUP_DATA': (state, data) => {
     for (let i = 0; i < state.groups.length; i++) {
-      if (state.groups[i].group_id === data.group_id) {
+      if (state.groups[i].id === data.group_id) {
         state.groups[i].title = data.title;
         state.groups[i].slug = data.slug;
         state.groups[i].status = data.status;
@@ -116,7 +116,7 @@ export default {
   'SET_DEFAULT_GROUPS_STATE': state => {
     state.groups = [];
     state.currentGroupData = {
-      group_id: '',
+      id: '',
       title: '',
       slug: '',
       status: '',
@@ -124,7 +124,7 @@ export default {
       avatar: undefined,
     };
     state.groupData = {
-      group_id: '',
+      id: '',
       title: '',
       slug: '',
       status: '',
@@ -133,7 +133,7 @@ export default {
       avatar: undefined,
     };
     state.addingChannelsData = {
-      group_id: '',
+      id: '',
       channels: [],
     };
     state.groupToDelete = '';

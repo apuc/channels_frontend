@@ -77,7 +77,7 @@ export default {
       currentChannelUsers: "channels/currentChannelUsers",
       group: "groups/currentGroupData",
       userPosition: "user/userPosition",
-      userData: "user/info"
+      userData: "user/userData"
     }),
     currentChannelUsersToShow() {
       if (this.currentChannelUsers.length > 4) {

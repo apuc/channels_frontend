@@ -1,6 +1,6 @@
 <template>
   <section class="list-group__item"
-           @click="setData($event, data.group_id)"
+           @click="setData($event, data.id)"
   >
     <router-link :to="`/group/${data.slug}`"
                  class="list-group__link"
@@ -26,19 +26,19 @@
     >
       <button type="button"
               class="button"
-              @click="openChannelsAdding(data.group_id)">
+              @click="openChannelsAdding(data.id)">
         <v-icon scale="1" class="icon" name="plus-circle"/>
       </button>
 
       <button type="button"
               class="button"
-              @click="editThis(data.group_id)">
+              @click="editThis(data.id)">
         <v-icon scale="1" class="icon" name="pen"/>
       </button>
 
       <button type="button"
               class="button"
-              @click="deletingModal(data.group_id)"
+              @click="deletingModal(data.id)"
       >
         <v-icon scale="1" class="icon" name="trash-alt"/>
       </button>
@@ -52,12 +52,10 @@
   export default {
     name: "NavSectionGroups",
     computed: {
+      ...mapGetters('groups', ['currentGroupData', 'groupToEdit', 'addingChannelsData']),
       ...mapGetters({
         channels: 'channels/channels',
-        currentGroupData: 'groups/currentGroupData',
-        groupToEdit: 'groups/groupToEdit',
-        addingChannelsData: 'groups/addingChannelsData',
-        userData: 'user/info',
+        userData: 'user/userData',
       }),
     },
     props: {
@@ -77,16 +75,18 @@
       }
     },
     methods: {
+      ...mapMutations('groups', [
+        'SET_GROUP_DATA',
+        'SET_CURRENT_GROUP_DATA',
+        'SET_CURRENT_GROUP_CHANNELS_TO_SEARCH',
+        'SET_GROUP_ID_TO_DELETE',
+        'SET_GROUP_ID_FOR_ADDING_CHANNEL',
+        'SET_AVAILABLE_CHANNELS_TO_ADD',
+        'SET_CHANNELS_TO_SEARCH'
+      ]),
       ...mapMutations({
         setUserPosition: 'user/SET_USER_POSITION',
-        setGroupData: 'groups/SET_GROUP_DATA',
-        setCurrentGroupData: 'groups/SET_CURRENT_GROUP_DATA',
-        setCurrentGroupChannelsToSearch: 'groups/SET_CURRENT_GROUP_CHANNELS_TO_SEARCH',
-        setModal: 'modal/SET_MODAL',
-        setGroupIdToDelete: 'groups/SET_GROUP_ID_TO_DELETE',
-        setGroupIdForAddingChannels: 'groups/SET_GROUP_ID_FOR_ADDING_CHANNEL',
-        setAvailableChannelsToAdd: 'groups/SET_AVAILABLE_CHANNELS_TO_ADD',
-        setChannelsToSearch: 'groups/SET_CHANNELS_TO_SEARCH',
+        SET_MODAL: 'modal/SET_MODAL',
       }),
       ...mapActions({
         getGroupData: 'groups/GET_GROUP_DATA',
@@ -96,24 +96,24 @@
         if (!e.target.hasAttribute('type')) {
           await this.getGroupData(Number(id)).then(data => {
             console.log(data);
-            this.setCurrentGroupData(data);
-            this.setCurrentGroupChannelsToSearch(data.channels);
+            this.SET_CURRENT_GROUP_DATA(data);
+            this.SET_CURRENT_GROUP_CHANNELS_TO_SEARCH(data.channels);
           });
         }
       },
       editThis(id) {
-        this.setModal('ModalGroupEdit');
-        this.setGroupData(this.groupToEdit(id));
+        this.SET_MODAL('ModalGroupEdit');
+        this.SET_GROUP_DATA(this.groupToEdit(id));
       },
       deletingModal(id) {
-        this.setModal('ModalGroupDelete');
-        this.setGroupIdToDelete(id);
+        this.SET_MODAL('ModalGroupDelete');
+        this.SET_GROUP_ID_TO_DELETE(id);
       },
       async openChannelsAdding(group_id) {
-        this.setModal('ModalGroupAddChannels');
-        await this.setAvailableChannelsToAdd({group_id: group_id, channels: this.channels});
-        this.setGroupIdForAddingChannels(group_id);
-        this.setChannelsToSearch(this.addingChannelsData.avalaibleChannels);
+        this.SET_MODAL('ModalGroupAddChannels');
+        await this.SET_AVAILABLE_CHANNELS_TO_ADD({group_id: group_id, channels: this.channels});
+        this.SET_GROUP_ID_FOR_ADDING_CHANNEL(group_id);
+        this.SET_CHANNELS_TO_SEARCH(this.addingChannelsData.avalaibleChannels);
       },
     },
   }

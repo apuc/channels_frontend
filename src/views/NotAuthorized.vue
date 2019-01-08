@@ -3,7 +3,7 @@
     <NotAuthorizedSidebarAuth/>
 
     <main class="main">
-      <component :is="`NotAuthorizedChat${chooseChat}`" v-if="currentChannel.channel_id"></component>
+      <component :is="`NotAuthorizedChat${chooseChat}`" v-if="currentChannelData._id"></component>
       <router-view v-else></router-view>
     </main>
 
@@ -26,10 +26,10 @@
     mixins: [authGettingData],
     computed: {
       ...mapGetters({
-        currentChannel: 'channels/currentChannelData',
+        currentChannelData: 'channels/currentChannelData',
       }),
       chooseChat() {
-        return this.currentChannel.private ? 'Private' : '';
+        return this.currentChannelData.private ? 'Private' : '';
       }
     },
   }

@@ -27,7 +27,7 @@
       </b-form-textarea>
 
       <b-input-group-append class="input_message-button">
-        <b-btn @click="sendMessage(input, currentChannel.channel_id)" class="footer_sendBtn"
+        <b-btn @click="sendMessage(input, currentChannel.id)" class="footer_sendBtn"
                variant="outline-success">{{$ml.get('Chat.btnSend')}}
         </b-btn>
       </b-input-group-append>
@@ -49,7 +49,7 @@
     computed: {
       ...mapGetters({
         currentChannel: 'channels/currentChannelData',
-        userInfo: 'user/info',
+        userInfo: 'user/userData',
         usersTyping: 'messages/usersTyping',
         attachments: 'messages/attachments'
       })
@@ -79,7 +79,7 @@
         if (event.shiftKey) {
           event.preventDefault();
         } else {
-          this.sendMessage(this.input, this.currentChannel.channel_id);
+          this.sendMessage(this.input, this.currentChannel.id);
         }
       },
       emitUserTyping() {
@@ -89,7 +89,7 @@
             name: this.userInfo.username,
             id: this.userInfo.user_id
           },
-          channelId: this.currentChannel.channel_id,
+          channelId: this.currentChannel.id,
           isTyping: true
         });
         this.timeout = setTimeout(() => {
@@ -98,7 +98,7 @@
               name: this.userInfo.username,
               id: this.userInfo.user_id
             },
-            channelId: this.currentChannel.channel_id,
+            channelId: this.currentChannel.id,
             isTyping: false
           });
         }, 2000);

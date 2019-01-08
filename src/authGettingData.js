@@ -10,7 +10,9 @@ export default {
       const pathnameArray = location.pathname.split('/');
       const slug = pathnameArray[pathnameArray.length - 1];
 
-      if (pathnameArray[1] === 'group') {
+      if (pathnameArray[1] === 'contacts') {
+        router.next();
+      } else if (pathnameArray[1] === 'group') {
         this.$_authGettingData_getGroupData(slug);
       } else if (pathnameArray[1] === 'user') {
         this.$_authGettingData_getUserData(slug);
@@ -21,41 +23,28 @@ export default {
       }
     },
     async $_authGettingData_getChannelData(pathnameArray, slug) {
-      const currentChannel = store.getters['channels/channels'].find(channel => channel.slug === slug);
       store.commit('user/SET_USER_POSITION', 'channel');
 
-      if (currentChannel) {
-        store.commit('channels/SET_CURRENT_CHANNEL_DATA', currentChannel);
+      if (slug !== 'login' && slug !== 'registration' && pathnameArray[1] !== 'user') {
+        await store.dispatch('channels/GET_CHANNEL_DATA', slug);
+        const currentChannel = store.getters['channels/currentChannelData'];
 
-        store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id).then(async data => {
+        store.dispatch('messages/GET_MESSAGES');
+        store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.id).then(async data => {
           store.commit('channels/SET_CURRENT_CHANNEL_USERS', data);
           store.commit('channels/SET_CHANNEL_USER_SEARCH_RESULTS', data);
-          await store.commit('channels/SET_CONTACTS_FREE_TO_ADD', store.getters['user/userContacts']);
-          store.commit('channels/SET_CONTACTS_FREE_TO_ADD_SEARCH', store.getters['channels/contactsToAdd']);
-        });
-        store.dispatch('messages/GET_MESSAGES');
-      } else {
-        if (slug !== 'login' && slug !== 'registration' && pathnameArray[1] !== 'user') {
-          await store.dispatch('channels/GET_CHANNEL_DATA', slug);
-          const currentChannel = store.getters['channels/currentChannelData'];
-
-          if (!currentChannel.private) {
-            // store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.channel_id).then(data => {
-            // store.commit('channels/SET_CURRENT_CHANNEL_USERS', data);
-            // store.commit('channels/SET_CHANNEL_USER_SEARCH_RESULTS', data);
-            // await store.commit('channels/SET_CONTACTS_FREE_TO_ADD', store.getters('user/userContacts'));
-            // store.commit('channels/SET_CONTACTS_FREE_TO_ADD_SEARCH', store.getters('channels/contactsToAdd'))
-            // });
-            // store.dispatch('messages/GET_MESSAGES');
+          if (store.getters['user/userData'].user_id) {
+            await store.commit('channels/SET_CONTACTS_FREE_TO_ADD', store.getters['user/userContacts']);
+            store.commit('channels/SET_CONTACTS_FREE_TO_ADD_SEARCH', store.getters['channels/contactsToAdd']);
           }
-        }
+        });
       }
     },
     async $_authGettingData_getUserData(slug) {
       store.commit('user/SET_USER_POSITION', 'user');
       const isAuthenticated = store.getters['auth/isAuthenticated'];
       if (isAuthenticated) {
-        const userMe = store.getters['user/info'];
+        const userMe = store.getters['user/userData'];
         if (slug === userMe.user_id) {
           store.commit('user/SET_CURRENT_USER_DATA', userMe)
         } else {

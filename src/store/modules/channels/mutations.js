@@ -6,7 +6,7 @@ export default {
     state.channelData = data;
   },
   'SET_CHANNEL_ID': (state, id) => {
-    state.channelData.channel_id = id;
+    state.channelData.id = id;
   },
   'SET_CHANNEL_TITLE': (state, title) => {
     state.channelData.title = title;
@@ -46,7 +46,7 @@ export default {
     state.currentChannelData = data;
   },
   'SET_CHANNEL_ID_TO_EDIT': (state, id) => {
-    state.currentChannelData.channel_id = id;
+    state.currentChannelData.id = id;
   },
   'SET_CHANNEL_AVATAR_ID': (state, avatar_id) => {
     state.channelData.avatar = avatar_id;
@@ -91,13 +91,13 @@ export default {
   },
   'REMOVE_DELETED_CHANNEL_FROM_STORE': (state, id) => {
     const channels = state.channels;
-    const channel = state.channels.find(channel => channel.channel_id === id);
+    const channel = state.channels.find(channel => channel.id === id);
     const groupIndex = channels.indexOf(channel);
     channels.splice(groupIndex, 1);
   },
   'SET_EDITED_CHANNEL_DATA': (state, data) => {
     for (let i = 0; i < state.channels.length; i++) {
-      if (state.channels[i].channel_id === data.channel_id) {
+      if (state.channels[i].id === data.id) {
         state.channels[i].title = data.title;
         state.channels[i].slug = data.slug;
         state.channels[i].status = data.status;
@@ -115,7 +115,7 @@ export default {
   'SET_DEFAULT_CHANNELS_STATE': state => {
     state.channels = [];
     state.currentChannelData = {
-      channel_id: '',
+      id: '',
       title: '',
       slug: '',
       status: '',
@@ -126,7 +126,7 @@ export default {
       avatar: undefined,
     };
     state.channelData = {
-      channel_id: '',
+      id: '',
       title: '',
       slug: '',
       status: '',

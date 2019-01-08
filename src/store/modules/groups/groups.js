@@ -5,7 +5,7 @@ import mutations from './mutations';
 const state = {
   groups: [],
   currentGroupData: {
-    group_id: '',
+    id: '',
     channels: [],
     channelsToSearch: [],
     title: '',
@@ -15,7 +15,7 @@ const state = {
     avatar: undefined,
   },
   groupData: {
-    group_id: undefined,
+    id: undefined,
     title: '',
     slug: '',
     status: '',
@@ -24,7 +24,7 @@ const state = {
     avatar: undefined,
   },
   addingChannelsData: {
-    group_id: '',
+    id: '',
     avalaibleChannels: [],
     channelsToSearch: [],
     channelsToAdd: [],

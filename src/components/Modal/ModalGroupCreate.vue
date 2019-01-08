@@ -101,7 +101,7 @@ export default {
   computed: {
     ...mapGetters({
       groupData: "groups/groupData",
-      userData: "user/info",
+      userData: "user/userData",
       imageUploadPersentage: 'groups/imageUploadPersentage',
     })
   },

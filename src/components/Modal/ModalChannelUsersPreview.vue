@@ -54,7 +54,7 @@ export default {
       isChannelUsersLoading: 'channels/isChannelUsersLoading',
       currentChannelData: 'channels/currentChannelData',
       currentChannelSearchUsers: 'channels/currentChannelSearchUsers',
-      userData: 'user/info',
+      userData: 'user/userData',
     }),
     calculatePlaceholders() {
       const height = 45;

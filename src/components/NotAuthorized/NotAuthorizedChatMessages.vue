@@ -11,16 +11,16 @@
   import { mapGetters, mapActions } from 'vuex';
 
   export default {
-    data() {
-      return { }
+    name: 'NotAuthorizedChatMessages',
+    components: {ChatMessage},
+    computed: {
+      ...mapGetters('messages', ['messages'])
     },
     methods: {
       scrollToBottom() {
         this.$refs['messagesList'].scrollTo(0, this.$refs['messagesList'].scrollHeight);
       },
-      ...mapActions({
-        offTyping: 'messages/OFF_TYPING',
-      }),
+      ...mapActions('messages', ['OFF_TYPING']),
     },
     mounted() {
       this.scrollToBottom();
@@ -28,16 +28,8 @@
     updated() {
       this.scrollToBottom();
     },
-    components: {
-      ChatMessage
-    },
-    computed: {
-        ...mapGetters({
-            messages: 'messages/messages'
-        })
-    },
     beforeDestroy() {
-      this.offTyping();
+      this.OFF_TYPING();
     }
   }
 </script>

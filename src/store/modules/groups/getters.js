@@ -8,5 +8,5 @@ export default {
   isGroupsLoading: state => state.isGroupsLoading,
   imageUploadPersentage: state => state.imageUploadPersentage,
   channelToDelete: state => state.channelToDelete,
-  groupToEdit: state => id => state.groups.find(group => group.group_id === id),
+  groupToEdit: state => id => state.groups.find(group => group.id === id),
 };

@@ -47,7 +47,7 @@
     },
     beforeRouteLeave(to, from, next) {
       this.setCurrentChannelData({
-        channel_id: '',
+        id: '',
         title: '',
         slug: '',
         status: '',
@@ -58,7 +58,7 @@
         avatar: undefined,
       });
       this.setCurrentChannelUsers({
-        group_id: '',
+        id: '',
         title: '',
         slug: '',
         status: '',

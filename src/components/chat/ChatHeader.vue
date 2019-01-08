@@ -29,7 +29,7 @@
 
     <button type="button" class="btn btn-light" @click="openModal">
       <span :class="fadeUsers" v-show="channelData.user_count">
-        {{channelData.user_count}} {{getNoun(channelData.user_count, 'пользователь', 'пользователя',
+        {{channelData.user_count}} {{getNoun(channelData.count, 'пользователь', 'пользователя',
       'пользователей')}}
       </span>
 

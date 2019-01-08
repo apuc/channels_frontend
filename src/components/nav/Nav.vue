@@ -18,11 +18,11 @@
             </li>
 
             <li class="dropdown-settings__el">
-              <router-link class="btn btn-link" to="/contacts/search" @click="logout">Поиск</router-link>
+              <router-link class="btn btn-link" to="/contacts/search" @click="LOGOUT">Поиск</router-link>
             </li>
 
             <li class="dropdown-settings__el">
-              <button class="btn btn-link" type="button" @click="logout">Exit</button>
+              <button class="btn btn-link" type="button" @click="LOGOUT">Exit</button>
             </li>
           </ul>
         </div>
@@ -70,8 +70,8 @@
 
       <nav>
         <drag v-for="channel in channels"
-              :transfer-data="channel.channel_id"
-              :key="channel.channel_id"
+              :transfer-data="channel.id"
+              :key="channel.id"
         >
           <NavSectionChannels v-if="filters.channelsVisible && !isChannelsLoading"
                               title="Каналы"
@@ -81,8 +81,8 @@
         </drag>
 
         <drop v-for="group in groups"
-              @drop="handleDrop(group.group_id, ...arguments)"
-              :key="group.group_id"
+              @drop="handleDrop(group.id, ...arguments)"
+              :key="group.id"
         >
           <NavSectionGroups v-if="filters.groupsVisible && !isGroupsLoading"
                             title="Группы"
@@ -105,16 +105,9 @@
   export default {
     components: {NavSectionChannels ,NavSectionGroups},
     computed: {
-      ...mapGetters({
-        groups: 'groups/groups',
-        channels: 'channels/channels',
-        userData: 'user/info',
-        authStatus: 'auth/authStatus',
-        isGroupsLoading: 'groups/isGroupsLoading',
-        isChannelsLoading: 'channels/isChannelsLoading',
-        isUserLoading: 'user/isUserLoading',
-        friendshipRequests: 'user/friendshipRequests',
-      }),
+      ...mapGetters('user', ['userData', 'isUserLoading', 'friendshipRequests']),
+      ...mapGetters('channels', ['channels', 'isChannelsLoading']),
+      ...mapGetters('groups', ['groups', 'isGroupsLoading']),
     },
     data() {
       return {
@@ -141,17 +134,16 @@
     },
     methods: {
       ...mapMutations({
-        setModal: 'modal/SET_MODAL',
-        setGroupIdForAddingChannels: 'groups/SET_GROUP_ID_FOR_ADDING_CHANNEL',
+        SET_MODAL: 'modal/SET_MODAL',
+        SET_GROUP_ID_FOR_ADDING_CHANNEL: 'groups/SET_GROUP_ID_FOR_ADDING_CHANNEL',
       }),
       ...mapActions({
-        getNav: 'user/GET_NAV',
-        addChannelsToGroup: 'groups/ADD_CHANNELS',
-        logout: 'auth/LOGOUT',
+        ADD_CHANNELS: 'groups/ADD_CHANNELS',
+        LOGOUT: 'auth/LOGOUT',
       }),
       openModal(e, modalType) {
         e.preventDefault();
-        this.setModal(modalType);
+        this.SET_MODAL(modalType);
       },
       navFilter(e) {
         const target = e.target;
@@ -175,11 +167,11 @@
         }
       },
       async handleDrop(group_id, data, event) {
-        await this.setGroupIdForAddingChannels(group_id);
-        await this.addChannelsToGroup([data]);
+        await this.SET_GROUP_ID_FOR_ADDING_CHANNEL(group_id);
+        await this.ADD_CHANNELS([data]);
       },
       openRequests() {
-        this.setModal('ModalUserContacts')
+        this.SET_MODAL('ModalUserContacts')
       }
     },
     async created() {

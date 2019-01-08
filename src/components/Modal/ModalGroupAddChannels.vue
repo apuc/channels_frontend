@@ -39,7 +39,7 @@
             type="checkbox"
             name="channel-to-add"
             :id="channel.slug + index"
-            :value="channel.channel_id"
+            :value="channel.id"
             v-model="channelsToAdd"
           >
       </li>

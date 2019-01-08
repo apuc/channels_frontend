@@ -34,8 +34,7 @@ export default {
    * Get channels and groups
    */
   'GET_NAV': async ({dispatch}) => {
-    await dispatch('groups/GET_USER_GROUPS', null, {root: true});
-    await dispatch('channels/GET_USER_CHANNELS', null, {root: true});
+    await dispatch('channels/GET_USER_NAV_BAR', null, {root: true});
   },
   /**
    * Get user contacts

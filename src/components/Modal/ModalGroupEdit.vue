@@ -113,7 +113,7 @@ export default {
   computed: {
     ...mapGetters({
       groupData: "groups/groupData",
-      userData: "user/info",
+      userData: "user/userData",
       imageUploadPersentage: 'groups/imageUploadPersentage',
     })
   },
@@ -196,7 +196,7 @@ export default {
   },
   beforeDestroy() {
     this.setGroupData({
-      group_id: "",
+      id: "",
       title: "",
       slug: "",
       status: "",

@@ -30,27 +30,25 @@
       ...mapGetters({
         status: 'status/status',
         currentUserInfo: 'user/currentUserInfo',
-        isUserLoading: 'user/isUserLoading',
       })
     },
     methods: {
+      ...mapMutations('user', ['SET_CURRENT_USER_DATA', 'SET_USER_POSITION']),
       ...mapMutations({
-        setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
-        setModal: 'modal/SET_MODAL',
-        setUserPosition: 'user/SET_USER_POSITION',
+        SET_MODAL: 'modal/SET_MODAL',
       }),
       openModal(e, modalType) {
         e.preventDefault();
-        this.setModal(modalType);
+        this.SET_MODAL(modalType);
       },
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        vm.setUserPosition('user')
+        vm.SET_CURRENT_USER_DATA('user')
       })
     },
     beforeRouteLeave(to, from, next) {
-      this.setCurrentUserData({
+      this.SET_USER_POSITION({
         avatar: undefined,
         email: '',
         user_id: null,

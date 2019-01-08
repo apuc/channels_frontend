@@ -23,7 +23,7 @@
     },
     beforeRouteLeave(to, from, next) {
       this.setCurrentGroupData({
-        group_id: '',
+        id: '',
         channels: [],
         channelsToSearch: [],
         title: '',

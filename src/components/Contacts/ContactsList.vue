@@ -68,7 +68,7 @@
     },
     computed: {
       ...mapGetters({
-        userData: 'user/info',
+        userData: 'user/userData',
         userContacts: 'user/userContacts',
         userContactsSearch: 'user/userContactsSearch',
         searchResultsUsers: 'user/searchResultsUsers',

@@ -1,19 +1,19 @@
 <template>
   <aside class="p-3 bg-light">
     <div v-if="userPosition === 'channel'">
-      <img :src="channel.avatar ? channel.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
+      <img :src="currentChannelData.avatar ? currentChannelData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
 
-      <p>{{channel.title}}</p>
-      <p>{{channel.status}}</p>
-      <p>{{channel.type}}</p>
-      <p>{{channel.private}}</p>
+      <p>{{currentChannelData.title}}</p>
+      <p>{{currentChannelData.status}}</p>
+      <p>{{currentChannelData.type}}</p>
+      <p>{{currentChannelData.private}}</p>
     </div>
 
-    <div v-if="userPosition === 'group'">
-      <img :src="group.avatar ? group.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
+    <div v-if="userPosition === 'currentGroupData'">
+      <img :src="currentGroupData.avatar ? currentGroupData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
 
-      <p>{{group.title}}</p>
-      <p>{{group.status}}</p>
+      <p>{{currentGroupData.title}}</p>
+      <p>{{currentGroupData.status}}</p>
     </div>
   </aside>
 </template>
@@ -26,16 +26,11 @@
 
     computed: {
       ...mapGetters({
-        channel: 'channels/currentChannelData',
-        group: 'groups/currentGroupData',
+        currentChannelData: 'channels/currentChannelData',
+        currentGroupData: 'groups/currentGroupData',
         userPosition: 'user/userPosition',
       }),
     },
-    data() {
-      return {
-
-      }
-    }
   }
 </script>
 

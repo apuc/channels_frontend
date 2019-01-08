@@ -194,7 +194,7 @@ export default {
   computed: {
     ...mapGetters({
       channelData: "channels/channelData",
-      userData: "user/info",
+      userData: "user/userData",
       userContacts: "user/userContacts",
       currentUserInfo: "user/currentUserInfo",
       setCreateChannel: "modal/setCreateChannel",
@@ -289,7 +289,7 @@ export default {
   beforeDestroy() {
     this.setChannelUsers([]);
     this.setChannelData({
-      channel_id: "",
+      id: "",
       title: "",
       slug: "",
       status: "",

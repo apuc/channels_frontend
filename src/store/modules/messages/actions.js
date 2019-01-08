@@ -11,7 +11,7 @@ export default {
         const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
         if (currentDateInSeconds < tokenExpiresIn) {
-            const channelId = rootGetters['channels/currentChannelData'].channel_id;
+            const channelId = rootGetters['channels/currentChannelData'].id;
             await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/messages`)
                 .then(
                     res => {
@@ -31,7 +31,7 @@ export default {
         }
     },
     'SEND_MESSAGE': async ({commit, dispatch, rootGetters}, payload) => {
-        const {user_id, username, avatar} = rootGetters['user/info'];
+        const {user_id, username, avatar} = rootGetters['user/userData'];
         const messageData = {
             user: {
                 username,

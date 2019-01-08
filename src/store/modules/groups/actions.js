@@ -151,7 +151,7 @@ export default {
     getters,
     commit
   }, groupId) => {
-    const editingGroup = await getters.groups.find(group => group.group_id === groupId);
+    const editingGroup = await getters.groups.find(group => group.id === groupId);
     await commit('SET_GROUP_DATA', editingGroup);
   },
   /**
@@ -168,11 +168,11 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.put(`${process.env.VUE_APP_API_URL}/group/${getters.groupData.group_id}`, {
+      await Vue.http.put(`${process.env.VUE_APP_API_URL}/group/${getters.groupData.id}`, {
           title: getters.groupData.title,
           slug: getters.groupData.slug,
           status: getters.groupData.status,
-          user_ids: [rootGetters['user/info'].user_id],
+          user_ids: [rootGetters['user/userData'].user_id],
           avatar: getters.groupData.avatar,
           owner_id: getters.groupData.owner_id,
         })
@@ -180,7 +180,7 @@ export default {
           async res => {
               const newGroupData = res.body.data;
               commit('SET_EDITED_GROUP_DATA', newGroupData);
-              if (newGroupData.group_id === getters.currentGroupData.group_id) {
+              if (newGroupData.id === getters.currentGroupData.id) {
                 commit('SET_CURRENT_GROUP_DATA', newGroupData);
                 commit('SET_CURRENT_GROUP_CHANNELS_TO_SEARCH', newGroupData.channels);
               }
@@ -223,7 +223,7 @@ export default {
               root: true
             });
 
-            if (id === getters.currentGroupData.group_id) {
+            if (id === getters.currentGroupData.id) {
               router.push('/');
             }
           },
@@ -259,18 +259,18 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.addingChannelsData.group_id}/channels`, {
+      await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.addingChannelsData.id}/channels`, {
           channels_ids: getters.addingChannelsData.channelsToAdd
         })
         .then(
           res => {
             const newGroupData = res.body.data;
             for (let i = 0; i < getters.channelsToAdd.length; i++) {
-              commit('channels/REMOVE_DELETED_CHANNEL', channel_ids[i], {
+              commit('channels/REMOVE_DELETED_CHANNEL', getters.channelsToAdd[i], {
                 root: true
               });
             }
-            if (getters.currentGroupData.group_id === newGroupData.group_id) {
+            if (getters.currentGroupData.id === newGroupData.id) {
               commit('SET_CURRENT_GROUP_DATA', newGroupData);
               commit('SET_CURRENT_GROUP_CHANNELS_TO_SEARCH', newGroupData.channels);
             }
@@ -289,7 +289,7 @@ export default {
             root: true
           })
           .then(() => {
-            dispatch('ADD_CHANNELS', channel_ids);
+            dispatch('ADD_CHANNELS');
           })
       }
     }
@@ -303,7 +303,7 @@ export default {
     dispatch,
     rootGetters
   }) => {
-    const group_id = getters.currentGroupData.group_id;
+    const group_id = getters.currentGroupData.id;
     const channel_id = getters.channelToDelete;
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));

@@ -1,12 +1,12 @@
 export default {
-  'SET_USER_INFO': (state, info) => {
-    state.info = info;
+  'SET_USER_INFO': (state, userData) => {
+    state.userData = userData;
   },
   'SET_CURRENT_USER_DATA': (state, data) => {
     state.currentUserInfo = data;
   },
   'SET_USER_AVATAR_ID': (state, avatar_id) => {
-    state.info.avatar = avatar_id;
+    state.userData.avatar = avatar_id;
   },
   'SET_USER_DATA_LOADING_FLAG': state => {
     state.isUserLoading = !state.isUserLoading;
@@ -53,7 +53,7 @@ export default {
     state.userContactsSearch = users;
   },
   'SET_DEFAULT_USER_STATE': state => {
-    state.info = {
+    state.userData = {
       avatar: undefined,
       email: '',
       user_id: null,

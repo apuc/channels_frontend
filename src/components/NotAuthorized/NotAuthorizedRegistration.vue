@@ -87,7 +87,7 @@
     },
     methods: {
       ...mapActions({
-        userRegistration: 'auth/REGISTRATION',
+        REGISTRATION: 'auth/REGISTRATION',
       }),
       test(e, index) {
         const value = e.target.value;
@@ -108,7 +108,7 @@
       },
       registration() {
         if (this.data.username.isValid && this.data.password.isValid && this.data.email.isValid && this.data.repeatPassword.isValid) {
-          this.userRegistration({
+          this.REGISTRATION({
             username: this.data.username.value,
             password: this.data.password.value,
             email: this.data.email.value,

@@ -47,7 +47,7 @@
     name: "ContactsFriendshipRequests",
     computed: {
       ...mapGetters({
-        userData: 'user/info',
+        userData: 'user/userData',
         friendshipRequests: 'user/friendshipRequests',
       }),
     },

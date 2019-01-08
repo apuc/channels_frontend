@@ -84,7 +84,7 @@
     name: "ModalEditProfile",
     computed: {
       ...mapGetters({
-        userInfo: 'user/info'
+        userInfo: 'user/userData'
       })
     },
     data() {

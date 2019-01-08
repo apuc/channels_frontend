@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import authGettingData from "../../authGettingData";
 
 export default {
@@ -71,18 +71,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      authStatus: "auth/gettingTokenAndData",
       isWrongData: "auth/isWrongData"
     })
   },
   methods: {
-    ...mapMutations({
-      setSessionStatus: "auth/SET_SESSION_STATUS"
-    }),
+    ...mapActions('user', ['GET_USER_ME', 'GET_NAV']),
     ...mapActions({
       getToken: "auth/GET_TOKEN",
-      getUserMe: "user/GET_USER_ME",
-      getNav: "user/GET_NAV"
     }),
     test(e, index) {
       const value = e.target.value;
@@ -100,15 +95,15 @@ export default {
     async login() {
       if (this.data.password.isValid && this.data.email.isValid) {
         localStorage.setItem("isSession", this.isSession.toString());
-        await this.getToken({
+        await this.GET_TOKEN({
           grant_type: "password",
           client_id: process.env.VUE_APP_CLIENT_ID,
           client_secret: process.env.VUE_APP_CLIENT_SECRET,
           username: this.data.email.value,
           password: this.data.password.value
         }).then(async () => {
-          this.getUserMe().then(() => {
-            this.getNav();
+          this.GET_USER_ME().then(() => {
+            this.GET_NAV();
             this.$_authGettingData_gettingData();
           });
           // this.$router.push('/');

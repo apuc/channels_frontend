@@ -171,7 +171,7 @@
       // ...mapState('channels', ['usersToAdd']),
       ...mapGetters({
         channelData: 'channels/channelData',
-        userData: 'user/info',
+        userData: 'user/userData',
         currentUserInfo: 'user/currentUserInfo',
         userContacts: 'user/userContacts',
         setCreateChannel: 'modal/setCreateChannel',
@@ -254,7 +254,7 @@
     },
     beforeDestroy() {
       this.setChannelData({
-        channel_id: '',
+        id: '',
         title: '',
         slug: '',
         status: '',

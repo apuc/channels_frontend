@@ -2,7 +2,7 @@ import Vue from 'vue';
 import router from '../../../routers/router';
 import {
   joinChannels
-} from '../../../services/socket/channels.service'
+} from '../../../services/socket/channels.service';
 
 export default {
   /**
@@ -117,7 +117,7 @@ export default {
               root: true
             });
             commit('ADD_CREATED_CHANNEL', createdChannelData);
-            dispatch('SET_CURRENT_CHANNEL_DATA', createdChannelData.channel_id)
+            dispatch('SET_CURRENT_CHANNEL_DATA', createdChannelData.id)
               .then(async () => {
                 await commit('SET_CONTACTS_FREE_TO_ADD', rootGetters['user/userContacts']);
                 commit('SET_CONTACTS_FREE_TO_ADD_SEARCH', getters.contactsToAddSearch);
@@ -191,7 +191,7 @@ export default {
     commit,
     dispatch
   }, channelId) => {
-    const editingChannel = await getters.channels.find(channel => channel.channel_id === channelId);
+    const editingChannel = await getters.channels.find(channel => channel.id === channelId);
     await commit('SET_CURRENT_CHANNEL_DATA', editingChannel);
     dispatch('GET_CHANNEL_USERS', channelId).then(data => {
       commit('SET_CURRENT_CHANNEL_USERS', data);
@@ -207,7 +207,7 @@ export default {
     getters,
     commit
   }, channelId) => {
-    const editingChannel = await getters.channels.find(channel => channel.channel_id === channelId);
+    const editingChannel = await getters.channels.find(channel => channel.id === channelId);
     await commit('SET_CHANNEL_DATA', editingChannel);
   },
   /**
@@ -224,7 +224,7 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelData.channel_id}`, {
+      await Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelData.id}`, {
           title: getters.channelData.title,
           slug: getters.channelData.slug,
           status: getters.channelData.status,
@@ -279,7 +279,7 @@ export default {
               root: true
             });
 
-            if (id === getters.currentChannelData.channel_id) {
+            if (id === getters.currentChannelData.id) {
               router.push('/');
             }
           },
@@ -313,10 +313,10 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/delete-user?channel_id=${getters.currentChannelData.channel_id}&user_id=${userId}`)
+      await Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/delete-user?channel_id=${getters.currentChannelData.id}&user_id=${userId}`)
         .then(
           res => {
-            dispatch('GET_CHANNEL_USERS', getters.currentChannelData.channel_id)
+            dispatch('GET_CHANNEL_USERS', getters.currentChannelData.id)
               .then(users => commit('SET_CURRENT_CHANNEL_USERS', users));
           },
           err => console.log(err)
@@ -351,11 +351,11 @@ export default {
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/add-user`, {
           user_id: userId,
-          channel_id: getters.currentChannelData.channel_id
+          channel_id: getters.currentChannelData.id
         })
         .then(
           res => {
-            dispatch('GET_CHANNEL_USERS', getters.currentChannelData.channel_id)
+            dispatch('GET_CHANNEL_USERS', getters.currentChannelData.id)
               .then(users => commit('SET_CURRENT_CHANNEL_USERS', users));
           },
           err => console.log(err)
@@ -372,4 +372,43 @@ export default {
       }
     }
   },
-};
+  'GET_USER_NAV_BAR': async ({
+                               getters,
+                               commit,
+                               dispatch,
+                               rootGetters
+                             }) => {
+    const currentDateInSeconds = Math.round(Date.now() / 1000);
+    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+    commit('SET_CHANNELS_LOADING_FLAG');
+
+    if (currentDateInSeconds < tokenExpiresIn) {
+      await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/service/left-side-bar`)
+        .then(
+          res => {
+            const data = res.body.data;
+            const channels = data.filter(item => item.type === 'channel');
+            const groups = data.filter(item => item.type === 'group');
+            console.log(channels);
+            console.log(groups);
+            commit('USER_CHANNELS', channels);
+            commit('groups/USER_GROUPS', groups, {root: true});
+            commit('SET_CHANNELS_LOADING_FLAG');
+            // joinChannels(channels);
+          },
+          err => console.log('get channels', err)
+        )
+        .catch(error => console.log('GET_CHANNELS: ', error))
+    } else {
+      if (currentDateInSeconds < refreshTokenExpiresIn) {
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
+          root: true
+        })
+          .then(() => {
+            dispatch('GET_USER_CHANNELS');
+          })
+      }
+    }
+  }
+}

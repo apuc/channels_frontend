@@ -16,13 +16,11 @@
     components: {Authorized, NotAuthorized},
     mixins: [authGettingData],
     computed: {
+      ...mapGetters('auth', ['token', 'isAuthenticated', 'gettingTokenAndData']),
       ...mapGetters({
-        token: 'auth/token',
-        userInfo: 'user/info',
-        authStatus: 'auth/gettingTokenAndData',
+        userData: 'user/userData',
         channels: 'channels/channels',
         groups: 'groups/groups',
-        isAuthenticated: 'auth/isAuthenticated',
       }),
       chooseView() {
         return this.isAuthenticated ? 'Authorized' : 'NotAuthorized'
@@ -37,36 +35,30 @@
     },
     methods: {
       ...mapMutations({
-        gettingUserData: 'auth/GETTING_TOKEN_AND_DATA',
-        setModal: 'modal/SET_MODAL',
+        GETTING_TOKEN_AND_DATA: 'auth/GETTING_TOKEN_AND_DATA',
       }),
-      ...mapActions({
-        getUserMe: 'user/GET_USER_ME',
-        getNav: 'user/GET_NAV',
-        getUserContacts: 'user/GET_USER_CONTACTS',
-        getUserFriendshipRequests: 'user/GET_USER_FRIENDSHIP_REQUESTS',
-      }),
+      ...mapActions('user', ['GET_USER_ME', 'GET_NAV', 'GET_USER_CONTACTS', 'GET_USER_FRIENDSHIP_REQUESTS']),
     },
     created() {
-      if (!this.authStatus) {
-        this.gettingUserData();
-        this.getUserMe()
+      if (!this.gettingTokenAndData) {
+        this.GETTING_TOKEN_AND_DATA();
+        this.GET_USER_ME()
           .then(async () => {
-            if (this.authStatus) {
+            if (this.gettingTokenAndData) {
               if (this.currentDateInSeconds < this.refreshTokenExpiresIn) {
-                this.getUserFriendshipRequests();
-                await this.getUserContacts();
-                await this.getNav().then(() => this.$_authGettingData_gettingData());
-                this.gettingUserData();
+                this.GET_USER_FRIENDSHIP_REQUESTS();
+                await this.GET_USER_CONTACTS();
+                await this.GET_NAV().then(() => this.$_authGettingData_gettingData());
+                this.GETTING_TOKEN_AND_DATA();
               }
             }
 
-            await connectSocket(this.token, this.userInfo.user_id)
+            await connectSocket(this.token, this.userData.user_id)
               .then(() => {
                 console.log('Socket connected!');
-                ioStatusOnline(this.userInfo.user_id); // Сообщаем ноду, что пользователь онлайн
+                ioStatusOnline(this.userData.user_id); // Сообщаем ноду, что пользователь онлайн
               });
-            ioGetUserStatus(this.userInfo.user_id);
+            ioGetUserStatus(this.userData.user_id);
           })
           .catch(error => console.log(error));
       }

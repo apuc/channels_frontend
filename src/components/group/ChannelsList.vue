@@ -12,14 +12,14 @@
           :key="channel.id"
           class="col-3 channels-list__channel"
       >
-        <router-link :to="`/${channel.slug}`" @click.native="setData($event, channel.channel_id)">
+        <router-link :to="`/${channel.slug}`" @click.native="setData($event, channel.id)">
         <img class="channel-avatar" :src="channel.avatar ? channel.avatar.small : 'https://pp.userapi.com/c846524/v846524878/e3cbe/QHn1Jw-tZfA.jpg'" alt="">
           {{ channel.title }}
         </router-link>
 
         <button type="button"
                 class="btn btn-danger btn-sm"
-                @click="removeChannel(channel.channel_id)"
+                @click="removeChannel(channel.id)"
         >
           <v-icon scale="1"
                   class="icon"
@@ -39,7 +39,7 @@
     computed: {
       ...mapGetters({
         currentGroupData: 'groups/currentGroupData',
-        userData: 'user/info',
+        userData: 'user/userData',
       })
     },
     data() {
