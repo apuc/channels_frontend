@@ -52,7 +52,6 @@ export default {
     return await Vue.http.get(`${process.env.VUE_APP_API_URL}/group/${groupId}`)
       .then(
         res => {
-          console.log(res.body.data);
           return res.body.data;
         },
         err => console.log('get groups', err)

@@ -9,7 +9,7 @@
 
       <div class="profile__name">
         <span>{{currentUserInfo.username}}</span>
-        <a :href="currentUserInfo.email">{{currentUserInfo.email}}</a>
+        <a :href="`mailto:${currentUserInfo.email}`">{{currentUserInfo.email}}</a>
         <span :class="status.status">{{ status.status }}</span>
       </div>
     </header>
