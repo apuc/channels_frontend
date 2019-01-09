@@ -78,19 +78,16 @@
     },
     computed: {
       ...mapGetters({
-        authStatus: 'auth/gettingTokenAndData',
         isWrongData: 'auth/isWrongData',
       })
     },
     methods: {
       ...mapMutations({
-        gettingTokenData: 'auth/GETTING_TOKEN_AND_DATA',
-        setSessionStatus: 'auth/SET_SESSION_STATUS',
+        GETTING_TOKEN_AND_DATA: 'auth/GETTING_TOKEN_AND_DATA',
       }),
+      ...mapActions('user', ['GET_USER_ME', 'GET_NAV']),
       ...mapActions({
-        getToken: 'auth/GET_TOKEN',
-        getUserMe: 'user/GET_USER_ME',
-        getNav: 'user/GET_NAV',
+        GET_TOKEN: 'auth/GET_TOKEN',
       }),
       test(e, index) {
         const value = e.target.value;
@@ -110,9 +107,9 @@
           localStorage.setItem('isSession', this.isSession.toString());
 
           if (!this.gettingTokenAndData) {
-            this.gettingTokenData();
+            this.GETTING_TOKEN_AND_DATA();
 
-            await this.getToken({
+            await this.GET_TOKEN({
               grant_type: 'password',
               client_id: process.env.VUE_APP_CLIENT_ID,
               client_secret: process.env.VUE_APP_CLIENT_SECRET,
@@ -122,18 +119,18 @@
               .then(
                 async () => {
                   if (!this.isWrongData) {
-                    await this.getUserMe()
+                    await this.GET_USER_ME()
                       .then(
                         async () => {
                           this.$router.push('/');
-                          await this.getNav();
+                          await this.GET_NAV();
                         })
                   }
                 });
 
             this.$router.push('/');
 
-            this.gettingTokenData();
+            this.GETTING_TOKEN_AND_DATA();
           }
         } else {
           for (let key in this.data) {

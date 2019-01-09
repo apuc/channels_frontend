@@ -1,21 +1,21 @@
 <template>
   <aside class="ads bg-light">
     <div class="wrap">
-      <div v-if="userPosition === 'channel'">
+      <div v-if="userPosition === 'currentChannelData'">
         <img
-          :src="channel.avatar ? channel.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
+          :src="currentChannelData.avatar ? currentChannelData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
           alt
         >
 
-        <p>{{channel.title}}</p>
-        <p>{{channel.status}}</p>
-        <p>{{channel.type}}</p>
-        <p>{{channel.private}}</p>
+        <p>{{currentChannelData.title}}</p>
+        <p>{{currentChannelData.status}}</p>
+        <p>{{currentChannelData.type}}</p>
+        <p>{{currentChannelData.private}}</p>
       </div>
 
-      <div class="channel-users" v-if="currentChannelData.user_count > 0">
+      <div class="channel-users" v-if="currentChannelData.count > 0">
         <h3>Пользователи канала</h3>
-        <button type="button" class="btn btn-primary" @click="openModal">Все</button>
+        <button type="button" class="btn btn-primary" @click="SET_MODAL('ModalChannelUsers')">Все</button>
 
         <ul class="users-list">
           <li class="user" v-for="user in currentChannelUsersToShow" :key="user.email">
@@ -34,7 +34,7 @@
                 <div>
                   <router-link
                     :to="`/user/${user.user_id}`"
-                    @click.native="getCurrentUserData(user.user_id)"
+                    @click.native="GET_USER_DATA(user.user_id)"
                   >{{user.username}}</router-link>
                 </div>
               </div>
@@ -52,14 +52,14 @@
         </ul>
       </div>
 
-      <div v-if="userPosition === 'group'">
+      <div v-if="userPosition === 'currentGroupData'">
         <img
-          :src="group.avatar ? group.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
+          :src="currentGroupData.avatar ? currentGroupData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
           alt
         >
 
-        <p>{{group.title}}</p>
-        <p>{{group.status}}</p>
+        <p>{{currentGroupData.title}}</p>
+        <p>{{currentGroupData.status}}</p>
       </div>
     </div>
   </aside>
@@ -71,13 +71,16 @@ import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   name: "Advertisings",
   computed: {
+    ...mapGetters('channels', [
+      'currentChannelData',
+      'currentChannelUsers',
+    ]),
+    ...mapGetters('user', [
+      'userPosition',
+      'userData',
+    ]),
     ...mapGetters({
-      channel: "channels/currentChannelData",
-      currentChannelData: "channels/currentChannelData",
-      currentChannelUsers: "channels/currentChannelUsers",
-      group: "groups/currentGroupData",
-      userPosition: "user/userPosition",
-      userData: "user/userData"
+      currentGroupData: "groups/currentGroupData",
     }),
     currentChannelUsersToShow() {
       if (this.currentChannelUsers.length > 4) {
@@ -87,24 +90,13 @@ export default {
       }
     }
   },
-  data() {
-    return {};
-  },
   methods: {
     ...mapMutations({
-      removeUserRequestFromStore: "user/REMOVE_USER_REQUEST_FROM_STORE",
-      deleteModal: "modal/DELETE_MODAL",
-      setModal: "modal/SET_MODAL"
+      SET_MODAL: "modal/SET_MODAL"
     }),
-    ...mapActions({
-      sendFriendshipRequest: "user/SEND_FRIENDSHIP_REQUEST",
-      getCurrentUserData: "user/GET_USER_DATA"
-    }),
-    openModal() {
-      this.setModal("ModalChannelUsers");
-    },
+    ...mapActions('user', ['SEND_FRIENDSHIP_REQUEST', 'GET_USER_DATA']),
     makeFriendshipRequest(target, data) {
-      this.sendFriendshipRequest({
+      this.SEND_FRIENDSHIP_REQUEST({
         user_id: data.user_id,
         contact_id: data.contact_id
       });

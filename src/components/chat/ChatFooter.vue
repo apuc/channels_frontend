@@ -10,7 +10,7 @@
 
     <div class="input_message-group">
       <label class="attach-file">
-        <input type="file" multiple @change="addAttachments">
+        <input type="file" multiple @change="ADD_ATTACHMENTS($event.target.files)">
         <v-icon scale="1.6" name="archive"/>
       </label>
 
@@ -34,7 +34,7 @@
     </div>
 
     <div class="message-attachment">
-      <Attachment v-for="(attachment, index) in attachments" :attachment="attachment" :key="index" />
+      <Attachment v-for="(attachment, index) in attachments" :attachment="attachment" :key="index"/>
     </div>
 
   </div>
@@ -47,16 +47,13 @@
 
   export default {
     computed: {
+      ...mapGetters('messages', ['usersTyping', 'attachments']),
       ...mapGetters({
         currentChannel: 'channels/currentChannelData',
         userInfo: 'user/userData',
-        usersTyping: 'messages/usersTyping',
-        attachments: 'messages/attachments'
       })
     },
-    components: {
-      Attachment
-    },
+    components: {Attachment},
     data() {
       return {
         input: '',
@@ -64,10 +61,7 @@
       }
     },
     methods: {
-      ...mapActions({
-        SEND_MESSAGE: 'messages/SEND_MESSAGE',
-        ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENTS'
-      }),
+      ...mapActions('messages', ['SEND_MESSAGE', 'ADD_ATTACHMENTS']),
       ioTyping,
       sendMessage(text, channelId) {
         if (this.input.trim() !== '') {
@@ -102,10 +96,7 @@
             isTyping: false
           });
         }, 2000);
-  },
-      addAttachments(e) {
-        this.ADD_ATTACHMENTS(e.target.files)
-      }
+      },
     },
     mounted() {
       this.$refs.textarea.focus();
@@ -133,6 +124,7 @@
     min-width: 100px;
     font-size: 18px;
   }
+
   .chat-typing {
     display: block;
     height: 15px;
@@ -140,9 +132,11 @@
     line-height: 1;
     color: #888;
   }
+
   .input_message-button {
     margin-left: 10px;
   }
+
   .attach-file {
     margin: 0 10px 0 0;
     display: flex;
@@ -155,7 +149,8 @@
     border: 1px solid #ccc;
     border-radius: 5px;
   }
-  .attach-file input{
+
+  .attach-file input {
     display: none;
   }
 </style>

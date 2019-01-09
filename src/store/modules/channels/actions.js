@@ -52,11 +52,10 @@ export default {
     dispatch,
     rootGetters
   }, channelId) => {
-    await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}`)
+    return await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}`)
       .then(
         async res => {
-            const channel = res.body.data;
-            await commit('SET_CURRENT_CHANNEL_DATA', channel);
+            return res.body.data;
           },
           err => {
             console.log(err);
@@ -189,14 +188,23 @@ export default {
   'SET_CURRENT_CHANNEL_DATA': async ({
     getters,
     commit,
-    dispatch
+    dispatch,
+    rootGetters
   }, channelId) => {
-    const editingChannel = await getters.channels.find(channel => channel.id === channelId);
-    await commit('SET_CURRENT_CHANNEL_DATA', editingChannel);
-    dispatch('GET_CHANNEL_USERS', channelId).then(data => {
+    await dispatch('GET_CHANNEL_DATA', channelId).then(data => {
+      commit('SET_CURRENT_CHANNEL_DATA', data);
+    });
+
+    dispatch('GET_CHANNEL_USERS', getters.currentChannelData.id).then(data => {
       commit('SET_CURRENT_CHANNEL_USERS', data);
       commit('SET_CHANNEL_USER_SEARCH_RESULTS', data);
+
+      if (rootGetters['user/userData'].user_id) {
+        commit('SET_CONTACTS_FREE_TO_ADD', rootGetters['user/userContacts']);
+        commit('SET_CONTACTS_FREE_TO_ADD_SEARCH', getters['contactsToAdd']);
+      }
     });
+    dispatch('messages/GET_MESSAGES', null, {root: true});
   },
   /**
    * Set data of editing channel to the store
@@ -302,7 +310,7 @@ export default {
    *
    * @param userId {String || Number} - user id  to remove
    */
-  'DELETE_USER': async ({
+  'DELETE_USER_FROM_CHANNEL': async ({
     getters,
     commit,
     dispatch,
@@ -328,7 +336,7 @@ export default {
             root: true
           })
           .then(() => {
-            dispatch('DELETE_USER', userId);
+            dispatch('DELETE_USER_FROM_CHANNEL', userId);
           })
       }
     }
@@ -373,11 +381,11 @@ export default {
     }
   },
   'GET_USER_NAV_BAR': async ({
-                               getters,
-                               commit,
-                               dispatch,
-                               rootGetters
-                             }) => {
+      getters,
+      commit,
+      dispatch,
+      rootGetters
+  }) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
@@ -390,8 +398,7 @@ export default {
             const data = res.body.data;
             const channels = data.filter(item => item.type === 'channel');
             const groups = data.filter(item => item.type === 'group');
-            console.log(channels);
-            console.log(groups);
+
             commit('USER_CHANNELS', channels);
             commit('groups/USER_GROUPS', groups, {root: true});
             commit('SET_CHANNELS_LOADING_FLAG');

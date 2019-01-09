@@ -24,12 +24,11 @@
     },
     methods: {
       ...mapMutations({
-        setSearchResultsUsers: 'user/SET_SEARCH_RESULTS_USERS',
+        SET_SEARCH_RESULTS_USERS: 'user/SET_SEARCH_RESULTS_USERS',
       }),
     },
-    beforeRouteLeave(to, from, next) {
-      this.setSearchResultsUsers([]);
-      next();
+    beforeDestroy() {
+      this.SET_SEARCH_RESULTS_USERS([]);
     }
   }
 </script>

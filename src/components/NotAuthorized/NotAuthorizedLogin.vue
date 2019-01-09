@@ -76,9 +76,6 @@ export default {
   },
   methods: {
     ...mapActions('user', ['GET_USER_ME', 'GET_NAV']),
-    ...mapActions({
-      getToken: "auth/GET_TOKEN",
-    }),
     test(e, index) {
       const value = e.target.value;
       this.data[index].value = value;

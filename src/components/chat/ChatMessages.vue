@@ -2,37 +2,32 @@
   <section class="messages" ref="messagesList" v-scroll>
     <ChatMessage v-for="(message, index) in messages"
                  :messageData="message"
-                 :key="index" />
+                 :key="index"/>
   </section>
 </template>
 
 <script>
   import ChatMessage from './ChatMessage';
   import {scroll} from '../../directives/scroll';
-  import { mapGetters, mapActions } from 'vuex';
+  import {mapGetters, mapActions} from 'vuex';
 
   export default {
-    data() {
-      return { }
-    },
+    components: {ChatMessage},
     directives: {
       scroll
     },
+    computed: {
+      ...mapGetters({
+        messages: 'messages/messages'
+      })
+    },
     methods: {
       ...mapActions({
-        offTyping: 'messages/OFF_TYPING',
+        OFF_TYPING: 'messages/OFF_TYPING',
       }),
     },
-    components: {
-      ChatMessage
-    },
-    computed: {
-        ...mapGetters({
-            messages: 'messages/messages'
-        })
-    },
     beforeDestroy() {
-      this.offTyping();
+      this.OFF_TYPING();
     }
   }
 </script>

@@ -30,7 +30,7 @@
         <button v-if="userData.user_id === currentChannelData.owner_id"
                 type="button"
                 class="btn btn-sm btn-danger"
-                @click="removeUser(user.user_id)"
+                @click="DELETE_USER_FROM_CHANNEL(user.user_id)"
         >
           <v-icon scale="1" class="icon" name="user-minus"/>
         </button>
@@ -49,17 +49,14 @@ import {
 export default {
   name: "ModalChannelUsersPreview",
   computed: {
+    ...mapGetters('channels', ['isChannelUsersLoading', 'currentChannelData', 'currentChannelSearchUsers']),
     ...mapGetters({
-      currentChannelUsers: 'channels/currentChannelUsers',
-      isChannelUsersLoading: 'channels/isChannelUsersLoading',
-      currentChannelData: 'channels/currentChannelData',
-      currentChannelSearchUsers: 'channels/currentChannelSearchUsers',
       userData: 'user/userData',
     }),
     calculatePlaceholders() {
       const height = 45;
-      if (this.currentChannelData.user_count < 5 && this.currentChannelData.user_count > 0) {
-        return `height: ${height * this.currentChannelData.user_count}px`
+      if (this.currentChannelData.count < 5 && this.currentChannelData.count > 0) {
+        return `height: ${height * this.currentChannelData.count}px`
       } else {
         return 'height: 135px'
       }
@@ -70,23 +67,18 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
-      deleteModal: 'modal/DELETE_MODAL',
+      DELETE_MODAL: 'modal/DELETE_MODAL',
     }),
+    ...mapActions('user', ['SEND_FRIENDSHIP_REQUEST', 'GET_USER_DATA']),
     ...mapActions({
-      deleteUser: 'channels/DELETE_USER',
-      sendFriendshipRequest: 'user/SEND_FRIENDSHIP_REQUEST',
-      getCurrentUserData: 'user/GET_USER_DATA',
+      DELETE_USER_FROM_CHANNEL: 'channels/DELETE_USER_FROM_CHANNEL',
     }),
     goToProfile(id) {
-      this.getCurrentUserData(id);
-      this.deleteModal();
-    },
-    removeUser(id) {
-      this.deleteUser(id);
+      this.GET_USER_DATA(id);
+      this.DELETE_MODAL();
     },
     makeFriendshipRequest(target, data) {
-      this.sendFriendshipRequest({
+      this.SEND_FRIENDSHIP_REQUEST({
         user_id: data.user_id,
         contact_id: data.contact_id
       });

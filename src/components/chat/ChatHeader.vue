@@ -1,19 +1,5 @@
 <template>
   <header class="bg-light">
-    <div class="settings" @mouseover="settingsVisible = true" @mouseout="settingsVisible = false">
-      <button type="button" class="settings__btn">
-        <v-icon scale="1.6" name="cog"/>
-      </button>
-
-      <div class="settings__list" v-if="settingsVisible">
-        <ul class="list">
-          <li class="list__el" v-for="(setting, index) in settingsList">
-            <a :href="setting.link">{{ setting.name }}</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
     <b-dropdown class="language-dropdown" variant="link">
       <button class="settings__btn" type="button" slot="button-content">
         <v-icon scale="1.6" class="icon" name="flag"/>
@@ -27,18 +13,18 @@
       ></b-dropdown-item>
     </b-dropdown>
 
-    <button type="button" class="btn btn-light" @click="openModal">
-      <span :class="fadeUsers" v-show="channelData.user_count">
-        {{channelData.user_count}} {{getNoun(channelData.count, 'пользователь', 'пользователя',
+    <button type="button" class="btn btn-light" @click="SET_MODAL('ModalChannelUsers')">
+      <span :class="fadeUsers" v-show="currentChannelData.count">
+        {{currentChannelData.count}} {{getNoun(currentChannelData.count, 'пользователь', 'пользователя',
       'пользователей')}}
       </span>
 
-      <span :class="fadePreloader" v-show="!channelData.user_count">
+      <span :class="fadePreloader" v-show="!currentChannelData.count">
         <v-icon scale="1.6" name="ellipsis-h"/>
       </span>
     </button>
 
-    <button class="btn btn-primary exit" type="button" @click="logout">Exit</button>
+    <button class="btn btn-primary exit" type="button" @click="LOGOUT">Exit</button>
   </header>
 </template>
 
@@ -48,43 +34,27 @@
   export default {
     computed: {
       ...mapGetters({
-        channelData: 'channels/currentChannelData',
-        channels: 'channels/channels',
+        currentChannelData: 'channels/currentChannelData',
       }),
       fadeUsers() {
-        return this.channelData.user_count ? 'fade-users_active' : 'fade-users'
+        return this.currentChannelData.count ? 'fade-users_active' : 'fade-users'
       },
       fadePreloader() {
-        return this.channelData.user_count ? 'fade-preloader' : 'fade-preloader_active'
+        return this.currentChannelData.count ? 'fade-preloader' : 'fade-preloader_active'
       }
     },
     data() {
       return {
-        settingsList: [
-          {
-            name: 'Настройки канала',
-            link: 'https://github.com'
-          },
-          {
-            name: 'Настройки чего-нибудь ещё',
-            link: 'https://github.com'
-          },
-          {
-            name: 'Настройки профиля',
-            link: 'https://github.com'
-          },
-        ],
-        settingsVisible: false,
         usersCount: null,
         hidden: true,
       }
     },
     methods: {
       ...mapMutations({
-        setModal: 'modal/SET_MODAL',
+        SET_MODAL: 'modal/SET_MODAL',
       }),
       ...mapActions({
-        logout: 'auth/LOGOUT',
+        LOGOUT: 'auth/LOGOUT',
       }),
       getNoun(number, one, two, five) {
         number = Math.abs(number);
@@ -100,9 +70,6 @@
           return two;
         }
         return five;
-      },
-      openModal() {
-        this.setModal('ModalChannelUsers');
       },
     },
   }

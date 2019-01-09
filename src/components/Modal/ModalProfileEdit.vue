@@ -18,7 +18,7 @@
           <div class="form-group">
             <label for="username">Username</label>
 
-            <input type="text" id="username" class="form-control" v-model="userData.username">
+            <input type="text" id="username" class="form-control" v-model="user.username">
           </div>
         </div>
       </div>
@@ -54,25 +54,25 @@
           <div class="form-group">
             <label for="password">Password</label>
 
-            <input type="password" id="password" class="form-control" v-model="userData.password">
+            <input type="password" id="password" class="form-control" v-model="user.password">
           </div>
 
           <div class="form-group">
             <label for="password-repeat">Repeat Password</label>
 
-            <input type="password" id="password-repeat" class="form-control" v-model="userData.passwordRepeat">
+            <input type="password" id="password-repeat" class="form-control" v-model="user.passwordRepeat">
           </div>
 
           <div class="form-group">
             <label for="email">Email</label>
 
-            <input type="text" id="email" class="form-control" v-model="userData.email">
+            <input type="text" id="email" class="form-control" v-model="user.email">
           </div>
         </div>
       </div>
 
       <button type="submit" class="btn btn-primary mr-1">Save</button>
-      <button type="submit" class="btn btn-danger" @click="deleteUser">Delete</button>
+      <button type="submit" class="btn btn-danger" @click="DELETE_USER">Delete</button>
     </form>
   </div>
 </template>
@@ -84,12 +84,12 @@
     name: "ModalEditProfile",
     computed: {
       ...mapGetters({
-        userInfo: 'user/userData'
+        userData: 'user/userData'
       })
     },
     data() {
       return {
-        userData: {
+        user: {
           user_id: '',
           username: '',
           email: '',
@@ -106,30 +106,27 @@
     },
     methods: {
       ...mapMutations({
-        setUserData: 'user/SET_USER_INFO',
+        SET_USER_INFO: 'user/SET_USER_INFO',
       }),
-      ...mapActions({
-        editGeneralUserData: 'user/EDIT_GENERAL_USER_DATA',
-        editPrivateUserData: 'user/EDIT_PRIVATE_USER_DATA',
-        deleteProfile: 'user/DELETE_USER',
-        createUserAvatar: 'user/CREATE_USER_AVATAR',
-      }),
+      ...mapActions('user', [
+        'EDIT_GENERAL_USER_DATA',
+        'EDIT_PRIVATE_USER_DATA',
+        'DELETE_USER',
+        'CREATE_USER_AVATAR',
+      ]),
       async onSubmitGeneral() {
-        await this.setUserData(this.userData);
+        await this.SET_USER_INFO(this.user);
 
         if (this.img) {
           this.upLoadStarted = true;
-          await this.createUserAvatar(this.img).then(() => this.upLoadStarted = false);
+          await this.CREATE_USER_AVATAR(this.img).then(() => this.upLoadStarted = false);
         }
-        this.editGeneralUserData();
+        this.EDIT_GENERAL_USER_DATA();
       },
 
       async onSubmitPrivate() {
-        await this.setUserData(this.userData);
-        this.editPrivateUserData();
-      },
-      deleteUser() {
-        this.deleteProfile();
+        await this.SET_USER_INFO(this.user);
+        this.EDIT_PRIVATE_USER_DATA();
       },
       createFormData(file) {
         let formData = new FormData();
@@ -173,9 +170,9 @@
       },
     },
     created() {
-      this.userData.username = this.userInfo.username;
-      this.userData.email = this.userInfo.email;
-      this.userData.user_id = this.userInfo.user_id;
+      this.user.username = this.userData.username;
+      this.user.email = this.userData.email;
+      this.user.user_id = this.userData.user_id;
     }
   }
 </script>

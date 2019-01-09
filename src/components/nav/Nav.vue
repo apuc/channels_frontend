@@ -138,7 +138,7 @@
         SET_GROUP_ID_FOR_ADDING_CHANNEL: 'groups/SET_GROUP_ID_FOR_ADDING_CHANNEL',
       }),
       ...mapActions({
-        ADD_CHANNELS: 'groups/ADD_CHANNELS',
+        ADD_CHANNELS_TO_GROUP: 'groups/ADD_CHANNELS_TO_GROUP',
         LOGOUT: 'auth/LOGOUT',
       }),
       openModal(e, modalType) {
@@ -168,7 +168,7 @@
       },
       async handleDrop(group_id, data, event) {
         await this.SET_GROUP_ID_FOR_ADDING_CHANNEL(group_id);
-        await this.ADD_CHANNELS([data]);
+        await this.ADD_CHANNELS_TO_GROUP([data]);
       },
       openRequests() {
         this.SET_MODAL('ModalUserContacts')

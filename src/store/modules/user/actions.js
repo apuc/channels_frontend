@@ -212,6 +212,7 @@ export default {
    * Global user search
    */
   'FIND_USERS': async ({commit}, {search_request, page}) => {
+    commit('SET_SEARCH_RESULTS_USERS', []);
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/?search_request=${search_request}&page=${page}`)
       .then(
         async res => {

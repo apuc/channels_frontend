@@ -5,7 +5,7 @@
     <router-link :to="`/group/${data.slug}`"
                  class="list-group__link"
                  :title="data.title"
-                 @click.native="setUserPosition(type)"
+                 @click.native="SET_USER_POSITION(type)"
     >
       <img :src="data.avatar.small"
            alt=""
@@ -85,17 +85,15 @@
         'SET_CHANNELS_TO_SEARCH'
       ]),
       ...mapMutations({
-        setUserPosition: 'user/SET_USER_POSITION',
+        SET_USER_POSITION: 'user/SET_USER_POSITION',
         SET_MODAL: 'modal/SET_MODAL',
       }),
       ...mapActions({
-        getGroupData: 'groups/GET_GROUP_DATA',
-        setAddingChannelsToGroup: 'groups/SET_ADDING_CHANNELS_TO_GROUP',
+        GET_GROUP_DATA: 'groups/GET_GROUP_DATA',
       }),
       async setData(e, id) {
         if (!e.target.hasAttribute('type')) {
-          await this.getGroupData(Number(id)).then(data => {
-            console.log(data);
+          await this.GET_GROUP_DATA(Number(id)).then(data => {
             this.SET_CURRENT_GROUP_DATA(data);
             this.SET_CURRENT_GROUP_CHANNELS_TO_SEARCH(data.channels);
           });
@@ -113,7 +111,7 @@
         this.SET_MODAL('ModalGroupAddChannels');
         await this.SET_AVAILABLE_CHANNELS_TO_ADD({group_id: group_id, channels: this.channels});
         this.SET_GROUP_ID_FOR_ADDING_CHANNEL(group_id);
-        this.SET_CHANNELS_TO_SEARCH(this.addingChannelsData.avalaibleChannels);
+        this.SET_CHANNELS_TO_SEARCH(this.addingChannelsData.availableChannels);
       },
     },
   }

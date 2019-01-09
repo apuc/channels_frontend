@@ -14,7 +14,7 @@
                    id="title"
                    class="form-control"
                    :value="channelData.title"
-                   @input="setChannelTitle($event.target.value)"
+                   @input="SET_CHANNEL_TITLE($event.target.value)"
             >
           </div>
 
@@ -25,7 +25,7 @@
                    id="slug"
                    class="form-control"
                    :value="channelData.slug"
-                   @input="setChannelSlug($event.target.value)"
+                   @input="SET_CHANNEL_SLUG($event.target.value)"
             >
           </div>
         </div>
@@ -41,7 +41,7 @@
                        class="form-check-input"
                        value="active"
                        name="channel-status"
-                       @input="setChannelStatus($event.target.value)"
+                       @input="SET_CHANNEL_STATUS($event.target.value)"
                 >
                 <span>active</span>
               </label>
@@ -54,7 +54,7 @@
                        class="form-check-input"
                        value="disable"
                        name="channel-status"
-                       @input="setChannelStatus($event.target.value)"
+                       @input="SET_CHANNEL_STATUS($event.target.value)"
                 >
                 <span>disable</span>
               </label>
@@ -71,7 +71,7 @@
                        class="form-check-input"
                        value="chat"
                        name="channel-type"
-                       @input="setChannelType($event.target.value)"
+                       @input="SET_CHANNEL_TYPE($event.target.value)"
                 >
                 <span>chat</span>
               </label>
@@ -84,7 +84,7 @@
                        class="form-check-input"
                        value="wall"
                        name="channel-type"
-                       @input="setChannelType($event.target.value)"
+                       @input="SET_CHANNEL_TYPE($event.target.value)"
                 >
                 <span>wall</span>
               </label>
@@ -97,7 +97,7 @@
                        class="form-check-input"
                        value="dialog"
                        name="channel-type"
-                       @input="setChannelType($event.target.value)"
+                       @input="SET_CHANNEL_TYPE($event.target.value)"
                 >
                 <span>dialog</span>
               </label>
@@ -114,7 +114,7 @@
                          "form-check-input"
                        value="1"
                        name="channel-privacy"
-                       @input="setChannelPrivate($event.target.value)"
+                       @input="SET_CHANNEL_PRIVATE($event.target.value)"
                 >
                 <span>1</span>
               </label>
@@ -127,7 +127,7 @@
                        class="form-check-input"
                        value="0"
                        name="channel-privacy"
-                       @input="setChannelPrivate($event.target.value)"
+                       @input="SET_CHANNEL_PRIVATE($event.target.value)"
                 >
                 <span>0</span>
               </label>
@@ -161,21 +161,14 @@
 </template>
 
 <script>
-  import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
-  import vSelect from "vue-select";
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
     name: "ModalChannelCreate",
-    components: {vSelect},
     computed: {
-      // ...mapState('channels', ['usersToAdd']),
+      ...mapGetters('channels', ['channelData', 'imageUploadPersentage']),
       ...mapGetters({
-        channelData: 'channels/channelData',
         userData: 'user/userData',
-        currentUserInfo: 'user/currentUserInfo',
-        userContacts: 'user/userContacts',
-        setCreateChannel: 'modal/setCreateChannel',
-        imageUploadPersentage: 'channels/imageUploadPersentage',
       })
     },
     data() {
@@ -188,32 +181,31 @@
       }
     },
     methods: {
+      ...mapMutations('channels', [
+        'SET_CHANNEL_DATA',
+        'SET_CHANNEL_TITLE',
+        'SET_CHANNEL_SLUG',
+        'SET_CHANNEL_STATUS',
+        'SET_CHANNEL_USER_IDS',
+        'SET_CHANNEL_OWNER_ID',
+        'SET_CHANNEL_TYPE',
+        'SET_CHANNEL_PRIVATE',
+      ]),
       ...mapMutations({
-        setChannelData: 'channels/SET_CHANNEL_DATA',
-        setChannelTitle: 'channels/SET_CHANNEL_TITLE',
-        setChannelSlug: 'channels/SET_CHANNEL_SLUG',
-        setChannelStatus: 'channels/SET_CHANNEL_STATUS',
-        setChannelUserIds: 'channels/SET_CHANNEL_USER_IDS',
-        setChannelOwnerId: 'channels/SET_CHANNEL_OWNER_ID',
-        setChannelType: 'channels/SET_CHANNEL_TYPE',
-        setChannelPrivate: 'channels/SET_CHANNEL_PRIVATE',
-        setModal: 'modal/SET_MODAL',
+        SET_MODAL: 'modal/SET_MODAL',
       }),
-      ...mapActions({
-        createChannel: 'channels/CREATE_CHANNEL',
-        createChannelAvatar: 'channels/CREATE_CHANNEL_AVATAR',
-      }),
+      ...mapActions('channels', ['CREATE_CHANNEL', 'CREATE_CHANNEL_AVATAR']),
       async onSubmit() {
-        this.setChannelUserIds([this.userData]);
-        this.setChannelOwnerId(this.userData.user_id);
+        this.SET_CHANNEL_USER_IDS([this.userData]);
+        this.SET_CHANNEL_OWNER_ID(this.userData.user_id);
 
         if (this.img) {
           this.upLoadStarted = true;
-          await this.createChannelAvatar(this.img).then(() => this.upLoadStarted = false);
+          await this.CREATE_CHANNEL_AVATAR(this.img).then(() => this.upLoadStarted = false);
         }
 
-        this.createChannel()
-          .then(() => this.setModal('ModalChannelAddUsers'));
+        this.CREATE_CHANNEL()
+          .then(() => this.SET_MODAL('ModalChannelAddUsers'));
       },
       createFormData(file) {
         let formData = new FormData();
@@ -253,7 +245,7 @@
       },
     },
     beforeDestroy() {
-      this.setChannelData({
+      this.SET_CHANNEL_DATA({
         id: '',
         title: '',
         slug: '',

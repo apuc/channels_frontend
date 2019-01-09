@@ -29,10 +29,9 @@
       }
     },
     methods: {
+      ...mapMutations('channels', ['SET_CURRENT_CHANNEL_DATA', 'SET_CURRENT_CHANNEL_USERS']),
       ...mapMutations({
-        setMessages: 'messages/SET_MESSAGES',
-        setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
-        setCurrentChannelUsers: 'channels/SET_CURRENT_CHANNEL_USERS',
+        SET_MESSAGES: 'messages/SET_MESSAGES',
       }),
       ...mapActions({
         ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENTS'
@@ -45,19 +44,19 @@
         this.ADD_ATTACHMENTS(e.dataTransfer.files);
       }
     },
-    beforeRouteLeave(to, from, next) {
-      this.setCurrentChannelData({
+    beforeDestroy() {
+      this.SET_CURRENT_CHANNEL_DATA({
         id: '',
         title: '',
         slug: '',
         status: '',
-        user_count: '',
+        count: '',
         owner_id: '',
         type: '',
         private: '',
         avatar: undefined,
       });
-      this.setCurrentChannelUsers({
+      this.SET_CURRENT_CHANNEL_USERS({
         id: '',
         title: '',
         slug: '',
@@ -65,8 +64,7 @@
         owner_id: '',
         avatar: undefined,
       });
-      this.setMessages([]);
-      next();
+      this.SET_MESSAGES([]);
     }
   }
 

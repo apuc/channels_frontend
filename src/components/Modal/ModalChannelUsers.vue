@@ -22,7 +22,7 @@
                @input="findUserToAdd"
         >
 
-        <button type="button" class="btn" :class="disableButton" @click="addUser(add_user)">
+        <button type="button" class="btn" :class="disableButton" @click="ADD_USER(add_user)">
           <v-icon scale="1" class="icon" name="plus-square"/>
         </button>
       </div>
@@ -45,8 +45,6 @@
     computed: {
       ...mapGetters({
         currentChannelUsers: 'channels/currentChannelUsers',
-        isSearchActive: 'channels/isSearchActive',
-        currentChannelSearchUsers: 'channels/currentChannelSearchUsers',
       }),
       disableButton() {
         return this.add_user.length > 0 && !this.isUserInChannel ? 'btn-primary' : 'btn-default disable';
@@ -62,10 +60,10 @@
     },
     methods: {
       ...mapMutations({
-        setChannelUserSearchResults:'channels/SET_CHANNEL_USER_SEARCH_RESULTS',
+        SET_CHANNEL_USER_SEARCH_RESULTS:'channels/SET_CHANNEL_USER_SEARCH_RESULTS',
       }),
       ...mapActions({
-        addUser: 'channels/ADD_USER',
+        ADD_USER: 'channels/ADD_USER',
       }),
       findUserToAdd(e) {
         this.add_user = e.target.value;
@@ -91,9 +89,9 @@
         this.noUsers = searchResult.length === 0;
 
         if (value) {
-          this.setChannelUserSearchResults(searchResult);
+          this.SET_CHANNEL_USER_SEARCH_RESULTS(searchResult);
         } else {
-          this.setChannelUserSearchResults(this.currentChannelUsers);
+          this.SET_CHANNEL_USER_SEARCH_RESULTS(this.currentChannelUsers);
         }
       }
     },

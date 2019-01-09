@@ -69,8 +69,6 @@
       async setData(e, id) {
         if (!e.target.hasAttribute("type")) {
           await this.SET_CURRENT_CHANNEL_DATA(Number(id));
-          this.GET_MESSAGES();
-          // this.REMOVE_CURRENT_CHANNEL_USERS_FROM_STORE();
         }
       },
       async editingModal(id) {

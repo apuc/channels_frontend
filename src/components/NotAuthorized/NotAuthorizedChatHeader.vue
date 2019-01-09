@@ -14,12 +14,12 @@
     </b-dropdown>
 
     <button type="button" class="btn btn-light" @click="openModal">
-      <span :class="fadeUsers" v-show="currentChannelData.user_count">
-        {{currentChannelData.user_count}} {{getNoun(currentChannelData.user_count, 'пользователь', 'пользователя',
+      <span :class="fadeUsers" v-show="currentChannelData.count">
+        {{currentChannelData.count}} {{getNoun(currentChannelData.count, 'пользователь', 'пользователя',
       'пользователей')}}
       </span>
 
-      <span :class="fadePreloader" v-show="!currentChannelData.user_count">
+      <span :class="fadePreloader" v-show="!currentChannelData.count">
         <v-icon scale="1.6" name="ellipsis-h"/>
       </span>
     </button>
@@ -27,16 +27,16 @@
 </template>
 
 <script>
-  import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import {mapGetters, mapMutations} from 'vuex';
 
   export default {
     computed: {
       ...mapGetters('channels', ['currentChannelData']),
       fadeUsers() {
-        return this.currentChannelData.user_count ? 'fade-users_active' : 'fade-users'
+        return this.currentChannelData.count ? 'fade-users_active' : 'fade-users'
       },
       fadePreloader() {
-        return this.currentChannelData.user_count ? 'fade-preloader' : 'fade-preloader_active'
+        return this.currentChannelData.count ? 'fade-preloader' : 'fade-preloader_active'
       }
     },
     data() {

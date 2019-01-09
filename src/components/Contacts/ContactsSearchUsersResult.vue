@@ -44,35 +44,29 @@
       }
     },
     computed: {
-      ...mapGetters({
-        userData: 'user/userData',
-        searchResultsUsers: 'user/searchResultsUsers',
-        searchResultsPages: 'user/searchResultsPages',
-        searchResultsCurrentPage: 'user/searchResultsCurrentPage',
-      })
+      ...mapGetters('user', [
+        'userData',
+        'searchResultsUsers',
+        'searchResultsPages',
+        'searchResultsCurrentPage',
+      ]),
     },
     methods: {
       ...mapMutations({
-        setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
-        removeUserRequestFromStore: 'user/REMOVE_USER_REQUEST_FROM_STORE',
-        deleteModal: 'modal/DELETE_MODAL',
+        DELETE_MODAL: 'modal/DELETE_MODAL',
       }),
-      ...mapActions({
-        sendFriendshipRequest: 'user/SEND_FRIENDSHIP_REQUEST',
-        getCurrentUserData: 'user/GET_USER_DATA',
-        findUsers: 'user/FIND_USERS',
-      }),
+      ...mapActions('user', ['SEND_FRIENDSHIP_REQUEST', 'GET_USER_DATA', 'FIND_USERS']),
       goToProfile(id) {
-        this.getCurrentUserData(id);
-        this.deleteModal();
+        this.GET_USER_DATA(id);
+        this.DELETE_MODAL();
       },
       makeFriendshipRequest(target, data) {
-        this.sendFriendshipRequest({user_id: data.user_id, contact_id: data.contact_id});
+        this.SEND_FRIENDSHIP_REQUEST({user_id: data.user_id, contact_id: data.contact_id});
         target.remove();
       },
       observerMethod(entries, observer) {
         if (this.searchResultsCurrentPage <= this.searchResultsPages) {
-          this.findUsers({search_request: '', page: this.searchResultsCurrentPage + 1})
+          this.FIND_USERS({search_request: '', page: this.searchResultsCurrentPage + 1})
         }
       }
     },

@@ -45,9 +45,6 @@ export default {
   'SET_CURRENT_CHANNEL_DATA': (state, data) => {
     state.currentChannelData = data;
   },
-  'SET_CHANNEL_ID_TO_EDIT': (state, id) => {
-    state.currentChannelData.id = id;
-  },
   'SET_CHANNEL_AVATAR_ID': (state, avatar_id) => {
     state.channelData.avatar = avatar_id;
   },
@@ -66,7 +63,12 @@ export default {
   },
   'REMOVE_USER_FROM_CONTACTS_TO_ADD': (state, user_id) => {
     state.contactsToAdd.users = state.contactsToAdd.users.filter(user => user.user_id !== user_id);
-    console.log(state.contactsToAdd.users);
+  },
+  'CLEAR_CONTACTS_TO_ADD': state => {
+    state.contactsToAdd = {
+      searchUsers: [],
+      users: []
+    }
   },
   'SET_CHANNEL_ID_TO_DELETE': (state, id) => {
     state.channelToDelete = id;
@@ -119,7 +121,7 @@ export default {
       title: '',
       slug: '',
       status: '',
-      user_count: '',
+      count: '',
       owner_id: '',
       type: '',
       private: '',

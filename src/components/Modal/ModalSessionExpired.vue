@@ -12,14 +12,14 @@
     name: "ModalSessionExpired",
     methods: {
       ...mapMutations({
-        closeModal: 'modal/DELETE_MODAL',
+        DELETE_MODAL: 'modal/DELETE_MODAL',
       }),
       ...mapActions({
-        logout: 'auth/LOGOUT',
+        LOGOUT: 'auth/LOGOUT',
       }),
       exit() {
-        this.logout();
-        this.closeModal();
+        this.LOGOUT();
+        this.DELETE_MODAL();
       }
     }
   }

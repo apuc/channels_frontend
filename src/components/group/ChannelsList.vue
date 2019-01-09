@@ -49,22 +49,18 @@
       }
     },
     methods: {
-      ...mapMutations({
-        setChannelToDelete: 'groups/SET_CHANNEL_TO_DELETE',
-        setCurrentGroupChannelsToSearch: 'groups/SET_CURRENT_GROUP_CHANNELS_TO_SEARCH',
-      }),
+      ...mapMutations('groups', ['SET_CHANNEL_TO_DELETE', 'SET_CURRENT_GROUP_CHANNELS_TO_SEARCH', 'DELETE_CHANNEL_FROM_GROUP']),
       ...mapActions({
-        setCurrentChannelData: 'channels/SET_CURRENT_CHANNEL_DATA',
-        getMessages: 'messages/GET_MESSAGES',
-        deleteChannel: 'groups/DELETE_CHANNEL_FROM_GROUP',
+        SET_CURRENT_CHANNEL_DATA: 'channels/SET_CURRENT_CHANNEL_DATA',
+        GET_MESSAGES: 'messages/GET_MESSAGES',
       }),
       async setData(e, id) {
-        await this.setCurrentChannelData(Number(id));
-        this.getMessages();
+        await this.SET_CURRENT_CHANNEL_DATA(Number(id));
+        this.GET_MESSAGES();
       },
       async removeChannel(channelId) {
-        await this.setChannelToDelete(channelId);
-        this.deleteChannel();
+        await this.SET_CHANNEL_TO_DELETE(channelId);
+        this.DELETE_CHANNEL_FROM_GROUP();
       },
       findChannel(value) {
         let currentUserName = '';
@@ -76,7 +72,6 @@
             searchResult.push(this.currentGroupData.channelsToSearch[i]);
           }
         }
-        console.log(searchResult);
         return searchResult;
       },
       searchChannel(value) {
@@ -85,9 +80,9 @@
         this.noChannels = searchResult.length === 0;
 
         if (value) {
-          this.setCurrentGroupChannelsToSearch(searchResult);
+          this.SET_CURRENT_GROUP_CHANNELS_TO_SEARCH(searchResult);
         } else {
-          this.setCurrentGroupChannelsToSearch(this.currentGroupData.channels);
+          this.SET_CURRENT_GROUP_CHANNELS_TO_SEARCH(this.currentGroupData.channels);
         }
       }
     }

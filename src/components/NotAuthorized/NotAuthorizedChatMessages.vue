@@ -17,10 +17,12 @@
       ...mapGetters('messages', ['messages'])
     },
     methods: {
+      ...mapActions({
+        OFF_TYPING: 'messages/OFF_TYPING',
+      }),
       scrollToBottom() {
         this.$refs['messagesList'].scrollTo(0, this.$refs['messagesList'].scrollHeight);
       },
-      ...mapActions('messages', ['OFF_TYPING']),
     },
     mounted() {
       this.scrollToBottom();

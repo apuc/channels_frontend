@@ -20,31 +20,27 @@
         :key="channel.email"
       >
         <label class="channel-info" :for="channel.slug + index">
-          <div class="image-wrap">
-            <img
-              class="img"
-              :src="channel.avatar ? channel.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
-              width="30"
-              height="30"
-              alt
-            >
-          </div>
+          <img
+            class="img"
+            :src="channel.avatar ? channel.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
+            width="30"
+            height="30"
+            alt
+          >
 
-          <div>
-            <router-link :to="`/${channel.user_id}`">{{channel.slug}}</router-link>
-          </div>
+          <router-link :to="`/${channel.user_id}`">{{channel.slug}}</router-link>
         </label>
 
-          <input
-            type="checkbox"
-            name="channel-to-add"
-            :id="channel.slug + index"
-            :value="channel.id"
-            v-model="channelsToAdd"
-          >
+        <input
+          type="checkbox"
+          name="channel-to-add"
+          :id="channel.slug + index"
+          :value="channel.id"
+          v-model="channelsToAdd"
+        >
       </li>
     </ul>
-    
+
     <button type="button" class="btn btn-primary mt-3" @click="submitChannels">Add channels</button>
   </div>
 </template>
@@ -63,30 +59,26 @@
     },
     computed: {
       ...mapGetters({
-        channels: 'channels/channels',
         addingChannelsData: 'groups/addingChannelsData',
       }),
     },
     methods: {
-      ...mapMutations({
-        setChannelsToAdd: 'groups/SET_CHANNELS_TO_ADD',
-        setChannelsToSearch: 'groups/SET_CHANNELS_TO_SEARCH',
-      }),
+      ...mapMutations('groups', ['SET_CHANNELS_TO_ADD', 'SET_CHANNELS_TO_SEARCH', 'CLEAR_ADDING_CHANNELS_DATA']),
       ...mapActions({
-        addChannelsToGroup: 'groups/ADD_CHANNELS',
+        ADD_CHANNELS_TO_GROUP: 'groups/ADD_CHANNELS_TO_GROUP',
       }),
       async submitChannels() {
-        await this.setChannelsToAdd(this.channelsToAdd);
-        this.addChannelsToGroup();
+        await this.SET_CHANNELS_TO_ADD(this.channelsToAdd);
+        this.ADD_CHANNELS_TO_GROUP();
       },
       findChannel(value) {
         let currentUserName = '';
         let searchValue = value.toLowerCase();
         let searchResult = [];
-        for (let i = 0; i < this.addingChannelsData.avalaibleChannels.length; i++) {
-          currentUserName = this.addingChannelsData.avalaibleChannels[i].slug.toLowerCase();
+        for (let i = 0; i < this.addingChannelsData.availableChannels.length; i++) {
+          currentUserName = this.addingChannelsData.availableChannels[i].slug.toLowerCase();
           if (currentUserName.includes(searchValue)) {
-            searchResult.push(this.addingChannelsData.avalaibleChannels[i]);
+            searchResult.push(this.addingChannelsData.availableChannels[i]);
           }
         }
         return searchResult;
@@ -97,53 +89,53 @@
         this.noChannels = searchResult.length === 0;
 
         if (value) {
-          this.setChannelsToSearch(searchResult);
+          this.SET_CHANNELS_TO_SEARCH(searchResult);
         } else {
-          this.setChannelsToSearch(this.addingChannelsData.avalaibleChannels);
+          this.SET_CHANNELS_TO_SEARCH(this.addingChannelsData.availableChannels);
         }
       }
     },
     beforeDestroy() {
-      
+      this.CLEAR_ADDING_CHANNELS_DATA();
     },
   }
 </script>
 
 <style scoped>
   .channel-list {
-  max-height: 300px;
-  margin: 0;
-  margin-top: 10px;
-  padding: 0;
-  overflow: auto;
-}
+    max-height: 300px;
+    margin: 0;
+    margin-top: 10px;
+    padding: 0;
+    overflow: auto;
+  }
 
-.channel {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px 3px;
-}
+  .channel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 3px;
+  }
 
-.channel-info {
-  display: flex;
-  align-items: center;
-}
+  .channel-info {
+    display: flex;
+    align-items: center;
+  }
 
-.channel:hover {
-  background-color: rgba(122, 122, 122, 0.2);
-}
+  .channel:hover {
+    background-color: rgba(122, 122, 122, 0.2);
+  }
 
-.image-wrap {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
+  .image-wrap {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
 
-  background-color: #cccccc;
-  border-radius: 50%;
-}
+    background-color: #cccccc;
+    border-radius: 50%;
+  }
 
-.img {
-  display: block;
-}
+  .img {
+    display: block;
+  }
 </style>

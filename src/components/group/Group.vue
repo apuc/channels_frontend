@@ -18,11 +18,11 @@
     },
     methods: {
       ...mapMutations({
-        setCurrentGroupData: 'groups/SET_CURRENT_GROUP_DATA',
+        SET_CURRENT_GROUP_DATA: 'groups/SET_CURRENT_GROUP_DATA',
       })
     },
-    beforeRouteLeave(to, from, next) {
-      this.setCurrentGroupData({
+    beforeDestroy() {
+      this.SET_CURRENT_GROUP_DATA({
         id: '',
         channels: [],
         channelsToSearch: [],
@@ -32,7 +32,6 @@
         owner_id: '',
         avatar: undefined,
       });
-      next();
     }
   }
 </script>

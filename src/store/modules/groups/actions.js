@@ -248,7 +248,7 @@ export default {
    *
    * @param channel_ids {String || Number} - channels id's
    */
-  'ADD_CHANNELS': async ({
+  'ADD_CHANNELS_TO_GROUP': async ({
     getters,
     commit,
     dispatch,
@@ -260,13 +260,13 @@ export default {
 
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.addingChannelsData.id}/channels`, {
-          channels_ids: getters.addingChannelsData.channelsToAdd
+          channel_ids: getters.addingChannelsData.channelsToAdd
         })
         .then(
           res => {
             const newGroupData = res.body.data;
-            for (let i = 0; i < getters.channelsToAdd.length; i++) {
-              commit('channels/REMOVE_DELETED_CHANNEL', getters.channelsToAdd[i], {
+            for (let i = 0; i < getters.addingChannelsData.channelsToAdd.length; i++) {
+              commit('channels/REMOVE_DELETED_CHANNEL', getters.addingChannelsData.channelsToAdd[i], {
                 root: true
               });
             }
@@ -289,7 +289,7 @@ export default {
             root: true
           })
           .then(() => {
-            dispatch('ADD_CHANNELS');
+            dispatch('ADD_CHANNELS_TO_GROUP');
           })
       }
     }

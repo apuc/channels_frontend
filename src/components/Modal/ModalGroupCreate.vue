@@ -27,7 +27,7 @@
               id="slug"
               class="form-control"
               :value="groupData.slug"
-              @input="setGroupSlug($event.target.value)"
+              @input="SET_GROUP_SLUG($event.target.value)"
             >
           </div>
         </div>
@@ -44,7 +44,7 @@
                   class="form-check-input"
                   value="active"
                   name="group-status"
-                  @input="setGroupStatus($event.target.value)"
+                  @input="SET_GROUP_STATUS($event.target.value)"
                 >
                 <span>active</span>
               </label>
@@ -58,7 +58,7 @@
                   class="form-check-input"
                   value="disable"
                   name="group-status"
-                  @input="setGroupStatus($event.target.value)"
+                  @input="SET_GROUP_STATUS($event.target.value)"
                 >
                 <span>disable</span>
               </label>
@@ -99,10 +99,9 @@ export default {
   name: "ModalGroupCreate",
   components: { vSelect },
   computed: {
+    ...mapGetters('groups', ['groupData', 'imageUploadPersentage']),
     ...mapGetters({
-      groupData: "groups/groupData",
       userData: "user/userData",
-      imageUploadPersentage: 'groups/imageUploadPersentage',
     })
   },
   data() {
@@ -114,34 +113,28 @@ export default {
     };
   },
   methods: {
-    ...mapMutations({
-      setGroupData: "groups/SET_GROUP_DATA",
-      setChannelsToAdd: "groups/SET_CHANNELS_TO_ADD",
-      setGroupTitle: "groups/SET_GROUP_TITLE",
-      setGroupSlug: "groups/SET_GROUP_SLUG",
-      setGroupStatus: "groups/SET_GROUP_STATUS",
-      setGroupOwnerId: "groups/SET_GROUP_OWNER_ID",
-      setGroupUsersIds: "groups/SET_GROUP_USER_IDS"
-    }),
-    ...mapActions({
-      createGroup: "groups/CREATE_GROUP",
-      createGroupAvatar: "groups/CREATE_GROUP_AVATAR"
-    }),
+    ...mapMutations('groups', [
+      'SET_GROUP_DATA',
+      'SET_CHANNELS_TO_ADD',
+      'SET_GROUP_TITLE',
+      'SET_GROUP_SLUG',
+      'SET_GROUP_STATUS',
+      'SET_GROUP_OWNER_ID',
+      'SET_GROUP_USER_IDS',
+    ]),
+    ...mapActions('groups', ['CREATE_GROUP', 'CREATE_GROUP_AVATAR']),
     async onSubmit() {
-      this.setGroupOwnerId(this.userData.user_id);
-      this.setGroupUsersIds(this.userData.user_id);
+      this.SET_GROUP_OWNER_ID(this.userData.user_id);
+      this.SET_GROUP_USER_IDS(this.userData.user_id);
 
       if (this.img) {
         this.upLoadStarted = true;
-        await this.createGroupAvatar(this.img).then(
+        await this.CREATE_GROUP_AVATAR(this.img).then(
           () => (this.upLoadStarted = false)
         );
       }
 
-      this.createGroup();
-    },
-    makeSplitedArray(string) {
-      return string.split(",");
+      this.CREATE_GROUP();
     },
     createFormData(file) {
       let formData = new FormData();

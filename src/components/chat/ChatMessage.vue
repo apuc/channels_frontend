@@ -2,12 +2,12 @@
   <b-card class="message mb-3">
     <b-media>
       <div class="flex">
-        <router-link :to="'/user/'+messageData.from.user_id" @click.native="getCurrentUserData(messageData.from.user_id)">
+        <router-link :to="'/user/'+messageData.from.user_id" @click.native="GET_USER_DATA(messageData.from.user_id)">
           <img :src="messageData.from.avatar || noavatar" width="64" alt="placeholder"/>
         </router-link>
 
         <h5 class="mt-0 message-title" >
-          <router-link :to="'/user/'+messageData.from.user_id" @click.native="getCurrentUserData(messageData.from.user_id)">{{messageData.from.username}}</router-link>
+          <router-link :to="'/user/'+messageData.from.user_id" @click.native="GET_USER_DATA(messageData.from.user_id)">{{messageData.from.username}}</router-link>
           <span class="message-time">{{ messageData['created_at'] }}</span>
         </h5>
 
@@ -19,30 +19,22 @@
 </template>
 
 <script>
-  import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import {mapActions} from 'vuex';
   import Attachment from '../attachment/Attachment';
 
   export default {
-    computed: {
-      ...mapGetters({
-        userInfo: 'modal/userProfileInfo',
-      }),
-    },
     components: {Attachment},
+    props: {
+      messageData: Object
+    },
     data() {
       return {
         noavatar: 'data:image/gif;base64,R0lGODdhMAAwAPAAAAAAAP///ywAAAAAMAAwAAAC8IyPqcvt3wCcDkiLc7C0qwyGHhSWpjQu5yqmCYsapyuvUUlvONmOZtfzgFzByTB10QgxOR0TqBQejhRNzOfkVJ+5YiUqrXF5Y5lKh/DeuNcP5yLWGsEbtLiOSpa/TPg7JpJHxyendzWTBfX0cxOnKPjgBzi4diinWGdkF8kjdfnycQZXZeYGejmJlZeGl9i2icVqaNVailT6F5iJ90m6mvuTS4OK05M0vDk0Q4XUtwvKOzrcd3iq9uisF81M1OIcR7lEewwcLp7tuNNkM3uNna3F2JQFo97Vriy/Xl4/f1cf5VWzXyym7PHhhx4dbgYKAAA7'
       }
     },
-    props: {
-      messageData: Object
-    },
     methods: {
-      ...mapMutations({
-        setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
-      }),
       ...mapActions({
-        getCurrentUserData: 'user/GET_USER_DATA',
+        GET_USER_DATA: 'user/GET_USER_DATA',
       }),
     }
   }

@@ -1,8 +1,8 @@
 <template>
   <div class="modal-inside">
     <h3>Вы уверены, что хотите удалить данный канал</h3>
-    <button type="button" class="btn btn-primary" style="margin-right: 15px" @click="deleteChannel">Да</button>
-    <button type="button" class="btn btn-primary" @click="closeModal">Нет</button>
+    <button type="button" class="btn btn-primary" style="margin-right: 15px" @click="DELETE_CHANNEL">Да</button>
+    <button type="button" class="btn btn-primary" @click="DELETE_MODAL">Нет</button>
   </div>
 </template>
 
@@ -13,14 +13,11 @@
     name: "ModalDeleteChannel",
     methods: {
       ...mapMutations({
-        deleteModal: 'modal/DELETE_MODAL',
+        DELETE_MODAL: 'modal/DELETE_MODAL',
       }),
       ...mapActions({
-        deleteChannel: 'channels/DELETE_CHANNEL',
+        DELETE_CHANNEL: 'channels/DELETE_CHANNEL',
       }),
-      closeModal() {
-        this.deleteModal();
-      },
     },
   }
 </script>

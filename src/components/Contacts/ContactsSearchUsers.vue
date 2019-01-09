@@ -20,11 +20,11 @@
     },
     methods: {
       ...mapActions({
-        findUsers: 'user/FIND_USERS',
+        FIND_USERS: 'user/FIND_USERS',
       }),
     },
     created() {
-      this.findUsers({search_request: '', page: 0});
+      this.FIND_USERS({search_request: '', page: 0});
     }
   }
 </script>

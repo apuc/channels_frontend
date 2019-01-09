@@ -1,19 +1,5 @@
 <template>
   <header class="bg-light">
-    <div class="settings" @mouseover="settingsVisible = true" @mouseout="settingsVisible = false">
-      <button type="button" class="settings__btn">
-        <v-icon scale="1.6" name="cog"/>
-      </button>
-
-      <div class="settings__list" v-if="settingsVisible">
-        <ul class="list">
-          <li class="list__el" v-for="(setting, index) in settingsList">
-            <a :href="setting.link">{{ setting.name }}</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
     <b-dropdown class="language-dropdown" variant="link">
       <button type="button" class="settings__btn" slot="button-content">
         <v-icon scale="1.6" class="icon" name="flag"/>
@@ -27,35 +13,17 @@
       ></b-dropdown-item>
     </b-dropdown>
 
-    <button class="btn btn-primary exit" type="button" @click="logout">Exit</button>
+    <button class="btn btn-primary exit" type="button" @click="LOGOUT">Exit</button>
   </header>
 </template>
 
 <script>
   import {mapActions} from 'vuex';
+
   export default {
-    data() {
-      return {
-        settingsList: [
-          {
-            name: 'Настройки канала',
-            link: 'https://github.com'
-          },
-          {
-            name: 'Настройки чего-нибудь ещё',
-            link: 'https://github.com'
-          },
-          {
-            name: 'Настройки профиля',
-            link: 'https://github.com'
-          },
-        ],
-        settingsVisible: false
-      }
-    },
     methods: {
       ...mapActions({
-        logout: 'auth/LOGOUT',
+        LOGOUT: 'auth/LOGOUT',
       }),
     }
   }

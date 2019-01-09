@@ -15,7 +15,7 @@
     <p
       v-if="noUsers"
     >У вас в контактах нет пользователя с таким именем. Вы можете поискать с помощью глобального поиска перейдя по
-      <router-link to="/contacts/search" @click.native="deleteModal">ссылке.</router-link>
+      <router-link to="/contacts/search" @click.native="DELETE_MODAL">ссылке.</router-link>
     </p>
 
     <ul class="users-list" v-else>
@@ -68,20 +68,15 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      contactsToAdd: "channels/contactsToAdd",
-      contactsToAddSearch: "channels/contactsToAddSearch",
-      currentChannelData: "channels/currentChannelData"
-    })
+    ...mapGetters('channels', ['contactsToAdd', 'contactsToAddSearch']),
   },
   methods: {
+    ...mapMutations('channels', ['REMOVE_USER_FROM_CONTACTS_TO_ADD', 'SET_CONTACTS_FREE_TO_ADD_SEARCH', 'CLEAR_CONTACTS_TO_ADD']),
     ...mapMutations({
-      removeUserFromContactsToAdd: "channels/REMOVE_USER_FROM_CONTACTS_TO_ADD",
-      setContactsFreeToAddSearch: "channels/SET_CONTACTS_FREE_TO_ADD_SEARCH",
-      deleteModal: 'modal/DELETE_MODAL',
+      DELETE_MODAL: 'modal/DELETE_MODAL',
     }),
     ...mapActions({
-      addUser: "channels/ADD_USER"
+      ADD_USER: "channels/ADD_USER"
     }),
     findUser(value) {
       let currentUserName = "";
@@ -101,20 +96,23 @@ export default {
       this.noUsers = searchResult.length === 0;
 
       if (value) {
-        this.setContactsFreeToAddSearch(searchResult);
+        this.SET_CONTACTS_FREE_TO_ADD_SEARCH(searchResult);
       } else {
-        this.setContactsFreeToAddSearch(this.contactsToAdd);
+        this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd);
       }
     },
     addUserToChannel(user_id) {
-      this.addUser(user_id).then( async () => {
-        await this.removeUserFromContactsToAdd(user_id);
-        this.setContactsFreeToAddSearch(this.contactsToAdd);
+      this.ADD_USER(user_id).then( async () => {
+        await this.REMOVE_USER_FROM_CONTACTS_TO_ADD(user_id);
+        this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd);
       });
     }
   },
   mounted() {
     this.$refs.searchInput.focus();
+  },
+  beforeDestroy() {
+    this.CLEAR_CONTACTS_TO_ADD();
   }
 };
 </script>

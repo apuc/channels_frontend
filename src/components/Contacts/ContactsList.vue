@@ -67,34 +67,29 @@
       }
     },
     computed: {
-      ...mapGetters({
-        userData: 'user/userData',
-        userContacts: 'user/userContacts',
-        userContactsSearch: 'user/userContactsSearch',
-        searchResultsUsers: 'user/searchResultsUsers',
-      }),
+      ...mapGetters('user', [
+        'userData',
+        'userContacts',
+        'userContactsSearch',
+        'searchResultsUsers',
+      ]),
     },
     methods: {
+      ...mapMutations('user', ['REMOVE_USER_REQUEST_FROM_STORE', 'SET_USER_CONTACTS_SEARCH']),
       ...mapMutations({
-        setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
-        removeUserRequestFromStore: 'user/REMOVE_USER_REQUEST_FROM_STORE',
-        setUsersContactsSearch: 'user/SET_USER_CONTACTS_SEARCH',
-        deleteModal: 'modal/DELETE_MODAL',
+        DELETE_MODAL: 'modal/DELETE_MODAL',
       }),
-      ...mapActions({
-        rejectFriendshipRequest: 'user/REJECT_FRIENDSHIP_REQUEST',
-        getCurrentUserData: 'user/GET_USER_DATA',
-      }),
+      ...mapActions('user', ['REJECT_FRIENDSHIP_REQUEST', 'GET_USER_DATA']),
       goToProfile(id) {
-        this.getCurrentUserData(id);
-        this.deleteModal();
+        this.GET_USER_DATA(id);
+        this.DELETE_MODAL();
       },
       removeUserFromContacts(id) {
-        this.rejectFriendshipRequest({
+        this.REJECT_FRIENDSHIP_REQUEST({
           user_id: this.userData.user_id,
           contact_id: id
         })
-          .then(() => this.removeUserRequestFromStore(id));
+          .then(() => this.REMOVE_USER_REQUEST_FROM_STORE(id));
       },
       findUser(value) {
         let currentUserName = '';
@@ -114,9 +109,9 @@
         this.noUsers = searchResult.length === 0;
 
         if (value) {
-          this.setUsersContactsSearch(searchResult);
+          this.SET_USER_CONTACTS_SEARCH(searchResult);
         } else {
-          this.setUsersContactsSearch(this.userContacts);
+          this.SET_USER_CONTACTS_SEARCH(this.userContacts);
         }
       }
     },

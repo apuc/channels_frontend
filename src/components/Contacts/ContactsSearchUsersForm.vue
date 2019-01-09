@@ -25,11 +25,11 @@
     },
     methods: {
       ...mapActions({
-        findUsers: 'user/FIND_USERS',
+        FIND_USERS: 'user/FIND_USERS',
       }),
       search:
         _.debounce(function (value) {
-          this.findUsers({search_request: value, page: this.page})
+          this.FIND_USERS({search_request: value, page: this.page})
         }, 300)
     },
     mounted() {

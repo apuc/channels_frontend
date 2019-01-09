@@ -26,18 +26,7 @@ export default {
       store.commit('user/SET_USER_POSITION', 'channel');
 
       if (slug !== 'login' && slug !== 'registration' && pathnameArray[1] !== 'user') {
-        await store.dispatch('channels/GET_CHANNEL_DATA', slug);
-        const currentChannel = store.getters['channels/currentChannelData'];
-
-        store.dispatch('messages/GET_MESSAGES');
-        store.dispatch('channels/GET_CHANNEL_USERS', currentChannel.id).then(async data => {
-          store.commit('channels/SET_CURRENT_CHANNEL_USERS', data);
-          store.commit('channels/SET_CHANNEL_USER_SEARCH_RESULTS', data);
-          if (store.getters['user/userData'].user_id) {
-            await store.commit('channels/SET_CONTACTS_FREE_TO_ADD', store.getters['user/userContacts']);
-            store.commit('channels/SET_CONTACTS_FREE_TO_ADD_SEARCH', store.getters['channels/contactsToAdd']);
-          }
-        });
+        store.dispatch('channels/SET_CURRENT_CHANNEL_DATA', slug);
       }
     },
     async $_authGettingData_getUserData(slug) {

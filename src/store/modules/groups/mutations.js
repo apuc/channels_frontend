@@ -4,7 +4,7 @@ export default {
   },
   'SET_GROUP_DATA': (state, data) => {
     state.groupData = data;
-  }, 
+  },
   'SET_GROUP_ID': (state, id) => {
     state.groupData.id = id;
   },
@@ -30,7 +30,7 @@ export default {
     for (let i = 0; i < users.length; i++) {
       state.groupData.user_ids.push(users[i]);
     }
-  },  
+  },
   'SET_GROUP_ID_TO_DELETE': (state, id) => {
     state.groupToDelete = id;
   },
@@ -46,26 +46,25 @@ export default {
   'SET_AVAILABLE_CHANNELS_TO_ADD': (state, data) => {
     const group = state.groups.find(group => group.id === data.group_id);
 
-    state.addingChannelsData.avalaibleChannels = data.channels.filter(channel => {
+    state.addingChannelsData.availableChannels = data.channels.filter(channel => {
       return !group.channels.some(groupChannel => {
         return channel.id === groupChannel.id;
       });
     });
+  },
+  'CLEAR_ADDING_CHANNELS_DATA': state => {
+    state.addingChannelsData = {
+      id: '',
+      availableChannels: [],
+      channelsToSearch: [],
+      channelsToAdd: [],
+    }
   },
   'SET_CHANNELS_TO_SEARCH': (state, channels) => {
     state.addingChannelsData.channelsToSearch = channels;
   },
   'SET_CHANNELS_TO_ADD': (state, channels) => {
     state.addingChannelsData.channelsToAdd = channels;
-  },
-  'SET_GROUP_TITLE': (state, title) => {
-    state.groupData.title = title;
-  },
-  'SET_GROUP_SLUG': (state, slug) => {
-    state.groupData.slug = slug;
-  },
-  'SET_GROUP_STATUS': (state, status) => {
-    state.groupData.status = status;
   },
   'SET_GROUP_OWNER_ID': (state, owner_id) => {
     state.groupData.owner_id = owner_id;

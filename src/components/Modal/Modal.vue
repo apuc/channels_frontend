@@ -1,9 +1,9 @@
 <template>
-  <div class="my-modal" @keyup.esc="onModalClose">
-    <div class="backdrop" @click="onModalClose"></div>
+  <div class="my-modal" @keyup.esc="DELETE_MODAL">
+    <div class="backdrop" @click="DELETE_MODAL"></div>
 
     <div class="modal__container ">
-      <button type="button" class="close" @click="onModalClose">
+      <button type="button" class="close" @click="DELETE_MODAL">
         <v-icon scale="1.5" class="icon text-danger" name="times-circle"/>
       </button>
 
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import {mapGetters, mapMutations} from 'vuex';
   import ModalGroupCreate from './ModalGroupCreate';
   import ModalGroupEdit from './ModalGroupEdit';
   import ModalChannelCreate from './ModalChannelCreate';
@@ -48,20 +48,10 @@
         currentModal: 'modal/currentModal',
       }),
     },
-    data() {
-      return {
-      }
-    },
     methods: {
       ...mapMutations({
-        deleteModal: 'modal/DELETE_MODAL',
+        DELETE_MODAL: 'modal/DELETE_MODAL',
       }),
-      ...mapActions({
-        logout: 'auth/LOGOUT'
-      }),
-      onModalClose() {
-        this.deleteModal();
-      }
     },
   }
 </script>

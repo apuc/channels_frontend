@@ -25,7 +25,7 @@ const state = {
   },
   addingChannelsData: {
     id: '',
-    avalaibleChannels: [],
+    availableChannels: [],
     channelsToSearch: [],
     channelsToAdd: [],
   },

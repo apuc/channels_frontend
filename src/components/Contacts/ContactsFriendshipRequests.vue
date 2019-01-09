@@ -46,48 +46,43 @@
   export default {
     name: "ContactsFriendshipRequests",
     computed: {
-      ...mapGetters({
-        userData: 'user/userData',
-        friendshipRequests: 'user/friendshipRequests',
-      }),
+      ...mapGetters('user', ['userData', 'friendshipRequests']),
     },
     methods: {
+      ...mapMutations('user', ['REMOVE_USER_REQUEST_FROM_STORE', 'ADD_USER_TO_CONTACTS']),
       ...mapMutations({
-        setCurrentUserData: 'user/SET_CURRENT_USER_DATA',
-        removeUserRequestFromStore: 'user/REMOVE_USER_REQUEST_FROM_STORE',
-        deleteModal: 'modal/DELETE_MODAL',
-        addUserToContacts: 'user/ADD_USER_TO_CONTACTS',
+        DELETE_MODAL: 'modal/DELETE_MODAL',
       }),
-      ...mapActions({
-        acceptFriendshipRequest: 'user/ACCEPT_FRIENDSHIP_REQUEST',
-        rejectFriendshipRequest: 'user/REJECT_FRIENDSHIP_REQUEST',
-        getUserFriendshipRequests: 'user/GET_USER_FRIENDSHIP_REQUESTS',
-        getCurrentUserData: 'user/GET_USER_DATA',
-      }),
+      ...mapActions('user', [
+        'ACCEPT_FRIENDSHIP_REQUEST',
+        'REJECT_FRIENDSHIP_REQUEST',
+        'GET_USER_FRIENDSHIP_REQUESTS',
+        'GET_USER_DATA'
+      ]),
       goToProfile(id) {
-        this.getCurrentUserData(id);
-        this.deleteModal();
+        this.GET_USER_DATA(id);
+        this.DELETE_MODAL();
       },
       acceptRequest(user) {
-        this.acceptFriendshipRequest({
+        this.ACCEPT_FRIENDSHIP_REQUEST({
           user_id: user.user_id,
           contact_id: this.userData.user_id
         })
           .then(() => {
-            this.removeUserRequestFromStore(user.user_id);
-            this.getUserFriendshipRequests();
+            this.REMOVE_USER_REQUEST_FROM_STORE(user.user_id);
+            this.GET_USER_FRIENDSHIP_REQUESTS();
           });
         if (this.friendshipRequests.length === 0) {
           this.$router.push({path: '/contacts'})
         }
-        this.addUserToContacts(user);
+        this.ADD_USER_TO_CONTACTS(user);
       },
       rejectRequest(id) {
-        this.rejectFriendshipRequest({
+        this.REJECT_FRIENDSHIP_REQUEST({
           user_id: this.userData.user_id,
           contact_id: id
         })
-          .then(() => this.removeUserRequestFromStore(id));
+          .then(() => this.REMOVE_USER_REQUEST_FROM_STORE(id));
         if (this.friendshipRequests.length === 0) {
           this.$router.push({path: '/contacts'})
         }

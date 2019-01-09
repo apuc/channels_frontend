@@ -26,9 +26,6 @@
         return (this.$route.meta.layout || 'main') + '-layout'
       },
     },
-    data() {
-      return {}
-    }
   }
 </script>
 

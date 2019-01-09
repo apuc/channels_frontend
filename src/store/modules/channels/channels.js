@@ -9,7 +9,7 @@ const state = {
     title: '',
     slug: '',
     status: '',
-    user_count: '',
+    count: '',
     owner_id: '',
     type: '',
     private: '',

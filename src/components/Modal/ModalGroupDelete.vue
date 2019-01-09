@@ -1,8 +1,8 @@
 <template>
   <div class="modal-inside">
     <h3>Вы уверены, что хотите удалить данную группу?</h3>
-    <button type="button" class="btn btn-primary" style="margin-right: 15px" @click="deleteGroup">Да</button>
-    <button type="button" class="btn btn-primary" @click="closeModal">Нет</button>
+    <button type="button" class="btn btn-primary" style="margin-right: 15px" @click="DELETE_GROUP">Да</button>
+    <button type="button" class="btn btn-primary" @click="DELETE_MODAL">Нет</button>
   </div>
 </template>
 
@@ -13,14 +13,11 @@
     name: "ModalDeleteGroup",
     methods: {
       ...mapMutations({
-        deleteModal: 'modal/DELETE_MODAL',
+        DELETE_MODAL: 'modal/DELETE_MODAL',
       }),
       ...mapActions({
-        deleteGroup: 'groups/DELETE_GROUP',
+        DELETE_GROUP: 'groups/DELETE_GROUP',
       }),
-      closeModal() {
-        this.deleteModal();
-      },
     },
   }
 </script>
