@@ -84,8 +84,6 @@ export default {
    */
   'GET_USER_DATA': async ({
     commit,
-    dispatch,
-    rootGetters
   }, user_id) => {
     commit('SET_USER_DATA_LOADING_FLAG');
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/${user_id}`)
@@ -271,21 +269,21 @@ export default {
     commit
   }, page) => {
     commit('SET_CONTACTS_LOADING_FLAG');
-    
-    if (getters.searchResultsIsLoading) {
-       return await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/?search_request=${getters.searchRequest}&page=${page}`)
-        .then(
-          async res => {  
-            commit('SET_CONTACTS_LOADING_FLAG');
-            
-            const data = res.body.data;
-            const meta = res.body.meta;
 
-            if (page < 2) {
-              commit('SET_SEARCH_RESULTS_USERS', data);
-            } else {
-              commit('ADD_SEARCH_RESULTS_USERS', data);
-            }
+    if (getters.searchResultsIsLoading) {
+      return await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/?search_request=${getters.searchRequest}&page=${page}`)
+        .then(
+          async res => {
+              commit('SET_CONTACTS_LOADING_FLAG');
+
+              const data = res.body.data;
+              const meta = res.body.meta;
+
+              if (page < 2) {
+                commit('SET_SEARCH_RESULTS_USERS', data);
+              } else {
+                commit('ADD_SEARCH_RESULTS_USERS', data);
+              }
               commit('SET_SEARCH_RESULTS_PAGES', meta);
               commit('SET_SEARCH_RESULTS_CURRENT_PAGE', meta);
             },
@@ -301,9 +299,7 @@ export default {
    * @param data.user_id {Number} - user which sending request
    * @param data.contact_id {Number} - user that will receive request
    */
-  'SEND_FRIENDSHIP_REQUEST': async ({
-    commit
-  }, data) => {
+  'SEND_FRIENDSHIP_REQUEST': async ({}, data) => {
     await Vue.http.post(`${process.env.VUE_APP_API_URL}/user/add-contact`, {
         user_id: data.user_id,
         contact_id: data.contact_id
@@ -323,9 +319,7 @@ export default {
    * @param data.user_id {Number} - user which sending request
    * @param data.contact_id {Number} - user that will receive request
    */
-  'ACCEPT_FRIENDSHIP_REQUEST': async ({
-    commit
-  }, data) => {
+  'ACCEPT_FRIENDSHIP_REQUEST': async ({}, data) => {
     await Vue.http.put(`${process.env.VUE_APP_API_URL}/user/confirm-contact`, {
         user_id: data.user_id,
         contact_id: data.contact_id
@@ -345,9 +339,7 @@ export default {
    * @param data.user_id {Number} - user which sending request
    * @param data.contact_id {Number} - user that will receive request
    */
-  'REJECT_FRIENDSHIP_REQUEST': async ({
-    commit
-  }, data) => {
+  'REJECT_FRIENDSHIP_REQUEST': async ({}, data) => {
     await Vue.http.delete(`${process.env.VUE_APP_API_URL}/user/reject-contact?user_id=${data.user_id}&contact_id=${data.contact_id}`)
       .then(
         async res => {

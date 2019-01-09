@@ -1,7 +1,11 @@
 import Vue from "vue";
 
 export default {
-  'GET_MESSAGES': async ({commit, dispatch, rootGetters}, payload) => {
+  'GET_MESSAGES': async ({
+    commit,
+    dispatch,
+    rootGetters
+  }, payload) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
@@ -19,7 +23,9 @@ export default {
         .catch(err => console.log('GET_MESSAGES catch err: ', err))
     } else {
       if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
+            root: true
+          })
           .then(() => {
             dispatch('GET_MESSAGES', payload);
           })

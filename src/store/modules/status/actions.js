@@ -1,5 +1,7 @@
 export default {
-    'GET_USER_STATUS': async ({commit, dispatch, rootGetters}, userStatus) => {
+    'GET_USER_STATUS': async ({
+        commit,
+    }, userStatus) => {
         commit('SET_STATUS', userStatus)
     }
 };

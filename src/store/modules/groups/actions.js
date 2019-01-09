@@ -6,7 +6,6 @@ export default {
    * Get user groups
    */
   'GET_USER_GROUPS': async ({
-    getters,
     commit,
     dispatch,
     rootGetters
@@ -43,12 +42,7 @@ export default {
    *
    * @param groupId {String || Number} - search by id or slug
    */
-  'GET_GROUP_DATA': async ({
-    getters,
-    commit,
-    dispatch,
-    rootGetters
-  }, groupId) => {
+  'GET_GROUP_DATA': async ({}, groupId) => {
     return await Vue.http.get(`${process.env.VUE_APP_API_URL}/group/${groupId}`)
       .then(
         res => {

@@ -9,7 +9,6 @@ export default {
    * Get logined user channels
    */
   'GET_USER_CHANNELS': async ({
-    getters,
     commit,
     dispatch,
     rootGetters
@@ -47,11 +46,7 @@ export default {
    *
    * @param channelId {String || Number} - search id or slug
    */
-  'GET_CHANNEL_DATA': async ({
-    commit,
-    dispatch,
-    rootGetters
-  }, channelId) => {
+  'GET_CHANNEL_DATA': async ({}, channelId) => {
     return await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}`)
       .then(
         async res => {
@@ -378,7 +373,6 @@ export default {
     }
   },
   'GET_USER_NAV_BAR': async ({
-      getters,
       commit,
       dispatch,
       rootGetters
