@@ -8,24 +8,29 @@
 <script>
   import ContactsSearchUsersForm from './ContactsSearchUsersForm';
   import ContactsSearchUsersResult from "./ContactsSearchUsersResult";
-  import {mapGetters, mapActions} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
     name: "ContactsSearchUsers",
     components: {ContactsSearchUsersResult, ContactsSearchUsersForm},
     computed: {
       ...mapGetters({
-        searchResultsUsers: 'user/searchResultsUsers'
+        searchResultsUsers: 'user/searchResultsUsers',
       }),
     },
     methods: {
+      ...mapMutations('users', ['CLEAR_SEARCH_RESULTS', 'SET_SEARCH_REQUEST']),
       ...mapActions({
         FIND_USERS: 'user/FIND_USERS',
       }),
     },
     created() {
-      this.FIND_USERS({search_request: '', page: 0});
-    }
+      this.FIND_USERS(1);
+    },
+    beforeDestroy() {
+      this.CLEAR_SEARCH_RESULTS();
+      this.SET_SEARCH_REQUEST('');
+    },
   }
 </script>
 

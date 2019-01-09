@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import {mapActions} from 'vuex';
+  import {mapMutations, mapActions} from 'vuex';
   import _ from 'lodash';
 
   export default {
@@ -20,16 +20,20 @@
     data() {
       return {
         search_request: '',
-        page: 0
       }
     },
     methods: {
+      ...mapMutations({
+        SET_SEARCH_REQUEST: 'user/SET_SEARCH_REQUEST',
+      }),
       ...mapActions({
         FIND_USERS: 'user/FIND_USERS',
       }),
       search:
-        _.debounce(function (value) {
-          this.FIND_USERS({search_request: value, page: this.page})
+        _.debounce(async function (value) {
+          this.search_request = value;
+          await this.SET_SEARCH_REQUEST(value);
+          this.FIND_USERS(1).then(data => console.log(data))
         }, 300)
     },
     mounted() {
