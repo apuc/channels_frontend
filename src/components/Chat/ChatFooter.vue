@@ -33,7 +33,7 @@
       </b-input-group-append>
     </div>
 
-    <div class="message-attachment">
+    <div class="message-attachment" v-scroll>
       <Attachment v-for="(attachment, index) in attachments" :attachment="attachment" :key="index"/>
     </div>
 
@@ -44,6 +44,7 @@
   import {ioTyping} from '../../services/socket/message.service'
   import {mapGetters, mapActions} from 'vuex'
   import Attachment from '../../components/Attachment/Attachment'
+  import {scroll} from '../../directives/scroll';
 
   export default {
     computed: {
@@ -54,6 +55,9 @@
       })
     },
     components: {Attachment},
+    directives: {
+      scroll
+    },
     data() {
       return {
         input: '',
@@ -152,5 +156,12 @@
 
   .attach-file input {
     display: none;
+  }
+
+  .message-attachment {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 300px;
+    overflow-x: hidden;
   }
 </style>

@@ -11,4 +11,5 @@ export default {
   'OFF_TYPING': (state) => state.usersTyping = [],
   'ADD_ATTACHMENT': (state, attachment) => state.attachments.push(attachment),
   'CLEAR_ATTACHMENTS': (state) => state.attachments = [],
+  'REMOVE_ATTACHMENT': (state, id) => state.attachments = state.attachments.filter(attachment => attachment.data.id !== id),
 };
