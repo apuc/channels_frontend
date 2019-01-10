@@ -125,7 +125,6 @@ export default {
     ...mapActions('groups', ['CREATE_GROUP', 'CREATE_GROUP_AVATAR']),
     async onSubmit() {
       this.SET_GROUP_OWNER_ID(this.userData.user_id);
-      this.SET_GROUP_USER_IDS(this.userData.user_id);
 
       if (this.img) {
         this.upLoadStarted = true;

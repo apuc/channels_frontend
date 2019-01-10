@@ -73,7 +73,6 @@
       async editingModal(id) {
         this.SET_CHANNEL_ID(id);
         this.SET_MODAL("ModalChannelEdit");
-        this.SET_CHANNEL_DATA(this.channelToEdit(id));
       },
       deletingModal(id) {
         this.SET_CHANNEL_ID_TO_DELETE(id);

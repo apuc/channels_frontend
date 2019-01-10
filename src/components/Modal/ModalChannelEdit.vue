@@ -170,7 +170,7 @@
       </div>
 
       <div>
-        <progress v-if="upLoadStarted" max="100" :value="imageUploadPersentage"></progress>
+        <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
       </div>
 
       <p v-if="notImage" style="text-align: center; color: red;">{{ notImage }}</p>
@@ -235,9 +235,7 @@ export default {
       this.SET_MODAL("ModalChannelAddUsers");
     },
     async onSubmit() {
-      let usersToAdd = this.contactsToAddUsers;
       const owner_id = this.userData.user_id;
-      this.SET_CHANNEL_USER_IDS(usersToAdd.push(owner_id));
       this.SET_CHANNEL_OWNER_ID(owner_id);
 
       if (this.img) {
