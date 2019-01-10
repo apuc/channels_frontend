@@ -1,11 +1,17 @@
 import Vue from "vue";
-import {ioSendMessage} from '../../../services/socket/message.service';
+import {
+    ioSendMessage
+} from '../../../services/socket/message.service';
 
 export default {
     /**
      * Get channel messages
      */
-    'GET_MESSAGES': async ({commit, dispatch, rootGetters}) => {
+    'GET_MESSAGES': async ({
+        commit,
+        dispatch,
+        rootGetters
+    }) => {
         const currentDateInSeconds = Math.round(Date.now() / 1000);
         const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
         const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
@@ -21,17 +27,27 @@ export default {
                 )
         } else {
             if (currentDateInSeconds < refreshTokenExpiresIn) {
-                await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {root: true})
+                await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
+                        root: true
+                    })
                     .then(() => {
                         dispatch('GET_MESSAGES');
                     })
             } else {
-                commit('modal/SET_MODAL', 'ModalSessionExpired', {root: true});
+                commit('modal/SET_MODAL', 'ModalSessionExpired', {
+                    root: true
+                });
             }
         }
     },
-    'SEND_MESSAGE': async ({commit, dispatch, rootGetters}, payload) => {
-        const {user_id, username, avatar} = rootGetters['user/userData'];
+    'SEND_MESSAGE': async ({
+        rootGetters
+    }, payload) => {
+        const {
+            user_id,
+            username,
+            avatar
+        } = rootGetters['user/userData'];
         const messageData = {
             user: {
                 username,
@@ -45,22 +61,33 @@ export default {
         };
         await ioSendMessage(messageData);
     },
-    'ON_MESSAGE': async ({commit, dispatch, rootGetters}, message) => {
+    'ON_MESSAGE': async ({
+        commit,
+    }, message) => {
         commit('SET_MESSAGE', message);
     },
-    'ON_TYPING': async ({commit, dispatch, rootGetters}, {user, isTyping}) => {
+    'ON_TYPING': async ({
+        commit,
+    }, {
+        user,
+        isTyping
+    }) => {
         if (isTyping) {
             commit('PUSH_TYPING_USER', user);
         } else {
             commit('SLICE_TYPING_USER', user);
         }
     },
-    'OFF_TYPING': async ({commit, dispatch, rootGetters})  => {
+    'OFF_TYPING': async ({
+        commit,
+    }) => {
         commit('OFF_TYPING');
     },
 
     // Attachments
-    'ADD_ATTACHMENTS': async ({commit, dispatch, rootGetters}, attachments) => {
+    'ADD_ATTACHMENTS': async ({
+        commit,
+    }, attachments) => {
         console.log('Message action ADD_ATTACHMENTS: ', attachments);
         // for (let i = 0; i < attachments.length; i++) {
         //     const data = new FormData;
@@ -75,7 +102,9 @@ export default {
         // }
 
     },
-    'CLEAR_ATTACHMENTS': async ({commit}) => {
+    'CLEAR_ATTACHMENTS': async ({
+        commit
+    }) => {
         commit('CLEAR_ATTACHMENTS');
     }
 };

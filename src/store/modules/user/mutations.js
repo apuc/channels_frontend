@@ -21,7 +21,13 @@ export default {
   'SET_USER_POSITION': (state, position) => {
     state.userPosition = position;
   },
+  'SET_SEARCH_REQUEST': (state, search_request) => {
+    state.searchRequest = search_request;
+  },
   'SET_SEARCH_RESULTS_USERS': (state, results) => {
+    state.searchResults.users = results;
+  },
+  'ADD_SEARCH_RESULTS_USERS': (state, results) => {
     for (let i = 0; i < results.length; i++) {
       state.searchResults.users.push(results[i]);
     }
@@ -31,6 +37,17 @@ export default {
   },
   'SET_SEARCH_RESULTS_CURRENT_PAGE': (state, results) => {
     state.searchResults.currentPage = results.current_page;
+  },
+  'SET_CONTACTS_LOADING_FLAG': state => {
+    state.searchResults.isLoading = !state.searchResults.isLoading;
+  },
+  'CLEAR_SEARCH_RESULTS': state => {
+    state.searchResults = {
+        users: [],
+        currentPage: 1,
+        pages: 1,
+        isLoading: false,
+    }
   },
   'SET_USER_CONTACTS': (state, contacts) => {
     state.userContacts = contacts;

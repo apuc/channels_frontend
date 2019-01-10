@@ -20,10 +20,12 @@ const state = {
   userContacts: [],
   userContactsSearch: [],
   userPosition: '',
+  searchRequest: '',
   searchResults: {
     users: [],
     currentPage: 1,
     pages: 1,
+    isLoading: false,
   },
   friendshipRequests: []
 };

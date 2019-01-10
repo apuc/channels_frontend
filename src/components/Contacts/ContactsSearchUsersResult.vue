@@ -65,8 +65,8 @@
         target.remove();
       },
       observerMethod(entries, observer) {
-        if (this.searchResultsCurrentPage <= this.searchResultsPages) {
-          this.FIND_USERS({search_request: '', page: this.searchResultsCurrentPage + 1})
+        if (this.searchResultsCurrentPage < this.searchResultsPages) {
+          this.FIND_USERS(this.searchResultsCurrentPage + 1)
         }
       }
     },

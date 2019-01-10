@@ -11,7 +11,10 @@ export default {
       const slug = pathnameArray[pathnameArray.length - 1];
 
       if (pathnameArray[1] === 'contacts') {
-        router.next();
+        const isAuthenticated = store.getters['auth/isAuthenticated'];
+        if (!isAuthenticated) {
+          router.push('/login');
+        }
       } else if (pathnameArray[1] === 'group') {
         this.$_authGettingData_getGroupData(slug);
       } else if (pathnameArray[1] === 'user') {

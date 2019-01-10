@@ -3,7 +3,7 @@
     <div class="wrap">
       <div v-if="userPosition === 'channel'">
         <img
-          :src="currentChannelData.avatar ? currentChannelData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
+          :src="currentChannelData.avatar ? currentChannelData.avatar.average : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
           alt
         >
 

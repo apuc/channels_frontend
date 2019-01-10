@@ -8,7 +8,9 @@ export default {
   searchResultsUsers: state => state.searchResults.users.filter(user => user.user_id !== state.userData.user_id),
   searchResultsPages: state => state.searchResults.pages,
   searchResultsCurrentPage: state => state.searchResults.currentPage,
+  searchResultsIsLoading: state => state.searchResults.isLoading,
   userContacts: state => state.userContacts,
   userContactsSearch: state => state.userContactsSearch,
   friendshipRequests: state => state.friendshipRequests,
+  searchRequest: state => state.searchRequest,
 };
