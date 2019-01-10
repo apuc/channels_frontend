@@ -19,7 +19,7 @@
     </p>
 
     <ul class="users-list" v-else>
-      <li class="user" v-for="user in contactsToAddSearch" :key="user.email">
+      <li class="user" v-for="user in contactsToAdd.searchUsers" :key="user.email">
         <div>
           <div class="user-info">
             <div class="image-wrap">
@@ -68,10 +68,16 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('channels', ['contactsToAdd', 'contactsToAddSearch']),
+    ...mapGetters('channels', ['contactsToAdd', 'currentChannelData']),
   },
   methods: {
-    ...mapMutations('channels', ['REMOVE_USER_FROM_CONTACTS_TO_ADD', 'SET_CONTACTS_FREE_TO_ADD_SEARCH', 'CLEAR_CONTACTS_TO_ADD']),
+    ...mapMutations('channels', [
+      'REMOVE_USER_FROM_CONTACTS_TO_ADD',
+      'SET_CONTACTS_FREE_TO_ADD_SEARCH',
+      'CLEAR_CONTACTS_TO_ADD',
+      'SET_CONTACTS_TO_ADD_CHANNEL_ID',
+      'SET_CHANNEL_USERS',
+    ]),
     ...mapMutations({
       DELETE_MODAL: 'modal/DELETE_MODAL',
     }),
@@ -82,10 +88,10 @@ export default {
       let currentUserName = "";
       let searchValue = value.toLowerCase();
       let searchResult = [];
-      for (let i = 0; i < this.contactsToAdd.length; i++) {
-        currentUserName = this.contactsToAdd[i].username.toLowerCase();
+      for (let i = 0; i < this.contactsToAdd.users.length; i++) {
+        currentUserName = this.contactsToAdd.users[i].username.toLowerCase();
         if (currentUserName.includes(searchValue)) {
-          searchResult.push(this.contactsToAdd[i]);
+          searchResult.push(this.contactsToAdd.users[i]);
         }
       }
       return searchResult;
@@ -98,13 +104,13 @@ export default {
       if (value) {
         this.SET_CONTACTS_FREE_TO_ADD_SEARCH(searchResult);
       } else {
-        this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd);
+        this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
       }
     },
     addUserToChannel(user_id) {
       this.ADD_USER(user_id).then( async () => {
         await this.REMOVE_USER_FROM_CONTACTS_TO_ADD(user_id);
-        this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd);
+        this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
       });
     }
   },
@@ -112,6 +118,7 @@ export default {
     this.$refs.searchInput.focus();
   },
   beforeDestroy() {
+    this.SET_CHANNEL_USERS([]);
     this.CLEAR_CONTACTS_TO_ADD();
   }
 };

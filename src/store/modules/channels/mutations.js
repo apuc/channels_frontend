@@ -17,7 +17,7 @@ export default {
   'SET_CHANNEL_STATUS': (state, status) => {
     state.channelData.status = status;
   },
-  'SET_CHANNEL_USER_SEARCH_RESULTS': (status, users) => {
+  'SET_CURRENT_CHANNEL_USER_SEARCH_RESULTS': (status, users) => {
     status.currentChannelUsers.searchUsers = users;
   },
   /**
@@ -64,10 +64,14 @@ export default {
   'REMOVE_USER_FROM_CONTACTS_TO_ADD': (state, user_id) => {
     state.contactsToAdd.users = state.contactsToAdd.users.filter(user => user.user_id !== user_id);
   },
+  'SET_CONTACTS_TO_ADD_CHANNEL_ID': (state, id) => {
+    state.contactsToAdd.channelId = id;
+  },
   'CLEAR_CONTACTS_TO_ADD': state => {
     state.contactsToAdd = {
       searchUsers: [],
-      users: []
+      users: [],
+      channelId: null
     }
   },
   'SET_CHANNEL_ID_TO_DELETE': (state, id) => {
@@ -78,6 +82,9 @@ export default {
   },
   'REMOVE_CURRENT_CHANNEL_USERS_FROM_STORE': state => {
     state.currentChannelUsers.users = []
+  },
+  'INCREASE_CURRENT_CHANNEL_USER_COUNT': state => {
+    state.currentChannelData.count++;
   },
   'SET_CHANNELS_LOADING_FLAG': state => {
     state.isChannelsLoading = !state.isChannelsLoading;

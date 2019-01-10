@@ -1,7 +1,7 @@
 <template>
   <aside class="ads bg-light">
     <div class="wrap">
-      <div v-if="userPosition === 'currentChannelData'">
+      <div v-if="userPosition === 'channel'">
         <img
           :src="currentChannelData.avatar ? currentChannelData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
           alt
@@ -52,7 +52,7 @@
         </ul>
       </div>
 
-      <div v-if="userPosition === 'currentGroupData'">
+      <div v-if="userPosition === 'group'">
         <img
           :src="currentGroupData.avatar ? currentGroupData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
           alt

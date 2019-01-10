@@ -1,23 +1,20 @@
 <template>
   <div class="attachment">
-    <component :is='attachment.type + "Attachment"'></component>
+    <component :is="`Attachment${attachment.type}`"></component>
   </div>
 </template>
 
 <script>
-  import ImageAttachment from './attachment_types/ImageAttachment'
-  import ArchiveAttachment from './attachment_types/ArchiveAttachment'
+  import AttachmentImage from './AttachmentImage';
+  import AttachmentArchive  from './AttachmentArchive';
 
   export default {
-    components: {ArchiveAttachment,
-      ImageAttachment},
+    components: {AttachmentArchive,AttachmentImage},
     props: {
       attachment: {
         required: true,
         type: Object
       }
     },
-    computed: {}
   }
-
 </script>

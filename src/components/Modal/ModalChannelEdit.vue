@@ -192,7 +192,7 @@ export default {
   name: "ModalChannelEdit",
   components: { vSelect },
   computed: {
-    ...mapGetters('channels', ['channelData', 'imageUploadPersentage', 'contactsToAdd']),
+    ...mapGetters('channels', ['channelData', 'imageUploadPersentage', 'contactsToAddUsers']),
     ...mapGetters({
       userData: "user/userData",
     })
@@ -223,7 +223,7 @@ export default {
     }),
     ...mapActions('channels', ['EDIT_CHANNEL', 'CREATE_CHANNEL_AVATAR']),
     async onSubmit() {
-      let usersToAdd = this.contactsToAdd;
+      let usersToAdd = this.contactsToAddUsers;
       const owner_id = this.userData.user_id;
       this.SET_CHANNEL_USER_IDS(usersToAdd.push(owner_id));
       this.SET_CHANNEL_OWNER_ID(owner_id);

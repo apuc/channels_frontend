@@ -60,7 +60,7 @@
     },
     methods: {
       ...mapMutations({
-        SET_CHANNEL_USER_SEARCH_RESULTS:'channels/SET_CHANNEL_USER_SEARCH_RESULTS',
+        SET_CURRENT_CHANNEL_USER_SEARCH_RESULTS:'channels/SET_CURRENT_CHANNEL_USER_SEARCH_RESULTS',
       }),
       ...mapActions({
         ADD_USER: 'channels/ADD_USER',
@@ -89,9 +89,9 @@
         this.noUsers = searchResult.length === 0;
 
         if (value) {
-          this.SET_CHANNEL_USER_SEARCH_RESULTS(searchResult);
+          this.SET_CURRENT_CHANNEL_USER_SEARCH_RESULTS(searchResult);
         } else {
-          this.SET_CHANNEL_USER_SEARCH_RESULTS(this.currentChannelUsers);
+          this.SET_CURRENT_CHANNEL_USER_SEARCH_RESULTS(this.currentChannelUsers);
         }
       }
     },

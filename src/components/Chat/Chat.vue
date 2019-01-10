@@ -13,8 +13,8 @@
   import {mapMutations, mapActions} from 'vuex'
   import ChatHeader from './ChatHeader';
   import ChatMessages from './ChatMessages';
-  import ChatFooter from '../chat/ChatFooter';
-  import Attachment from '../attachment/Attachment';
+  import ChatFooter from '../Chat/ChatFooter';
+  import Attachment from '../Attachment/Attachment';
 
   export default {
     components: {

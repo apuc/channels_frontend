@@ -20,7 +20,7 @@
 
 <script>
   import {mapActions} from 'vuex';
-  import Attachment from '../attachment/Attachment';
+  import Attachment from '../Attachment/Attachment';
 
   export default {
     components: {Attachment},

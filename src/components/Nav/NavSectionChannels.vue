@@ -33,7 +33,7 @@
   export default {
     name: "NavSectionChannels",
     computed: {
-      ...mapGetters('channels', ['currentChannelData', 'contactsToAdd', 'channelToEdit']),
+      ...mapGetters('channels', ['currentChannelData', 'contactsToAddUsers', 'channelToEdit']),
       ...mapGetters('user', ['userData', 'userContacts']),
     },
     props: {
@@ -56,7 +56,8 @@
         'SET_CHANNEL_DATA',
         'SET_CHANNEL_USERS',
         'SET_CONTACTS_FREE_TO_ADD',
-        'SET_CONTACTS_FREE_TO_ADD_SEARCH'
+        'SET_CONTACTS_FREE_TO_ADD_SEARCH',
+        'SET_CONTACTS_TO_ADD_CHANNEL_ID'
       ]),
       ...mapMutations({
         SET_USER_POSITION: "user/SET_USER_POSITION",
@@ -81,13 +82,14 @@
         this.SET_MODAL("ModalChannelDelete");
       },
       setAddUsersModal(id) {
+        this.SET_CONTACTS_TO_ADD_CHANNEL_ID(id);
         this.SET_CONTACTS_FREE_TO_ADD_SEARCH([]);
         this.SET_MODAL("ModalChannelAddUsers");
         this.GET_CHANNEL_USERS(id)
           .then(data => this.SET_CHANNEL_USERS(data))
           .then(async () => {
             await this.SET_CONTACTS_FREE_TO_ADD(this.userContacts);
-            this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd);
+            this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAddUsers);
           });
       }
     }

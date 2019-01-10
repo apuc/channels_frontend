@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import Nav from '../components/nav/Nav';
+  import Nav from '../components/Nav/Nav';
   import Advertisings from '../components/ads/Advertisings';
 
   export default {

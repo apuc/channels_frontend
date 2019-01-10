@@ -8,8 +8,10 @@ export default {
   isChannelUsersLoading: state => state.isChannelUsersLoading,
   imageUploadPersentage: state => state.imageUploadPersentage,
   channelUsers: state => state.channelUsers,
-  contactsToAdd: state => state.contactsToAdd.users,
+  contactsToAdd: state => state.contactsToAdd,
+  contactsToAddUsers: state => state.contactsToAdd.users,
   contactsToAddSearch: state => state.contactsToAdd.searchUsers,
+  contactsToAddChannelId: state => state.contactsToAdd.channelId,
   currentChannelUsers: state => state.currentChannelUsers.users,
   currentChannelSearchUsers: state => state.currentChannelUsers.searchUsers
 };

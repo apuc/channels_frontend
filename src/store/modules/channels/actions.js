@@ -197,11 +197,11 @@ export default {
 
     dispatch('GET_CHANNEL_USERS', getters.currentChannelData.id).then(data => {
       commit('SET_CURRENT_CHANNEL_USERS', data);
-      commit('SET_CHANNEL_USER_SEARCH_RESULTS', data);
+      commit('SET_CURRENT_CHANNEL_USER_SEARCH_RESULTS', data);
 
       if (rootGetters['user/userData'].user_id) {
         commit('SET_CONTACTS_FREE_TO_ADD', rootGetters['user/userContacts']);
-        commit('SET_CONTACTS_FREE_TO_ADD_SEARCH', getters['contactsToAdd']);
+        commit('SET_CONTACTS_FREE_TO_ADD_SEARCH', getters['contactsToAddUsers']);
       }
     });
     dispatch('messages/GET_MESSAGES', null, {root: true});
@@ -359,12 +359,18 @@ export default {
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/add-user`, {
           user_id: userId,
-          channel_id: getters.currentChannelData.id
+          channel_id: getters.contactsToAddChannelId
         })
         .then(
           res => {
-            dispatch('GET_CHANNEL_USERS', getters.currentChannelData.id)
-              .then(users => commit('SET_CURRENT_CHANNEL_USERS', users));
+            dispatch('GET_CHANNEL_USERS', getters.contactsToAddChannelId)
+              .then(users => {
+                if (getters.contactsToAddChannelId === getters.currentChannelData.id) {
+                  commit('SET_CURRENT_CHANNEL_USERS', users);
+                  commit('SET_CURRENT_CHANNEL_USER_SEARCH_RESULTS', users);
+                  commit('INCREASE_CURRENT_CHANNEL_USER_COUNT');
+                }
+              });
           },
           err => console.log(err)
         )

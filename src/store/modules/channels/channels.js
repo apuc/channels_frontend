@@ -33,6 +33,7 @@ const state = {
   contactsToAdd: {
     users: [],
     searchUsers: [],
+    channelId: null
   },
   channelUsers: [],
   channelToDelete: '',

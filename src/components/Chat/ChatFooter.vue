@@ -43,7 +43,7 @@
 <script>
   import {ioTyping} from '../../services/socket/message.service'
   import {mapGetters, mapActions} from 'vuex'
-  import Attachment from '../../components/attachment/Attachment'
+  import Attachment from '../../components/Attachment/Attachment'
 
   export default {
     computed: {
