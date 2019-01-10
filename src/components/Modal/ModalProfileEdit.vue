@@ -37,7 +37,7 @@
       </div>
 
       <div>
-        <progress v-if="upLoadStarted" max="100" :value="imageUploadPersentage"></progress>
+        <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
       </div>
 
       <span v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</span>

@@ -81,7 +81,7 @@
       </div>
 
       <div>
-        <progress v-if="upLoadStarted" max="100" :value="imageUploadPersentage"></progress>
+        <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
       </div>
 
       <p v-if="notImage" style="text-align: center; color: red;">{{ notImage }}</p>
@@ -99,7 +99,7 @@ export default {
   name: "ModalGroupCreate",
   components: { vSelect },
   computed: {
-    ...mapGetters('groups', ['groupData', 'imageUploadPersentage']),
+    ...mapGetters('groups', ['groupData', 'imageUploadPercentage']),
     ...mapGetters({
       userData: "user/userData",
     })

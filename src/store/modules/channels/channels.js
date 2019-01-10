@@ -39,7 +39,7 @@ const state = {
   channelToDelete: '',
   isChannelsLoading: false,
   isChannelUsersLoading: true,
-  imageUploadPersentage: 0,
+  imageUploadPercentage: 0,
 };
 
 export default {

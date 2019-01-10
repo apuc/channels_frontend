@@ -167,14 +167,14 @@
           <input type="file" name="image" @change="onChange">
         </label>
         <div class="hidden" v-else :class="{ 'image': true }">
-          <img :src="imgSrc" alt class="img">
+          <img :src="channelAvatar" alt class="img">
           
           <button class="button button_remove" type="button" @click="removeImage">REMOVE</button>
         </div>
       </div>
 
       <div>
-        <progress v-if="upLoadStarted" max="100" :value="imageUploadPersentage"></progress>
+        <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
       </div>
 
       <p v-if="notImage" style="text-align: center; color: red;">{{ notImage }}</p>
@@ -191,20 +191,26 @@ import vSelect from "vue-select";
 export default {
   name: "ModalChannelEdit",
   components: { vSelect },
-  computed: {
-    ...mapGetters('channels', ['channelData', 'imageUploadPersentage', 'contactsToAddUsers']),
-    ...mapGetters({
-      userData: "user/userData",
-    })
-  },
   data() {
     return {
-      img: "",
-      imgSrc: "",
-      notImage: "",
-      image: "",
-      upLoadStarted: false
+      img: "", // form data to send
+      imgSrc: "", // img url
+      notImage: "", // if file in not picture
+      upLoadStarted: false,
+      isSamePicture: true
     };
+  },
+  computed: {
+    ...mapGetters('channels', ['channelData', 'imageUploadPercentage', 'contactsToAddUsers']),
+    ...mapGetters({
+      userData: "user/userData",
+    }),
+    channelAvatar() {
+      if (this.isSamePicture && this.channelData.avatar) {
+        this.imgSrc = this.channelData.avatar.average;
+      }
+      return this.imgSrc
+    }
   },
   methods: {
     ...mapMutations('channels', [
@@ -222,6 +228,7 @@ export default {
       SET_MODAL: "modal/SET_MODAL"
     }),
     ...mapActions('channels', ['EDIT_CHANNEL', 'CREATE_CHANNEL_AVATAR']),
+
     async onSubmit() {
       let usersToAdd = this.contactsToAddUsers;
       const owner_id = this.userData.user_id;
@@ -230,12 +237,12 @@ export default {
 
       if (this.img) {
         this.upLoadStarted = true;
-        await this.createChannelAvatar(this.img).then(
+        await this.CREATE_CHANNEL_AVATAR(this.img).then(
           () => (this.upLoadStarted = false)
         );
       }
 
-      this.editChannel();
+      this.EDIT_CHANNEL();
     },
     createFormData(file) {
       let formData = new FormData();

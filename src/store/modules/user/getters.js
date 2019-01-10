@@ -3,7 +3,7 @@ export default {
   refreshTokenBody: state => state.refreshTokenBody,
   currentUserInfo: state => state.currentUserInfo,
   isUserLoading: state => state.isUserLoading,
-  imageUploadPersentage: state => state.imageUploadPersentage,
+  imageUploadPercentage: state => state.imageUploadPercentage,
   userPosition: state => state.userPosition,
   searchResultsUsers: state => state.searchResults.users.filter(user => user.user_id !== state.userData.user_id),
   searchResultsPages: state => state.searchResults.pages,

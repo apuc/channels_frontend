@@ -33,7 +33,7 @@
   export default {
     name: "NavSectionChannels",
     computed: {
-      ...mapGetters('channels', ['currentChannelData', 'contactsToAddUsers', 'channelToEdit']),
+      ...mapGetters('channels', ['currentChannelData', 'contactsToAddUsers']),
       ...mapGetters('user', ['userData', 'userContacts']),
     },
     props: {
@@ -63,7 +63,7 @@
         SET_USER_POSITION: "user/SET_USER_POSITION",
         SET_MODAL: "modal/SET_MODAL"
       }),
-      ...mapActions('channels', ['SET_CURRENT_CHANNEL_DATA', 'GET_CHANNEL_USERS']),
+      ...mapActions('channels', ['SET_CURRENT_CHANNEL_DATA', 'GET_CHANNEL_USERS', 'GET_CHANNEL_DATA']),
       ...mapActions({
         GET_MESSAGES: "messages/GET_MESSAGES"
       }),
@@ -73,9 +73,12 @@
         }
       },
       async editingModal(id) {
-        this.GET_CHANNEL_USERS(id).then(data => this.SET_CHANNEL_USERS(data));
+        this.GET_CHANNEL_USERS(id).then(users => {
+          this.SET_CHANNEL_USERS(users);
+        });
+        this.GET_CHANNEL_DATA(id).then(data => this.SET_CHANNEL_DATA(data));
+
         this.SET_MODAL("ModalChannelEdit");
-        this.SET_CHANNEL_DATA(this.channelToEdit(id));
       },
       deletingModal(id) {
         this.SET_CHANNEL_ID_TO_DELETE(id);

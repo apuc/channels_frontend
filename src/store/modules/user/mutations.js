@@ -12,7 +12,7 @@ export default {
     state.isUserLoading = !state.isUserLoading;
   },
   'SET_AVATAR_UPLOAD_PROGRESS': (state, percentage) => {
-    state.imageUploadPersentage = percentage;
+    state.imageUploadPercentage = percentage;
   },
   /**
    * User position at site (channel/group/user profile/contacts)
@@ -83,7 +83,7 @@ export default {
       username: '',
     };
     state.isUserLoading = false;
-    state.imageUploadPersentage = 0;
+    state.imageUploadPercentage = 0;
     state.searchResults = {
       users: [],
       pages: 0,

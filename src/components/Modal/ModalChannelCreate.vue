@@ -150,7 +150,7 @@
       </div>
 
       <div>
-        <progress v-if="upLoadStarted" max="100" :value="imageUploadPersentage"></progress>
+        <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
       </div>
 
       <p v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</p>
@@ -166,7 +166,7 @@
   export default {
     name: "ModalChannelCreate",
     computed: {
-      ...mapGetters('channels', ['channelData', 'imageUploadPersentage']),
+      ...mapGetters('channels', ['channelData', 'imageUploadPercentage']),
       ...mapGetters({
         userData: 'user/userData',
       })

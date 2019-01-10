@@ -32,7 +32,7 @@ const state = {
   groupToDelete: '',
   channelToDelete: '',
   isGroupsLoading: false,
-  imageUploadPersentage: 0,
+  imageUploadPercentage: 0,
 };
 
 export default {

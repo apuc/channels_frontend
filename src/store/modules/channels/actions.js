@@ -53,7 +53,6 @@ export default {
             return res.body.data;
           },
           err => {
-            console.log(err);
             if (err.bodyText.includes('No query results for model')) {
               router.push({
                 path: '/not-found'
