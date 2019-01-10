@@ -68,22 +68,23 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('channels', ['contactsToAdd', 'currentChannelData']),
+    ...mapGetters({
+      userContacts: 'user/userContacts',
+      contactsToAdd: 'channels/contactsToAdd',
+    })
   },
   methods: {
     ...mapMutations('channels', [
       'REMOVE_USER_FROM_CONTACTS_TO_ADD',
       'SET_CONTACTS_FREE_TO_ADD_SEARCH',
+      'SET_CONTACTS_FREE_TO_ADD',
       'CLEAR_CONTACTS_TO_ADD',
-      'SET_CONTACTS_TO_ADD_CHANNEL_ID',
       'SET_CHANNEL_USERS',
     ]),
     ...mapMutations({
       DELETE_MODAL: 'modal/DELETE_MODAL',
     }),
-    ...mapActions({
-      ADD_USER: "channels/ADD_USER"
-    }),
+    ...mapActions('channels', ['ADD_USER', 'GET_CHANNEL_USERS']),
     findUser(value) {
       let currentUserName = "";
       let searchValue = value.toLowerCase();
@@ -113,6 +114,14 @@ export default {
         this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
       });
     }
+  },
+  created() {
+    this.GET_CHANNEL_USERS(this.contactsToAdd.channelId)
+          .then(data => this.SET_CHANNEL_USERS(data))
+          .then(async () => {
+            await this.SET_CONTACTS_FREE_TO_ADD(this.userContacts);
+            this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
+          });
   },
   mounted() {
     this.$refs.searchInput.focus();

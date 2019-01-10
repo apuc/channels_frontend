@@ -3,7 +3,15 @@ export default {
     state.channels = channels;
   },
   'SET_CHANNEL_DATA': (state, data) => {
-    state.channelData = data;
+    state.channelData.id = data.id;
+    state.channelData.title = data.title;
+    state.channelData.slug = data.slug;
+    state.channelData.status = data.status;
+    state.channelData.user_ids = data.user_ids;
+    state.channelData.owner_id = data.owner_id;
+    state.channelData.type = data.type;
+    state.channelData.private = data.private;
+    state.channelData.avatar = data.avatar;
   },
   'SET_CHANNEL_ID': (state, id) => {
     state.channelData.id = id;
@@ -46,7 +54,10 @@ export default {
     state.currentChannelData = data;
   },
   'SET_CHANNEL_AVATAR_ID': (state, avatar_id) => {
-    state.channelData.avatar = avatar_id;
+    console.log(avatar_id); 
+    state.channelData.avatar = {
+      avatar_id
+    };
   },
   'SET_CHANNEL_USERS': (state, users) => {
     state.channelUsers = users;
@@ -119,7 +130,7 @@ export default {
     }
   },
   'SET_AVATAR_UPLOAD_PROGRESS': (state, percentage) => {
-    state.imageUploadPersentage = percentage;
+    state.imageUploadPercentage = percentage;
   },
   'SET_DEFAULT_CHANNELS_STATE': state => {
     state.channels = [];
@@ -148,6 +159,6 @@ export default {
     state.channelToDelete = '';
     state.isChannelsLoading = false;
     state.isChannelUsersLoading = true;
-    state.imageUploadPersentage = 0;
+    state.imageUploadPercentage = 0;
   }
 };

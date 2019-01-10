@@ -32,11 +32,7 @@
           </div>
 
           <div class="form-group">
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="SET_MODAL('ModalChannelAddUsers')"
-            >Add users</button>
+            <button type="button" class="btn btn-primary" @click="setAddUsersModal">Add users</button>
           </div>
         </div>
 
@@ -174,7 +170,7 @@
       </div>
 
       <div>
-        <progress v-if="upLoadStarted" max="100" :value="imageUploadPersentage"></progress>
+        <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
       </div>
 
       <p v-if="notImage" style="text-align: center; color: red;">{{ notImage }}</p>
@@ -191,51 +187,65 @@ import vSelect from "vue-select";
 export default {
   name: "ModalChannelEdit",
   components: { vSelect },
-  computed: {
-    ...mapGetters('channels', ['channelData', 'imageUploadPersentage', 'contactsToAddUsers']),
-    ...mapGetters({
-      userData: "user/userData",
-    })
-  },
   data() {
     return {
-      img: "",
-      imgSrc: "",
-      notImage: "",
-      image: "",
-      upLoadStarted: false
+      img: "", // form data to send
+      imgSrc: "", // img url
+      notImage: "", // if file in not picture
+      upLoadStarted: false,
+      isSamePicture: true
     };
   },
+  computed: {
+    ...mapGetters("channels", [
+      "channelData",
+      "imageUploadPercentage",
+    ]),
+    ...mapGetters({
+      userData: "user/userData"
+    })
+  },
   methods: {
-    ...mapMutations('channels', [
-      'SET_CHANNEL_DATA',
-      'SET_CHANNEL_TITLE',
-      'SET_CHANNEL_SLUG',
-      'SET_CHANNEL_STATUS',
-      'SET_CHANNEL_USER_IDS',
-      'SET_CHANNEL_OWNER_ID',
-      'SET_CHANNEL_TYPE',
-      'SET_CHANNEL_PRIVATE',
-      'SET_CHANNEL_USERS',
+    ...mapMutations("channels", [
+      "SET_CHANNEL_DATA",
+      "SET_CHANNEL_TITLE",
+      "SET_CHANNEL_SLUG",
+      "SET_CHANNEL_STATUS",
+      "SET_CHANNEL_USER_IDS",
+      "SET_CHANNEL_OWNER_ID",
+      "SET_CHANNEL_TYPE",
+      "SET_CHANNEL_PRIVATE",
+      "SET_CHANNEL_USERS",
+      'SET_CONTACTS_TO_ADD_CHANNEL_ID',
+      'SET_CONTACTS_FREE_TO_ADD_SEARCH'
     ]),
     ...mapMutations({
       SET_MODAL: "modal/SET_MODAL"
     }),
-    ...mapActions('channels', ['EDIT_CHANNEL', 'CREATE_CHANNEL_AVATAR']),
+    ...mapActions("channels", [
+      "GET_CHANNEL_DATA",
+      "GET_CHANNEL_USERS",
+      "EDIT_CHANNEL",
+      "CREATE_CHANNEL_AVATAR"
+    ]),
+
+    setAddUsersModal() {
+      this.SET_CONTACTS_TO_ADD_CHANNEL_ID(this.channelData.id);
+      this.SET_CONTACTS_FREE_TO_ADD_SEARCH([]);
+      this.SET_MODAL("ModalChannelAddUsers");
+    },
     async onSubmit() {
-      let usersToAdd = this.contactsToAddUsers;
       const owner_id = this.userData.user_id;
-      this.SET_CHANNEL_USER_IDS(usersToAdd.push(owner_id));
       this.SET_CHANNEL_OWNER_ID(owner_id);
 
       if (this.img) {
         this.upLoadStarted = true;
-        await this.createChannelAvatar(this.img).then(
+        await this.CREATE_CHANNEL_AVATAR(this.img).then(
           () => (this.upLoadStarted = false)
         );
       }
 
-      this.editChannel();
+      this.EDIT_CHANNEL();
     },
     createFormData(file) {
       let formData = new FormData();
@@ -275,9 +285,16 @@ export default {
     }
   },
   created() {
-    if (this.channelData.avatar) {
-      this.imgSrc = this.channelData.avatar.average;
-    }
+    this.GET_CHANNEL_DATA(this.channelData.id).then(data => {
+      this.SET_CHANNEL_DATA(data);
+      this.GET_CHANNEL_USERS(this.channelData.id).then(users => {
+        this.SET_CHANNEL_USER_IDS(users);
+      });
+
+      if (this.isSamePicture && this.channelData.avatar) {
+        this.imgSrc = this.channelData.avatar.average;
+      }
+    });
   },
   beforeDestroy() {
     this.SET_CHANNEL_USERS([]);

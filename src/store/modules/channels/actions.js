@@ -53,7 +53,6 @@ export default {
             return res.body.data;
           },
           err => {
-            console.log(err);
             if (err.bodyText.includes('No query results for model')) {
               router.push({
                 path: '/not-found'
@@ -155,7 +154,7 @@ export default {
         })
         .then(
           async res => {
-              commit('SET_CHANNEL_AVATAR_ID', res.body.data.avatar_id);
+              commit('SET_CHANNEL_AVATAR_ID', res.body.data.id);
               commit('SET_AVATAR_UPLOAD_PROGRESS', 0);
             },
             err => console.log(err)
@@ -222,7 +221,7 @@ export default {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
+    
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelData.id}`, {
           title: getters.channelData.title,
@@ -231,7 +230,7 @@ export default {
           user_ids: getters.channelData.user_ids,
           type: getters.channelData.type,
           private: getters.channelData.private,
-          avatar: getters.channelData.avatar,
+          avatar: getters.channelData.avatar.avatar_id,
           owner_id: getters.channelData.owner_id,
         })
         .then(

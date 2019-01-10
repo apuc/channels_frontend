@@ -6,7 +6,7 @@ export default {
   addingChannelsData: state => state.addingChannelsData,
   channelsToAdd: state => state.addingChannelsData.channels,
   isGroupsLoading: state => state.isGroupsLoading,
-  imageUploadPersentage: state => state.imageUploadPersentage,
+  imageUploadPercentage: state => state.imageUploadPercentage,
   channelToDelete: state => state.channelToDelete,
   groupToEdit: state => id => state.groups.find(group => group.id === id),
 };

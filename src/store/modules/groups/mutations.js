@@ -110,7 +110,7 @@ export default {
     }
   },
   'SET_AVATAR_UPLOAD_PROGRESS': (state, percentage) => {
-    state.imageUploadPersentage = percentage;
+    state.imageUploadPercentage = percentage;
   },
   'SET_DEFAULT_GROUPS_STATE': state => {
     state.groups = [];
@@ -137,6 +137,6 @@ export default {
     };
     state.groupToDelete = '';
     state.isGroupsLoading = false;
-    state.imageUploadPersentage = 0;
+    state.imageUploadPercentage = 0;
   }
 };

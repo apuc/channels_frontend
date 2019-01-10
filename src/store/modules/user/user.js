@@ -16,7 +16,7 @@ const state = {
     username: '',
   },
   isUserLoading: false,
-  imageUploadPersentage: 0,
+  imageUploadPercentage: 0,
   userContacts: [],
   userContactsSearch: [],
   userPosition: '',
