@@ -33,8 +33,9 @@
 
           <button type="button" class="btn btn-link" @click="openModal($event, 'ModalEditProfile')" v-else>
             <img class="user__avatar-img"
-                 :src="userData.avatar ? userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'"
-                 alt="">
+                 :src="userAvatar"
+                 alt=""
+            >
             {{userData.username}}
           </button>
 
@@ -108,6 +109,9 @@
       ...mapGetters('user', ['userData', 'isUserLoading', 'friendshipRequests']),
       ...mapGetters('channels', ['channels', 'isChannelsLoading']),
       ...mapGetters('groups', ['groups', 'isGroupsLoading']),
+      userAvatar() {
+        return this.userData.avatar ? this.userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'
+      }
     },
     data() {
       return {
@@ -131,6 +135,12 @@
           groupsVisible: true,
         },
       }
+    },
+    async created() {
+      this.filter = {
+        channelsVisible: this.channels.length > 0,
+        groupsVisible: this.groups.length > 0,
+      };
     },
     methods: {
       ...mapMutations({
@@ -173,12 +183,6 @@
       openRequests() {
         this.SET_MODAL('ModalUserContacts')
       }
-    },
-    async created() {
-      this.filter = {
-        channelsVisible: this.channels.length > 0,
-        groupsVisible: this.groups.length > 0,
-      };
     },
 
   }

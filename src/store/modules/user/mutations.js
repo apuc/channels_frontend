@@ -15,7 +15,7 @@ export default {
     state.imageUploadPercentage = percentage;
   },
   /**
-   * User position at site (channel/group/user profile/contacts)
+   * User position on site (channel/group/user profile/contacts)
    * @param position {String}
    */
   'SET_USER_POSITION': (state, position) => {
