@@ -29,7 +29,10 @@
           SELECT OR DROP AN IMAGE
           <input type="file" name="image" @change="onChange">
         </label>
-        <div class="hidden" v-else :class="{ 'image': true }">
+
+        <div class="hidden image"
+             v-else
+        >
           <img :src="imgSrc" alt="" class="img"/>
 
           <button class="button button_remove" type="button" @click="removeImage">REMOVE</button>
@@ -83,9 +86,7 @@
   export default {
     name: "ModalEditProfile",
     computed: {
-      ...mapGetters({
-        userData: 'user/userData'
-      })
+      ...mapGetters('user', ['userData', 'imageUploadPercentage'])
     },
     data() {
       return {
@@ -109,6 +110,7 @@
         SET_USER_INFO: 'user/SET_USER_INFO',
       }),
       ...mapActions('user', [
+        'GET_USER_ME',
         'EDIT_GENERAL_USER_DATA',
         'EDIT_PRIVATE_USER_DATA',
         'DELETE_USER',
@@ -119,9 +121,13 @@
 
         if (this.img) {
           this.upLoadStarted = true;
-          await this.CREATE_USER_AVATAR(this.img).then(() => this.upLoadStarted = false);
+          await this.CREATE_USER_AVATAR(this.img).then(avatar_id => {
+            this.EDIT_GENERAL_USER_DATA({avatar_id, username: this.user.username})
+              .then(userData => this.SET_USER_INFO(userData));
+            this.upLoadStarted = false;
+          });
         }
-        this.EDIT_GENERAL_USER_DATA();
+
       },
 
       async onSubmitPrivate() {
@@ -133,7 +139,7 @@
         formData.append('avatar', file);
         this.img = formData;
       },
-      onDrop: function(e) {
+      onDrop: function (e) {
         e.stopPropagation();
         e.preventDefault();
         const files = e.dataTransfer.files;
@@ -170,93 +176,98 @@
       },
     },
     created() {
-      this.user.username = this.userData.username;
-      this.user.email = this.userData.email;
-      this.user.user_id = this.userData.user_id;
+      this.GET_USER_ME().then(data => {
+        this.user.username = data.username;
+        this.user.email = data.email;
+        this.user.user_id = data.user_id;
+
+        if (data.avatar) {
+          this.imgSrc = data.avatar.average;
+        }
+      });
     }
   }
 </script>
 
 <style scoped>
-.btn-file input[type=file] {
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 100%;
-  min-height: 100%;
-  font-size: 100px;
-  text-align: right;
-  filter: alpha(opacity=0);
-  opacity: 0;
-  outline: none;
-  background: white;
-  cursor: inherit;
-  display: block;
-}
+  .btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+  }
 
+  .button {
+    position: relative;
+    padding: 15px 35px;
 
-.button {
-  position: relative;
-  padding: 15px 35px;
+    font-weight: bold;
+    color: #fff;
 
-  font-weight: bold;
-  color: #fff;
+    background-color: #d3394c;
+    border: 0;
+    cursor: pointer;
+  }
 
-  background-color: #d3394c;
-  border: 0;
-  cursor: pointer;
-}
+  .button:hover {
+    background-color: #722040;
+  }
 
-.button:hover {
-  background-color: #722040;
-}
+  .button_remove {
+    margin-top: 15px;
+    padding: 10px 20px;
+  }
 
-.button_remove {
-  margin-top: 15px;
-  padding: 10px 20px;
-}
+  input[type="file"] {
+    position: absolute;
+    left: 0;
+    z-index: -1;
 
-input[type="file"] {
-  position: absolute;
-  left: 0;
-  z-index: -1;
+    opacity: 0;
+  }
 
-  opacity: 0;
-}
+  .hidden {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+  }
 
-.hidden {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-}
+  .hidden.image {
+    display: flex;
+  }
 
-.hidden.image {
-  display: flex;
-}
+  .img {
+    width: 100%;
+    height: auto;
+  }
 
-.img {
-  width: 100%;
-  height: auto;
-}
+  .drop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    min-height: 100px;
+    margin-bottom: 15px;
 
-.drop {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 600px;
-  height: 100%;
-  min-height: 100px;
-  margin-bottom: 15px;
+    border: 4px dashed #ccc;
+    background-color: #f6f6f6;
+    border-radius: 2px;
+  }
 
-  border: 4px dashed #ccc;
-  background-color: #f6f6f6;
-  border-radius: 2px;
-}
-
-.drop label {
-  margin-bottom: 0;
-}
+  .drop label {
+    margin-bottom: 0;
+  }
 </style>
