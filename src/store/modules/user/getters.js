@@ -10,6 +10,7 @@ export default {
   searchResultsCurrentPage: state => state.searchResults.currentPage,
   searchResultsIsLoading: state => state.searchResults.isLoading,
   userContacts: state => state.userContacts,
+  findUserContact: state => id => state.userContacts.find(contact => contact.user_id === id),
   userContactsSearch: state => state.userContactsSearch,
   friendshipRequests: state => state.friendshipRequests,
   searchRequest: state => state.searchRequest,

@@ -19,10 +19,14 @@
                class="form-control add-user__input"
                type="text"
                :value="add_user"
-               @input="findUserToAdd"
+               @input="findUserToAdd($event.target.value)"
         >
 
-        <button type="button" class="btn" :class="disableButton" @click="ADD_USER(add_user)">
+        <button type="button"
+                class="btn"
+                :class="disableButton"
+                @click="ADD_USER({user_id: add_user, channel_id: currentChannelData.id})"
+        >
           <v-icon scale="1" class="icon" name="plus-square"/>
         </button>
       </div>
@@ -45,14 +49,15 @@
     computed: {
       ...mapGetters({
         currentChannelUsers: 'channels/currentChannelUsers',
+        currentChannelData: 'channels/currentChannelData',
       }),
       disableButton() {
-        return this.add_user.length > 0 && !this.isUserInChannel ? 'btn-primary' : 'btn-default disable';
+        return this.add_user > 0 && !this.isUserInChannel ? 'btn-primary' : 'btn-default disable';
       },
     },
     data() {
       return {
-        add_user: '',
+        add_user: null,
         searchValue: '',
         isUserInChannel: false,
         noUsers: false,
@@ -65,11 +70,10 @@
       ...mapActions({
         ADD_USER: 'channels/ADD_USER',
       }),
-      findUserToAdd(e) {
-        this.add_user = e.target.value;
-        for (let i = 0; i < this.currentChannelUsers.length; i++) {
-          this.isUserInChannel = this.currentChannelUsers[i].user_id === Number(this.add_user);
-        }
+      findUserToAdd(value) {
+        this.add_user = Number(value);
+        this.isUserInChannel = this.currentChannelUsers.some(user => user.user_id === this.add_user);
+
       },
       findUser(value) {
         let currentUserName = '';

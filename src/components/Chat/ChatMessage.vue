@@ -2,12 +2,12 @@
   <b-card class="message mb-3">
     <b-media>
       <div class="flex">
-        <router-link :to="'/user/'+messageData.from.user_id" @click.native="GET_USER_DATA(messageData.from.user_id)">
+        <router-link :to="`/user/${messageData.from.id}`" @click.native="GET_USER_DATA(messageData.from.user_id)">
           <img :src="messageData.from.avatar || noavatar" width="64" alt="placeholder"/>
         </router-link>
 
         <h5 class="mt-0 message-title" >
-          <router-link :to="'/user/'+messageData.from.user_id" @click.native="GET_USER_DATA(messageData.from.user_id)">{{messageData.from.username}}</router-link>
+          <router-link :to="`/user/${messageData.from.id}`" @click.native="GET_USER_DATA(messageData.from.user_id)">{{messageData.from.username}}</router-link>
           <span class="message-time">{{ messageData['created_at'] }}</span>
         </h5>
 

@@ -9,10 +9,10 @@ export default {
    * Get logined user channels
    */
   'GET_USER_CHANNELS': async ({
-    commit,
-    dispatch,
-    rootGetters
-  }) => {
+                                commit,
+                                dispatch,
+                                rootGetters
+                              }) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
@@ -33,8 +33,8 @@ export default {
     } else {
       if (currentDateInSeconds < refreshTokenExpiresIn) {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
+          root: true
+        })
           .then(() => {
             dispatch('GET_USER_CHANNELS');
           })
@@ -50,16 +50,16 @@ export default {
     return await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}`)
       .then(
         async res => {
-            return res.body.data;
-          },
-          err => {
-            if (err.bodyText.includes('No query results for model')) {
-              router.push({
-                path: '/not-found'
-              })
-            }
-            console.log('get channels', err)
+          return res.body.data;
+        },
+        err => {
+          if (err.bodyText.includes('No query results for model')) {
+            router.push({
+              path: '/not-found'
+            })
           }
+          console.log('get channels', err)
+        }
       )
       .catch(error => console.log('GET_CHANNELS: ', error))
   },
@@ -68,29 +68,40 @@ export default {
    *
    * @param channelId {String || Number} - channel id
    */
-  'GET_CHANNEL_USERS': async ({
-    commit,
-  }, channelId) => {
+  'GET_CHANNEL_USERS': async ({commit}, channelId) => {
     commit('SET_CHANNEL_USERS_LOADING');
     return await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/users`)
       .then(
         async res => {
-            commit('SET_CHANNEL_USERS_LOADED');
-            return res.body.data
-          },
-          err => console.log(err)
+          commit('SET_CHANNEL_USERS_LOADED');
+          return res.body.data
+        },
+        err => console.log(err)
       )
       .catch(error => console.log(error));
+  },
+  /**
+   * Задать свойста стейта currentChannelUsers.
+   * @param commit
+   * @param users {Array}
+   * @constructor
+   */
+  'SET_CURRENT_CHANNEL_USERS': ({commit}, users) => {
+    commit('SET_CURRENT_CHANNEL_USER_SEARCH_RESULTS', users);
+    commit('SET_CURRENT_CHANNEL_USERS', users);
+  },
+  'SET_CONTACTS_FREE_TO_ADD': ({commit}, users) => {
+
   },
   /**
    * Create channel and reload channels
    */
   'CREATE_CHANNEL': async ({
-    getters,
-    commit,
-    dispatch,
-    rootGetters
-  }) => {
+                             getters,
+                             commit,
+                             dispatch,
+                             rootGetters
+                           }) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
@@ -119,8 +130,8 @@ export default {
     } else {
       if (currentDateInSeconds < refreshTokenExpiresIn) {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
+          root: true
+        })
           .then(() => {
             dispatch('CREATE_CHANNEL');
           })
@@ -133,38 +144,38 @@ export default {
    * @param img - image form data
    */
   'CREATE_CHANNEL_AVATAR': async ({
-    commit,
-    dispatch,
-    rootGetters
-  }, img) => {
+                                    commit,
+                                    dispatch,
+                                    rootGetters
+                                  }, img) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/avatar`, img, {
-          headers: {
-            "Content-Type": "multipart/form-data;"
-          },
-          progress(e) {
-            if (e.lengthComputable) {
-              commit('SET_AVATAR_UPLOAD_PROGRESS', e.loaded / e.total * 100);
-            }
+        headers: {
+          "Content-Type": "multipart/form-data;"
+        },
+        progress(e) {
+          if (e.lengthComputable) {
+            commit('SET_AVATAR_UPLOAD_PROGRESS', e.loaded / e.total * 100);
           }
-        })
+        }
+      })
         .then(
           async res => {
-              commit('SET_CHANNEL_AVATAR_ID', res.body.data.id);
-              commit('SET_AVATAR_UPLOAD_PROGRESS', 0);
-            },
-            err => console.log(err)
+            commit('SET_CHANNEL_AVATAR_ID', res.body.data.id);
+            commit('SET_AVATAR_UPLOAD_PROGRESS', 0);
+          },
+          err => console.log(err)
         )
         .catch(error => console.log(error))
     } else {
       if (currentDateInSeconds < refreshTokenExpiresIn) {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
+          root: true
+        })
           .then(() => {
             dispatch('CREATE_CHANNEL_AVATAR', img);
           })
@@ -177,24 +188,24 @@ export default {
    * @param channelId {String || Number} - current channel id
    */
   'SET_CURRENT_CHANNEL_DATA': async ({
-    getters,
-    commit,
-    dispatch,
-    rootGetters
-  }, channelId) => {
+                                       getters,
+                                       commit,
+                                       dispatch,
+                                       rootGetters
+                                     }, channelId) => {
     await dispatch('GET_CHANNEL_DATA', channelId).then(data => {
       commit('SET_CURRENT_CHANNEL_DATA', data);
     });
 
-    dispatch('GET_CHANNEL_USERS', getters.currentChannelData.id).then(data => {
-      commit('SET_CURRENT_CHANNEL_USERS', data);
-      commit('SET_CURRENT_CHANNEL_USER_SEARCH_RESULTS', data);
+    dispatch('GET_CHANNEL_USERS', getters.currentChannelData.id)
+      .then(data => {
+        dispatch('SET_CURRENT_CHANNEL_USERS', data);
 
-      if (rootGetters['user/userData'].user_id) {
-        commit('SET_CONTACTS_FREE_TO_ADD', rootGetters['user/userContacts']);
-        commit('SET_CONTACTS_FREE_TO_ADD_SEARCH', getters['contactsToAddUsers']);
-      }
-    });
+        if (rootGetters['user/userData'].user_id) {
+          commit('SET_CONTACTS_FREE_TO_ADD', rootGetters['user/userContacts']);
+          commit('SET_CONTACTS_FREE_TO_ADD_SEARCH', getters['contactsToAddUsers']);
+        }
+      });
     dispatch('messages/GET_MESSAGES', null, {root: true});
   },
   /**
@@ -203,9 +214,9 @@ export default {
    * @param channelId {String || Number} - chosen channel id
    */
   'SET_EDITED_CHANNEL_DATA': async ({
-    getters,
-    commit
-  }, channelId) => {
+                                      getters,
+                                      commit
+                                    }, channelId) => {
     const editingChannel = await getters.channels.find(channel => channel.id === channelId);
     await commit('SET_CHANNEL_DATA', editingChannel);
   },
@@ -213,26 +224,26 @@ export default {
    * Edit chosen channel
    */
   'EDIT_CHANNEL': async ({
-    getters,
-    commit,
-    dispatch,
-    rootGetters
-  }) => {
+                           getters,
+                           commit,
+                           dispatch,
+                           rootGetters
+                         }) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-    
+
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelData.id}`, {
-          title: getters.channelData.title,
-          slug: getters.channelData.slug,
-          status: getters.channelData.status,
-          user_ids: getters.channelData.user_ids,
-          type: getters.channelData.type,
-          private: getters.channelData.private,
-          avatar: getters.channelData.avatar.avatar_id,
-          owner_id: getters.channelData.owner_id,
-        })
+        title: getters.channelData.title,
+        slug: getters.channelData.slug,
+        status: getters.channelData.status,
+        user_ids: getters.channelData.user_ids,
+        type: getters.channelData.type,
+        private: getters.channelData.private,
+        avatar: getters.channelData.avatar.avatar_id,
+        owner_id: getters.channelData.owner_id,
+      })
         .then(
           res => {
             const newChannelData = res.body.data;
@@ -248,8 +259,8 @@ export default {
     } else {
       if (currentDateInSeconds < refreshTokenExpiresIn) {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
+          root: true
+        })
           .then(() => {
             dispatch('EDIT_CHANNEL');
           })
@@ -260,10 +271,10 @@ export default {
    * Delete chosen channel
    */
   'DELETE_CHANNEL': async ({
-    getters,
-    commit,
-    dispatch
-  }) => {
+                             getters,
+                             commit,
+                             dispatch
+                           }) => {
     const id = getters.channelToDelete;
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
@@ -288,8 +299,8 @@ export default {
     } else {
       if (currentDateInSeconds < refreshTokenExpiresIn) {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
+          root: true
+        })
           .then(() => {
             dispatch('DELETE_CHANNEL');
           })
@@ -302,11 +313,11 @@ export default {
    * @param userId {String || Number} - user id  to remove
    */
   'DELETE_USER_FROM_CHANNEL': async ({
-    getters,
-    commit,
-    dispatch,
-    rootGetters
-  }, userId) => {
+                                       getters,
+                                       commit,
+                                       dispatch,
+                                       rootGetters
+                                     }, userId) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
@@ -316,7 +327,7 @@ export default {
         .then(
           res => {
             dispatch('GET_CHANNEL_USERS', getters.currentChannelData.id)
-              .then(users => commit('SET_CURRENT_CHANNEL_USERS', users));
+              .then(users => dispatch('SET_CURRENT_CHANNEL_USERS', users));
           },
           err => console.log(err)
         )
@@ -324,8 +335,8 @@ export default {
     } else {
       if (currentDateInSeconds < refreshTokenExpiresIn) {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
+          root: true
+        })
           .then(() => {
             dispatch('DELETE_USER_FROM_CHANNEL', userId);
           })
@@ -335,30 +346,31 @@ export default {
   /**
    * Add user to the channel
    *
-   * @param userId {String || Number} - user id to add
+   * @param data {Object}
+   * @param data.user_id {Number} - user id to add
+   * @param data.channel_id {Number} - channel id to add
    */
   'ADD_USER': async ({
-    getters,
-    commit,
-    dispatch,
-    rootGetters
-  }, userId) => {
+                       getters,
+                       commit,
+                       dispatch,
+                       rootGetters
+                     }, data) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/add-user`, {
-          user_id: userId,
-          channel_id: getters.contactsToAddChannelId
-        })
+        user_id: data.user_id,
+        channel_id: data.channel_id
+      })
         .then(
           res => {
-            dispatch('GET_CHANNEL_USERS', getters.contactsToAddChannelId)
+            dispatch('GET_CHANNEL_USERS', data.channel_id)
               .then(users => {
-                if (getters.contactsToAddChannelId === getters.currentChannelData.id) {
-                  commit('SET_CURRENT_CHANNEL_USERS', users);
-                  commit('SET_CURRENT_CHANNEL_USER_SEARCH_RESULTS', users);
+                if (data.channel_id === getters.currentChannelData.id) {
+                  dispatch('SET_CURRENT_CHANNEL_USERS', users);
                   commit('INCREASE_CURRENT_CHANNEL_USER_COUNT');
                 }
               });
@@ -369,19 +381,19 @@ export default {
     } else {
       if (currentDateInSeconds < refreshTokenExpiresIn) {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
+          root: true
+        })
           .then(() => {
-            dispatch('ADD_USER', userId);
+            dispatch('ADD_USER', data);
           })
       }
     }
   },
   'GET_USER_NAV_BAR': async ({
-      commit,
-      dispatch,
-      rootGetters
-  }) => {
+                               commit,
+                               dispatch,
+                               rootGetters
+                             }) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));

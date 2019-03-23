@@ -36,7 +36,8 @@
               <router-link
                 :to="`/user/${user.user_id}`"
                 @click.native="goToProfile(user.user_id)"
-              >{{user.username}}</router-link>
+              >{{user.username}}
+              </router-link>
             </div>
           </div>
         </div>
@@ -56,114 +57,115 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from "vuex";
+  import {mapGetters, mapMutations, mapActions} from "vuex";
 
-export default {
-  name: "ModalChannelAddUsers",
-  data() {
-    return {
-      searchValue: "",
-      isUserInChannel: false,
-      noUsers: false
-    };
-  },
-  computed: {
-    ...mapGetters({
-      userContacts: 'user/userContacts',
-      contactsToAdd: 'channels/contactsToAdd',
-    })
-  },
-  methods: {
-    ...mapMutations('channels', [
-      'REMOVE_USER_FROM_CONTACTS_TO_ADD',
-      'SET_CONTACTS_FREE_TO_ADD_SEARCH',
-      'SET_CONTACTS_FREE_TO_ADD',
-      'CLEAR_CONTACTS_TO_ADD',
-      'SET_CHANNEL_USERS',
-    ]),
-    ...mapMutations({
-      DELETE_MODAL: 'modal/DELETE_MODAL',
-    }),
-    ...mapActions('channels', ['ADD_USER', 'GET_CHANNEL_USERS']),
-    findUser(value) {
-      let currentUserName = "";
-      let searchValue = value.toLowerCase();
-      let searchResult = [];
-      for (let i = 0; i < this.contactsToAdd.users.length; i++) {
-        currentUserName = this.contactsToAdd.users[i].username.toLowerCase();
-        if (currentUserName.includes(searchValue)) {
-          searchResult.push(this.contactsToAdd.users[i]);
+  export default {
+    name: "ModalChannelAddUsers",
+    data() {
+      return {
+        searchValue: "",
+        isUserInChannel: false,
+        noUsers: false
+      };
+    },
+    computed: {
+      ...mapGetters({
+        userContacts: 'user/userContacts',
+      }),
+      ...mapGetters('channels', ['contactsToAdd', 'channelData'])
+    },
+    methods: {
+      ...mapMutations('channels', [
+        'REMOVE_USER_FROM_CONTACTS_TO_ADD',
+        'SET_CONTACTS_FREE_TO_ADD_SEARCH',
+        'SET_CONTACTS_FREE_TO_ADD',
+        'CLEAR_CONTACTS_TO_ADD',
+        'SET_CHANNEL_USERS',
+      ]),
+      ...mapMutations({
+        DELETE_MODAL: 'modal/DELETE_MODAL',
+      }),
+      ...mapActions('channels', ['ADD_USER', 'GET_CHANNEL_USERS']),
+      findUser(value) {
+        let currentUserName = "";
+        let searchValue = value.toLowerCase();
+        let searchResult = [];
+        for (let i = 0; i < this.contactsToAdd.users.length; i++) {
+          currentUserName = this.contactsToAdd.users[i].username.toLowerCase();
+          if (currentUserName.includes(searchValue)) {
+            searchResult.push(this.contactsToAdd.users[i]);
+          }
         }
-      }
-      return searchResult;
-    },
-    searchUser(value) {
-      this.searchValue = value;
-      const searchResult = this.findUser(value);
-      this.noUsers = searchResult.length === 0;
+        return searchResult;
+      },
+      searchUser(value) {
+        this.searchValue = value;
+        const searchResult = this.findUser(value);
+        this.noUsers = searchResult.length === 0;
 
-      if (value) {
-        this.SET_CONTACTS_FREE_TO_ADD_SEARCH(searchResult);
-      } else {
-        this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
-      }
-    },
-    addUserToChannel(user_id) {
-      this.ADD_USER(user_id).then( async () => {
-        await this.REMOVE_USER_FROM_CONTACTS_TO_ADD(user_id);
-        this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
-      });
-    }
-  },
-  created() {
-    this.GET_CHANNEL_USERS(this.contactsToAdd.channelId)
-          .then(data => this.SET_CHANNEL_USERS(data))
+        if (value) {
+          this.SET_CONTACTS_FREE_TO_ADD_SEARCH(searchResult);
+        } else {
+          this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
+        }
+      },
+      addUserToChannel(user_id) {
+        this.ADD_USER({user_id, channel_id: this.contactsToAdd.channelId})
           .then(async () => {
-            await this.SET_CONTACTS_FREE_TO_ADD(this.userContacts);
+            this.REMOVE_USER_FROM_CONTACTS_TO_ADD(user_id);
             this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
           });
-  },
-  mounted() {
-    this.$refs.searchInput.focus();
-  },
-  beforeDestroy() {
-    this.SET_CHANNEL_USERS([]);
-    this.CLEAR_CONTACTS_TO_ADD();
-  }
-};
+      }
+    },
+    created() {
+      this.GET_CHANNEL_USERS(this.contactsToAdd.channelId)
+        .then(data => this.SET_CHANNEL_USERS(data))
+        .then(async () => {
+          await this.SET_CONTACTS_FREE_TO_ADD(this.userContacts);
+          this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
+        });
+    },
+    mounted() {
+      this.$refs.searchInput.focus();
+    },
+    beforeDestroy() {
+      this.SET_CHANNEL_USERS([]);
+      this.CLEAR_CONTACTS_TO_ADD();
+    }
+  };
 </script>
 
 <style scoped>
-.users-list {
-  max-height: 300px;
-  margin: 0;
-  margin-top: 10px;
-  padding: 0;
-  overflow: auto;
-}
+  .users-list {
+    max-height: 300px;
+    margin: 0;
+    margin-top: 10px;
+    padding: 0;
+    overflow: auto;
+  }
 
-.user {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px 3px;
-}
+  .user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 3px;
+  }
 
-.user-info {
-  display: flex;
-  align-items: center;
-}
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
 
-.image-wrap {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
+  .image-wrap {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
 
-  background-color: #cccccc;
-  border-radius: 50%;
-}
+    background-color: #cccccc;
+    border-radius: 50%;
+  }
 
-.img {
-  display: block;
-}
+  .img {
+    display: block;
+  }
 </style>

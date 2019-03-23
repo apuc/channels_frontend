@@ -25,9 +25,6 @@ export default {
   'SET_CHANNEL_STATUS': (state, status) => {
     state.channelData.status = status;
   },
-  'SET_CURRENT_CHANNEL_USER_SEARCH_RESULTS': (status, users) => {
-    status.currentChannelUsers.searchUsers = users;
-  },
   /**
    * Добавление id'шников пользователей для создания/редактирования канала
    *
@@ -91,8 +88,12 @@ export default {
   'SET_CURRENT_CHANNEL_USERS': (state, users) => {
     state.currentChannelUsers.users = users;
   },
+  'SET_CURRENT_CHANNEL_USER_SEARCH_RESULTS': (status, users) => {
+    status.currentChannelUsers.searchUsers = users;
+  },
   'REMOVE_CURRENT_CHANNEL_USERS_FROM_STORE': state => {
-    state.currentChannelUsers.users = []
+    state.currentChannelUsers.users = [];
+    state.currentChannelUsers.searchUsers = [];
   },
   'INCREASE_CURRENT_CHANNEL_USER_COUNT': state => {
     state.currentChannelData.count++;

@@ -19,24 +19,24 @@
 
         <ul class="users-list">
           <li class="user" v-for="user in currentChannelUsersToShow" :key="user.email">
-            <div>
-              <div class="user-info">
-                <div class="image-wrap">
-                  <img
-                    class="img"
-                    :src="user.avatar ? user.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
-                    width="30"
-                    height="30"
-                    alt
-                  >
-                </div>
+            <div class="user-info">
+              <div class="image-wrap">
+                <img
+                  class="img"
+                  :src="user.avatar ? user.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
+                  width="30"
+                  height="30"
+                  alt
+                >
+              </div>
 
-                <div>
-                  <router-link
-                    :to="`/user/${user.user_id}`"
-                    @click.native="GET_USER_DATA(user.user_id)"
-                  >{{user.username}}</router-link>
-                </div>
+              <div>
+                <router-link
+                  :to="`/user/${user.user_id}`"
+                  @click.native="GET_USER_DATA(user.user_id)"
+                >
+                  {{user.username}}
+                </router-link>
               </div>
             </div>
 
@@ -44,7 +44,7 @@
               type="button"
               class="btn btn-sm btn-primary mr10"
               @click="makeFriendshipRequest($event.target, {user_id: userData.user_id, contact_id: user.user_id})"
-              v-if="userData.user_id !== currentChannelData.owner_id"
+              v-if="userData.user_id !== user.user_id && !findUserContact(user.user_id)"
             >
               <v-icon scale="1" class="icon" name="user-plus"/>
             </button>
@@ -66,99 +66,100 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from "vuex";
+  import {mapGetters, mapMutations, mapActions} from "vuex";
 
-export default {
-  name: "Advertisings",
-  computed: {
-    ...mapGetters('channels', [
-      'currentChannelData',
-      'currentChannelUsers',
-    ]),
-    ...mapGetters('user', [
-      'userPosition',
-      'userData',
-    ]),
-    ...mapGetters({
-      currentGroupData: "groups/currentGroupData",
-    }),
-    currentChannelUsersToShow() {
-      if (this.currentChannelUsers.length > 4) {
-        return this.currentChannelUsers.slice(0, 5);
-      } else {
-        return this.currentChannelUsers;
+  export default {
+    name: "Advertisings",
+    computed: {
+      ...mapGetters('channels', [
+        'currentChannelData',
+        'currentChannelUsers',
+      ]),
+      ...mapGetters('user', [
+        'userPosition',
+        'userData',
+        'findUserContact'
+      ]),
+      ...mapGetters({
+        currentGroupData: "groups/currentGroupData",
+      }),
+      currentChannelUsersToShow() {
+        if (this.currentChannelUsers.length > 4) {
+          return this.currentChannelUsers.slice(0, 5);
+        } else {
+          return this.currentChannelUsers;
+        }
+      }
+    },
+    methods: {
+      ...mapMutations({
+        SET_MODAL: "modal/SET_MODAL"
+      }),
+      ...mapActions('user', ['SEND_FRIENDSHIP_REQUEST', 'GET_USER_DATA']),
+      makeFriendshipRequest(target, data) {
+        this.SEND_FRIENDSHIP_REQUEST({
+          user_id: data.user_id,
+          contact_id: data.contact_id
+        });
+        target.remove();
       }
     }
-  },
-  methods: {
-    ...mapMutations({
-      SET_MODAL: "modal/SET_MODAL"
-    }),
-    ...mapActions('user', ['SEND_FRIENDSHIP_REQUEST', 'GET_USER_DATA']),
-    makeFriendshipRequest(target, data) {
-      this.SEND_FRIENDSHIP_REQUEST({
-        user_id: data.user_id,
-        contact_id: data.contact_id
-      });
-      target.remove();
-    }
-  }
-};
+  };
 </script>
 
 <style scoped>
-.ads {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-height: 100vh;
-  padding: 30px;
+  .ads {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 100vh;
+    padding: 30px;
 
-  box-sizing: border-box;
-}
+    box-sizing: border-box;
+  }
 
-.wrap {
-  position: sticky;
-  top: 30px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
+  .wrap {
+    position: sticky;
+    top: 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 
-img {
-  width: 100%;
-  height: auto;
-}
+  img {
+    width: 100%;
+    height: auto;
+  }
 
-.users-list {
-  max-height: 300px;
-  margin: 0;
-  margin-top: 10px;
-  padding: 0;
-  overflow: auto;
-}
+  .users-list {
+    max-height: 300px;
+    margin: 0;
+    margin-top: 10px;
+    padding: 0;
+    overflow: auto;
+  }
 
-.user {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px 3px;
-}
+  .user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 3px;
+  }
 
-.user-info {
-  display: flex;
-  align-items: center;
-}
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
 
-.image-wrap {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
+  .image-wrap {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
 
-  background-color: #cccccc;
-  border-radius: 50%;
-}
+    background-color: #cccccc;
+    border-radius: 50%;
+  }
 
-.img {
-  display: block;
-}
+  .img {
+    display: block;
+  }
 </style>

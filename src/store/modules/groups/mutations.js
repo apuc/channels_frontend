@@ -24,7 +24,7 @@ export default {
     state.currentGroupData.channelsToSearch = channels;
   },
   'SET_GROUP_AVATAR_ID': (state, avatar_id) => {
-    state.groupData.avatar = avatar_id;
+    state.groupData.avatar.id = avatar_id;
   },
   'SET_GROUP_USER_IDS': (state, users) => {
     for (let i = 0; i < users.length; i++) {

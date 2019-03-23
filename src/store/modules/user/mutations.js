@@ -5,9 +5,6 @@ export default {
   'SET_CURRENT_USER_DATA': (state, data) => {
     state.currentUserInfo = data;
   },
-  'SET_USER_AVATAR_ID': (state, avatar_id) => {
-    state.userData.avatar = avatar_id;
-  },
   'SET_USER_DATA_LOADING_FLAG': state => {
     state.isUserLoading = !state.isUserLoading;
   },

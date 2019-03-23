@@ -12,17 +12,34 @@
               <router-link class="btn btn-link" to="/contacts">Контакты</router-link>
             </li>
 
-            <li v-for="(elem, index) in info" class="dropdown-settings__el" :key="index">
-              <button type="button" class="btn btn-link" @click="openModal($event, elem.modalTrigger)">{{elem.name}}
+            <li v-for="(elem, index) in info"
+                :key="index"
+                class="dropdown-settings__el"
+            >
+              <button type="button"
+                      class="btn btn-link"
+                      @click="openModal($event, elem.modalTrigger)"
+              >
+                {{elem.name}}
               </button>
             </li>
 
             <li class="dropdown-settings__el">
-              <router-link class="btn btn-link" to="/contacts/search" @click="LOGOUT">Поиск</router-link>
+              <router-link class="btn btn-link"
+                           to="/contacts/search"
+                           @click="LOGOUT"
+              >
+                Поиск
+              </router-link>
             </li>
 
             <li class="dropdown-settings__el">
-              <button class="btn btn-link" type="button" @click="LOGOUT">Exit</button>
+              <button class="btn btn-link"
+                      type="button"
+                      @click="LOGOUT"
+              >
+                Exit
+              </button>
             </li>
           </ul>
         </div>
@@ -49,20 +66,23 @@
         </div>
 
         <div class="filters" v-if="channels.length > 0 && groups.length > 0">
-          <button type="button" class="btn btn-primary filters__filter" data-filter="all" @click="navFilter">All</button>
+          <button type="button"
+                  class="btn btn-primary filters__filter"
+                  @click="navFilter('all')"
+          >
+            All
+          </button>
 
           <button type="button"
                   class="btn btn-primary filters__filter"
-                  data-filter="channel"
-                  @click="navFilter"
+                  @click="navFilter('channel')"
           >
             <v-icon scale="1" class="icon" name="bullhorn"/>
           </button>
 
           <button type="button"
                   class="btn btn-primary filters__filter"
-                  data-filter="group"
-                  @click="navFilter"
+                  @click="navFilter('group')"
           >
             <v-icon scale="1" class="icon" name="folder"/>
           </button>
@@ -155,11 +175,8 @@
         e.preventDefault();
         this.SET_MODAL(modalType);
       },
-      navFilter(e) {
-        const target = e.target;
-        const filterType = target.getAttribute('data-filter');
-
-        switch (filterType) {
+      navFilter() {
+        switch (type) {
           case 'all':
             this.filters.channelsVisible = true;
             this.filters.groupsVisible = true;
