@@ -53,11 +53,13 @@ export default {
   'GET_USER_CONTACTS': async ({
                                 commit
                               }) => {
-    await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/contacts`)
+    return await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/contacts`)
       .then(
         async res => {
-          commit('SET_USER_CONTACTS', res.body.data);
-          commit('SET_USER_CONTACTS_SEARCH', res.body.data);
+          const data = res.body.data;
+          commit('SET_USER_CONTACTS', data);
+          commit('SET_USER_CONTACTS_SEARCH', data);
+          return data;
         },
         err => console.log('err login', err)
       )
@@ -273,7 +275,7 @@ export default {
     commit('SET_CONTACTS_LOADING_FLAG');
 
     if (getters.searchResultsIsLoading) {
-      return await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/?search_request=${getters.searchRequest}&page=${page}`)
+      return await Vue.http.get(`${process.env.VUE_APP_API_URL}/user?search_request=${getters.searchRequest}&page=${page}`)
         .then(
           async res => {
             commit('SET_CONTACTS_LOADING_FLAG');

@@ -37,7 +37,7 @@
       ...mapMutations({
         GETTING_TOKEN_AND_DATA: 'auth/GETTING_TOKEN_AND_DATA',
       }),
-      ...mapActions('user', ['GET_USER_ME', 'GET_NAV', 'GET_USER_CONTACTS', 'GET_USER_FRIENDSHIP_REQUESTS']),
+      ...mapActions('user', ['GET_USER_ME', 'GET_NAV', 'GET_USER_CONTACTS', 'GET_USER_FRIENDSHIP_REQUESTS', 'FIND_USERS']),
     },
     created() {
       if (!this.gettingTokenAndData) {
@@ -47,8 +47,13 @@
             if (this.gettingTokenAndData) {
               if (this.currentDateInSeconds < this.refreshTokenExpiresIn) {
                 this.GET_USER_FRIENDSHIP_REQUESTS();
-                await this.GET_USER_CONTACTS();
-                await this.GET_NAV().then(() => this.$_authGettingData_gettingData());
+                this.GET_USER_CONTACTS()
+                  .then(contacts => {
+                    if (this.$route.name === 'contacts' && !contacts.length) {
+                      this.FIND_USERS(1);
+                    }
+                  });
+                this.GET_NAV().then(() => this.$_authGettingData_gettingData());
                 this.GETTING_TOKEN_AND_DATA();
               }
             }

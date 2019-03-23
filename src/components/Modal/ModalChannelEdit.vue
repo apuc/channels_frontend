@@ -187,6 +187,15 @@ import vSelect from "vue-select";
 export default {
   name: "ModalChannelEdit",
   components: { vSelect },
+  computed: {
+    ...mapGetters("channels", [
+      "channelData",
+      "imageUploadPercentage",
+    ]),
+    ...mapGetters({
+      userData: "user/userData"
+    })
+  },
   data() {
     return {
       img: "", // form data to send
@@ -196,14 +205,31 @@ export default {
       isSamePicture: true
     };
   },
-  computed: {
-    ...mapGetters("channels", [
-      "channelData",
-      "imageUploadPercentage",
-    ]),
-    ...mapGetters({
-      userData: "user/userData"
-    })
+  created() {
+    this.GET_CHANNEL_DATA(this.channelData.id).then(data => {
+      this.SET_CHANNEL_DATA(data);
+      this.GET_CHANNEL_USERS(this.channelData.id).then(users => {
+        this.SET_CHANNEL_USER_IDS(users);
+      });
+
+      if (this.isSamePicture && this.channelData.avatar) {
+        this.imgSrc = this.channelData.avatar.average;
+      }
+    });
+  },
+  beforeDestroy() {
+    this.SET_CHANNEL_USERS([]);
+    this.SET_CHANNEL_DATA({
+      id: "",
+      title: "",
+      slug: "",
+      status: "",
+      user_ids: [],
+      owner_id: "",
+      type: "",
+      private: "",
+      avatar: undefined
+    });
   },
   methods: {
     ...mapMutations("channels", [
@@ -284,32 +310,6 @@ export default {
       this.imgSrc = "";
     }
   },
-  created() {
-    this.GET_CHANNEL_DATA(this.channelData.id).then(data => {
-      this.SET_CHANNEL_DATA(data);
-      this.GET_CHANNEL_USERS(this.channelData.id).then(users => {
-        this.SET_CHANNEL_USER_IDS(users);
-      });
-
-      if (this.isSamePicture && this.channelData.avatar) {
-        this.imgSrc = this.channelData.avatar.average;
-      }
-    });
-  },
-  beforeDestroy() {
-    this.SET_CHANNEL_USERS([]);
-    this.SET_CHANNEL_DATA({
-      id: "",
-      title: "",
-      slug: "",
-      status: "",
-      user_ids: [],
-      owner_id: "",
-      type: "",
-      private: "",
-      avatar: undefined
-    });
-  }
 };
 </script>
 

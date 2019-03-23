@@ -18,7 +18,7 @@
             >
               <button type="button"
                       class="btn btn-link"
-                      @click="openModal($event, elem.modalTrigger)"
+                      @click="SET_MODAL(elem.modalTrigger)"
               >
                 {{elem.name}}
               </button>
@@ -48,7 +48,11 @@
         <div class="user">
           <div class="placeholder placeholder_user" v-if="isUserLoading"></div>
 
-          <button type="button" class="btn btn-link" @click="openModal($event, 'ModalEditProfile')" v-else>
+          <button type="button"
+                  class="btn btn-link"
+                  v-else
+                  @click="SET_MODAL('ModalEditProfile')"
+          >
             <img class="user__avatar-img"
                  :src="userAvatar"
                  alt=""
@@ -65,7 +69,9 @@
           </router-link>
         </div>
 
-        <div class="filters" v-if="channels.length > 0 && groups.length > 0">
+        <div class="filters"
+             v-if="isFiltersVisible"
+        >
           <button type="button"
                   class="btn btn-primary filters__filter"
                   @click="navFilter('all')"
@@ -130,7 +136,10 @@
       ...mapGetters('channels', ['channels', 'isChannelsLoading']),
       ...mapGetters('groups', ['groups', 'isGroupsLoading']),
       userAvatar() {
-        return this.userData.avatar ? this.userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'
+        return this.userData.avatar ? this.userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1';
+      },
+      isFiltersVisible() {
+        return this.channels.length > 0 && this.groups.length > 0
       }
     },
     data() {
@@ -156,12 +165,6 @@
         },
       }
     },
-    async created() {
-      this.filter = {
-        channelsVisible: this.channels.length > 0,
-        groupsVisible: this.groups.length > 0,
-      };
-    },
     methods: {
       ...mapMutations({
         SET_MODAL: 'modal/SET_MODAL',
@@ -171,11 +174,7 @@
         ADD_CHANNELS_TO_GROUP: 'groups/ADD_CHANNELS_TO_GROUP',
         LOGOUT: 'auth/LOGOUT',
       }),
-      openModal(e, modalType) {
-        e.preventDefault();
-        this.SET_MODAL(modalType);
-      },
-      navFilter() {
+      navFilter(type) {
         switch (type) {
           case 'all':
             this.filters.channelsVisible = true;

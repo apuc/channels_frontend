@@ -115,15 +115,20 @@
             this.REMOVE_USER_FROM_CONTACTS_TO_ADD(user_id);
             this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
           });
+      },
+      setContactsFreeToAdd() {
+        this.SET_CONTACTS_FREE_TO_ADD(this.userContacts);
+        this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
       }
     },
     created() {
-      this.GET_CHANNEL_USERS(this.contactsToAdd.channelId)
-        .then(data => this.SET_CHANNEL_USERS(data))
-        .then(async () => {
-          await this.SET_CONTACTS_FREE_TO_ADD(this.userContacts);
-          this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
-        });
+      if (this.contactsToAdd.channelId) {
+        this.GET_CHANNEL_USERS(this.contactsToAdd.channelId)
+          .then(data => this.SET_CHANNEL_USERS(data))
+          .then(async () => {
+            this.setContactsFreeToAdd();
+          });
+      }
     },
     mounted() {
       this.$refs.searchInput.focus();

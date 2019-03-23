@@ -1,10 +1,10 @@
 <template>
-  <section class="list-group__item" @click="setData($event, data.id)">
+  <section class="list-group__item" @click="">
     <router-link
       :to="`/${data.slug}`"
       class="list-group__link"
       :title="data.title"
-      @click.native="SET_USER_POSITION(type)"
+      @click.native="setData($event.target, data.id, type)"
     >
       <img :src="data.avatar.small" alt class="avatar" width="30" height="30" v-if="data.avatar">
 
@@ -65,19 +65,43 @@
         SET_CURRENT_CHANNEL_DATA: 'channels/SET_CURRENT_CHANNEL_DATA',
         GET_MESSAGES: "messages/GET_MESSAGES"
       }),
-      async setData(e, id) {
-        if (!e.target.hasAttribute("type")) {
-          await this.SET_CURRENT_CHANNEL_DATA(Number(id));
+      /**
+       * Записывает данные канала на который переходит пользователь
+       *
+       * @param target {Element}
+       * @param id {String|Number} - id канала
+       * @param type {String} - канал или группа
+       */
+      setData(target, id, type) {
+        if (!target.hasAttribute("type")) {
+          this.SET_CURRENT_CHANNEL_DATA(Number(id));
+          this.SET_USER_POSITION(type);
         }
       },
-      async editingModal(id) {
+      /**
+       * Открывает модалку редактирования и устанавливает id канала в state.channelData
+       *
+       * @param id {Number|String} - id канала, который будет редактироваться
+       */
+      editingModal(id) {
         this.SET_CHANNEL_ID(id);
         this.SET_MODAL("ModalChannelEdit");
       },
+      /**
+       * Открывает модалку удаления и устанавливает id канала в state.channelToDelete
+       *
+       * @param id {Number|String} - id канала, который будет удаляться
+       */
       deletingModal(id) {
         this.SET_CHANNEL_ID_TO_DELETE(id);
         this.SET_MODAL("ModalChannelDelete");
       },
+      /**
+       * Открывает модалку добавления пользователей в канал
+       *
+       * @param id {Number|String} - id канала, в который будут добавляться пользователи,
+       *                             записывается в  state.contactsToAdd.channelId
+       */
       setAddUsersModal(id) {
         this.SET_CONTACTS_TO_ADD_CHANNEL_ID(id);
         this.SET_CONTACTS_FREE_TO_ADD_SEARCH([]);

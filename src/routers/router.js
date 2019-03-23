@@ -36,6 +36,7 @@ export default new Router({
     },
     {
       path: '/',
+      name: 'chatBlank',
       component: ChatBlank,
       meta: {
         requiresAuth: true,
@@ -45,14 +46,34 @@ export default new Router({
     {
       path: '/contacts',
       component: Contacts,
-      meta: {
-        requiresAuth: true,
-        layout: 'main'
-      },
       children: [
-        {path: '', component: ContactsList},
-        {path: 'search', component: ContactsSearchUsers},
-        {path: 'requests', component: ContactsFriendshipRequests}
+        {
+          path: '',
+          component: ContactsList,
+          name: 'contacts',
+          meta: {
+            requiresAuth: true,
+            layout: 'main'
+          },
+        },
+        {
+          path: 'search',
+          component: ContactsSearchUsers,
+          name: 'contactsSearchUsers',
+          meta: {
+            requiresAuth: true,
+            layout: 'main'
+          },
+        },
+        {
+          path: 'requests',
+          component: ContactsFriendshipRequests,
+          name: 'ContactsFriendshipRequests',
+          meta: {
+            requiresAuth: true,
+            layout: 'main'
+          },
+        }
       ],
       beforeEnter: (to, from, next) => {
         store.commit('user/SET_USER_POSITION', 'contacts');
@@ -70,6 +91,7 @@ export default new Router({
     },
     {
       path: '/group/:id',
+      name: 'group',
       component: Group,
       meta: {
         layout: 'main'
@@ -93,6 +115,7 @@ export default new Router({
     },
     {
       path: '/:id',
+      name: 'chat',
       component: Chat,
       meta: {
         layout: 'main'

@@ -101,28 +101,26 @@ export default {
                              commit,
                              dispatch,
                              rootGetters
-                           }) => {
+                           }, channelData) => {
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, getters.channelData)
+      await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, channelData)
         .then(
           res => {
             const createdChannelData = res.body.data;
             router.push({
               path: `/${createdChannelData.slug}`
             });
+
             commit('modal/SET_MODAL', 'ModalChannelAddUsers', {
               root: true
             });
+            commit('SET_CURRENT_CHANNEL_DATA', createdChannelData);
+            commit('SET_CONTACTS_TO_ADD_CHANNEL_ID', createdChannelData.id);
             commit('ADD_CREATED_CHANNEL', createdChannelData);
-            dispatch('SET_CURRENT_CHANNEL_DATA', createdChannelData.id)
-              .then(async () => {
-                await commit('SET_CONTACTS_FREE_TO_ADD', rootGetters['user/userContacts']);
-                commit('SET_CONTACTS_FREE_TO_ADD_SEARCH', getters.contactsToAddSearch);
-              });
           },
           err => console.log(err)
         )
@@ -153,7 +151,7 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/avatar`, img, {
+      return await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/avatar`, img, {
         headers: {
           "Content-Type": "multipart/form-data;"
         },
@@ -167,6 +165,7 @@ export default {
           async res => {
             commit('SET_CHANNEL_AVATAR_ID', res.body.data.id);
             commit('SET_AVATAR_UPLOAD_PROGRESS', 0);
+            return res.body.data.id;
           },
           err => console.log(err)
         )

@@ -19,13 +19,7 @@
       }),
     },
     methods: {
-      ...mapMutations('users', ['CLEAR_SEARCH_RESULTS', 'SET_SEARCH_REQUEST']),
-      ...mapActions({
-        FIND_USERS: 'user/FIND_USERS',
-      }),
-    },
-    created() {
-      this.FIND_USERS(1);
+      ...mapMutations('user', ['CLEAR_SEARCH_RESULTS', 'SET_SEARCH_REQUEST']),
     },
     beforeDestroy() {
       this.CLEAR_SEARCH_RESULTS();

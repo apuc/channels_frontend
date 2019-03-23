@@ -51,7 +51,6 @@ export default {
     state.currentChannelData = data;
   },
   'SET_CHANNEL_AVATAR_ID': (state, avatar_id) => {
-    console.log(avatar_id); 
     state.channelData.avatar = {
       avatar_id
     };
