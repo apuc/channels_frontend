@@ -30,7 +30,7 @@ const state = {
     channelsToAdd: [],
   },
   groupToDelete: '',
-  channelToDelete: '',
+  channelToDelete: {},
   isGroupsLoading: false,
   imageUploadPercentage: 0,
 };

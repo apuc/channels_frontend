@@ -82,6 +82,7 @@ export default {
     groups.splice(groupIndex, 1);
   },
   'REMOVE_DELETED_CHANNEL': (state, id) => {
+    // не знаю почему, но работает только так. причём в компоненте нужен $forceUpdate
     const groups = state.groups;
     const currentGroup = state.currentGroupData;
     const groupChannels = currentGroup.channels;
@@ -93,7 +94,9 @@ export default {
     groups[groupIndex] = currentGroup;
   },
   'SET_CHANNEL_TO_DELETE': (state, id) => {
-    state.channelToDelete = id;
+    const currentGroup = state.currentGroupData;
+    const groupChannels = currentGroup.channels;
+    state.channelToDelete = groupChannels.find(channel => channel.id === id);
   },
   'SET_EDITED_GROUP_DATA': (state, data) => {
     for (let i = 0; i < state.groups.length; i++) {

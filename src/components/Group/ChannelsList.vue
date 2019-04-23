@@ -2,9 +2,13 @@
   <section class="groups">
     <header class="form-group">
       <h2 class="channels-search__title">Поиск по каналам</h2>
-      <input class="form-control" type="text" :value="searchValue" @input="searchChannel($event.target.value)">
+      <input class="form-control"
+             type="text"
+             :value="searchValue"
+             @input="searchChannel($event.target.value)"
+      >
     </header>
-    
+
     <p v-if="noChannels">К сожалению в данной группе нет канала с таким названием.</p>
 
     <ul class="channels-list">
@@ -13,7 +17,10 @@
           class="col-3 channels-list__channel"
       >
         <router-link :to="`/${channel.slug}`" @click.native="setData($event, channel.id)">
-        <img class="channel-avatar" :src="channel.avatar ? channel.avatar.small : 'https://pp.userapi.com/c846524/v846524878/e3cbe/QHn1Jw-tZfA.jpg'" alt="">
+          <img class="channel-avatar"
+               :src="channel.avatar ? channel.avatar.small : 'https://pp.userapi.com/c846524/v846524878/e3cbe/QHn1Jw-tZfA.jpg'"
+               alt=""
+          >
           {{ channel.title }}
         </router-link>
 
@@ -37,8 +44,8 @@
   export default {
     name: "ChannelsList",
     computed: {
+      ...mapGetters('groups', ['currentGroupData', 'channelToDelete']),
       ...mapGetters({
-        currentGroupData: 'groups/currentGroupData',
         userData: 'user/userData',
       })
     },
@@ -49,10 +56,14 @@
       }
     },
     methods: {
-      ...mapMutations('groups', ['SET_CHANNEL_TO_DELETE', 'SET_CURRENT_GROUP_CHANNELS_TO_SEARCH', 'DELETE_CHANNEL_FROM_GROUP']),
+      ...mapMutations('groups', ['SET_CHANNEL_TO_DELETE', 'SET_CURRENT_GROUP_CHANNELS_TO_SEARCH']),
+      ...mapMutations({
+        ADD_CREATED_CHANNEL: 'channels/ADD_CREATED_CHANNEL',
+      }),
       ...mapActions({
         SET_CURRENT_CHANNEL_DATA: 'channels/SET_CURRENT_CHANNEL_DATA',
         GET_MESSAGES: 'messages/GET_MESSAGES',
+        DELETE_CHANNEL_FROM_GROUP: 'groups/DELETE_CHANNEL_FROM_GROUP',
       }),
       async setData(e, id) {
         await this.SET_CURRENT_CHANNEL_DATA(Number(id));
@@ -60,7 +71,9 @@
       },
       async removeChannel(channelId) {
         await this.SET_CHANNEL_TO_DELETE(channelId);
-        this.DELETE_CHANNEL_FROM_GROUP();
+        await this.DELETE_CHANNEL_FROM_GROUP();
+        this.ADD_CREATED_CHANNEL(this.channelToDelete);
+        this.$forceUpdate();
       },
       findChannel(value) {
         let currentUserName = '';

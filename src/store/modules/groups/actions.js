@@ -259,7 +259,7 @@ export default {
           res => {
             const newGroupData = res.body.data;
             for (let i = 0; i < getters.addingChannelsData.channelsToAdd.length; i++) {
-              commit('channels/REMOVE_DELETED_CHANNEL', getters.addingChannelsData.channelsToAdd[i], {
+              commit('channels/REMOVE_DELETED_CHANNEL_FROM_STORE', getters.addingChannelsData.channelsToAdd[i], {
                 root: true
               });
             }
@@ -268,9 +268,9 @@ export default {
               commit('SET_CURRENT_GROUP_CHANNELS_TO_SEARCH', newGroupData.channels);
             }
             commit('SET_EDITED_GROUP_DATA', newGroupData);
-            // dispatch('modal/DELETE_MODAL', null, {
-            //   root: true
-            // });
+            commit('modal/DELETE_MODAL', null, {
+              root: true
+            });
           },
           err => {
             console.log(err);
@@ -297,7 +297,7 @@ export default {
     rootGetters
   }) => {
     const group_id = getters.currentGroupData.id;
-    const channel_id = getters.channelToDelete;
+    const channel_id = getters.channelToDelete.id;
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
