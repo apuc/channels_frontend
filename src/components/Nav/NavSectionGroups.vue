@@ -1,11 +1,9 @@
 <template>
-  <section class="list-group__item"
-           @click="setData($event, data.id)"
-  >
+  <section class="list-group__item">
     <router-link :to="`/group/${data.slug}`"
                  class="list-group__link"
                  :title="data.title"
-                 @click.native="SET_USER_POSITION(type)"
+                 @click.native="setData($event, data.id, type)"
     >
       <img :src="data.avatar.small"
            alt=""
@@ -91,13 +89,13 @@
       ...mapActions({
         GET_GROUP_DATA: 'groups/GET_GROUP_DATA',
       }),
-      async setData(e, id) {
-        if (!e.target.hasAttribute('type')) {
-          await this.GET_GROUP_DATA(Number(id)).then(data => {
-            this.SET_CURRENT_GROUP_DATA(data);
-            this.SET_CURRENT_GROUP_CHANNELS_TO_SEARCH(data.channels);
-          });
-        }
+      async setData(e, id, type) {
+        this.SET_USER_POSITION(type);
+        await this.GET_GROUP_DATA(Number(id)).then(data => {
+          this.SET_CURRENT_GROUP_DATA(data);
+          this.SET_CURRENT_GROUP_CHANNELS_TO_SEARCH(data.channels);
+        });
+
       },
       editThis(id) {
         this.SET_MODAL('ModalGroupEdit');

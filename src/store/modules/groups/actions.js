@@ -212,7 +212,7 @@ export default {
         .then(
           res => {
             commit('REMOVE_DELETED_GROUP_FROM_STORE', id);
-            dispatch('modal/DELETE_MODAL', null, {
+            commit('modal/DELETE_MODAL', null, {
               root: true
             });
 

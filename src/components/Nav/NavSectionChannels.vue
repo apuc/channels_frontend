@@ -73,10 +73,8 @@
        * @param type {String} - канал или группа
        */
       setData(target, id, type) {
-        if (!target.hasAttribute("type")) {
-          this.SET_CURRENT_CHANNEL_DATA(Number(id));
-          this.SET_USER_POSITION(type);
-        }
+        this.SET_CURRENT_CHANNEL_DATA(Number(id));
+        this.SET_USER_POSITION(type);
       },
       /**
        * Открывает модалку редактирования и устанавливает id канала в state.channelData
