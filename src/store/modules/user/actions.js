@@ -122,7 +122,7 @@ export default {
     if (currentDateInSeconds < tokenExpiresIn) {
       return await Vue.http.put(`${process.env.VUE_APP_API_URL}/user/profile/${getters.userData.user_id}`, {
         username: data.username,
-        avatar_id: data.avatar_id
+        avatar_id: data.id
       })
         .then(
           res => {

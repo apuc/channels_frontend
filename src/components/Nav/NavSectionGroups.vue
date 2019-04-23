@@ -75,6 +75,7 @@
     methods: {
       ...mapMutations('groups', [
         'SET_GROUP_DATA',
+        'SET_GROUP_ID',
         'SET_CURRENT_GROUP_DATA',
         'SET_CURRENT_GROUP_CHANNELS_TO_SEARCH',
         'SET_GROUP_ID_TO_DELETE',
@@ -99,7 +100,7 @@
       },
       editThis(id) {
         this.SET_MODAL('ModalGroupEdit');
-        this.SET_GROUP_DATA(this.groupToEdit(id));
+        this.SET_GROUP_ID(id);
       },
       deletingModal(id) {
         this.SET_MODAL('ModalGroupDelete');

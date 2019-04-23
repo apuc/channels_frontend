@@ -9,7 +9,7 @@
         <div class="col-6">
           <div class="form-group">
             <label for="title">Channel name</label>
-            
+
             <input
               type="text"
               id="title"
@@ -21,7 +21,7 @@
 
           <div class="form-group">
             <label for="slug">Channel slug</label>
-            
+
             <input
               type="text"
               id="slug"
@@ -164,7 +164,7 @@
         </label>
         <div class="hidden" v-else :class="{ 'image': true }">
           <img :src="imgSrc" alt class="img">
-          
+
           <button class="button button_remove" type="button" @click="removeImage">REMOVE</button>
         </div>
       </div>
@@ -181,226 +181,226 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from "vuex";
-import vSelect from "vue-select";
+  import {mapGetters, mapMutations, mapActions} from "vuex";
+  import vSelect from "vue-select";
 
-export default {
-  name: "ModalChannelEdit",
-  components: { vSelect },
-  computed: {
-    ...mapGetters("channels", [
-      "channelData",
-      "imageUploadPercentage",
-    ]),
-    ...mapGetters({
-      userData: "user/userData"
-    })
-  },
-  data() {
-    return {
-      img: "", // form data to send
-      imgSrc: "", // img url
-      notImage: "", // if file in not picture
-      upLoadStarted: false,
-      isSamePicture: true
-    };
-  },
-  created() {
-    this.GET_CHANNEL_DATA(this.channelData.id).then(data => {
-      this.SET_CHANNEL_DATA(data);
-      this.GET_CHANNEL_USERS(this.channelData.id).then(users => {
-        this.SET_CHANNEL_USER_IDS(users);
+  export default {
+    name: "ModalChannelEdit",
+    components: {vSelect},
+    computed: {
+      ...mapGetters("channels", [
+        "channelData",
+        "imageUploadPercentage",
+      ]),
+      ...mapGetters({
+        userData: "user/userData"
+      })
+    },
+    data() {
+      return {
+        img: "", // form data to send
+        imgSrc: "", // img url
+        notImage: "", // if file in not picture
+        upLoadStarted: false,
+        isSamePicture: true
+      };
+    },
+    created() {
+      this.GET_CHANNEL_DATA(this.channelData.id).then(data => {
+        this.SET_CHANNEL_DATA(data);
+        this.GET_CHANNEL_USERS(this.channelData.id).then(users => {
+          this.SET_CHANNEL_USER_IDS(users);
+        });
+
+        if (this.isSamePicture && this.channelData.avatar) {
+          this.imgSrc = this.channelData.avatar.average;
+        }
       });
-
-      if (this.isSamePicture && this.channelData.avatar) {
-        this.imgSrc = this.channelData.avatar.average;
-      }
-    });
-  },
-  beforeDestroy() {
-    this.SET_CHANNEL_USERS([]);
-    this.SET_CHANNEL_DATA({
-      id: "",
-      title: "",
-      slug: "",
-      status: "",
-      user_ids: [],
-      owner_id: "",
-      type: "",
-      private: "",
-      avatar: undefined
-    });
-  },
-  methods: {
-    ...mapMutations("channels", [
-      "SET_CHANNEL_DATA",
-      "SET_CHANNEL_TITLE",
-      "SET_CHANNEL_SLUG",
-      "SET_CHANNEL_STATUS",
-      "SET_CHANNEL_USER_IDS",
-      "SET_CHANNEL_OWNER_ID",
-      "SET_CHANNEL_TYPE",
-      "SET_CHANNEL_PRIVATE",
-      "SET_CHANNEL_USERS",
-      'SET_CONTACTS_TO_ADD_CHANNEL_ID',
-      'SET_CONTACTS_FREE_TO_ADD_SEARCH'
-    ]),
-    ...mapMutations({
-      SET_MODAL: "modal/SET_MODAL"
-    }),
-    ...mapActions("channels", [
-      "GET_CHANNEL_DATA",
-      "GET_CHANNEL_USERS",
-      "EDIT_CHANNEL",
-      "CREATE_CHANNEL_AVATAR"
-    ]),
-
-    setAddUsersModal() {
-      this.SET_CONTACTS_TO_ADD_CHANNEL_ID(this.channelData.id);
-      this.SET_CONTACTS_FREE_TO_ADD_SEARCH([]);
-      this.SET_MODAL("ModalChannelAddUsers");
     },
-    async onSubmit() {
-      const owner_id = this.userData.user_id;
-      this.SET_CHANNEL_OWNER_ID(owner_id);
-
-      if (this.img) {
-        this.upLoadStarted = true;
-        await this.CREATE_CHANNEL_AVATAR(this.img).then(
-          () => (this.upLoadStarted = false)
-        );
-      }
-
-      this.EDIT_CHANNEL();
+    beforeDestroy() {
+      this.SET_CHANNEL_USERS([]);
+      this.SET_CHANNEL_DATA({
+        id: "",
+        title: "",
+        slug: "",
+        status: "",
+        user_ids: [],
+        owner_id: "",
+        type: "",
+        private: "",
+        avatar: undefined
+      });
     },
-    createFormData(file) {
-      let formData = new FormData();
-      formData.append("avatar", file);
-      this.img = formData;
-    },
-    onDrop: function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      const files = e.dataTransfer.files;
-      this.createImage(files[0]);
-      this.createFormData(files[0]);
-    },
-    onChange(e) {
-      this.imgSrc = "";
-      const files = e.target.files || e.dataTransfer.files;
-      const fileType = files[0].type.split("/");
+    methods: {
+      ...mapMutations("channels", [
+        "SET_CHANNEL_DATA",
+        "SET_CHANNEL_TITLE",
+        "SET_CHANNEL_SLUG",
+        "SET_CHANNEL_STATUS",
+        "SET_CHANNEL_USER_IDS",
+        "SET_CHANNEL_OWNER_ID",
+        "SET_CHANNEL_TYPE",
+        "SET_CHANNEL_PRIVATE",
+        "SET_CHANNEL_USERS",
+        'SET_CONTACTS_TO_ADD_CHANNEL_ID',
+        'SET_CONTACTS_FREE_TO_ADD_SEARCH'
+      ]),
+      ...mapMutations({
+        SET_MODAL: "modal/SET_MODAL"
+      }),
+      ...mapActions("channels", [
+        "GET_CHANNEL_DATA",
+        "GET_CHANNEL_USERS",
+        "EDIT_CHANNEL",
+        "CREATE_CHANNEL_AVATAR"
+      ]),
 
-      if (files.length && fileType[0] === "image") {
-        this.notImage = "";
+      setAddUsersModal() {
+        this.SET_CONTACTS_TO_ADD_CHANNEL_ID(this.channelData.id);
+        this.SET_CONTACTS_FREE_TO_ADD_SEARCH([]);
+        this.SET_MODAL("ModalChannelAddUsers");
+      },
+      async onSubmit() {
+        const owner_id = this.userData.user_id;
+        this.SET_CHANNEL_OWNER_ID(owner_id);
+
+        if (this.img) {
+          this.upLoadStarted = true;
+          await this.CREATE_CHANNEL_AVATAR(this.img).then(
+            () => (this.upLoadStarted = false)
+          );
+        }
+
+        this.EDIT_CHANNEL();
+      },
+      createFormData(file) {
+        let formData = new FormData();
+        formData.append("avatar", file);
+        this.img = formData;
+      },
+      onDrop: function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        const files = e.dataTransfer.files;
         this.createImage(files[0]);
         this.createFormData(files[0]);
-      } else {
-        this.notImage = "Choose image please";
+      },
+      onChange(e) {
+        this.imgSrc = "";
+        const files = e.target.files || e.dataTransfer.files;
+        const fileType = files[0].type.split("/");
+
+        if (files.length && fileType[0] === "image") {
+          this.notImage = "";
+          this.createImage(files[0]);
+          this.createFormData(files[0]);
+        } else {
+          this.notImage = "Choose image please";
+        }
+      },
+      createImage(file) {
+        const reader = new FileReader();
+
+        reader.onload = e => {
+          this.imgSrc = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      },
+      removeImage() {
+        this.imgSrc = "";
       }
     },
-    createImage(file) {
-      const reader = new FileReader();
-
-      reader.onload = e => {
-        this.imgSrc = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    },
-    removeImage() {
-      this.imgSrc = "";
-    }
-  },
-};
+  };
 </script>
 
 <style scoped>
-.modal__header {
-  display: flex;
-  align-items: center;
-}
+  .modal__header {
+    display: flex;
+    align-items: center;
+  }
 
-.btn-file input[type="file"] {
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 100%;
-  min-height: 100%;
-  font-size: 100px;
-  text-align: right;
-  filter: alpha(opacity=0);
-  opacity: 0;
-  outline: none;
-  background: white;
-  cursor: inherit;
-  display: block;
-}
+  .btn-file input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+  }
 
-.button {
-  position: relative;
-  padding: 15px 35px;
+  .button {
+    position: relative;
+    padding: 15px 35px;
 
-  font-weight: bold;
-  color: #fff;
+    font-weight: bold;
+    color: #fff;
 
-  background-color: #d3394c;
-  border: 0;
-  cursor: pointer;
-}
+    background-color: #d3394c;
+    border: 0;
+    cursor: pointer;
+  }
 
-.button:hover {
-  background-color: #722040;
-}
+  .button:hover {
+    background-color: #722040;
+  }
 
-.button_remove {
-  margin-top: 15px;
-  padding: 10px 20px;
-}
+  .button_remove {
+    margin-top: 15px;
+    padding: 10px 20px;
+  }
 
-input[type="file"] {
-  position: absolute;
-  left: 0;
-  z-index: -1;
+  input[type="file"] {
+    position: absolute;
+    left: 0;
+    z-index: -1;
 
-  opacity: 0;
-}
+    opacity: 0;
+  }
 
-.hidden {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-}
+  .hidden {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+  }
 
-.hidden.image {
-  display: flex;
-}
+  .hidden.image {
+    display: flex;
+  }
 
-.img {
-  width: 100%;
-  height: auto;
-}
+  .img {
+    width: 100%;
+    height: auto;
+  }
 
-.drop {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 600px;
-  height: 100%;
-  min-height: 100px;
-  margin-bottom: 15px;
+  .drop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    min-height: 100px;
+    margin-bottom: 15px;
 
-  border: 4px dashed #ccc;
-  background-color: #f6f6f6;
-  border-radius: 2px;
-}
+    border: 4px dashed #ccc;
+    background-color: #f6f6f6;
+    border-radius: 2px;
+  }
 
-.drop label {
-  margin-bottom: 0;
-}
+  .drop label {
+    margin-bottom: 0;
+  }
 
-progress::-webkit-progress-value {
-  transition: width 0.5s ease;
-}
+  progress::-webkit-progress-value {
+    transition: width 0.5s ease;
+  }
 </style>

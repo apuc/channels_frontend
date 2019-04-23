@@ -240,7 +240,7 @@ export default {
         user_ids: getters.channelData.user_ids,
         type: getters.channelData.type,
         private: getters.channelData.private,
-        avatar: getters.channelData.avatar.avatar_id,
+        avatar: getters.channelData.avatar.id,
         owner_id: getters.channelData.owner_id,
       })
         .then(

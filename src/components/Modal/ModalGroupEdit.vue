@@ -116,6 +116,27 @@ export default {
       userData: "user/userData",
     })
   },
+  created() {
+    this.GET_GROUP_DATA(this.groupData.id).then(response => {
+      this.SET_GROUP_DATA(response);
+
+      if (response.avatar) {
+        this.imgSrc = response.avatar.average;
+      }
+    });
+
+  },
+  beforeDestroy() {
+    this.SET_GROUP_DATA({
+      id: "",
+      title: "",
+      slug: "",
+      status: "",
+      user_ids: [],
+      owner_id: "",
+      avatar: undefined
+    });
+  },
   data() {
     return {
       img: "",
@@ -135,15 +156,14 @@ export default {
     ...mapMutations({
       SET_MODAL: "modal/SET_MODAL"
     }),
-    ...mapActions('groups', ['EDIT_GROUP', 'CREATE_GROUP_AVATAR']),
+    ...mapActions('groups', ['GET_GROUP_DATA', 'EDIT_GROUP', 'CREATE_GROUP_AVATAR']),
     async onSubmit() {
       this.SET_GROUP_OWNER_ID(this.userData.user_id);
 
       if (this.img) {
         this.upLoadStarted = true;
-        await this.CREATE_GROUP_AVATAR(this.img).then(
-          () => (this.upLoadStarted = false)
-        );
+        await this.CREATE_GROUP_AVATAR(this.img)
+          .then(() => (this.upLoadStarted = false));
       }
 
       this.EDIT_GROUP();
@@ -185,22 +205,6 @@ export default {
       this.imgSrc = "";
     }
   },
-  created() {
-    if (this.groupData.avatar) {
-      this.imgSrc = this.groupData.avatar.average;
-    }
-  },
-  beforeDestroy() {
-    this.SET_GROUP_DATA({
-      id: "",
-      title: "",
-      slug: "",
-      status: "",
-      user_ids: [],
-      owner_id: "",
-      avatar: undefined
-    });
-  }
 };
 </script>
 

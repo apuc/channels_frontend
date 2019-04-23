@@ -122,7 +122,7 @@
         if (this.img) {
           this.upLoadStarted = true;
           await this.CREATE_USER_AVATAR(this.img).then(avatar_id => {
-            this.EDIT_GENERAL_USER_DATA({avatar_id, username: this.user.username})
+            this.EDIT_GENERAL_USER_DATA({id: avatar_id, username: this.user.username})
               .then(userData => this.SET_USER_INFO(userData));
             this.upLoadStarted = false;
           });

@@ -52,7 +52,7 @@ export default {
   },
   'SET_CHANNEL_AVATAR_ID': (state, avatar_id) => {
     state.channelData.avatar = {
-      avatar_id
+      id: avatar_id
     };
   },
   'SET_CHANNEL_USERS': (state, users) => {

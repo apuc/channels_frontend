@@ -118,7 +118,7 @@ export default {
         })
         .then(
           async res => {
-              commit('SET_GROUP_AVATAR_ID', res.body.data.avatar_id);
+              commit('SET_GROUP_AVATAR_ID', res.body.data.id);
               commit('SET_AVATAR_UPLOAD_PROGRESS', 0);
             },
             err => console.log(err)
@@ -166,7 +166,7 @@ export default {
           slug: getters.groupData.slug,
           status: getters.groupData.status,
           user_ids: [rootGetters['user/userData'].user_id],
-          avatar: getters.groupData.avatar,
+          avatar: getters.groupData.avatar.id,
           owner_id: getters.groupData.owner_id,
         })
         .then(
