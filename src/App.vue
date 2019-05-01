@@ -51,6 +51,27 @@
     margin-right: 10px;
   }
 
+  .info-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+    color: #07284c;
+  }
+  
+  .info-message::before {
+    content: '';
+    display: block;
+    width: 15px;
+    height: 1px;
+    margin-right: 15px;
+
+    background-color: #07284c;
+  }
+
   .fade-enter-active, .fade-leave-active {
     transition: opacity 0.1s;
   }

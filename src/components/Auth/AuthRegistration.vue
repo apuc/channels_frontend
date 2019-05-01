@@ -1,8 +1,8 @@
 <template>
-  <main>
+  <main class="mt-5">
     <div class="container">
       <div class="row">
-        <form @submit.prevent="registration" class="col-lg-6 col-12 offset-3 pt-lg-3">
+        <form @submit.prevent="registration" class="col-lg-6 col-12 offset-lg-3 pt-lg-3">
 
           <div class="form-group" v-for="(field, index) in data">
             <label :for="field.name">{{field.label}}</label>
