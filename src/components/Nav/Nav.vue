@@ -1,55 +1,60 @@
 <template>
-  <aside class="nav d-flex flex-column p-0 bg-light">
+  <aside class="nav d-flex flex-column p-3">
     <div class="wrap">
       <header class="nav-header">
-        <div @mouseover="addMenuVisible = true" @mouseout="addMenuVisible = false">
+        <div class="mr-3"
+             @mouseover="addMenuVisible = true"
+             @mouseout="addMenuVisible = false"
+        >
           <button class="addButton" type="button">
-            <v-icon scale="1" class="icon" name="plus-circle"/>
+            <img src="../../assets/img/menu_icon.png" alt="">
           </button>
 
-          <ul class="dropdown-settings" v-if="addMenuVisible">
-            <li class="dropdown-settings__el">
-              <router-link class="btn btn-link" to="/contacts">Контакты</router-link>
-            </li>
+          <div class="dropdown" v-if="addMenuVisible">
+            <p class="info-message text-uppercase">Внутреннее меню</p>
+            <ul class="settings">
+              <li class="settings__el">
+                <router-link class="btn btn-link settings__link" to="/contacts">Контакты</router-link>
+              </li>
 
-            <li v-for="(elem, index) in info"
-                :key="index"
-                class="dropdown-settings__el"
-            >
-              <button type="button"
-                      class="btn btn-link"
-                      @click="SET_MODAL(elem.modalTrigger)"
+              <li v-for="(elem, index) in info"
+                  :key="index"
+                  class="settings__el"
               >
-                {{elem.name}}
-              </button>
-            </li>
+                <button type="button"
+                        class="btn btn-link settings__link"
+                        @click="SET_MODAL(elem.modalTrigger)"
+                >
+                  {{elem.name}}
+                </button>
+              </li>
 
-            <li class="dropdown-settings__el">
-              <router-link class="btn btn-link"
-                           to="/contacts/search"
-                           @click="LOGOUT"
-              >
-                Поиск
-              </router-link>
-            </li>
+              <li class="settings__el">
+                <router-link class="btn btn-link settings__link"
+                             to="/contacts/search"
+                             @click="LOGOUT"
+                >
+                  Поиск
+                </router-link>
+              </li>
 
-            <li class="dropdown-settings__el">
-              <button class="btn btn-link"
-                      type="button"
-                      @click="LOGOUT"
-              >
-                Exit
-              </button>
-            </li>
-          </ul>
+              <li class="settings__el">
+                <button class="btn btn-link settings__link"
+                        type="button"
+                        @click="LOGOUT"
+                >
+                  Выход
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
-
-
+        
         <div class="user">
           <div class="placeholder placeholder_user" v-if="isUserLoading"></div>
 
           <button type="button"
-                  class="btn btn-link"
+                  class="btn-profile"
                   v-else
                   @click="SET_MODAL('ModalEditProfile')"
           >
@@ -57,21 +62,22 @@
                  :src="userAvatar"
                  alt=""
             >
-            {{userData.username}}
+            <span class="btn-profile__name">{{userData.username}}</span>
           </button>
 
           <router-link to="/contacts/requests"
-                  class="requests"
-                  v-if="friendshipRequests.length > 0"
-                  @click="openRequests"
+                       class="requests"
+                       v-if="friendshipRequests.length > 0"
+                       @click="openRequests"
           >
             {{friendshipRequests.length}}
           </router-link>
         </div>
 
-        <div class="filters"
-             v-if="isFiltersVisible"
-        >
+        <!--<div class="filters"-->
+        <!--v-if="isFiltersVisible"-->
+        <!--&gt;-->
+        <div v-if="false">
           <button type="button"
                   class="btn btn-primary filters__filter"
                   @click="navFilter('all')"
@@ -95,28 +101,51 @@
         </div>
       </header>
 
-      <nav>
-        <drag v-for="channel in channels"
-              :transfer-data="channel.id"
-              :key="channel.id"
+      <form class="search">
+        <v-icon scale="1" class="search__icon" name="search"/>
+        <input type="text"
+               name="search"
+               placeholder="Поиск"
+               class="search__input"
         >
-          <NavSectionChannels v-if="filters.channelsVisible && !isChannelsLoading"
-                              title="Каналы"
-                              :type="'channel'"
-                              :data="channel"
-          />
-        </drag>
+      </form>
 
-        <drop v-for="group in groups"
-              @drop="handleDrop(group.id, ...arguments)"
-              :key="group.id"
-        >
-          <NavSectionGroups v-if="filters.groupsVisible && !isGroupsLoading"
-                            title="Группы"
-                            :type="'group'"
-                            :data="group"
-          />
-        </drop>
+      <nav>
+        <div class="d-flex align-items-center mt-3">
+          <img src="../../assets/img/menu_channel.png" alt="" class="mr-3">
+          <span class="small">В вашем списке {{channels.length}} каналов</span>
+        </div>
+
+        <div class="mt-3">
+          <drag v-for="channel in channels"
+                :transfer-data="channel.id"
+                :key="channel.id"
+          >
+            <NavSectionChannels v-if="filters.channelsVisible && !isChannelsLoading"
+                                title="Каналы"
+                                :type="'channel'"
+                                :data="channel"
+            />
+          </drag>
+        </div>
+
+        <div class="d-flex align-items-center mt-3">
+          <img src="../../assets/img/menu_channel.png" alt="" class="mr-3">
+          <span class="small">В вашем списке {{groups.length}} групп</span>
+        </div>
+
+        <div class="mt-3">
+          <drop v-for="group in groups"
+                @drop="handleDrop(group.id, ...arguments)"
+                :key="group.id"
+          >
+            <NavSectionGroups v-if="filters.groupsVisible && !isGroupsLoading"
+                              title="Группы"
+                              :type="'group'"
+                              :data="group"
+            />
+          </drop>
+        </div>
       </nav>
 
       <div class="placeholder" v-if="isChannelsLoading || isGroupsLoading"></div>
@@ -130,7 +159,7 @@
   import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
-    components: {NavSectionChannels ,NavSectionGroups},
+    components: {NavSectionChannels, NavSectionGroups},
     computed: {
       ...mapGetters('user', ['userData', 'isUserLoading', 'friendshipRequests']),
       ...mapGetters('channels', ['channels', 'isChannelsLoading']),
@@ -219,7 +248,7 @@
   }
 
   .user {
-    flex-grow: 0.9;
+    flex-grow: 1;
   }
 
   .placeholder_user {
@@ -243,12 +272,14 @@
     max-height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
+
+    background-color: #fff;
   }
 
-  .wrap {
-    position: sticky;
-    top: 0;
-  }
+  /*.wrap {*/
+    /*position: sticky;*/
+    /*top: 0;*/
+  /*}*/
 
   .nav-header {
     position: relative;
@@ -257,24 +288,28 @@
     display: flex;
     align-items: center;
     height: 50px;
-    padding: 0 5px;
+    padding: 0;
   }
 
   .addButton {
+    position: relative;
+    z-index: 2;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 36px;
-    height: 36px;
+    width: 17px;
+    height: 17px;
+    padding: 0;
 
     font-size: 22px;
     font-weight: 700;
     line-height: 1;
     color: white;
 
-    background-color: #1082CF;
+    background-color: transparent;
     border: none;
-    border-radius: 50%;
+    border-radius: 5px;
     cursor: pointer;
   }
 
@@ -282,27 +317,52 @@
     text-decoration: none;
   }
 
-  .dropdown-settings {
+  .dropdown {
     position: absolute;
-    top: 85%;
+    top: 0;
+    left: 0;
     z-index: 1;
 
+    display: flex;
+    flex-direction: column;
+    width: 190px;
+    padding: 0 15px;
+
+    background-color: white;
+  }
+
+  .info-message {
+    align-self: flex-end;
+    margin-top: 18px;
+
+    font-size: 8px;
+  }
+
+  .settings {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 0;
     padding: 0;
+    padding-top: 20px;
 
     list-style: none;
-    background-color: transparent;
-    border-top: 10px solid transparent;
   }
 
-  .dropdown-settings__el {
+  .settings__el {
     width: 100%;
-    padding: 5px 15px;
+    padding: 0;
 
     background-color: #fff;
+  }
+
+  .settings__link {
+    padding-right: 0;
+    padding-left: 0;
+
+    font-size: 12px;
+    font-weight: 400;
+    color: black;
   }
 
   .filters {
@@ -322,12 +382,52 @@
     margin-right: 0;
   }
 
+  .btn-profile {
+    padding: 0;
+
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
   .user__avatar-img {
     width: 30px;
     height: 30px;
-    margin-right: 5px;
+    margin-right: 1rem;
+    
     border-radius: 50%;
     object-fit: cover;
+  }
+
+  .btn-profile__name {
+    font-size: 15px;
+    text-decoration: underline;
+    color: #125092;
+  }
+
+  .search {
+    position: relative;
+  }
+
+  .search__icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+
+    color: #bababa;
+    transform: translateY(-50%);
+  }
+
+  .search__input {
+    width: 100%;
+    padding: 7px;
+    padding-left: 35px;
+
+    font-size: 14px;
+
+    background-color: #f2f2f2;
+    border: none;
+    border-radius: 2px;
   }
 
   .requests {

@@ -1,14 +1,14 @@
 <template>
   <header class="header" :class="{header_auth: isAuthLayout, header_main: isMainLayout}">
-    <div class="container d-flex flex-column align-items-center" :class="{'justify-content-center': isAuthLayout}">
-      <div class="d-flex align-items-center py-3">
+    <div class="container d-flex align-items-center" :class="{'justify-content-center': isAuthLayout, 'flex-column': isAuthLayout}">
+      <router-link to="/" class="d-flex align-items-center" :class="{'py-3': isAuthLayout}">
         <img src="../../assets/img/logo.png"
              alt=""
              class="header__logo"
              :class="{header__logo_auth: isAuthLayout, header__logo_main: isMainLayout}"
         >
         <p class="header__name"  :class="{header__name_auth: isAuthLayout, header__name_main: isMainLayout}">CHANNELS</p>
-      </div>
+      </router-link>
 
       <div class="d-flex">
           <slot />
@@ -37,8 +37,17 @@
     background-color: #125092;
   }
 
+  .header_main {
+    padding: 15px 0;
+  }
+
   .header__logo {
     padding-right: 10px;
+  }
+
+  .header__logo_main {
+    width: 47px;
+    height: 37px;
   }
 
   .header__name {

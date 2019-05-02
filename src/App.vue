@@ -37,6 +37,25 @@
     color: #2c3e50;
   }
 
+  .page-wrapper {
+    background-color: #ebebeb;
+  }
+
+  .home {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .main {
+    display: grid;
+    height: 100vh;
+    overflow-y: auto;
+
+    background-color: #fff;
+  }
+
   .modal-inside {
     max-height: 90%;
     padding: 30px;
@@ -55,6 +74,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 0;
 
     font-size: 10px;
     font-weight: 700;

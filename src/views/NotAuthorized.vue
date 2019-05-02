@@ -1,14 +1,16 @@
 <template>
-  <div class="home">
-    <NotAuthorizedSidebarAuth/>
+  <div class="page-wrapper">
+    <div class="container home">
+      <NotAuthorizedSidebarAuth/>
 
-    <main class="main">
-      <component :is="`NotAuthorizedChat${chooseChat}`" v-if="currentChannelData._id"></component>
-      <router-view v-else></router-view>
-    </main>
+      <main class="main">
+        <component :is="`NotAuthorizedChat${chooseChat}`" v-if="currentChannelData._id"></component>
+        <router-view v-else></router-view>
+      </main>
+    </div>
 
 
-    <NotAuthorizedSidebarInfo/>
+    <!--<NotAuthorizedSidebarInfo/>-->
   </div>
 </template>
 
@@ -36,16 +38,5 @@
 </script>
 
 <style scoped>
-  .home {
-    display: grid;
-    grid-template-columns: 16.7% auto 16.7%;
-    width: 100%;
-    min-height: 100vh;
-  }
 
-  .main {
-    display: grid;
-    height: 100vh;
-    overflow-y: auto;
-  }
 </style>

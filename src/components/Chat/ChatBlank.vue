@@ -1,7 +1,5 @@
 <template>
-  <h3>
-    Выберите канал
-  </h3>
+  <p class="info-message text-uppercase mt-4">Чтобы началь диалог выберите пользователя или канал</p>
 </template>
 
 <script>

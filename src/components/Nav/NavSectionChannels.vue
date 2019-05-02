@@ -1,27 +1,41 @@
 <template>
-  <section class="list-group__item" @click="">
+  <section class="list-group__item">
     <router-link
       :to="`/${data.slug}`"
       class="list-group__link"
       :title="data.title"
       @click.native="setData($event.target, data.id, type)"
     >
-      <img :src="data.avatar.small" alt class="avatar" width="30" height="30" v-if="data.avatar">
+      <img :src="data.avatar ? data.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
+           alt=""
+           class="avatar"
+           width="50"
+           height="50"
+      >
 
       <span class="name">{{ data.title }}</span>
     </router-link>
 
     <div v-if="userData.user_id === data.owner_id" class="control">
-      <button type="button" class="button" @click="setAddUsersModal(data.id)">
-        <v-icon scale="1" class="icon" name="plus-circle"/>
+      <button type="button"
+              class="button"
+              @click="setAddUsersModal(data.id)"
+      >
+        <img src="../../assets/img/plus.png" alt="">
       </button>
 
-      <button type="button" class="button" @click="editingModal(data.id)">
-        <v-icon scale="1" class="icon" name="pen"/>
+      <button type="button"
+              class="button"
+              @click="editingModal(data.id)"
+      >
+        <img src="../../assets/img/pencil.png" alt="">
       </button>
 
-      <button type="button" class="button" @click="deletingModal(data.id)">
-        <v-icon scale="1" class="icon" name="trash-alt"/>
+      <button type="button"
+              class="button"
+              @click="deletingModal(data.id)"
+      >
+        <img src="../../assets/img/bin.png" alt="">
       </button>
     </div>
   </section>
@@ -119,7 +133,6 @@
 
   .list-group__item {
     background-color: #fff;
-    border-bottom: 1px solid #ccc;
   }
 
   .list-group__item:hover {
@@ -155,19 +168,19 @@
   }
 
   .button {
-    padding: 5px 7px;
+    padding: 2px 4px;
+
+    font-size: 0;
 
     background-color: transparent;
     border: none;
+    border-radius: 50%;
     cursor: pointer;
+    opacity: 0.5;
   }
 
   .button:hover {
-    background-color: rgba(133, 133, 133, 0.23);
-  }
-
-  .icon {
-    color: #495057;
+    opacity: 0.8;
   }
 
   .name {
