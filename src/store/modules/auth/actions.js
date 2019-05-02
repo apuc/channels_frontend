@@ -21,7 +21,7 @@ export default {
       .then(
         res => {
           commit('SUCCESS_REGISTRATION');
-          router.push('/login');
+          return res;
         },
         err => {
           commit('ERROR', err.body);

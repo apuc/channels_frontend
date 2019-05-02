@@ -1,7 +1,10 @@
 <template>
   <form @submit.prevent="login">
-    <div class="form-group" v-for="(field, index) in data" :key="field.name">
-      <label :for="field.name">{{field.label}}</label>
+    <div class="form-group"
+         v-for="(field, index) in data"
+         :key="index"
+    >
+      <label :for="field.name" v-html="field.label"></label>
       <input
         :type="field.type"
         class="form-control"
@@ -16,7 +19,7 @@
 
     <p v-if="isWrongData" class="wrong-data">Неверная пара логин пароль</p>
 
-    <div class="form-check">
+    <div class="form-check" v-if="false">
       <input id="alien-computer" class="form-check-input" type="checkbox" v-model="isSession">
       <label for="alien-computer">Чужой компьютер?</label>
     </div>
@@ -53,12 +56,11 @@ export default {
           isValid: false
         },
         password: {
-          label:
-            "Пароль (пароль должен содержать не менее 8 символов, одна заглавная, одна строчная буквы, цифра и спец. символ)",
+          label: 'Пароль <br> <span class="small">пароль должен содержать не менее 5 символов, одна заглавная, одна строчная буквы, цифра</span>',
           name: "password",
           type: "password",
           value: "",
-          // pattern: new RegExp('(?=.*[a-z])(?=.*[0-9])(?=.{5,})'),
+          pattern: new RegExp('(?=.*[a-zA-Z])(?=.*[0-9])(?=.{5,})'),
           pattern: new RegExp("."),
           class: "",
           errorMessage: "Введите корректный пароль.",
