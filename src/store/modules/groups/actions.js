@@ -66,7 +66,7 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.post(`${process.env.VUE_APP_API_URL}/group`, getters.groupData)
+      return await Vue.http.post(`${process.env.VUE_APP_API_URL}/group`, getters.groupData)
         .then(
           async res => {
               const createdGroupData = res.body.data;
@@ -77,6 +77,7 @@ export default {
                 root: true
               });
               commit('ADD_CREATED_GROUP', createdGroupData);
+              return res;
             },
             err => console.log(err))
         .catch(error => console.log('CREATE_GROUP', error))
@@ -161,7 +162,7 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.put(`${process.env.VUE_APP_API_URL}/group/${getters.groupData.id}`, {
+      return await Vue.http.put(`${process.env.VUE_APP_API_URL}/group/${getters.groupData.id}`, {
           title: getters.groupData.title,
           slug: getters.groupData.slug,
           status: getters.groupData.status,
@@ -178,6 +179,7 @@ export default {
                 commit('SET_CURRENT_GROUP_CHANNELS_TO_SEARCH', newGroupData.channels);
               }
               commit('modal/DELETE_MODAL', null, {root: true});
+              return res;
             },
             err => console.log(err)
         )
@@ -208,7 +210,7 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.delete(`${process.env.VUE_APP_API_URL}/group/${id}`)
+      return await Vue.http.delete(`${process.env.VUE_APP_API_URL}/group/${id}`)
         .then(
           res => {
             commit('REMOVE_DELETED_GROUP_FROM_STORE', id);
@@ -219,6 +221,7 @@ export default {
             if (id === getters.currentGroupData.id) {
               router.push('/');
             }
+            return res;
           },
           err => {
             console.log(err);
@@ -252,7 +255,7 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.addingChannelsData.id}/channels`, {
+      return await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.addingChannelsData.id}/channels`, {
           channel_ids: getters.addingChannelsData.channelsToAdd
         })
         .then(
@@ -271,6 +274,7 @@ export default {
             commit('modal/DELETE_MODAL', null, {
               root: true
             });
+            return res;
           },
           err => {
             console.log(err);

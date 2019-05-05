@@ -12,15 +12,14 @@
       >
     </header>
 
-    <p
-      v-if="noUsers"
-    >У вас в контактах нет пользователя с таким именем. Вы можете поискать с помощью глобального поиска перейдя по
+    <p v-if="noUsers">
+      У вас в контактах нет пользователя с таким именем. Вы можете поискать с помощью глобального поиска перейдя по
       <router-link to="/contacts/search" @click.native="DELETE_MODAL">ссылке.</router-link>
     </p>
 
-    <ul class="users-list" v-else>
-      <li class="user" v-for="user in contactsToAdd.searchUsers" :key="user.email">
-        <div>
+    <div class="users-list__wrap" v-else>
+      <ul class="users-list">
+        <li class="user" v-for="user in contactsToAdd.searchUsers" :key="user.email">
           <div class="user-info">
             <div class="image-wrap">
               <img
@@ -40,19 +39,18 @@
               </router-link>
             </div>
           </div>
-        </div>
 
-        <div>
           <button
             type="button"
-            class="btn btn-sm btn-primary mr10"
+            class="btn btn-sm btn-primary"
+            title="Добавить"
             @click="addUserToChannel(user.user_id)"
           >
             <v-icon scale="1" class="icon" name="user-plus"/>
           </button>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -141,19 +139,26 @@
 </script>
 
 <style scoped>
+  .users-list__wrap {
+    position: relative;
+  }
+
   .users-list {
+    display: flex;
+    flex-direction: column;
     max-height: 300px;
     margin: 0;
     margin-top: 10px;
     padding: 0;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .user {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 3px;
+    padding: 5px 0;
   }
 
   .user-info {
@@ -172,5 +177,6 @@
 
   .img {
     display: block;
+    border-radius: 50%;
   }
 </style>

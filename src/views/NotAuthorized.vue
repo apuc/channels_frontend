@@ -16,7 +16,7 @@
 
 <script>
   import NotAuthorizedSidebarAuth from '../components/NotAuthorized/NotAuthorizedSidebarAuth';
-  import authGettingData from '../authGettingData';
+  import authGettingData from '../mixins/authGettingData';
   import NotAuthorizedSidebarInfo from "../components/NotAuthorized/NotAuthorizedSidebarInfo";
   import NotAuthorizedChat from '../components/NotAuthorized/NotAuthorizedChat';
   import NotAuthorizedChatPrivate from '../components/NotAuthorized/NotAuthorizedChatPrivate';

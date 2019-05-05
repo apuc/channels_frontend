@@ -1,11 +1,27 @@
 <template>
   <div class="modal-inside">
     <header class="modal__header">
-      <h4>Редактирование профиля</h4>
+      <div class="d-flex w-100 mb-3">
+        <img src="../../assets/img/management.png" alt="">
+        <h4 class="modal__title">Редактирование профиля</h4>
+      </div>
 
       <nav>
-        <button type="button" class="btn mr10" @click="switchSettings">Общее</button>
-        <button type="button" class="btn" @click="switchSettings">Личное</button>
+        <button type="button"
+                class="btn mr10"
+                :class="{'btn-outline-primary': isGeneralSettings}"
+                @click="switchSettings"
+        >
+          Общее
+        </button>
+
+        <button type="button"
+                class="btn"
+                :class="{'btn-outline-primary': isPrivateSettings}"
+                @click="switchSettings"
+        >
+          Личное
+        </button>
       </nav>
     </header>
 
@@ -16,9 +32,13 @@
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username">Псевдоним</label>
 
-            <input type="text" id="username" class="form-control" v-model="user.username">
+            <input type="text"
+                   id="username"
+                   class="form-control"
+                   v-model="user.username"
+            >
           </div>
         </div>
       </div>
@@ -26,16 +46,13 @@
       <div class="drop" @dragover.prevent @drop="onDrop">
         <div class="helper"></div>
         <label v-if="!imgSrc" class="button">
-          SELECT OR DROP AN IMAGE
+          Перетащите или выберите изображение
           <input type="file" name="image" @change="onChange">
         </label>
 
-        <div class="hidden image"
-             v-else
-        >
+        <div class="hidden image" v-else>
           <img :src="imgSrc" alt="" class="img"/>
-
-          <button class="button button_remove" type="button" @click="removeImage">REMOVE</button>
+          <button class="button button_remove" type="button" @click="removeImage">Удалить</button>
         </div>
       </div>
 
@@ -45,7 +62,10 @@
 
       <span v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</span>
 
-      <button type="submit" class="btn btn-primary mr-1">Save</button>
+      <div class="modal__footer">
+        <button type="submit" class="btn btn-primary mr-1">Сохранить</button>
+        <span class="edit-notice">Изменения вступят в силу после сохранения</span>
+      </div>
     </form>
 
     <form v-else
@@ -55,27 +75,43 @@
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">Новый пароль</label>
 
-            <input type="password" id="password" class="form-control" v-model="user.password">
+            <input type="password"
+                   id="password"
+                   class="form-control"
+                   v-model="user.password"
+            >
           </div>
 
           <div class="form-group">
-            <label for="password-repeat">Repeat Password</label>
+            <label for="password-repeat">Повторите пароль</label>
 
-            <input type="password" id="password-repeat" class="form-control" v-model="user.passwordRepeat">
+            <input type="password"
+                   id="password-repeat"
+                   class="form-control"
+                   v-model="user.passwordRepeat"
+            >
           </div>
 
           <div class="form-group">
             <label for="email">Email</label>
 
-            <input type="text" id="email" class="form-control" v-model="user.email">
+            <input type="text"
+                   id="email"
+                   class="form-control"
+                   v-model="user.email"
+            >
           </div>
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary mr-1">Save</button>
-      <button type="submit" class="btn btn-danger" @click="DELETE_USER">Delete</button>
+      <div class="modal__footer">
+        <button type="submit" class="btn btn-primary mr-1">Сохранить</button>
+        <button type="submit" class="btn btn-danger" @click="DELETE_USER">Удалить профиль</button>
+        <span class="edit-notice">Изменения вступят в силу после сохранения</span>
+      </div>
+
     </form>
   </div>
 </template>
@@ -125,14 +161,27 @@
             this.EDIT_GENERAL_USER_DATA({id: avatar_id, username: this.user.username})
               .then(userData => this.SET_USER_INFO(userData));
             this.upLoadStarted = false;
+            this.$swal({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 4000,
+              type: 'success',
+              title: 'Новые данные сохранены'
+            });
           });
         }
-
       },
-
       async onSubmitPrivate() {
         await this.SET_USER_INFO(this.user);
-        this.EDIT_PRIVATE_USER_DATA();
+        this.EDIT_PRIVATE_USER_DATA().then(() => this.$swal({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 4000,
+          type: 'success',
+          title: 'Новые данные сохранены'
+        }));
       },
       createFormData(file) {
         let formData = new FormData();
@@ -156,7 +205,7 @@
           this.createImage(files[0]);
           this.createFormData(files[0]);
         } else {
-          this.notImage = 'Choose image please'
+          this.notImage = 'Выберите изображение, пожалуйста'
         }
       },
       createImage(file) {

@@ -14,7 +14,7 @@
     <ul class="channels-list">
       <li v-for="channel in currentGroupData.channelsToSearch"
           :key="channel.id"
-          class="col-3 channels-list__channel"
+          class="col channels-list__channel"
       >
         <router-link :to="`/${channel.slug}`" @click.native="setData($event, channel.id)">
           <img class="channel-avatar"
@@ -123,7 +123,7 @@
     align-items: center;
     min-height: 31px;
     margin-bottom: 15px;
-    padding-right: 0;
+    padding: 0;
     transition: background-color 0.2s;
   }
 
@@ -135,5 +135,6 @@
   .channel-avatar {
     width: 30px;
     height: 30px;
+    border-radius: 50%;
   }
 </style>

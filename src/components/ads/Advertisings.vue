@@ -1,5 +1,5 @@
 <template>
-  <aside class="ads bg-light">
+  <aside class="ads">
     <div class="wrap">
       <div v-if="userPosition === 'channel'">
         <img
@@ -112,7 +112,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-height: 100vh;
+    max-height: calc(100vh - 68px);
     padding: 30px;
 
     box-sizing: border-box;

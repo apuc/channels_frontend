@@ -1,8 +1,8 @@
-import store from "./store/store";
-import router from "./routers/router";
+import store from "../store/store";
+import router from "../routers/router";
 import {
   ioGetUserStatus
-} from './services/socket/status.service';
+} from '../services/socket/status.service';
 
 export default {
   methods: {

@@ -1,26 +1,27 @@
 <template>
   <div class="modal-inside">
     <header class="modal__header">
-      <h4>Создать группу</h4>
+      <img src="../../assets/img/management.png" alt="">
+      <h4 class="modal__title">Создать группу</h4>
     </header>
 
     <form class="modal__content" @submit.prevent="onSubmit">
       <div class="row">
         <div class="col-6">
           <div class="form-group">
-            <label for="title">Group name</label>
+            <label for="title">Название группы</label>
             
             <input
               type="text"
               id="title"
               class="form-control"
               :value="groupData.title"
-              @input="setGroupTitle($event.target.value)"
+              @input="SET_GROUP_TITLE($event.target.value)"
             >
           </div>
 
           <div class="form-group">
-            <label for="slug">Group slug</label>
+            <label for="slug">Слаг группы</label>
             
             <input
               type="text"
@@ -34,7 +35,7 @@
 
         <div class="col-6">
           <div class="form-group">
-            <p>Group status</p>
+            <p>Статус группы</p>
 
             <div class="form-check-inline">
               <label for="active" class="form-check-label">
@@ -46,7 +47,7 @@
                   name="group-status"
                   @input="SET_GROUP_STATUS($event.target.value)"
                 >
-                <span>active</span>
+                <span>Активна</span>
               </label>
             </div>
 
@@ -60,7 +61,7 @@
                   name="group-status"
                   @input="SET_GROUP_STATUS($event.target.value)"
                 >
-                <span>disable</span>
+                <span>Не активна</span>
               </label>
             </div>
           </div>
@@ -70,13 +71,13 @@
       <div class="drop" @dragover.prevent @drop="onDrop">
         <div class="helper"></div>
         <label v-if="!imgSrc" class="button">
-          SELECT OR DROP AN IMAGE
+          Перетащите или выберите изображение
           <input type="file" name="image" @change="onChange">
         </label>
         <div class="hidden" v-else :class="{ 'image': true }">
           <img :src="imgSrc" alt class="img">
           
-          <button class="button button_remove" type="button" @click="removeImage">REMOVE</button>
+          <button class="button button_remove" type="button" @click="removeImage">Удалить</button>
         </div>
       </div>
 
@@ -86,7 +87,7 @@
 
       <p v-if="notImage" style="text-align: center; color: red;">{{ notImage }}</p>
 
-      <button type="submit" class="btn btn-primary">Create</button>
+      <button type="submit" class="btn btn-primary">Создать</button>
     </form>
   </div>
 </template>
@@ -133,7 +134,14 @@ export default {
         );
       }
 
-      this.CREATE_GROUP();
+      this.CREATE_GROUP().then(() => this.$swal({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 4000,
+        type: 'success',
+        title: 'Группа создана'
+      }));
     },
     createFormData(file) {
       let formData = new FormData();
@@ -157,7 +165,7 @@ export default {
         this.createImage(files[0]);
         this.createFormData(files[0]);
       } else {
-        this.notImage = "Choose image please";
+        this.notImage = "Выберите изображение, пожалуйста";
       }
     },
     createImage(file) {
@@ -176,29 +184,8 @@ export default {
 </script>
 
 <style scoped>
-.modal__header {
-  display: flex;
-  align-items: center;
-}
-
 textarea {
   resize: none;
-}
-
-.btn-file input[type="file"] {
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 100%;
-  min-height: 100%;
-  font-size: 100px;
-  text-align: right;
-  filter: alpha(opacity=0);
-  opacity: 0;
-  outline: none;
-  background: white;
-  cursor: inherit;
-  display: block;
 }
 
 .button {
@@ -215,54 +202,5 @@ textarea {
 
 .button:hover {
   background-color: #722040;
-}
-
-.button_remove {
-  margin-top: 15px;
-  padding: 10px 20px;
-}
-
-input[type="file"] {
-  position: absolute;
-  left: 0;
-  z-index: -1;
-
-  opacity: 0;
-}
-
-.hidden {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-}
-
-.hidden.image {
-  display: flex;
-}
-
-.img {
-  width: 100%;
-  height: auto;
-}
-
-.drop {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 600px;
-  height: 100%;
-  min-height: 100px;
-  margin-bottom: 15px;
-
-  border: 4px dashed #ccc;
-  background-color: #f6f6f6;
-  border-radius: 2px;
-}
-
-.drop label {
-  margin-bottom: 0;
 }
 </style>

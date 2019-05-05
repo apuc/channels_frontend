@@ -18,23 +18,26 @@
 
     <div v-if="userData.user_id === data.owner_id" class="control">
       <button type="button"
-              class="button"
+              class="button tooltip-wrap"
               @click="setAddUsersModal(data.id)"
       >
+        <span class="_tooltip">Добавить пользователя</span>
         <img src="../../assets/img/plus.png" alt="">
       </button>
 
       <button type="button"
-              class="button"
+              class="button tooltip-wrap"
               @click="editingModal(data.id)"
       >
+        <span class="_tooltip">Редактировать</span>
         <img src="../../assets/img/pencil.png" alt="">
       </button>
 
       <button type="button"
-              class="button"
+              class="button tooltip-wrap"
               @click="deletingModal(data.id)"
       >
+        <span class="_tooltip">Удалить</span>
         <img src="../../assets/img/bin.png" alt="">
       </button>
     </div>
@@ -144,7 +147,7 @@
     display: flex;
     align-items: center;
     min-height: 100%;
-    padding: 3px 7px;
+    padding: 3px 0px;
 
     overflow: hidden;
     text-overflow: ellipsis;

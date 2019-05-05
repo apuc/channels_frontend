@@ -1,5 +1,5 @@
 <template>
-    <div class="attachment-image">
+    <div class="attachment-image mr-2">
         <img :src="data.url" alt="attachment image">
         <div class="close-btn" @click="REMOVE_ATTACHMENT(data.id)">
             <v-icon scale="1" class="icon" name="times-circle"/>
@@ -29,7 +29,6 @@
 <style>
     .attachment-image {
         position: relative;
-        padding: 10px 0;
         width: 100px;
         height: 100px;
     }

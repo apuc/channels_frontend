@@ -159,7 +159,7 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.put(`${process.env.VUE_APP_API_URL}/user/profile/${getters.userDatauserData.user_id}`, {
+      return await Vue.http.put(`${process.env.VUE_APP_API_URL}/user/profile/${getters.userDatauserData.user_id}`, {
         email: getters.userDatauserData.email,
         password: getters.userDatauserData.password,
         password_confirmation: getters.userData.passwordRepeat,
@@ -169,6 +169,7 @@ export default {
             commit('modal/DELETE_MODAL', null, {
               root: true
             });
+            return res;
           },
           err => console.log(err)
         )

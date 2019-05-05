@@ -3,9 +3,10 @@
     <div class="backdrop" @click="DELETE_MODAL"></div>
 
     <div class="modal__container ">
-      <button type="button" class="close" @click="DELETE_MODAL">
-        <v-icon scale="1.5" class="icon text-danger" name="times-circle"/>
-      </button>
+      <button type="button"
+              class="close"
+              @click="DELETE_MODAL"
+      ></button>
 
       <div class="modal_wrap">
         <component :is="currentModal"></component>
@@ -91,6 +92,7 @@
     z-index: 2;
 
     background-color: #fff;
+    border-radius: 5px;
   }
 
   .modal_wrap {
@@ -112,5 +114,11 @@
     border-radius: 50%;
     opacity: 1;
     cursor: pointer;
+  }
+
+  .close::before,
+  .close::after {
+    content: '';
+
   }
 </style>

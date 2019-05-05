@@ -1,5 +1,5 @@
 <template>
-  <aside class="p-3 bg-light">
+  <aside class="p-3">
     <div v-if="userPosition === 'channel'">
       <img :src="currentChannelData.avatar ? currentChannelData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1'" alt="">
 
@@ -39,7 +39,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-height: 100vh;
+    max-height: calc(100vh - 68px);
     padding: 30px;
 
     box-sizing: border-box;

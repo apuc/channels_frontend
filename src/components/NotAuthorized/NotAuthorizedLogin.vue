@@ -34,7 +34,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import authGettingData from "../../authGettingData";
+import authGettingData from "../../mixins/authGettingData";
 
 export default {
   name: "Login",
@@ -61,7 +61,6 @@ export default {
           type: "password",
           value: "",
           pattern: new RegExp('(?=.*[a-zA-Z])(?=.*[0-9])(?=.{5,})'),
-          pattern: new RegExp("."),
           class: "",
           errorMessage: "Введите корректный пароль.",
           isActive: false,

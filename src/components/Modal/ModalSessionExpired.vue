@@ -1,7 +1,7 @@
 <template>
   <div class="modal-inside">
-    <h2>You session expired.</h2>
-    <p><button type="button" @click="exit">Log in</button> again please.</p>
+    <h2>Ваша сессия истекла.</h2>
+    <p><button type="button" @click="exit">Авторизуйтесь</button> пожалуйста.</p>
   </div>
 </template>
 

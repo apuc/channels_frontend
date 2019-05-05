@@ -6,7 +6,7 @@
   import {connectSocket} from '../../services/socket/socket.service';
   import {ioStatusOnline} from '../../services/socket/status.service';
   import {mapGetters, mapMutations, mapActions} from 'vuex';
-  import authGettingData from '../../authGettingData';
+  import authGettingData from '../../mixins/authGettingData';
   import {ioGetUserStatus} from '../../services/socket/status.service';
   import Authorized from '../Authorized';
   import NotAuthorized from '../NotAuthorized';

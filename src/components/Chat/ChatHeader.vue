@@ -1,37 +1,65 @@
 <template>
-  <header class="bg-light">
-    <b-dropdown class="language-dropdown" variant="link">
-      <button class="settings__btn" type="button" slot="button-content">
-        <v-icon scale="1.6" class="icon" name="flag"/>
-      </button>
-
-      <b-dropdown-item
-        v-for="lang in $ml.list"
-        :key="lang"
-        @click="$ml.change(lang)"
-        v-text="lang"
-      ></b-dropdown-item>
-    </b-dropdown>
-
-    <button type="button" class="btn btn-light" @click="SET_MODAL('ModalChannelUsers')">
-      <span :class="fadeUsers" v-show="currentChannelData.count">
-        {{currentChannelData.count}} {{getNoun(currentChannelData.count, 'пользователь', 'пользователя',
-      'пользователей')}}
-      </span>
-
-      <span :class="fadePreloader" v-show="!currentChannelData.count">
-        <v-icon scale="1.6" name="ellipsis-h"/>
-      </span>
+  <header class="chat-header">
+    <button type="button"
+            class="info-btn"
+            @click="isChatInfoOpened = true"
+    >
+      <img src="../../assets/img/info.png"
+           alt=""
+           class="mr-3"
+      >
+      <span>Информация о канале</span>
     </button>
 
-    <button class="btn btn-primary exit" type="button" @click="LOGOUT">Exit</button>
+    <div class="group-info" v-if="isChatInfoOpened">
+      <header class="group-info__header">
+        <img src="../../assets/img/menu_channel.png"
+             alt=""
+             class="group-info__header-img"
+        >
+        <span class="group-info__header-text">Информация о канале</span>
+      </header>
+
+      <img
+        :src="currentChannelData.avatar ? currentChannelData.avatar.small : 'https://pp.userapi.com/c846524/v846524878/e3cbe/QHn1Jw-tZfA.jpg'"
+        alt=""
+        class="group-info__img"
+      >
+
+      <div class="group-info__info">
+        <h2 class="info__title">{{currentChannelData.title}}</h2>
+        <ul class="info__list">
+          <li class="info__li">Статус - {{status()}}</li>
+          <li class="info__li">Тип канала - {{type()}}</li>
+          <li class="info__li">{{isPrivate()}}</li>
+          <li class="info__li">
+            <button type="button"
+                    class="info__users-btn"
+                    @click="SET_MODAL('ModalChannelUsers')"
+            >
+              Кол-во пользователей {{currentChannelData.count}}
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <button type="button"
+              class="group-info__close"
+              @click="isChatInfoOpened = false"
+      >
+        <span class="group-info__close-text">Скрыть информацию</span>
+        <v-icon name="chevron-up"></v-icon>
+      </button>
+    </div>
   </header>
 </template>
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import commonMethods from "../../mixins/commonMethods";
 
   export default {
+    mixins: [commonMethods],
     computed: {
       ...mapGetters({
         currentChannelData: 'channels/currentChannelData',
@@ -41,12 +69,12 @@
       },
       fadePreloader() {
         return this.currentChannelData.count ? 'fade-preloader' : 'fade-preloader_active'
-      }
+      },
     },
     data() {
       return {
         usersCount: null,
-        hidden: true,
+        isChatInfoOpened: false
       }
     },
     methods: {
@@ -56,77 +84,36 @@
       ...mapActions({
         LOGOUT: 'auth/LOGOUT',
       }),
-      getNoun(number, one, two, five) {
-        number = Math.abs(number);
-        number %= 100;
-        if (number >= 5 && number <= 20) {
-          return five;
-        }
-        number %= 10;
-        if (number === 1) {
-          return one;
-        }
-        if (number >= 2 && number <= 4) {
-          return two;
-        }
-        return five;
+      status() {
+        const statuses = {
+          active: 'активный',
+          disable: 'не активный',
+        };
+
+        return statuses[this.currentChannelData.status];
       },
+      type() {
+        const types = {
+          wall: 'стена',
+          dialog: 'диалог',
+          chat: 'чат'
+        };
+
+        return types[this.currentChannelData.type];
+      },
+      isPrivate() {
+        const types = {
+          '0': 'Публичный',
+          '1': 'Приватный'
+        };
+
+        return types[this.currentChannelData.private]
+      }
     },
   }
 </script>
 
 <style scoped>
-  header {
-    display: flex;
-    align-items: center;
-    height: 50px;
-    padding: 0 15px;
-    flex-shrink: 0;
-  }
-
-  .settings {
-    position: relative;
-    z-index: 1;
-  }
-
-  .settings__btn {
-    padding: 5px;
-
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-  }
-
-  .settings__list {
-    position: absolute;
-    left: 0;
-    z-index: 2;
-
-    width: 200px;
-
-    background-color: #fff;
-  }
-
-  .list {
-    padding: 10px;
-    list-style: none;
-  }
-
-  .list__el {
-    padding: 8px 0;
-    line-height: 1.2;
-  }
-
-  .icon {
-    color: #ffeeba;
-    stroke: blue;
-    stroke-width: 15px;
-  }
-
-  .exit {
-    margin-left: auto;
-  }
-
   .fade-preloader_active,
   .fade-users_active {
     opacity: 1;
@@ -138,4 +125,5 @@
     opacity: 0;
     transition: opacity 0.5s;
   }
+
 </style>

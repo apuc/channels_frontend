@@ -1,35 +1,65 @@
 <template>
-  <header class="bg-light">
-    <b-dropdown class="language-dropdown" variant="link">
-      <button class="settings__btn" type="button" slot="button-content">
-        <v-icon scale="1.6" class="icon" name="flag"/>
-      </button>
-
-      <b-dropdown-item
-        v-for="lang in $ml.list"
-        :key="lang"
-        @click="$ml.change(lang)"
-        v-text="lang"
-      ></b-dropdown-item>
-    </b-dropdown>
-
-    <button type="button" class="btn btn-light" @click="openModal">
-      <span :class="fadeUsers" v-show="currentChannelData.count">
-        {{currentChannelData.count}} {{getNoun(currentChannelData.count, 'пользователь', 'пользователя',
-      'пользователей')}}
-      </span>
-
-      <span :class="fadePreloader" v-show="!currentChannelData.count">
-        <v-icon scale="1.6" name="ellipsis-h"/>
-      </span>
+  <header class="chat-header">
+    <button type="button"
+            class="info-btn"
+            @click="isChatInfoOpened = true"
+    >
+      <img src="../../assets/img/info.png"
+           alt=""
+           class="mr-3"
+      >
+      <span>Информация о канале</span>
     </button>
+
+    <div class="group-info" v-if="isChatInfoOpened">
+      <header class="group-info__header">
+        <img src="../../assets/img/menu_channel.png"
+             alt=""
+             class="group-info__header-img"
+        >
+        <span class="group-info__header-text">Информация о канале</span>
+      </header>
+
+      <img
+        :src="currentChannelData.avatar ? currentChannelData.avatar.small : 'https://pp.userapi.com/c846524/v846524878/e3cbe/QHn1Jw-tZfA.jpg'"
+        alt=""
+        class="group-info__img"
+      >
+
+      <div class="group-info__info">
+        <h2 class="info__title">{{currentChannelData.title}}</h2>
+        <ul class="info__list">
+          <li class="info__li">Статус - {{status()}}</li>
+          <li class="info__li">Тип канала - {{type()}}</li>
+          <li class="info__li">{{isPrivate()}}</li>
+          <li class="info__li">
+            <button type="button"
+                    class="info__users-btn"
+                    @click="SET_MODAL('ModalChannelUsers')"
+            >
+              Кол-во пользователей {{currentChannelData.count}}
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <button type="button"
+              class="group-info__close"
+              @click="isChatInfoOpened = false"
+      >
+        <span class="group-info__close-text">Скрыть информацию</span>
+        <v-icon name="chevron-up"></v-icon>
+      </button>
+    </div>
   </header>
 </template>
 
 <script>
   import {mapGetters, mapMutations} from 'vuex';
+  import commonMethods from "../../mixins/commonMethods";
 
   export default {
+    mixins: [commonMethods],
     computed: {
       ...mapGetters('channels', ['currentChannelData']),
       fadeUsers() {
@@ -41,45 +71,47 @@
     },
     data() {
       return {
-        settingsVisible: false,
         usersCount: null,
+        isChatInfoOpened: false
       }
     },
     methods: {
       ...mapMutations({
         setModal: 'modal/SET_MODAL',
       }),
-      getNoun(number, one, two, five) {
-        number = Math.abs(number);
-        number %= 100;
-        if (number >= 5 && number <= 20) {
-          return five;
-        }
-        number %= 10;
-        if (number === 1) {
-          return one;
-        }
-        if (number >= 2 && number <= 4) {
-          return two;
-        }
-        return five;
-      },
       openModal() {
         this.setModal('ModalChannelUsers');
       },
+      status() {
+        const statuses = {
+          active: 'активный',
+          disable: 'не активный',
+        };
+
+        return statuses[this.currentChannelData.status];
+      },
+      type() {
+        const types = {
+          wall: 'стена',
+          dialog: 'диалог',
+          chat: 'чат'
+        };
+
+        return types[this.currentChannelData.type];
+      },
+      isPrivate() {
+        const types = {
+          '0': 'Публичный',
+          '1': 'Приватный'
+        };
+
+        return types[this.currentChannelData.private]
+      }
     },
   }
 </script>
 
 <style scoped>
-  header {
-    display: flex;
-    align-items: center;
-    height: 50px;
-    padding: 0 15px;
-    flex-shrink: 0;
-  }
-
   .settings {
     position: relative;
     z-index: 1;

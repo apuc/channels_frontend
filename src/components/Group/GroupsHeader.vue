@@ -1,82 +1,80 @@
 <template>
-  <header class="bg-light">
-    <b-dropdown class="language-dropdown" variant="link">
-      <button type="button" class="settings__btn" slot="button-content">
-        <v-icon scale="1.6" class="icon" name="flag"/>
+  <header class="chat-header">
+    <button type="button"
+            class="info-btn"
+            @click="isChatInfoOpened = true"
+    >
+      <img src="../../assets/img/info.png"
+           alt=""
+           class="mr-3"
+      >
+      <span>Информация о группе</span>
+    </button>
+
+    <div class="group-info" v-if="isChatInfoOpened">
+      <header class="group-info__header">
+        <img src="../../assets/img/menu_channel.png"
+             alt=""
+             class="group-info__header-img"
+        >
+        <span class="group-info__header-text">Информация о группе</span>
+      </header>
+
+      <img
+        :src="currentGroupData.avatar ? currentGroupData.avatar.small : 'https://pp.userapi.com/c846524/v846524878/e3cbe/QHn1Jw-tZfA.jpg'"
+        alt=""
+        class="group-info__img"
+      >
+
+      <div class="group-info__info">
+        <h2 class="info__title">{{currentGroupData.title}}</h2>
+        <ul class="info__list">
+          <li class="info__li">Статус группы - {{status()}}</li>
+          <li class="info__li">Кол-во каналов - {{currentGroupData.channels.length}}</li>
+        </ul>
+      </div>
+
+      <button type="button"
+              class="group-info__close"
+              @click="isChatInfoOpened = false"
+      >
+        <span class="group-info__close-text">Скрыть информацию</span>
+        <v-icon name="chevron-up"></v-icon>
       </button>
-
-      <b-dropdown-item
-        v-for="lang in $ml.list"
-        :key="lang"
-        @click="$ml.change(lang)"
-        v-text="lang"
-      ></b-dropdown-item>
-    </b-dropdown>
-
-    <button class="btn btn-primary exit" type="button" @click="LOGOUT">Exit</button>
+    </div>
   </header>
 </template>
 
 <script>
-  import {mapActions} from 'vuex';
+  import {mapGetters, mapActions} from 'vuex';
 
   export default {
+    computed: {
+      ...mapGetters({
+        currentGroupData: 'groups/currentGroupData'
+      })
+    },
+    data() {
+      return {
+        isChatInfoOpened: false,
+      }
+    },
     methods: {
       ...mapActions({
         LOGOUT: 'auth/LOGOUT',
       }),
+      status() {
+        const statuses = {
+          active: 'активна',
+          disable: 'не активна'
+        };
+
+        return statuses[this.currentGroupData.status];
+      }
     }
   }
 </script>
 
 <style scoped>
-  header {
-    display: flex;
-    align-items: center;
-    height: 50px;
-    padding: 0 15px;
-  }
 
-  .settings {
-    position: relative;
-    z-index: 1;
-  }
-
-  .settings__btn {
-    padding: 5px;
-
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-  }
-
-  .settings__list {
-    position: absolute;
-    left: 0;
-    z-index: 2;
-
-    width: 200px;
-
-    background-color: #fff;
-  }
-
-  .list {
-    padding: 10px;
-    list-style: none;
-  }
-
-  .list__el {
-    padding: 8px 0;
-    line-height: 1.2;
-  }
-
-  .icon {
-    color: #ffeeba;
-    stroke: blue;
-    stroke-width: 15px;
-  }
-
-  .exit {
-    margin-left: auto;
-  }
 </style>

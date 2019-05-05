@@ -233,7 +233,7 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelData.id}`, {
+      return await Vue.http.put(`${process.env.VUE_APP_API_URL}/channel/${getters.channelData.id}`, {
         title: getters.channelData.title,
         slug: getters.channelData.slug,
         status: getters.channelData.status,
@@ -250,7 +250,8 @@ export default {
             commit('SET_EDITED_CHANNEL_DATA', newChannelData);
             commit('modal/DELETE_MODAL', null, {
               root: true
-            })
+            });
+            return res;
           },
           err => console.log(err)
         )
@@ -280,7 +281,7 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/${id}`)
+      return await Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/${id}`)
         .then(
           res => {
             commit('REMOVE_DELETED_CHANNEL_FROM_STORE', id);
@@ -291,6 +292,7 @@ export default {
             if (id === getters.currentChannelData.id) {
               router.push('/');
             }
+            return res;
           },
           err => console.log(err)
         )

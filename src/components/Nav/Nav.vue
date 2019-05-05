@@ -113,7 +113,7 @@
       <nav>
         <div class="d-flex align-items-center mt-3">
           <img src="../../assets/img/menu_channel.png" alt="" class="mr-3">
-          <span class="small">В вашем списке {{channels.length}} каналов</span>
+          <span class="nav__divider">В вашем списке {{channels.length}} каналов</span>
         </div>
 
         <div class="mt-3">
@@ -122,7 +122,6 @@
                 :key="channel.id"
           >
             <NavSectionChannels v-if="filters.channelsVisible && !isChannelsLoading"
-                                title="Каналы"
                                 :type="'channel'"
                                 :data="channel"
             />
@@ -131,7 +130,7 @@
 
         <div class="d-flex align-items-center mt-3">
           <img src="../../assets/img/menu_channel.png" alt="" class="mr-3">
-          <span class="small">В вашем списке {{groups.length}} групп</span>
+          <span class="nav__divider">В вашем списке {{groups.length}} групп</span>
         </div>
 
         <div class="mt-3">
@@ -140,7 +139,6 @@
                 :key="group.id"
           >
             <NavSectionGroups v-if="filters.groupsVisible && !isGroupsLoading"
-                              title="Группы"
                               :type="'group'"
                               :data="group"
             />
@@ -269,7 +267,7 @@
 
   .nav {
     flex-wrap: nowrap !important;
-    max-height: 100vh;
+    max-height: calc(100vh - 68px);
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -448,6 +446,11 @@
 
   .requests:hover {
     text-decoration: none;
+  }
+
+  .nav__divider {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.51);
   }
 
   .drop-zone {

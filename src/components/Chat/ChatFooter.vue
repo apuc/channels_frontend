@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-footer bg-light">
+  <div class="chat-footer">
 
     <span class="chat-typing">
       <span v-if="usersTyping.length <= 2" v-for="user of usersTyping">{{ user.name }}{{usersTyping.length > 1 ? ', ': ' '}}</span>
@@ -9,13 +9,8 @@
     </span>
 
     <div class="input_message-group">
-      <label class="attach-file">
-        <input type="file" multiple @change="ADD_ATTACHMENTS($event.target.files)">
-        <v-icon scale="1.6" name="archive"/>
-      </label>
-
       <b-form-textarea id="input_message"
-                       class="input_message"
+                       class="input_message mb-3"
                        :rows="1"
                        :max-rows="3"
                        :placeholder="$ml.get('Chat.textareaPlaceholder')"
@@ -26,17 +21,24 @@
       >
       </b-form-textarea>
 
+      <div class="message-attachment" v-scroll>
+        <Attachment v-for="(attachment, index) in attachments"
+                    :key="index"
+                    :attachment="attachment"
+        />
+      </div>
+
+      <label class="attach-file">
+        <input type="file" multiple @change="ADD_ATTACHMENTS($event.target.files)">
+        <img src="../../assets/img/add_folder.png" alt="">
+      </label>
+
       <b-input-group-append class="input_message-button">
-        <b-btn @click="sendMessage(input, currentChannel.id)" class="footer_sendBtn"
-               variant="outline-success">{{$ml.get('Chat.btnSend')}}
+        <b-btn @click="sendMessage(input, currentChannel.id)"
+               variant="primary">{{$ml.get('Chat.btnSend')}}
         </b-btn>
       </b-input-group-append>
     </div>
-
-    <div class="message-attachment" v-scroll>
-      <Attachment v-for="(attachment, index) in attachments" :attachment="attachment" :key="index"/>
-    </div>
-
   </div>
 </template>
 
@@ -116,11 +118,13 @@
 
   .input_message-group {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
+    flex-wrap: wrap;
   }
 
   .input_message {
     resize: none;
+    width: 100%;
     min-height: 41px;
   }
 
@@ -137,21 +141,16 @@
     color: #888;
   }
 
-  .input_message-button {
-    margin-left: 10px;
-  }
-
   .attach-file {
-    margin: 0 10px 0 0;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 41px;
     width: 40px;
-    flex-shrink: 0;
+    height: 40px;
+    margin-right: 10px;
+
     cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 5px;
   }
 
   .attach-file input {
@@ -159,9 +158,11 @@
   }
 
   .message-attachment {
+    flex: 1 0 65%;
     display: flex;
     flex-wrap: wrap;
-    max-height: 300px;
-    overflow-x: hidden;
+    max-height: 150px;
+    overflow: auto;
+    margin-right: 25px;
   }
 </style>
