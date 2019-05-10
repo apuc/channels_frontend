@@ -2,8 +2,10 @@
   <div class="page-wrapper">
     <Header />
 
-    <div class="container home">
-      <NotAuthorizedSidebarAuth/>
+    <div class="container home" v-touch:swipe.right="swipeHandler">
+      <transition name="slide" mode="out-in">
+        <NotAuthorizedSidebarAuth v-if="sidebarVisible" />
+      </transition>
 
       <main class="main">
         <component :is="`NotAuthorizedChat${chooseChat}`" v-if="currentChannelData.id"></component>
@@ -33,6 +35,11 @@
       ChatMessages,
       Header, NotAuthorizedSidebarInfo, NotAuthorizedSidebarAuth,NotAuthorizedChat, NotAuthorizedChatPrivate},
     mixins: [authGettingData],
+    mounted() {
+      if (window.innerWidth < 992) {
+        this.sidebarVisible = false;
+      }
+    },
     computed: {
       ...mapGetters({
         currentChannelData: 'channels/currentChannelData',
@@ -71,10 +78,21 @@
       ...mapActions({
         ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENTS'
       }),
+      swipeHandler(e) {
+        if (window.innerWidth < 992) {
+          this.sidebarVisible = true;
+        }
+      }
     }
   }
 </script>
 
 <style scoped>
+  .slide-enter-active, .slide-leave-active {
+    transition: opacity 0.1s;
+  }
 
+  .slide-enter, .slide-leave-to {
+    opacity: 0;
+  }
 </style>
