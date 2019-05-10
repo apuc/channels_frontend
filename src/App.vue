@@ -38,6 +38,17 @@
     color: #2c3e50;
   }
 
+  @media (max-width: 992px) {
+    #app .container {
+      width: 100%;
+      max-width: 100vw;
+    }
+    
+    .container.home {
+      background-color: #fff;
+    }
+  }
+
   .page-wrapper {
     background-color: #ebebeb;
   }
@@ -56,6 +67,21 @@
     height: calc(100vh - 68px);
 
     background-color: #fff;
+  }
+
+  .nav {
+    flex-wrap: nowrap !important;
+    max-height: calc(100vh - 68px);
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    background-color: #fff;
+  }
+
+  @media(max-width: 992px) {
+    .nav {
+
+    }
   }
 
   .mr10 {
@@ -263,6 +289,12 @@
   .tooltip-wrap:hover ._tooltip {
     opacity: 1;
     transition: opacity 0.2s;
+  }
+
+  @media (max-width: 992px) {
+    .group-info {
+      right: 0;
+    }
   }
 
   /**

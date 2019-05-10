@@ -1,7 +1,7 @@
 <template>
   <aside class="nav d-flex flex-column p-3">
     <transition name="fade" mode="out-in">
-      <component :is="`NotAuthorized${currentComponent}`" v-on:switch="switchBetweenLoginAndReg"></component>
+      <component :is="`NotAuthorized${currentComponent}`" @switch="switchBetweenLoginAndReg"></component>
     </transition>
   </aside>
 </template>

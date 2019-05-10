@@ -265,15 +265,6 @@
     }
   }
 
-  .nav {
-    flex-wrap: nowrap !important;
-    max-height: calc(100vh - 68px);
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    background-color: #fff;
-  }
-
   /*.wrap {*/
     /*position: sticky;*/
     /*top: 0;*/
