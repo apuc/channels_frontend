@@ -58,12 +58,12 @@
               }
             }
 
-            // await connectSocket(this.token, this.userData.user_id)
-            //   .then(() => {
-            //     console.log('Socket connected!');
-            //     ioStatusOnline(this.userData.user_id); // Сообщаем ноду, что пользователь онлайн
-            //   });
-            // ioGetUserStatus(this.userData.user_id);
+            await connectSocket(this.token, this.userData.user_id)
+              .then(() => {
+                console.log('Socket connected!');
+                ioStatusOnline(this.userData.user_id); // Сообщаем ноду, что пользователь онлайн
+              });
+            ioGetUserStatus(this.userData.user_id);
           })
           .catch(error => console.log(error));
       }
