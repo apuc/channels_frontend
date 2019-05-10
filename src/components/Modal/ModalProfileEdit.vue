@@ -1,8 +1,11 @@
 <template>
   <div class="modal-inside">
     <header class="modal__header">
-      <div class="d-flex w-100 mb-3">
-        <img src="../../assets/img/management.png" alt="">
+      <div class="d-flex align-items-center w-100 mb-3">
+        <img src="../../assets/img/management.png"
+             alt=""
+             class="modal__header-img"
+        >
         <h4 class="modal__title">Редактирование профиля</h4>
       </div>
 
@@ -63,7 +66,7 @@
       <span v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</span>
 
       <div class="modal__footer">
-        <button type="submit" class="btn btn-primary mr-1">Сохранить</button>
+        <button type="submit" class="btn btn-primary mr-1 mb-1">Сохранить</button>
         <span class="edit-notice">Изменения вступят в силу после сохранения</span>
       </div>
     </form>
@@ -107,8 +110,13 @@
       </div>
 
       <div class="modal__footer">
-        <button type="submit" class="btn btn-primary mr-1">Сохранить</button>
-        <button type="submit" class="btn btn-danger" @click="DELETE_USER">Удалить профиль</button>
+        <button type="submit" class="btn btn-primary mr-1 mb-1">Сохранить</button>
+        <button type="submit" 
+                class="btn btn-danger mb-1" 
+                @click="DELETE_USER"
+        >
+          Удалить профиль
+        </button>
         <span class="edit-notice">Изменения вступят в силу после сохранения</span>
       </div>
 

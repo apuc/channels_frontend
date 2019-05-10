@@ -150,14 +150,7 @@
     align-items: center;
   }
 
-  .image-wrap {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-
-    background-color: #cccccc;
-    border-radius: 50%;
-  }
+  
 
   .img {
     display: block;

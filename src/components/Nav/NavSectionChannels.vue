@@ -147,7 +147,7 @@
     display: flex;
     align-items: center;
     min-height: 100%;
-    padding: 3px 0px;
+    padding: 3px 0;
 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -163,11 +163,6 @@
 
   h2 {
     font-size: 24px;
-  }
-
-  .avatar {
-    margin-right: 15px;
-    border-radius: 50%;
   }
 
   .button {

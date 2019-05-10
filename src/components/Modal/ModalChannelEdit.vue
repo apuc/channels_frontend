@@ -1,7 +1,10 @@
 <template>
   <div class="modal-inside">
     <header class="modal__header">
-      <img src="../../assets/img/management.png" alt="">
+      <img src="../../assets/img/management.png"
+           alt=""
+           class="modal__header-img"
+      >
       <h4 class="modal__title">Редактировать канал</h4>
     </header>
 
@@ -175,7 +178,7 @@
       <p v-if="notImage" style="text-align: center; color: red;">{{ notImage }}</p>
 
       <footer class="modal__footer">
-        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <button type="submit" class="btn btn-primary mb-1">Сохранить</button>
         <span class="edit-notice">Изменения вступят в силу после сохранения</span>
       </footer>
     </form>

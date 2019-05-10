@@ -167,11 +167,6 @@
     font-size: 24px;
   }
 
-  .avatar {
-    margin-right: 15px;
-    border-radius: 50%;
-  }
-
   .button {
     padding: 2px 4px;
 

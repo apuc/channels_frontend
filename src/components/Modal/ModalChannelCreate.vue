@@ -1,7 +1,10 @@
 <template>
   <div class="modal-inside">
     <header class="modal__header">
-      <img src="../../assets/img/management.png" alt="">
+      <img src="../../assets/img/management.png"
+           alt=""
+           class="modal__header-img"
+      >
       <h4 class="modal__title">Создать канал</h4>
     </header>
 

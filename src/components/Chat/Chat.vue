@@ -1,5 +1,8 @@
 <template>
-  <div class="chat" @dragenter.prevent="dragSwitcher" @dragleave.prevent="dragSwitcher">
+  <div class="chat" 
+       @dragenter.prevent="dragSwitcher"
+       @dragleave.prevent="dragSwitcher"
+  >
     <ChatHeader/>
     <ChatMessages/>
     <ChatFooter/>

@@ -9,24 +9,42 @@
     </span>
 
     <div class="input_message-group">
-      <b-form-textarea id="input_message"
-                       class="input_message mb-3"
-                       :rows="1"
-                       :max-rows="3"
-                       :placeholder="$ml.get('Chat.textareaPlaceholder')"
-                       ref="textarea"
-                       v-model="input"
-                       @input="emitUserTyping"
-                       @keyup.enter.prevent.native="onSubmit"
-      >
-      </b-form-textarea>
-
-      <div class="message-attachment" v-scroll>
-        <Attachment v-for="(attachment, index) in attachments"
-                    :key="index"
-                    :attachment="attachment"
-        />
+      <div class="d-flex align-items-center mb-3 w-100">
+        <label class="attach-file attach-file_device">
+          <input type="file" multiple @change="ADD_ATTACHMENTS($event.target.files)">
+          <img src="../../assets/img/add_folder.png" alt="">
+        </label>
+        
+        <b-form-textarea id="input_message"
+                         class="input_message"
+                         :rows="1"
+                         :max-rows="3"
+                         :placeholder="$ml.get('Chat.textareaPlaceholder')"
+                         ref="textarea"
+                         v-model="input"
+                         @input="emitUserTyping"
+                         @keyup.enter.prevent.native="onSubmit"
+        >
+        </b-form-textarea>
+        
+        <button type="button"
+                class="footer_sendBtn"
+                @click="sendMessage(input, currentChannel.id)"
+        >
+          <img src="../../assets/img/send-button.svg" 
+               alt=""
+               width="15"
+               height="15"
+          >
+        </button>
       </div>
+
+      <!--<div class="message-attachment" v-scroll>-->
+        <!--<Attachment v-for="(attachment, index) in attachments"-->
+                    <!--:key="index"-->
+                    <!--:attachment="attachment"-->
+        <!--/>-->
+      <!--</div>-->
 
       <label class="attach-file">
         <input type="file" multiple @change="ADD_ATTACHMENTS($event.target.files)">
@@ -35,7 +53,9 @@
 
       <b-input-group-append class="input_message-button">
         <b-btn @click="sendMessage(input, currentChannel.id)"
-               variant="primary">{{$ml.get('Chat.btnSend')}}
+               variant="primary"
+        >
+          {{$ml.get('Chat.btnSend')}}
         </b-btn>
       </b-input-group-append>
     </div>
@@ -123,14 +143,19 @@
   }
 
   .input_message {
+    margin-right: 20px;
     resize: none;
-    width: 100%;
     min-height: 41px;
   }
 
   .footer_sendBtn {
-    min-width: 100px;
-    font-size: 18px;
+    display: none;
+    padding: 4px;
+
+    font-size: 0;
+    
+    background-color: transparent;
+    border: none;
   }
 
   .chat-typing {
@@ -152,6 +177,10 @@
 
     cursor: pointer;
   }
+  
+  .attach-file_device {
+    display: none;
+  }
 
   .attach-file input {
     display: none;
@@ -163,6 +192,27 @@
     flex-wrap: wrap;
     max-height: 150px;
     overflow: auto;
-    margin-right: 25px;
+    margin-right: 20px;
+  }
+
+
+  @media (max-width: 992px) {
+    .footer_sendBtn {
+      display: initial;
+    }
+
+    .input_message-button,
+    .attach-file {
+      display: none;
+    }
+
+    .attach-file_device {
+      display: flex;
+      margin-bottom: 0;
+    }
+    
+    .message-attachment {
+      margin-right: 0;
+    }
   }
 </style>

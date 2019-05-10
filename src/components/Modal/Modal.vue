@@ -6,9 +6,15 @@
       <button type="button"
               class="close"
               @click="DELETE_MODAL"
-      ></button>
+      >
+        <img src="../../assets/img/error.svg" 
+             alt=""
+             width="25"
+             height="25"
+        >
+      </button>
 
-      <div class="modal_wrap">
+      <div class="modal__wrap">
         <component :is="currentModal"></component>
       </div>
     </div>
@@ -95,7 +101,7 @@
     border-radius: 5px;
   }
 
-  .modal_wrap {
+  .modal__wrap {
     width: 500px;
     max-height: 90vh;
 
@@ -104,21 +110,26 @@
 
   .close {
     position: absolute;
-    top: -14px;
-    right: -13px;
+    top: -10px;
+    right: -10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
 
     font-size: 0;
+    line-height: 0;
 
-    background-color: #fff;
-    border: 1px solid #dc3545;
+    background-color: rgba(255, 255, 255, 0.51);
     border-radius: 50%;
     opacity: 1;
     cursor: pointer;
   }
-
-  .close::before,
-  .close::after {
-    content: '';
-
+  
+  @media (max-width: 576px) {
+    .modal__wrap {
+      width: 95vw;
+    }
   }
 </style>

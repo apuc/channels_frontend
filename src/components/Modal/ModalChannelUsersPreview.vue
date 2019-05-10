@@ -1,9 +1,12 @@
 <template>
-  <div class="placeholder" v-if="isChannelUsersLoading" :style="calculatePlaceholders"></div>
+  <div class="placeholder" 
+       v-if="isChannelUsersLoading"
+       :style="calculatePlaceholders"
+  ></div>
 
   <ul class="users-list" v-else>
     <li class="user" v-for="user in currentChannelSearchUsers" :key="user.email">
-      <div>
+      <div class="mr-1">
         <div class="user-info">
           <div class="image-wrap">
             <img class="img"
@@ -110,15 +113,6 @@
   .user-info {
     display: flex;
     align-items: center;
-  }
-
-  .image-wrap {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-
-    background-color: #cccccc;
-    border-radius: 50%;
   }
 
   .img {

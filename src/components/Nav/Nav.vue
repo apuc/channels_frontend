@@ -1,5 +1,5 @@
 <template>
-  <aside class="nav d-flex flex-column p-3">
+  <aside class="nav d-flex flex-column p-md-3 p-1">
     <div class="wrap">
       <header class="nav-header">
         <div class="mr-3"

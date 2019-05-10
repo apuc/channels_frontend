@@ -2,7 +2,7 @@
   <main class="mt-5">
     <div class="container">
       <div class="row justify-content-center">
-        <form @submit.prevent="login" class="col-lg-7 col-12 pt-lg-3">
+        <form @submit.prevent="login" class="col-md-7 col-12 pt-lg-3">
 
           <div class="form-group"
                v-for="(field, index) in data"
