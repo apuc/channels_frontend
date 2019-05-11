@@ -10,7 +10,7 @@
 
     <div class="input_message-group">
       <div class="d-flex align-items-center mb-3 w-100">
-        <label class="attach-file attach-file_device">
+        <label class="attach-file attach-file_device" v-if="false">
           <input type="file" multiple @change="ADD_ATTACHMENTS($event.target.files)">
           <img src="../../assets/img/add_folder.png" alt="">
         </label>
@@ -39,14 +39,14 @@
         </button>
       </div>
 
-      <!--<div class="message-attachment" v-scroll>-->
-        <!--<Attachment v-for="(attachment, index) in attachments"-->
-                    <!--:key="index"-->
-                    <!--:attachment="attachment"-->
-        <!--/>-->
-      <!--</div>-->
+      <div class="message-attachment" v-scroll v-if="false">
+        <Attachment v-for="(attachment, index) in attachments"
+                    :key="index"
+                    :attachment="attachment"
+        />
+      </div>
 
-      <label class="attach-file">
+      <label class="attach-file" v-if="false">
         <input type="file" multiple @change="ADD_ATTACHMENTS($event.target.files)">
         <img src="../../assets/img/add_folder.png" alt="">
       </label>
@@ -143,7 +143,6 @@
   }
 
   .input_message {
-    margin-right: 20px;
     resize: none;
     min-height: 41px;
   }
@@ -200,6 +199,10 @@
     .footer_sendBtn {
       display: initial;
     }
+    
+    .input_message {
+      margin-right: 20px;
+    }
 
     .input_message-button,
     .attach-file {
@@ -213,6 +216,16 @@
     
     .message-attachment {
       margin-right: 0;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .chat-footer {
+      padding: 7px;
+    }
+    
+    .input_message {
+      margin-right: 10px;
     }
   }
 </style>

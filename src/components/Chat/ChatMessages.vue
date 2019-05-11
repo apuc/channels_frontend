@@ -26,6 +26,39 @@
         OFF_TYPING: 'messages/OFF_TYPING',
       }),
     },
+    data() {
+      return {
+        // messages: [
+        //   {
+        //     "message_id": 1001,
+        //     "channel": "108",
+        //     "to": null,
+        //     "from": 1,
+        //     "read": 0,
+        //     "created_at": "26-10-2018 14:44:45",
+        //     "text": "Привет"
+        //   },
+        //   {
+        //     "message_id": 1002,
+        //     "channel": "108",
+        //     "to": null,
+        //     "from": 3,
+        //     "read": 0,
+        //     "created_at": "26-10-2018 14:44:46",
+        //     "text": "Привет"
+        //   },
+        //   {
+        //     "message_id": 1003,
+        //     "channel": "108",
+        //     "to": null,
+        //     "from": 1,
+        //     "read": 0,
+        //     "created_at": "26-10-2018 14:44:47",
+        //     "text": "Привет"
+        //   },
+        // ]
+      }
+    },
     beforeDestroy() {
       this.OFF_TYPING();
     }
@@ -34,10 +67,17 @@
 
 <style scoped>
   .messages {
-    padding: 20px;
     flex-grow: 1;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    .messages {
+      padding: 10px;
+    }
   }
 </style>
