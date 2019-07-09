@@ -8,7 +8,7 @@ export let io = null;
 export function connectSocket(token, user_id) {
     return new Promise((resolve, reject) => {
 
-        io = socketIo('/', {query: {token, user_id}}); // пробуем подключится к ноду
+        io = socketIo(process.env.VUE_APP_SOCKET_URL, {query: {token, user_id}}); // пробуем подключится к ноду
 
         io.on('connect', () => {
             socketEventListenerInit();

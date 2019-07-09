@@ -411,7 +411,7 @@ export default {
             commit('USER_CHANNELS', channels);
             commit('groups/USER_GROUPS', groups, {root: true});
             commit('SET_CHANNELS_LOADING_FLAG');
-            // joinChannels(channels);
+            joinChannels(channels);
           },
           err => console.log('get channels', err)
         )

@@ -1,6 +1,6 @@
 export default {
   'SET_MESSAGES': (state, messages) => state.messages = messages,
-  'SET_MESSAGE': (state, message) => state.messages.push(message),
+  'SET_MESSAGE': (state, message) => message.channel === state.messages[0].channel && state.messages.push(message),
   'PUSH_TYPING_USER': (state, user) => {
     for (let i = 0; i < state.usersTyping.length; i++) {
       if (state.usersTyping[i].id === user.id) return
