@@ -39,7 +39,7 @@
       }),
       openModal(e, modalType) {
         e.preventDefault();
-        this.SET_MODAL(modalType);
+        this.SET_MODAL({name: modalType});
       },
     },
     beforeRouteEnter (to, from, next) {

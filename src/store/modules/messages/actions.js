@@ -2,6 +2,7 @@ import Vue from "vue";
 import {
     ioSendMessage
 } from '../../../services/socket/message.service';
+import {checkAttachmentType} from '../../../services/attachments.service';
 
 export default {
     /**
@@ -34,7 +35,7 @@ export default {
                         dispatch('GET_MESSAGES');
                     })
             } else {
-                commit('modal/SET_MODAL', 'ModalSessionExpired', {
+                commit('modal/SET_MODAL', {name: 'ModalSessionExpired'}, {
                     root: true
                 });
             }
@@ -43,21 +44,15 @@ export default {
     'SEND_MESSAGE': async ({
         rootGetters
     }, payload) => {
-        const {
-            user_id,
-            username,
-            avatar
-        } = rootGetters['user/userData'];
+        const { user_id } = rootGetters['user/userData'];
+        const attachments = rootGetters['messages/attachments'];
+
         const messageData = {
-            user: {
-                username,
-                avatar,
-                slug: ''
-            },
             channel_id: payload.channelId,
             from: user_id,
             text: payload.text,
-            user_id
+            user_id,
+            attachments
         };
         await ioSendMessage(messageData);
     },
@@ -89,17 +84,25 @@ export default {
         commit,
     }, attachments) => {
         console.log('Message action ADD_ATTACHMENTS: ', attachments);
-        // for (let i = 0; i < attachments.length; i++) {
-        //     const data = new FormData;
-        //     data.append('attachment', attachments[i]);
-        //     // Vue.http.post(`${process.env.VUE_APP_API_URL}`, data)
-        //     //     .then(
-        //     //         res => {
-        //     //             commit('ADD_ATTACHMENT', res.body.data);
-        //     //         },
-        //     //         err => console.log(err)
-        //     //     )
-        // }
+        for (let i = 0; i < attachments.length; i++) {
+            const data = new FormData;
+            data.append('attachment', attachments[i]);
+            Vue.http.post(`${process.env.VUE_APP_API_URL}/attachment/upload`, data)
+                .then(
+                    res => {
+                        console.log(res);
+
+                        const attachment = {
+                            type: checkAttachmentType(res.body.type),
+                            options: {
+                                url: res.body.url
+                            }
+                        };
+                        commit('ADD_ATTACHMENT', attachment);
+                    },
+                    err => console.log(err)
+                )
+        }
 
     },
     'CLEAR_ATTACHMENTS': async ({

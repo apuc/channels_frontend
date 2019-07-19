@@ -26,7 +26,7 @@
     <Attachment v-for="(attachment, index) in messageData.attachments"
                 :key="index"
                 :attachment="attachment"
-                v-if="false"
+                v-if="attachment"
     />
   </div>
 </template>

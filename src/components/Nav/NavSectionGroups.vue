@@ -107,15 +107,15 @@
 
       },
       editThis(id) {
-        this.SET_MODAL('ModalGroupEdit');
+        this.SET_MODAL({name: 'ModalGroupEdit'});
         this.SET_GROUP_ID(id);
       },
       deletingModal(id) {
-        this.SET_MODAL('ModalGroupDelete');
+        this.SET_MODAL({name: 'ModalGroupDelete'});
         this.SET_GROUP_ID_TO_DELETE(id);
       },
       async openChannelsAdding(group_id) {
-        this.SET_MODAL('ModalGroupAddChannels');
+        this.SET_MODAL({name: 'ModalGroupAddChannels'});
         await this.SET_AVAILABLE_CHANNELS_TO_ADD({group_id, channels: this.channels});
         this.SET_GROUP_ID_FOR_ADDING_CHANNEL(group_id);
         this.SET_CHANNELS_TO_SEARCH(this.addingChannelsData.availableChannels);

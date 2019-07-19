@@ -202,7 +202,7 @@ export default {
       await Vue.http.delete(`${process.env.VUE_APP_API_URL}/user/${getters.userData.user_id}`)
         .then(
           res => {
-            commit('modal/SET_MODAL', 'ModalEditProfile', {
+            commit('modal/SET_MODAL', {name: 'ModalEditProfile'}, {
               root: true
             });
           },

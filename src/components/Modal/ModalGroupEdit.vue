@@ -75,7 +75,7 @@
             <button
               type="button"
               class="btn btn-primary"
-              @click="SET_MODAL('ModalGroupAddChannels')"
+              @click="SET_MODAL({name: 'ModalGroupAddChannels'})"
             >Add channels
             </button>
           </div>

@@ -1,9 +1,9 @@
 <template>
-  <div class="attachment-image mr-2">
-    <img :src="data.url" alt="attachment image">
-    <div class="close-btn" @click="REMOVE_ATTACHMENT(data.id)">
+  <div class="attachment-image mr-2" >
+    <img :src="filesUrl + data.options.url" alt="attachment image" @click="SET_MODAL({name: 'ModalAttachmentImage', src: filesUrl + data.options.url})">
+    <button class="close-btn" @click="REMOVE_ATTACHMENT(data.options.url)" v-if="deleteButton">
       <v-icon scale="1" class="icon" name="times-circle"/>
-    </div>
+    </button>
   </div>
 </template>
 
@@ -12,15 +12,25 @@
 
   export default {
     name: 'AttachmentImage',
+    data() {
+      return {
+        filesUrl: process.env.VUE_APP_FILES_URL
+      }
+    },
     props: {
       data: {
         required: true,
         type: Object
-      }
+      },
+      deleteButton: {
+        required: true,
+        type: Boolean
+      },
     },
     methods: {
       ...mapMutations({
         REMOVE_ATTACHMENT: 'messages/REMOVE_ATTACHMENT',
+        SET_MODAL: "modal/SET_MODAL"
       }),
     },
   }
@@ -52,6 +62,9 @@
 
     font-size: 0;
     cursor: pointer;
+
+    background-color: transparent;
+    border: none;
   }
 
   .attachment-image:hover .close-btn {

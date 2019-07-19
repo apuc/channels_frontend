@@ -10,10 +10,6 @@
 
     <div class="input_message-group">
       <div class="d-flex align-items-center mb-3 w-100">
-        <label class="attach-file attach-file_device" v-if="false">
-          <input type="file" multiple @change="ADD_ATTACHMENTS($event.target.files)">
-          <img src="../../assets/img/add_folder.png" alt="">
-        </label>
         
         <b-form-textarea id="input_message"
                          class="input_message"
@@ -39,15 +35,16 @@
         </button>
       </div>
 
-      <div class="message-attachment" v-scroll v-if="false">
+      <div class="message-attachment" v-scroll v-if="attachments">
         <Attachment v-for="(attachment, index) in attachments"
                     :key="index"
                     :attachment="attachment"
+                    :deleteButton="true"
         />
       </div>
 
-      <label class="attach-file" v-if="false">
-        <input type="file" multiple @change="ADD_ATTACHMENTS($event.target.files)">
+      <label class="attach-file">
+        <input type="file" multiple @change="addAttachments($event.target.files)">
         <img src="../../assets/img/add_folder.png" alt="">
       </label>
 
@@ -87,12 +84,13 @@
       }
     },
     methods: {
-      ...mapActions('messages', ['SEND_MESSAGE', 'ADD_ATTACHMENTS']),
+      ...mapActions('messages', ['SEND_MESSAGE', 'ADD_ATTACHMENTS', 'CLEAR_ATTACHMENTS']),
       ioTyping,
       sendMessage(text, channelId) {
-        if (this.input.trim() !== '') {
+        if (this.input.trim() !== '' || this.attachments) {
           this.SEND_MESSAGE({text, channelId});
-          this.input = ''
+          this.input = '';
+          this.CLEAR_ATTACHMENTS();
         }
       },
       onSubmit(event) {
@@ -123,6 +121,9 @@
           });
         }, 2000);
       },
+      addAttachments(files) {
+        this.ADD_ATTACHMENTS(files)
+      }
     },
     mounted() {
       this.$refs.textarea.focus();
