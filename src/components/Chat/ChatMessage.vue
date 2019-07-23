@@ -99,7 +99,6 @@
   .message {
     max-width: 80%;
     padding: 7px;
-    padding-bottom: 0;
 
     background-color: rgba(18, 80, 146, 0.1);
     border-radius: 10px;

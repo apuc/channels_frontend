@@ -2,7 +2,7 @@ import Vue from "vue";
 import {
     ioSendMessage
 } from '../../../services/socket/message.service';
-import {checkAttachmentType} from '../../../services/attachments.service';
+import { formatBytes } from '../../../services/common.service'
 
 export default {
     /**
@@ -86,16 +86,18 @@ export default {
         console.log('Message action ADD_ATTACHMENTS: ', attachments);
         for (let i = 0; i < attachments.length; i++) {
             const data = new FormData;
-            data.append('attachment', attachments[i]);
+            data.append(`attachment`, attachments[i]);
             Vue.http.post(`${process.env.VUE_APP_API_URL}/attachment/upload`, data)
                 .then(
                     res => {
-                        console.log(res);
-
+                        const {type, ...other} = res.body;
+                        console.log(type)
                         const attachment = {
-                            type: checkAttachmentType(res.body.type),
+                            type: type,
                             options: {
-                                url: res.body.url
+                                name: attachments[i].name,
+                                size: formatBytes(attachments[i].size),
+                                ...other
                             }
                         };
                         commit('ADD_ATTACHMENT', attachment);

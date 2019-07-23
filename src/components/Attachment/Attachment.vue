@@ -1,18 +1,21 @@
 <template>
     <component
-            :is="`Attachment${component}`"
+            :is="`Attachment${component.type}`"
             :data="attachment"
-            :deleteButton="deleteButton || false"
+            :deleteButton="deleteButton"
+            :icon="component.icon"
     ></component>
 </template>
 
 <script>
   import AttachmentImage from './AttachmentImage';
   import AttachmentDocument  from './AttachmentDocument';
-  import { checkAttachmentType } from '../../services/attachments.service'
+  import AttachmentArchive  from './AttachmentArchive';
+  import DocumentIcon from '../../assets/img/attachment-document-icon.png';
+  import { checkAttachmentType } from '../../services/messages/attachments.service'
 
   export default {
-    components: {AttachmentImage, AttachmentDocument},
+    components: {AttachmentImage, AttachmentDocument, AttachmentArchive},
     props: {
       attachment: {
         required: true,
@@ -20,12 +23,16 @@
       },
       deleteButton: {
           required: false,
-          type: Boolean
+          type: Boolean,
+          default: false
       },
     },
       data() {
         return {
-            component: 'Document'
+            component: {
+                type: 'Document',
+                icon: DocumentIcon
+            }
         }
       },
       beforeMount() {
