@@ -263,7 +263,7 @@
       setAddUsersModal() {
         this.SET_CONTACTS_TO_ADD_CHANNEL_ID(this.channelData.id);
         this.SET_CONTACTS_FREE_TO_ADD_SEARCH([]);
-        this.SET_MODAL("ModalChannelAddUsers");
+        this.SET_MODAL({name: "ModalChannelAddUsers"});
       },
       async onSubmit() {
         const owner_id = this.userData.user_id;

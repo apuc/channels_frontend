@@ -23,7 +23,7 @@
               >
                 <button type="button"
                         class="btn btn-link settings__link"
-                        @click="SET_MODAL(elem.modalTrigger)"
+                        @click="SET_MODAL({name: elem.modalTrigger})"
                 >
                   {{elem.name}}
                 </button>
@@ -56,7 +56,7 @@
           <button type="button"
                   class="btn-profile"
                   v-else
-                  @click="SET_MODAL('ModalEditProfile')"
+                  @click="SET_MODAL({name: 'ModalEditProfile'})"
           >
             <img class="user__avatar-img"
                  :src="userAvatar"
@@ -224,7 +224,7 @@
         await this.ADD_CHANNELS_TO_GROUP([data]);
       },
       openRequests() {
-        this.SET_MODAL('ModalUserContacts')
+        this.SET_MODAL({name: 'ModalUserContacts'})
       }
     },
 

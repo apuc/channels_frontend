@@ -115,7 +115,7 @@ export default {
               path: `/${createdChannelData.slug}`
             });
 
-            commit('modal/SET_MODAL', 'ModalChannelAddUsers', {
+            commit('modal/SET_MODAL', {name: 'ModalChannelAddUsers'}, {
               root: true
             });
             commit('SET_CURRENT_CHANNEL_DATA', createdChannelData);

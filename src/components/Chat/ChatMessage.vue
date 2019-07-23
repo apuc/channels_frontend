@@ -26,7 +26,7 @@
     <Attachment v-for="(attachment, index) in messageData.attachments"
                 :key="index"
                 :attachment="attachment"
-                v-if="false"
+                v-if="attachment"
     />
   </div>
 </template>
@@ -99,7 +99,6 @@
   .message {
     max-width: 80%;
     padding: 7px;
-    padding-bottom: 0;
 
     background-color: rgba(18, 80, 146, 0.1);
     border-radius: 10px;

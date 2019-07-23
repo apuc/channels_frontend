@@ -65,10 +65,8 @@
   }
 
   .doc-attachment-data {
-    position: relative;
     display: flex;
     flex-direction: column;
-    width: 100%;
   }
 
   .close {
@@ -86,11 +84,6 @@
   
   .doc-attachment__name {
     font-weight: 700;
-    white-space: nowrap;
-    width: 100%;
-    max-width: 400px;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   
   @media (max-width: 1280px) {

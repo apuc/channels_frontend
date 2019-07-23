@@ -100,7 +100,7 @@
        */
       editingModal(id) {
         this.SET_CHANNEL_ID(id);
-        this.SET_MODAL("ModalChannelEdit");
+        this.SET_MODAL({name: "ModalChannelEdit"});
       },
       /**
        * Открывает модалку удаления и устанавливает id канала в state.channelToDelete
@@ -109,7 +109,7 @@
        */
       deletingModal(id) {
         this.SET_CHANNEL_ID_TO_DELETE(id);
-        this.SET_MODAL("ModalChannelDelete");
+        this.SET_MODAL({name: "ModalChannelDelete"});
       },
       /**
        * Открывает модалку добавления пользователей в канал
@@ -120,7 +120,7 @@
       setAddUsersModal(id) {
         this.SET_CONTACTS_TO_ADD_CHANNEL_ID(id);
         this.SET_CONTACTS_FREE_TO_ADD_SEARCH([]);
-        this.SET_MODAL("ModalChannelAddUsers");
+        this.SET_MODAL({name: "ModalChannelAddUsers"});
       }
     }
   };

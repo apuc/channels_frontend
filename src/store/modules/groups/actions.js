@@ -73,7 +73,7 @@ export default {
               router.push({
                 path: `/group/${createdGroupData.slug}`
               });
-              commit('modal/SET_MODAL', 'ModalGroupAddChannels', {
+              commit('modal/SET_MODAL', {name: 'ModalGroupAddChannels'}, {
                 root: true
               });
               commit('ADD_CREATED_GROUP', createdGroupData);

@@ -15,7 +15,7 @@
 
       <div class="channel-users" v-if="currentChannelData.count > 0">
         <h3>Пользователи канала</h3>
-        <button type="button" class="btn btn-primary" @click="SET_MODAL('ModalChannelUsers')">Все</button>
+        <button type="button" class="btn btn-primary" @click="SET_MODAL({name: 'ModalChannelUsers'})">Все</button>
 
         <ul class="users-list">
           <li class="user" v-for="user in currentChannelUsersToShow" :key="user.email">

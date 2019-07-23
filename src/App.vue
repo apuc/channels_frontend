@@ -67,7 +67,7 @@
 
     flex: 1 0 auto;
     display: grid;
-    max-width: 100%;
+    max-width: calc(100% - 350px);
     height: calc(100vh - 68px);
 
     background-color: #fff;

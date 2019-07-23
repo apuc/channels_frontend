@@ -15,7 +15,7 @@
       </button>
 
       <div class="modal__wrap">
-        <component :is="currentModal"></component>
+        <component :is="currentModal.name" :payload="currentModal"></component>
       </div>
     </div>
   </div>
@@ -34,6 +34,7 @@
   import ModalGroupAddChannels from "./ModalGroupAddChannels";
   import ModalSessionExpired from "./ModalSessionExpired";
   import ModalChannelAddUsers from "./ModalChannelAddUsers";
+  import ModalAttachmentImage from "./ModalAttachmentImage";
 
   export default {
     name: "Modal",
@@ -49,6 +50,7 @@
       ModalGroupEdit,
       ModalGroupDelete,
       ModalChannelAddUsers,
+      ModalAttachmentImage,
     },
     computed: {
       ...mapGetters({
@@ -110,6 +112,7 @@
 
   .close {
     position: absolute;
+    z-index: 1;
     top: -10px;
     right: -10px;
 
