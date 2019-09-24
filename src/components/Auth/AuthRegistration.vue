@@ -22,6 +22,14 @@
               {{field.errorMessage}}
             </span>
           </div>
+          
+          <div class="form-group">
+             <template v-for="field in errors">
+                <span v-for="err in field" style="color:red">
+                   {{err}}
+                </span>
+             </template>
+          </div>
 
           <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-primary flex-fill mr-3">Зарегистрироваться</button>
@@ -40,6 +48,8 @@
     name: "Registration",
     data() {
       return {
+        errors:[],  
+          
         data: {
           username: {
             label: 'Логин',
@@ -111,18 +121,28 @@
         }
       },
       registration() {
-        if (this.data.username.isValid && this.data.password.isValid && this.data.email.isValid && this.data.repeatPassword.isValid) {
+        if (this.data.username.isValid && 
+            this.data.password.isValid && 
+            this.data.email.isValid && 
+            this.data.repeatPassword.isValid
+        ) {
           this.REGISTRATION({
             username: this.data.username.value,
             password: this.data.password.value,
             email: this.data.email.value,
             password_confirmation: this.data.repeatPassword.value
-          }).then(response => {
-            if (response) {
-              this.$swal('Вы успешно зарегистрированы', 'теперь вы можете войти используя свой email и пароль', "success")
-                .then(ok => this.$router.push('/login'));
-            }
-          });
+          }).then(
+                response => {
+                  if (response.body.msg === 'success') {
+                    this.$swal('Вы успешно зарегистрированы', 'теперь вы можете войти используя свой email и пароль', "success")
+                      .then(ok => this.$router.push('/login'));
+                  }
+                },
+                err => {
+                    console.log('err')
+                    this.errors = err.body.errors
+                }
+              )
         } else {
           for (let key in this.data) {
             if (!this.data[key].isValid) {

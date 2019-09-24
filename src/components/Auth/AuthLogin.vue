@@ -131,16 +131,18 @@
                   }
                 });
 
-            this.$router.push('/');
-            this.$swal({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 4000,
-              type: 'success',
-              title: 'Вы успешно авторизовались'
-            });
-            this.GETTING_TOKEN_AND_DATA();
+            if(!this.isWrongData){
+                this.$router.push('/');
+                this.$swal({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    type: 'success',
+                    title: 'Вы успешно авторизовались'
+                });
+                this.GETTING_TOKEN_AND_DATA();   
+            }
           }
         } else {
           for (let key in this.data) {

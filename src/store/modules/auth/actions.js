@@ -13,21 +13,24 @@ export default {
    * @return status 201 - пользователь добавлен.
    * @return status 500 - ошибка добавления пользователя.
    */
-  'REGISTRATION': async ({
-    commit,
-  }, userData) => {
+  'REGISTRATION': ({commit,}, userData) => {
     commit('LOADING');
-    await Vue.http.post(`${process.env.VUE_APP_API_URL}/registration`, userData)
-      .then(
-        res => {
-          commit('SUCCESS_REGISTRATION');
-          return res;
-        },
-        err => {
-          commit('ERROR', err.body);
-        }
-      )
-      .catch(err => console.log('REGISTRATION catch err: ', err));
+    return new Promise((resolve,reject)=>{
+      Vue.http.post(`${process.env.VUE_APP_API_URL}/registration`, userData)
+        .then(
+          res => {
+            commit('SUCCESS_REGISTRATION');
+            resolve(res)
+          },
+          err => {
+            commit('ERROR', err.body);
+            reject(err)
+          }
+        )
+        // .catch(err => {
+        //   return new Promise((resolve,reject) => reject(err));
+        // });
+    });
   },
   /**
    * Get token and log in user
