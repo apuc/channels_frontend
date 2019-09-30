@@ -20,6 +20,7 @@
 
       <button type="button"
               class="btn btn-sm btn-primary mr10"
+              v-if="!findUserContact(user.user_id) && !findFriendshipRequest(user.user_id)"
               @click="makeFriendshipRequest($event.target, {user_id: userData.user_id, contact_id: user.user_id})"
       >
         <v-icon scale="1" class="icon" name="user-plus"/>
@@ -49,6 +50,8 @@
         'searchResultsUsers',
         'searchResultsPages',
         'searchResultsCurrentPage',
+        'findUserContact', 
+        'findFriendshipRequest'
       ]),
     },
     methods: {
@@ -86,6 +89,7 @@
     margin-top: 10px;
     padding: 0;
     overflow: auto;
+    height: 500px;
   }
 
   .user {

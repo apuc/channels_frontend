@@ -4,7 +4,11 @@
       <img :src="icon" alt="document icon">
     </a>
     <div class="doc-attachment-data">
-      <span class="doc-attachment__text doc-attachment__name">{{ data.options.name }}</span>
+      <span class="doc-attachment__text doc-attachment__name">
+        <span class="doc-attachment__text doc-attachment__name">
+        <a :href="filesUrl + data.options.url" download>{{ data.options.name }}</a>
+      </span>
+      </span>
       <span class="doc-attachment__text doc-attachment__weight">{{ data.options.size }}</span>
     </div>
     

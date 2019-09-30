@@ -70,11 +70,17 @@
       ...mapActions({
         ADD_USER: 'channels/ADD_USER',
       }),
-      findUserToAdd(value) {
-        this.add_user = Number(value);
+
+        /**
+         * Добавить в канал
+         * @param value
+         */
+        findUserToAdd(value) {
+        this.add_user = value;
         this.isUserInChannel = this.currentChannelUsers.some(user => user.user_id === this.add_user);
 
       },
+        
       findUser(value) {
         let currentUserName = '';
         let searchValue = value.toLowerCase();
@@ -87,6 +93,11 @@
         }
         return searchResult;
       },
+
+        /**
+         * Поиск по юзерам канала
+          * @param value
+         */  
       searchUser(value) {
         this.searchValue = value;
         const searchResult = this.findUser(value);

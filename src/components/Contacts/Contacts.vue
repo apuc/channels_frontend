@@ -4,7 +4,7 @@
       <nav>
         <router-link to="/contacts" class="btn btn-primary mr-2">Контакты</router-link>
         <router-link to="/contacts/search" class="btn btn-primary mr-2">Поиск</router-link>
-        <router-link to="/contacts/requests" class="btn btn-primary mr-2" v-if="friendshipRequests.length">Заявки в контакты</router-link>
+        <router-link to="/contacts/requests" class="btn btn-primary mr-2" v-if="friendshipRequests && friendshipRequests.length">Заявки в контакты</router-link>
       </nav>
     </header>
 

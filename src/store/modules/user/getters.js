@@ -11,7 +11,25 @@ export default {
   searchResultsIsLoading: state => state.searchResults.isLoading,
   userContacts: state => state.userContacts,
   findUserContact: state => id => state.userContacts.find(contact => contact.user_id === id),
+
+  /**
+   * Проверяет что у рользователя нет запросов к переданому пользователю
+   * @param state
+   * @returns {function(*): number}
+   */
+  findFriendshipRequest: state => id => {
+    let allRequests = state.friendshipRequests.toMeRequests.concat(state.friendshipRequests.myRequests)
+    return allRequests.find(contact => contact.user_id === id)
+  },
+  
   userContactsSearch: state => state.userContactsSearch,
-  friendshipRequests: state => state.friendshipRequests,
+  
+  /**
+   * Запросы в друзья к пользователю
+   * @param state
+   * @returns {default.friendshipRequests|(function(*))|[]|string}
+   */
+  friendshipRequests: state => state.friendshipRequests.toMeRequests,
+  
   searchRequest: state => state.searchRequest,
 };

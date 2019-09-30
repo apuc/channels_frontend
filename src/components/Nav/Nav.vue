@@ -67,7 +67,7 @@
 
           <router-link to="/contacts/requests"
                        class="requests"
-                       v-if="friendshipRequests.length > 0"
+                       v-if="friendshipRequests && friendshipRequests.length > 0"
                        @click="openRequests"
           >
             {{friendshipRequests.length}}
@@ -101,14 +101,14 @@
         </div>
       </header>
 
-      <form class="search">
-        <v-icon scale="1" class="search__icon" name="search"/>
-        <input type="text"
-               name="search"
-               placeholder="Поиск"
-               class="search__input"
-        >
-      </form>
+<!--      <form class="search">-->
+<!--        <v-icon scale="1" class="search__icon" name="search"/>-->
+<!--        <input type="text"-->
+<!--               name="search"-->
+<!--               placeholder="Поиск"-->
+<!--               class="search__input"-->
+<!--        >-->
+<!--      </form>-->
 
       <nav>
         <div class="d-flex align-items-center mt-3">

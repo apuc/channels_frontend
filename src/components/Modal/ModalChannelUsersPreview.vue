@@ -29,7 +29,7 @@
                 class="btn btn-sm btn-primary mr10"
                 title="Добавить в друзья"
                 @click="makeFriendshipRequest($event.target, {user_id: userData.user_id, contact_id: user.user_id})"
-                v-if="userData.user_id !== user.user_id && !findUserContact(user.user_id)"
+                v-if="userData.user_id !== user.user_id && !findUserContact(user.user_id) && !findFriendshipRequest(user.user_id)"
         >
           <v-icon scale="1" class="icon" name="user-plus"/>
         </button>
@@ -58,7 +58,7 @@
     name: "ModalChannelUsersPreview",
     computed: {
       ...mapGetters('channels', ['isChannelUsersLoading', 'currentChannelData', 'currentChannelSearchUsers']),
-      ...mapGetters('user', ['userData', 'findUserContact']),
+      ...mapGetters('user', ['userData', 'findUserContact','findFriendshipRequest']),
       calculatePlaceholders() {
         const height = 45;
         if (this.currentChannelData.count < 5 && this.currentChannelData.count > 0) {
@@ -84,11 +84,13 @@
         this.DELETE_MODAL();
       },
       makeFriendshipRequest(target, data) {
+          console.log(data);
         this.SEND_FRIENDSHIP_REQUEST({
           user_id: data.user_id,
           contact_id: data.contact_id
         });
-        target.remove();
+        
+        target.closest('button').remove();
       }
     }
   }
