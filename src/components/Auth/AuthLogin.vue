@@ -48,7 +48,7 @@
   import {mapGetters, mapMutations, mapActions} from 'vuex';
 
   export default {
-    name: "Login",
+    name: 'Login',
     data() {
       return {
         data: {
@@ -119,30 +119,34 @@
               username: this.data.email.value,
               password: this.data.password.value
             })
-              .then(
-                async () => {
-                  if (!this.isWrongData) {
-                    await this.GET_USER_ME()
-                      .then(
-                        async () => {
-                          this.$router.push('/');
-                          await this.GET_NAV();
-                        })
-                  }
-                });
-
-            if(!this.isWrongData){
-                this.$router.push('/');
-                this.$swal({
+              .then(async data => {
+                if (data.body.message) {
+                  this.$swal({
                     toast: true,
-                    position: 'top-end',
+                    position: 'top',
                     showConfirmButton: false,
                     timer: 4000,
-                    type: 'success',
-                    title: 'Вы успешно авторизовались'
-                });
-                this.GETTING_TOKEN_AND_DATA();   
-            }
+                    type: 'error',
+                    title: 'Произошла ошибка авторизации',
+                    text: data.body.message,
+                  });
+                }
+                if (!this.isWrongData) {
+                  await this.GET_USER_ME()
+                    .then(async () => {
+                      this.$router.push('/');
+                      await this.GET_NAV();
+                      this.$swal({
+                        toast: true,
+                        position: 'top',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        type: 'success',
+                        title: 'Вы успешно авторизовались'
+                      });
+                    })
+                }
+              });
           }
         } else {
           for (let key in this.data) {

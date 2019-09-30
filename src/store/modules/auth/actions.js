@@ -47,7 +47,7 @@ export default {
     commit,
   }, userData) => {
     commit('LOADING');
-    await Vue.http.post(`${process.env.VUE_APP_API_URL}/oauth/token`, userData)
+    return await Vue.http.post(`${process.env.VUE_APP_API_URL}/oauth/token`, userData)
       .then(
         async res => {
             const currentDateInSeconds = Math.round(Date.now() / 1000);
@@ -63,6 +63,7 @@ export default {
             commit('SET_TOKEN', res.body.access_token);
             commit('SET_REFRESH_TOKEN', res.body.refresh_token);
             Vue.http.headers.common['Authorization'] = `Bearer ${res.body.access_token}`;
+            return res;
           },
           async err => {
             console.log('err from vue resource', err);
@@ -70,6 +71,7 @@ export default {
               commit('SET_IS_AUTH_DATA_RIGHT', true);
             }
             commit('ERROR', err.body);
+            return err;
           }
       )
       .catch(err => console.log('GET_TOKEN catch err: ', err));

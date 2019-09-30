@@ -22,13 +22,13 @@
               {{field.errorMessage}}
             </span>
           </div>
-          
+
           <div class="form-group">
-             <template v-for="field in errors">
+            <template v-for="field in errors">
                 <span v-for="err in field" style="color:red">
                    {{err}}
                 </span>
-             </template>
+            </template>
           </div>
 
           <div class="d-flex justify-content-between">
@@ -45,11 +45,11 @@
   import {mapActions} from 'vuex';
 
   export default {
-    name: "Registration",
+    name: 'Registration',
     data() {
       return {
-        errors:[],  
-          
+        errors: [],
+
         data: {
           username: {
             label: 'Логин',
@@ -121,10 +121,10 @@
         }
       },
       registration() {
-        if (this.data.username.isValid && 
-            this.data.password.isValid && 
-            this.data.email.isValid && 
-            this.data.repeatPassword.isValid
+        if (this.data.username.isValid &&
+          this.data.password.isValid &&
+          this.data.email.isValid &&
+          this.data.repeatPassword.isValid
         ) {
           this.REGISTRATION({
             username: this.data.username.value,
@@ -132,17 +132,26 @@
             email: this.data.email.value,
             password_confirmation: this.data.repeatPassword.value
           }).then(
-                response => {
-                  if (response.body.msg === 'success') {
-                    this.$swal('Вы успешно зарегистрированы', 'теперь вы можете войти используя свой email и пароль', "success")
-                      .then(ok => this.$router.push('/login'));
-                  }
-                },
-                err => {
-                    console.log('err')
-                    this.errors = err.body.errors
-                }
-              )
+            response => {
+              if (response.body.msg === 'success') {
+                this.$swal('Вы успешно зарегистрированы', 'теперь вы можете войти используя свой email и пароль', 'success')
+                  .then(ok => this.$router.push('/login'));
+              }
+            },
+            err => {
+              console.log('err');
+              this.$swal({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 4000,
+                type: 'error',
+                title: 'Произошла ошибка',
+                text: err.body.errors.message
+              });
+              this.errors = err.body.errors
+            }
+          )
         } else {
           for (let key in this.data) {
             if (!this.data[key].isValid) {
