@@ -40,6 +40,14 @@
               Кол-во пользователей {{currentChannelData.count}}
             </button>
           </li>
+          <li class="info__li">
+            <button type="button"
+                    class="info__users-btn"
+                    @click="removeUserFromChannel"
+            >
+              Покинуть канал
+            </button>
+          </li>
         </ul>
       </div>
 
@@ -63,6 +71,7 @@
     computed: {
       ...mapGetters({
         currentChannelData: 'channels/currentChannelData',
+        userData: 'user/userData',
       }),
       fadeUsers() {
         return this.currentChannelData.count ? 'fade-users_active' : 'fade-users'
@@ -81,9 +90,17 @@
       ...mapMutations({
         SET_MODAL: 'modal/SET_MODAL',
       }),
+      ...mapMutations('channels', [
+        'SET_CHANNEL_ID_TO_DELETE',
+        'REMOVE_DELETED_CHANNEL_FROM_STORE',
+      ]),
       ...mapActions({
         LOGOUT: 'auth/LOGOUT',
       }),
+      ...mapActions('channels', [
+        'DELETE_USER_FROM_CHANNEL',
+        'DELETE_CHANNEL',
+      ]),
       status() {
         const statuses = {
           active: 'активный',
@@ -108,7 +125,61 @@
         };
 
         return types[this.currentChannelData.private]
-      }
+      },
+      async removeUserFromChannel() {
+        let title = 'Вы действительно хотите покинуть канал?';
+        let text = '';
+        const isUserOwner = this.userData.user_id === this.currentChannelData.owner_id;
+        
+        if (isUserOwner) text = 'При выходе канал будет удалён'; 
+
+        const shouldLeave = await this.$swal({
+          title,
+          text,
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Да',
+          cancelButtonText: 'Нет'
+        });
+        
+        if (shouldLeave.value) {
+          if (isUserOwner) {
+            this.SET_CHANNEL_ID_TO_DELETE(this.currentChannelData.id);
+            this.DELETE_CHANNEL();
+            this.$swal({
+              toast: true,
+              position: 'top',
+              type: 'success',
+              showConfirmButton: false,
+              title: 'Вы покинули канал',
+              timer: 4000,
+            });
+          } else {
+            this.DELETE_USER_FROM_CHANNEL(this.userData.user_id)
+              .then(response => {
+                this.REMOVE_DELETED_CHANNEL_FROM_STORE(this.currentChannelData.id);
+                this.$router.push('/');
+                this.$swal({
+                  toast: true,
+                  position: 'top',
+                  type: 'success',
+                  showConfirmButton: false,
+                  title: 'Вы покинули канал',
+                  timer: 4000,
+                });
+              })
+              .catch(error => this.$swal({
+                toast: true,
+                position: 'top',
+                type: 'error',
+                showConfirmButton: false,
+                title: 'Произошла ошибка',
+                text: error.body.errors.message,
+                timer: 4000,
+              }));
+          }
+        }
+      },
     },
   }
 </script>

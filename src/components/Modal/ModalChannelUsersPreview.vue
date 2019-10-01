@@ -38,7 +38,7 @@
                 type="button"
                 class="btn btn-sm btn-danger"
                 title="Удалить из канала"
-                @click="DELETE_USER_FROM_CHANNEL(user.user_id)"
+                @click="removeUserFromChannel(user.user_id)"
         >
           <v-icon scale="1" class="icon" name="user-minus"/>
         </button>
@@ -78,6 +78,8 @@
       ...mapActions('user', ['SEND_FRIENDSHIP_REQUEST', 'GET_USER_DATA']),
       ...mapActions({
         DELETE_USER_FROM_CHANNEL: 'channels/DELETE_USER_FROM_CHANNEL',
+        GET_CHANNEL_USERS: 'channels/GET_CHANNEL_USERS',
+        SET_CURRENT_CHANNEL_USERS: 'channels/SET_CURRENT_CHANNEL_USERS',
       }),
       goToProfile(id) {
         this.GET_USER_DATA(id);
@@ -91,6 +93,32 @@
         });
         
         target.closest('button').remove();
+      },
+      removeUserFromChannel(userId) {
+        this.DELETE_USER_FROM_CHANNEL(userId)
+          .then(response => {
+            this.$swal({
+              toast: true,
+              position: 'top',
+              type: 'success',
+              showConfirmButton: false,
+              title: 'Пользователь удалён',
+              timer: 4000,
+            });
+            
+            this.GET_CHANNEL_USERS(this.currentChannelData.id)
+              .then(users => this.SET_CURRENT_CHANNEL_USERS(users));
+          })
+          .catch(error => this.$swal({
+            toast: true,
+            position: 'top',
+            type: 'error',
+            showConfirmButton: false,
+            title: 'Произошла ошибка',
+            text: error.body.errors.message,
+            timer: 4000,
+          }));
+        
       }
     }
   }

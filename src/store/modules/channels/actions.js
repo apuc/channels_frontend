@@ -289,9 +289,7 @@ export default {
               root: true
             });
 
-            if (id === getters.currentChannelData.id) {
-              router.push('/');
-            }
+            if (id === getters.currentChannelData.id) router.push('/');
             return res;
           },
           err => console.log(err)
@@ -302,9 +300,7 @@ export default {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
           root: true
         })
-          .then(() => {
-            dispatch('DELETE_CHANNEL');
-          })
+          .then(() => dispatch('DELETE_CHANNEL'))
       }
     }
   },
@@ -324,23 +320,20 @@ export default {
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/delete-user?channel_id=${getters.currentChannelData.id}&user_id=${userId}`)
-        .then(
-          res => {
-            dispatch('GET_CHANNEL_USERS', getters.currentChannelData.id)
-              .then(users => dispatch('SET_CURRENT_CHANNEL_USERS', users));
-          },
-          err => console.log(err)
-        )
-        .catch(error => console.log('DELETE_USER_FROM_CHANNEL: ', error))
+      new Promise((resolve, reject) => {
+        Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/delete-user?channel_id=${getters.currentChannelData.id}&user_id=${userId}`)
+          .then(
+            res => resolve(res),
+            err => reject(err)
+          )
+          .catch(error => console.log('DELETE_USER_FROM_CHANNEL: ', error))
+      });
     } else {
       if (currentDateInSeconds < refreshTokenExpiresIn) {
         await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
           root: true
         })
-          .then(() => {
-            dispatch('DELETE_USER_FROM_CHANNEL', userId);
-          })
+          .then(() => dispatch('DELETE_USER_FROM_CHANNEL', userId));
       }
     }
   },

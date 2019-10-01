@@ -10,7 +10,7 @@
   import {mapMutations, mapActions} from 'vuex';
 
   export default {
-    name: "ModalDeleteChannel",
+    name: "ModalChannelDelete",
     methods: {
       ...mapMutations({
         DELETE_MODAL: 'modal/DELETE_MODAL',
@@ -21,7 +21,7 @@
       deleteChannel() {
         this.DELETE_CHANNEL().then(() => this.$swal({
           toast: true,
-          position: 'top-end',
+          position: 'top',
           showConfirmButton: false,
           timer: 4000,
           type: 'success',
