@@ -85,11 +85,15 @@
   }
 
   .avatar {
+    flex: 1 0 50px;
     margin-right: 15px;
     border-radius: 50%;
   }
 
   @media (max-width: 768px) {
+    .main {
+      max-width: 100%;
+    }
     .nav {
       position: absolute;
       left: 0;
@@ -108,6 +112,7 @@
     }
 
     .avatar {
+      flex-basis: 30px;
       width: 30px;
       height: 30px;
       margin-right: 7px;

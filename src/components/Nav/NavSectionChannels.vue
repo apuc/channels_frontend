@@ -50,6 +50,10 @@
   export default {
     name: "NavSectionChannels",
     props: {
+      // isSidebarVisible
+      value: {
+        type: Boolean
+      },
       type: {
         type: String,
         required: true
@@ -90,6 +94,9 @@
        * @param type {String} - канал или группа
        */
       setData(target, id, type) {
+        // закрывает сайдбар на маленьких экранах
+        if (window.innerWidth < 768) this.$emit('input', false);
+        
         this.SET_CURRENT_CHANNEL_DATA(Number(id));
         this.SET_USER_POSITION(type);
       },
@@ -182,8 +189,15 @@
   }
 
   .name {
+    flex: 1 0 calc(100% - 65px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  
+  @media (max-width: 576px) {
+    .name {
+      flex-basis: calc(100% - 45px);
+    }
   }
 </style>

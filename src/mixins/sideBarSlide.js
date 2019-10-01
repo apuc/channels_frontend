@@ -1,23 +1,23 @@
 export default {
   mounted() {
-    if (window.innerWidth < 992) {
-      this.sidebarVisible = false;
+    if (window.innerWidth < 768) {
+      this.isSidebarVisible = false;
     }
   },
   data() {
     return {
-      sidebarVisible: true,
+      isSidebarVisible: true,
     }
   },
   methods: {
     $_sidebarSlide_showSidebar(e) {
-      if (window.innerWidth < 992 && !this.sidebarVisible) {
-        this.sidebarVisible = true;
+      if (window.innerWidth < 768 && !this.isSidebarVisible) {
+        this.isSidebarVisible = true;
       }
     },
     $_sidebarSlide_hideSidebar(e) {
-      if (window.innerWidth < 992 && this.sidebarVisible) {
-        this.sidebarVisible = false;
+      if (window.innerWidth < 768 && this.isSidebarVisible) {
+        this.isSidebarVisible = false;
       }
     }
   }

@@ -73,43 +73,7 @@
             {{friendshipRequests.length}}
           </router-link>
         </div>
-
-        <!--<div class="filters"-->
-        <!--v-if="isFiltersVisible"-->
-        <!--&gt;-->
-        <div v-if="false">
-          <button type="button"
-                  class="btn btn-primary filters__filter"
-                  @click="navFilter('all')"
-          >
-            All
-          </button>
-
-          <button type="button"
-                  class="btn btn-primary filters__filter"
-                  @click="navFilter('channel')"
-          >
-            <v-icon scale="1" class="icon" name="bullhorn"/>
-          </button>
-
-          <button type="button"
-                  class="btn btn-primary filters__filter"
-                  @click="navFilter('group')"
-          >
-            <v-icon scale="1" class="icon" name="folder"/>
-          </button>
-        </div>
       </header>
-
-<!--      <form class="search">-->
-<!--        <v-icon scale="1" class="search__icon" name="search"/>-->
-<!--        <input type="text"-->
-<!--               name="search"-->
-<!--               placeholder="Поиск"-->
-<!--               class="search__input"-->
-<!--        >-->
-<!--      </form>-->
-
       <nav>
         <div class="d-flex align-items-center mt-3">
           <img src="../../assets/img/menu_channel.png" alt="" class="mr-3">
@@ -124,6 +88,8 @@
             <NavSectionChannels v-if="filters.channelsVisible && !isChannelsLoading"
                                 :type="'channel'"
                                 :data="channel"
+                                :value="isSidebarVisible"
+                                @input="isSidebarVisibleHandler"
             />
           </drag>
         </div>
@@ -141,6 +107,8 @@
             <NavSectionGroups v-if="filters.groupsVisible && !isGroupsLoading"
                               :type="'group'"
                               :data="group"
+                              :value="isSidebarVisible"
+                              @input="isSidebarVisibleHandler"
             />
           </drop>
         </div>
@@ -165,8 +133,11 @@
       userAvatar() {
         return this.userData.avatar ? this.userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1';
       },
-      isFiltersVisible() {
-        return this.channels.length > 0 && this.groups.length > 0
+    },
+    props: {
+      isSidebarVisible: {
+        type: Boolean,
+        default: true
       }
     },
     data() {
@@ -201,30 +172,15 @@
         ADD_CHANNELS_TO_GROUP: 'groups/ADD_CHANNELS_TO_GROUP',
         LOGOUT: 'auth/LOGOUT',
       }),
-      navFilter(type) {
-        switch (type) {
-          case 'all':
-            this.filters.channelsVisible = true;
-            this.filters.groupsVisible = true;
-            break;
-          case 'channel':
-            this.filters.channelsVisible = true;
-            this.filters.groupsVisible = false;
-            break;
-          case 'group':
-            this.filters.channelsVisible = false;
-            this.filters.groupsVisible = true;
-            break;
-          default:
-            break;
-        }
-      },
       async handleDrop(group_id, data, event) {
         await this.SET_GROUP_ID_FOR_ADDING_CHANNEL(group_id);
         await this.ADD_CHANNELS_TO_GROUP([data]);
       },
       openRequests() {
         this.SET_MODAL({name: 'ModalUserContacts'})
+      },
+      isSidebarVisibleHandler(value) {
+        this.$emit('input', value);
       }
     },
 
@@ -237,10 +193,10 @@
     height: 180px;
 
     background-image: radial-gradient(circle 15px at 20px, lightgray 99%, transparent 0),
-    linear-gradient(lightgray 12px, transparent 0);
-    background-size: 40px 45px, 80% 45px;
-    background-position: 0 5px, 50px 21.5px;
-    background-repeat: repeat-y;
+                      linear-gradient(lightgray 12px, transparent 0);
+                      background-size: 40px 45px, 80% 45px;
+                      background-position: 0 5px, 50px 21.5px;
+                      background-repeat: repeat-y;
 
     animation: shine 1.5s infinite;
   }

@@ -65,6 +65,10 @@
       }),
     },
     props: {
+      // isSidebarVisible
+      value: {
+        type: Boolean
+      },
       type: {
         type: String,
         required: true
@@ -99,6 +103,9 @@
         GET_GROUP_DATA: 'groups/GET_GROUP_DATA',
       }),
       async setData(e, id, type) {
+        // закрывает сайдбар на маленьких экранах
+        if (window.innerWidth < 768) this.$emit('input', false);
+        
         this.SET_USER_POSITION(type);
         await this.GET_GROUP_DATA(Number(id)).then(data => {
           this.SET_CURRENT_GROUP_DATA(data);
@@ -189,8 +196,15 @@
   }
 
   .name {
+    flex: 1 0 calc(100% - 65px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  @media (max-width: 576px) {
+    .name {
+      flex-basis: calc(100% - 45px);
+    }
   }
 </style>

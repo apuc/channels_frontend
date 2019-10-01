@@ -7,7 +7,7 @@
          v-touch:swipe.left="$_sidebarSlide_hideSidebar"
     >
       <transition name="slide" mode="out-in">
-        <Nav v-if="sidebarVisible"/>
+        <Nav v-if="isSidebarVisible" v-model="isSidebarVisible"/>
       </transition>
 
       <main class="main">
