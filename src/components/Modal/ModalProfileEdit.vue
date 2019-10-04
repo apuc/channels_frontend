@@ -48,14 +48,31 @@
 
       <div class="drop" @dragover.prevent @drop="onDrop">
         <div class="helper"></div>
-        <label v-if="!imgSrc" class="button">
+        <label v-if="!userData.avatar.id" class="button">
           Перетащите или выберите изображение
-          <input type="file" name="image" @change="onChange">
+          <input type="file"
+                 name="image" 
+                 @change="onChange"
+          >
         </label>
 
         <div class="hidden image" v-else>
-          <img :src="imgSrc" alt="" class="img"/>
-          <button class="button button_remove" type="button" @click="removeImage">Удалить</button>
+          <img :src="imgSrc" 
+               alt=""
+               class="img"
+               v-if="imgSrc"
+          />
+          <v-icon name="spinner"
+                  scale="3"
+                  spin
+                  v-else
+          />
+          <button class="button button_remove" 
+                  type="button"
+                  @click="removeImage"
+          >
+            Удалить
+          </button>
         </div>
       </div>
 
