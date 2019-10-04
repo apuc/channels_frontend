@@ -1,6 +1,6 @@
 import { io } from './socket.service';
 import store from '../../store/store';
-
+import { notificationAudio } from '../../helpers/notifications';
 
 export function ioTyping({user, channelId, isTyping}) {
     io.emit('typing', { user, channelId, isTyping});
@@ -27,6 +27,7 @@ export function messageEventListenerInit() {
     });
 
     io.on('messageNotification', function (channelId) {
-        store.dispatch('messages/SET_CHANNEL_NOTIFICATION', channelId)
+        store.dispatch('messages/SET_CHANNEL_NOTIFICATION', channelId);
+        notificationAudio.play();
     })
 }
