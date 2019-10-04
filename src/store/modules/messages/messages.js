@@ -5,7 +5,8 @@ import mutations from './mutations';
 const state = {
   messages: [],
   usersTyping: [],
-  attachments: []
+  attachments: [],
+  notifications: []
 };
 
 export default {

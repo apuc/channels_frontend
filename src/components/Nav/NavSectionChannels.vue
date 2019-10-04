@@ -1,10 +1,10 @@
 <template>
-  <section class="list-group__item">
+  <section class="list-group__item" :class="{active: notification}">
     <router-link
       :to="`/${data.slug}`"
       class="list-group__link"
       :title="data.title"
-      @click.native="setData($event.target, data.id, type)"
+      @click.native="onChannelChangeHandler($event.target, data.id, type)"
     >
       <img :src="data.avatar ? data.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
            alt=""
@@ -61,6 +61,10 @@
       data: {
         type: Object,
         required: true
+      },
+      notification: {
+          type: Boolean,
+          required: true
       }
     },
     data() {
@@ -80,7 +84,8 @@
       ]),
       ...mapMutations({
         SET_USER_POSITION: "user/SET_USER_POSITION",
-        SET_MODAL: "modal/SET_MODAL"
+        SET_MODAL: "modal/SET_MODAL",
+        READ_CHANNEL_MESSAGES: "messages/READ_CHANNEL_MESSAGES"
       }),
       ...mapActions({
         SET_CURRENT_CHANNEL_DATA: 'channels/SET_CURRENT_CHANNEL_DATA',
@@ -128,6 +133,10 @@
         this.SET_CONTACTS_TO_ADD_CHANNEL_ID(id);
         this.SET_CONTACTS_FREE_TO_ADD_SEARCH([]);
         this.SET_MODAL({name: "ModalChannelAddUsers"});
+      },
+      onChannelChangeHandler(target, id, type) {
+          this.setData(target, id, type);
+          this.READ_CHANNEL_MESSAGES(id)
       }
     }
   };
@@ -143,6 +152,19 @@
 
   .list-group__item {
     background-color: #fff;
+  }
+  .list-group__item.active {
+    position: relative;
+  }
+  .list-group__item.active:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 8px;
+    height: 8px;
+    background-color: red;
+    border-radius: 50%;
   }
 
   .list-group__item:hover {

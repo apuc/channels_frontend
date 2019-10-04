@@ -7,7 +7,9 @@ export function ioTyping({user, channelId, isTyping}) {
 }
 
 export function ioSendMessage(messageData) {
-    io.emit('userMessage', messageData)
+  console.log(messageData)
+    io.emit('userMessage', messageData);
+    io.emit('messageNotification', messageData.channel_id);
 }
 
 export function messageEventListenerInit() {
@@ -22,5 +24,9 @@ export function messageEventListenerInit() {
 
     io.on('typing', function ({user, isTyping}) {
         store.dispatch('messages/ON_TYPING', {user, isTyping})
+    });
+
+    io.on('messageNotification', function (channelId) {
+        store.dispatch('messages/SET_CHANNEL_NOTIFICATION', channelId)
     })
 }
