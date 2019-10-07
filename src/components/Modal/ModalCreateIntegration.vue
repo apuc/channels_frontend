@@ -13,6 +13,16 @@
     <b-form-group :label="field.label" v-for="(field,index) in fields" :key="index">
       <b-form-input v-model="data[field.name]"/>
     </b-form-group>
+
+    <b-form-group label="URL для хуков" v-if="showLink">
+      <b-input-group>
+        <b-form-input v-model="link" disabled  placeholder="Нажмите стобы скопировать"></b-form-input>
+        <b-input-group-append>
+          <b-button variant="success" @click="copyLink">Копировать</b-button>
+        </b-input-group-append>
+      </b-input-group>
+    </b-form-group>
+    
     
     <b-button variant="primary" @click="create">Создать</b-button>
   </div>
@@ -30,12 +40,16 @@
                 name:null,
                 fields:[],
                 data:{},
+                link:null,
+                showLink:false,
             }
         },
         
         watch:{
             type:function (val) {
-                this.fields = this.allIntegrations.filter(el => el.id == val)[0].fields;
+                let integrationType = this.allIntegrations.filter(el => el.id == val)[0];
+                this.fields = integrationType.fields;
+                this.link = integrationType.url;
                 
                 this.data = {};
                 
@@ -70,10 +84,15 @@
                         title: 'Интеграция создана'
                     });
                     
-                    this.DELETE_MODAL()
+                    this.link += res.id;
+                    this.showLink = true;
                 },err=>{
                     console.log(err.data.errors)
                 })
+            },
+            
+            copyLink(){
+                navigator.clipboard.writeText(this.link)
             }
         },
     }

@@ -36,7 +36,7 @@ export default {
       Vue.http.post(`${process.env.VUE_APP_API_URL}/integrations`,payload)
         .then(
           res => {
-            resolve(res.data.data)
+            resolve(res.body.data)
           },
           err => {
             reject(err)
