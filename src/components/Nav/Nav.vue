@@ -155,6 +155,10 @@
             name: 'Редактировать профиль',
             modalTrigger: 'ModalEditProfile'
           },
+          {
+            name: 'Создать интеграцию',
+            modalTrigger: 'ModalCreateIntegration'
+          },   
         ],
         addMenuVisible: false,
         filters: {

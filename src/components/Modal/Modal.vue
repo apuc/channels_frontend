@@ -35,6 +35,8 @@
   import ModalSessionExpired from "./ModalSessionExpired";
   import ModalChannelAddUsers from "./ModalChannelAddUsers";
   import ModalAttachmentImage from "./ModalAttachmentImage";
+  import ModalCreateIntegration from "./ModalCreateIntegration";
+  import ModalAddIntegrationToChannel from "./ModalAddIntegrationToChannel";
 
   export default {
     name: "Modal",
@@ -51,6 +53,8 @@
       ModalGroupDelete,
       ModalChannelAddUsers,
       ModalAttachmentImage,
+      ModalCreateIntegration,
+      ModalAddIntegrationToChannel,
     },
     computed: {
       ...mapGetters({

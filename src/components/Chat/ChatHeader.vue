@@ -40,6 +40,16 @@
               Кол-во пользователей {{currentChannelData.count}}
             </button>
           </li>
+
+          <li class="info__li" v-if="currentChannelData.owner_id == userData.user_id">
+            <button type="button"
+                    class="info__users-btn"
+                    @click="SET_MODAL({name:'ModalAddIntegrationToChannel'})"
+            >
+              Добавить интеграцию
+            </button>
+          </li>
+          
           <li class="info__li">
             <button type="button"
                     class="info__users-btn"
@@ -48,6 +58,7 @@
               Покинуть канал
             </button>
           </li>
+          
         </ul>
       </div>
 
