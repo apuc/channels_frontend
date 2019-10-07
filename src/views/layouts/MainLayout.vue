@@ -38,6 +38,9 @@
         GETTING_TOKEN_AND_DATA: 'auth/GETTING_TOKEN_AND_DATA',
       }),
       ...mapActions('user', ['GET_USER_ME', 'GET_NAV', 'GET_USER_CONTACTS', 'GET_USER_FRIENDSHIP_REQUESTS', 'FIND_USERS']),
+        ...mapActions({
+            GET_INTEGRATION_TYPES: 'integrations/GET_INTEGRATION_TYPES',
+        }),
     },
     created() {
       if (!this.gettingTokenAndData) {
@@ -54,7 +57,9 @@
                     }
                   });
                 this.GET_NAV().then(() => this.$_authGettingData_gettingData());
+                this.GET_INTEGRATION_TYPES()
                 this.GETTING_TOKEN_AND_DATA();
+                  
               }
             }
 

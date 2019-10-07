@@ -1,0 +1,101 @@
+<template>
+  <div class="modal-inside">
+    <h4 class="modal_title">Добавить интеграцию в канал</h4>
+
+    <b-form-group label="Тип итеграции">
+      <b-form-select :options="allIntegrations" text-field="title" value-field="id" v-model="type_id"/>
+    </b-form-group>
+
+    <b-form-group label="Выберите интеграцию" v-if="integration_type && integration_type.user_can_create">
+      <b-form-select :options="integrations" text-field="name" value-field="id" v-model="integration_id"/>
+    </b-form-group>
+
+    <b-form-group :label="field.label" v-for="(field,index) in fields" :key="index">
+      <b-form-input v-model="data[field.name]"/>
+    </b-form-group>
+    
+    <b-button variant="primary" @click="addIntegration">Добавить</b-button>
+  </div>
+</template>
+
+<script>
+    import {mapActions,mapGetters,mapMutations} from 'vuex';
+
+    export default {
+        name: "ModalAddIntegrationToChannel",
+
+        data(){
+            return {
+                type_id:null,
+                integration_id:null,
+                
+                integration_type:null,
+                integrations:[],
+                
+                fields:[],
+                data:{},
+            }
+        },
+
+        watch:{
+            type_id:function (val) {
+                let integrationType = this.allIntegrations.filter(el => el.id == val)[0];
+                this.integration_type = integrationType;
+                
+                this.fields = [];
+                this.data = {};
+
+                if(integrationType.options){
+                    this.fields = integrationType.options; 
+                }
+                
+                if(!integrationType.user_can_create){
+                    this.integration_id = integrationType.integrations[0].id
+                }
+                
+                this.integrations = integrationType.integrations;
+                
+                for(let field of this.fields){
+                    this.$set(this.data,field.name,null)
+                }
+            }
+        },
+
+        computed:{
+            ...mapGetters('integrations',['allIntegrations']),
+            ...mapGetters('channels',['currentChannelData'])
+        },
+
+        methods: {
+            ...mapActions('integrations',['CHANNEL_ADD_INTEGRATION']),
+            ...mapMutations({
+                DELETE_MODAL: 'modal/DELETE_MODAL',
+            }),
+
+            addIntegration(){
+                this.CHANNEL_ADD_INTEGRATION({
+                    channel_id:this.currentChannelData.id,
+                    integration_id:this.integration_id,
+                    data:this.data,
+                }).then(res =>{
+                    this.$swal({
+                        toast: true,
+                        position: 'top',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        type: 'success',
+                        title: 'Интеграция добавлена в канал'
+                    });
+
+                    this.DELETE_MODAL()
+                },err=>{
+                    console.log(err.data.errors)
+                })
+            }
+        },
+    }
+</script>
+
+<style scoped>
+
+</style>
