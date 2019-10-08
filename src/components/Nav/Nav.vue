@@ -90,6 +90,7 @@
                                 :data="channel"
                                 :value="isSidebarVisible"
                                 @input="isSidebarVisibleHandler"
+                                :notification="isNotificationInChannel(channel.id)"
             />
           </drag>
         </div>
@@ -130,6 +131,7 @@
       ...mapGetters('user', ['userData', 'isUserLoading', 'friendshipRequests']),
       ...mapGetters('channels', ['channels', 'isChannelsLoading']),
       ...mapGetters('groups', ['groups', 'isGroupsLoading']),
+      ...mapGetters('messages', ['notifications']),
       userAvatar() {
         return this.userData.avatar ? this.userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1';
       },
@@ -176,6 +178,9 @@
         ADD_CHANNELS_TO_GROUP: 'groups/ADD_CHANNELS_TO_GROUP',
         LOGOUT: 'auth/LOGOUT',
       }),
+        isNotificationInChannel(channelId) {
+            return !!this.notifications.find(id => channelId === id);
+        },
       async handleDrop(group_id, data, event) {
         await this.SET_GROUP_ID_FOR_ADDING_CHANNEL(group_id);
         await this.ADD_CHANNELS_TO_GROUP([data]);

@@ -78,6 +78,11 @@ export default {
     }) => {
         commit('OFF_TYPING');
     },
+    'SET_CHANNEL_NOTIFICATION': async ({
+        commit,
+    }, channel_id) => {
+        commit('SET_CHANNEL_NOTIFICATION', channel_id);
+    },
 
     // Attachments
     'ADD_ATTACHMENTS': async ({
