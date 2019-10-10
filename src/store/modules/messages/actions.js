@@ -53,7 +53,7 @@ export default {
             text: payload.text,
             user_id,
             attachments
-        };
+        };console.log(JSON.stringify(messageData));
         await ioSendMessage(messageData);
     },
     'ON_MESSAGE': async ({
@@ -96,6 +96,7 @@ export default {
                 .then(
                     res => {
                         const attachment = {
+                            type:res.body.type,
                             options: {
                                 name: attachments[i].name,
                                 size: formatBytes(attachments[i].size),

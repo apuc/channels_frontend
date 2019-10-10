@@ -5,7 +5,7 @@
     </a>
     <div class="doc-attachment-data">
       <span class="doc-attachment__text doc-attachment__name">
-        <a :href="filesUrl + data.options.url" download>{{ data.options.name }}</a>
+        <a :href="data.options.url" download>{{ data.options.name }}</a>
       </span>
       <span class="doc-attachment__text doc-attachment__weight">{{ data.options.size }}</span>
     </div>
@@ -33,7 +33,7 @@
       },
       icon: {
         required: true,
-        type: String,
+        type: Object,
       },
     },
       
