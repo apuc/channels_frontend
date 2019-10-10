@@ -1,6 +1,6 @@
 <template>
   <div class="attachment-image mr-2" >
-    <img :src="filesUrl + data.options.url" alt="attachment image" @click="SET_MODAL({name: 'ModalAttachmentImage', src: filesUrl + data.options.url})">
+    <img :src="data.options.url" alt="attachment image" @click="SET_MODAL({name: 'ModalAttachmentImage', src: data.options.url})">
     <button class="close-btn" @click="REMOVE_ATTACHMENT(data.options.url)" v-if="deleteButton">
       <v-icon scale="1" class="icon" name="times-circle"/>
     </button>
@@ -12,11 +12,7 @@
 
   export default {
     name: 'AttachmentImage',
-    data() {
-      return {
-        filesUrl: process.env.VUE_APP_FILES_URL
-      }
-    },
+   
     props: {
       data: {
         required: true,

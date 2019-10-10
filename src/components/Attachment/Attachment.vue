@@ -1,9 +1,9 @@
 <template>
     <component
-            :is="`Attachment${component.type}`"
+            :is="`Attachment${attachmentType.component}`"
             :data="attachment"
             :deleteButton="deleteButton"
-            :icon="component.icon"
+            :icon="attachmentType.icon"
     ></component>
 </template>
 
@@ -29,14 +29,14 @@
     },
       data() {
         return {
-            component: {
-                type: 'Document',
+            attachmentType: {
+                component: 'Document',
                 icon: DocumentIcon
             }
         }
       },
       beforeMount() {
-          this.component = checkAttachmentType(this.attachment.type);
+          this.attachmentType = checkAttachmentType(this.attachment.type);
       }
   }
 </script>

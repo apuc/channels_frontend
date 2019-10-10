@@ -95,14 +95,11 @@ export default {
             Vue.http.post(`${process.env.VUE_APP_API_URL}/attachment/upload`, data)
                 .then(
                     res => {
-                        const {type, ...other} = res.body;
-                        console.log(type)
                         const attachment = {
-                            type: type,
                             options: {
                                 name: attachments[i].name,
                                 size: formatBytes(attachments[i].size),
-                                ...other
+                                ...res.body
                             }
                         };
                         commit('ADD_ATTACHMENT', attachment);

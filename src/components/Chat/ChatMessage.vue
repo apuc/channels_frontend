@@ -22,7 +22,7 @@
       </h5>
     </div>
     
-    <pre class="text">{{messageData.text}}</pre>
+    <p class="text">{{messageData.text}}</p>
     <Attachment v-for="(attachment, index) in messageData.attachments"
                 :key="index"
                 :attachment="attachment"

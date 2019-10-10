@@ -1,6 +1,6 @@
 <template>
   <div class="doc-attachment">
-    <a :href="filesUrl + data.options.url" download>
+    <a :href="data.options.url" download>
       <img :src="icon" alt="document icon">
     </a>
     <div class="doc-attachment-data">
@@ -38,11 +38,7 @@
         type: String,
       },
     },
-    data() {
-      return {
-        filesUrl: process.env.VUE_APP_FILES_URL
-      }
-    },
+   
     methods: {
       ...mapMutations({
         REMOVE_ATTACHMENT: 'messages/REMOVE_ATTACHMENT',

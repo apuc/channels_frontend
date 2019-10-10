@@ -1,7 +1,7 @@
 <template>
   <div class="doc-attachment">
-    <a :href="filesUrl + data.options.url" download>
-      <img :src="icon" alt="document icon">
+    <a :href="data.options.url" download>
+      <img :src="documentIcon" alt="document icon">
     </a>
     <div class="doc-attachment-data">
       <span class="doc-attachment__text doc-attachment__name">
@@ -36,11 +36,21 @@
         type: String,
       },
     },
-    data() {
-      return {
-        filesUrl: process.env.VUE_APP_FILES_URL
-      }
-    },
+      
+      computed:{
+        documentIcon(){
+            let mime =  this.data.options.mimeType.split('/')[1];
+            
+            for(let type in this.icon){
+                if(type == mime){
+                    return this.icon[type]
+                }
+            }
+            
+            return this.icon.default;
+        }
+      },
+   
     methods: {
       ...mapMutations({
         REMOVE_ATTACHMENT: 'messages/REMOVE_ATTACHMENT',
