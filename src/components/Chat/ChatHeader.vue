@@ -41,6 +41,15 @@
             </button>
           </li>
 
+          <li class="info__li">
+            <button type="button"
+                    class="info__users-btn"
+                    @click="setAddUsersModal(currentChannelData.id)"
+            >
+              Пригласить в канал
+            </button>
+          </li>
+
           <li class="info__li" v-if="currentChannelData.owner_id == userData.user_id">
             <button type="button"
                     class="info__users-btn"
@@ -104,6 +113,8 @@
       ...mapMutations('channels', [
         'SET_CHANNEL_ID_TO_DELETE',
         'REMOVE_DELETED_CHANNEL_FROM_STORE',
+        'SET_CONTACTS_FREE_TO_ADD_SEARCH',
+        'SET_CONTACTS_TO_ADD_CHANNEL_ID',
       ]),
       ...mapActions({
         LOGOUT: 'auth/LOGOUT',
@@ -137,6 +148,13 @@
 
         return types[this.currentChannelData.private]
       },
+
+        setAddUsersModal(id) {
+            this.SET_CONTACTS_TO_ADD_CHANNEL_ID(id);
+            this.SET_CONTACTS_FREE_TO_ADD_SEARCH([]);
+            this.SET_MODAL({name: "ModalChannelAddUsers"});
+        },  
+        
       async removeUserFromChannel() {
         let title = 'Вы действительно хотите покинуть канал?';
         let text = '';

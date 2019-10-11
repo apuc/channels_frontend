@@ -27,6 +27,8 @@
                 :key="index"
                 :attachment="attachment"
                 v-if="attachment"
+                class="mb-1"
+                :big="true"
     />
   </div>
 </template>

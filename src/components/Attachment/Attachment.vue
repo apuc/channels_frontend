@@ -4,6 +4,7 @@
             :data="attachment"
             :deleteButton="deleteButton"
             :icon="attachmentType.icon"
+            :big="big"
     ></component>
 </template>
 
@@ -25,7 +26,10 @@
           required: false,
           type: Boolean,
           default: false
-      },
+      }, 
+      big:{
+          default:false
+      }
     },
       data() {
         return {

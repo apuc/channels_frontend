@@ -1,7 +1,30 @@
 <template>
   <div class="modal-inside">
+
+    <h4 class="modal__title mb-3 ml-0">Добавить пользователя канал</h4>
+    
+    <div class="add-user mb-3">
+      <label for="add-user" style="margin-right: 10px">Пригласить по email</label>
+
+      <div class="input-wrap">
+        <input id="add-user"
+               class="form-control add-user__input"
+               type="text"
+               placeholder="Введите email"
+               v-model="invite_email"
+        >
+
+        <button type="button"
+                class="btn"
+                @click="inviteByEmail"
+        >
+          <v-icon scale="1" class="icon" name="plus-square"/>
+        </button>
+      </div>
+    </div>
+    
     <header class="form-group">
-      <label for="user">Добавить пользователя</label>
+      <label for="user">Поиск по контактам</label>
       <input
         id="user"
         class="form-control"
@@ -9,14 +32,18 @@
         ref="searchInput"
         :value="searchValue"
         @input="searchUser($event.target.value)"
+        placeholder="Введите логин пользователя или email"
       >
     </header>
 
-    <p v-if="noUsers">
-      У вас в контактах нет пользователя с таким именем. Вы можете поискать с помощью глобального поиска перейдя по
+    <p v-if="noUsers || contactsToAdd.searchUsers.length < 1">
+      <span v-if="noUsers">
+        У вас в контактах нет пользователя с таким именем. Вы можете поискать с помощью глобального поиска перейдя по
       <router-link to="/contacts/search" @click.native="DELETE_MODAL">ссылке.</router-link>
+      </span>
+      <span v-else> Список контактов пуст или все контакты уже состоят в этом канале</span>
     </p>
-
+    
     <div class="users-list__wrap" v-else>
       <ul class="users-list">
         <li class="user" v-for="user in contactsToAdd.searchUsers" :key="user.email">
@@ -61,6 +88,7 @@
     name: "ModalChannelAddUsers",
     data() {
       return {
+        invite_email:"",
         searchValue: "",
         isUserInChannel: false,
         noUsers: false
@@ -84,6 +112,7 @@
         DELETE_MODAL: 'modal/DELETE_MODAL',
       }),
       ...mapActions('channels', ['ADD_USER', 'GET_CHANNEL_USERS']),
+        
       findUser(value) {
         let currentUserName = "";
         let searchValue = value.toLowerCase();
@@ -96,6 +125,7 @@
         }
         return searchResult;
       },
+        
       searchUser(value) {
         this.searchValue = value;
         const searchResult = this.findUser(value);
@@ -107,6 +137,7 @@
           this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
         }
       },
+        
       addUserToChannel(user_id) {
         this.ADD_USER({user_id, channel_id: this.contactsToAdd.channelId})
           .then(async () => {
@@ -114,11 +145,17 @@
             this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
           });
       },
+        
       setContactsFreeToAdd() {
         this.SET_CONTACTS_FREE_TO_ADD(this.userContacts);
         this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
+      },
+      
+      inviteByEmail(){
+        alert('Надо сделать бекенд))')  
       }
     },
+      
     created() {
       if (this.contactsToAdd.channelId) {
         this.GET_CHANNEL_USERS(this.contactsToAdd.channelId)
@@ -128,9 +165,11 @@
           });
       }
     },
+      
     mounted() {
       this.$refs.searchInput.focus();
     },
+      
     beforeDestroy() {
       this.SET_CHANNEL_USERS([]);
       this.CLEAR_CONTACTS_TO_ADD();
@@ -169,5 +208,27 @@
   .img {
     display: block;
     border-radius: 50%;
+  }
+
+  .add-user {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .add-user,
+  .input-wrap {
+    display: flex;
+  }
+
+  .add-user__input {
+    margin-right: 20px;
+  }
+
+  .disable {
+    pointer-events: none;
+  }
+
+  .user-exist {
+    color: rgba(255, 0, 0, 0.64);
   }
 </style>

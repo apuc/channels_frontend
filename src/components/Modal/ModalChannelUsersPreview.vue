@@ -18,7 +18,7 @@
             <router-link :to="`/user/${user.user_id}`"
                          @click.native="goToProfile(user.user_id)"
             >
-              {{user.username}}
+              {{user.username}} <span v-if="user.user_id === currentChannelData.owner_id" class="owner">(создатель канала)</span>
             </router-link>
           </div>
         </div>
@@ -34,7 +34,7 @@
           <v-icon scale="1" class="icon" name="user-plus"/>
         </button>
 
-        <button v-if="userData.user_id === currentChannelData.owner_id"
+        <button v-if="userData.user_id === currentChannelData.owner_id && user.user_id !== currentChannelData.owner_id"
                 type="button"
                 class="btn btn-sm btn-danger"
                 title="Удалить из канала"
@@ -160,6 +160,12 @@
     background-repeat: repeat-y;
 
     animation: shine 1.5s infinite;
+  }
+  
+  .owner{
+    color: black;
+    font-weight: bold;
+    font-size: 12px;
   }
 
   @keyframes shine {

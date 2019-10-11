@@ -1,5 +1,5 @@
 <template>
-  <div class="attachment-image mr-2" >
+  <div :class="(big) ? 'attachment-image-big mr-2' : 'attachment-image mr-2'" >
     <img :src="data.options.url" alt="attachment image" @click="SET_MODAL({name: 'ModalAttachmentImage', src: data.options.url})">
     <button class="close-btn" @click="REMOVE_ATTACHMENT(data.options.url)" v-if="deleteButton">
       <v-icon scale="1" class="icon" name="times-circle"/>
@@ -22,6 +22,9 @@
         required: true,
         type: Boolean
       },
+      big:{
+          default:false
+      }  
     },
     methods: {
       ...mapMutations({
@@ -38,8 +41,8 @@
     width: 70px;
     height: 70px;
   }
-
-  .attachment-image img {
+  
+  .attachment-image img,.attachment-image-big img {
     display: block;
     width: 100%;
     height: 100%;

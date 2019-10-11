@@ -1,5 +1,7 @@
 <template>
   <div class="modal-inside">
+    <h4 class="modal__title mb-3 ml-0">Список пользователей канала</h4>
+    
     <header class="form-group">
       <label for="user">Поиск по пользователям канала</label>
       <input id="user"
@@ -8,31 +10,9 @@
              ref="searchInput"
              :value="searchValue"
              @input="searchUser($event.target.value)"
+             placeholder="Введите логин пользователя или email"
       >
     </header>
-
-    <div class="add-user">
-      <label for="add-user" style="margin-right: 10px">Добавить пользователя</label>
-
-      <div class="input-wrap">
-        <input id="add-user"
-               class="form-control add-user__input"
-               type="text"
-               :value="add_user"
-               @input="findUserToAdd($event.target.value)"
-        >
-
-        <button type="button"
-                class="btn"
-                :class="disableButton"
-                @click="ADD_USER({user_id: add_user, channel_id: currentChannelData.id})"
-        >
-          <v-icon scale="1" class="icon" name="plus-square"/>
-        </button>
-      </div>
-
-      <p class="user-exist" v-if="isUserInChannel">This user exist.</p>
-    </div>
     
     <p v-if="noUsers">В данном канале нет пользователя с таким именем.</p>
     <ModalChannelUsersPreview v-else/>
@@ -70,16 +50,6 @@
       ...mapActions({
         ADD_USER: 'channels/ADD_USER',
       }),
-
-        /**
-         * Добавить в канал
-         * @param value
-         */
-        findUserToAdd(value) {
-        this.add_user = value;
-        this.isUserInChannel = this.currentChannelUsers.some(user => user.user_id === this.add_user);
-
-      },
         
       findUser(value) {
         let currentUserName = '';
