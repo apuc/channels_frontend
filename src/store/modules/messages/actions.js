@@ -90,16 +90,13 @@ export default {
     }, {
         user,
         isTyping,
-        users //пользователи текущего канала
     }) => {
-        if(users.find(u=>u.user_id == user.id)){
-          if (isTyping) {
-            commit('PUSH_TYPING_USER', user);
-          } else {
-            commit('SLICE_TYPING_USER', user);
-          } 
-        }
-    },
+      if (isTyping) {
+        commit('PUSH_TYPING_USER', user);
+      } else {
+        commit('SLICE_TYPING_USER', user);
+      }
+  },
 
   /**
    * 

@@ -21,8 +21,10 @@ export function messageEventListenerInit() {
         store.dispatch('messages/ON_MESSAGE', data);
     });
 
-    io.on('typing', function ({user, isTyping}) {
-        store.dispatch('messages/ON_TYPING', {user, isTyping,users:store.getters['channels/currentChannelUsers']})
+    io.on('typing', function ({user, isTyping,channelId}) {
+      if(store.getters['channels/currentChannelData'].id === channelId){
+        store.dispatch('messages/ON_TYPING', {user, isTyping})
+      }
     });
 
     io.on('messageNotification', function (data) {
