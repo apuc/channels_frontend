@@ -83,6 +83,7 @@
 
 <script>
   import {mapGetters, mapMutations, mapActions} from "vuex";
+  import Vue from "vue";
 
   export default {
     name: "ModalChannelAddUsers",
@@ -98,7 +99,7 @@
       ...mapGetters({
         userContacts: 'user/userContacts',
       }),
-      ...mapGetters('channels', ['contactsToAdd', 'channelData'])
+      ...mapGetters('channels', ['contactsToAdd', 'channelData','currentChannelData'])
     },
     methods: {
       ...mapMutations('channels', [
@@ -152,7 +153,23 @@
       },
       
       inviteByEmail(){
-        alert('Надо сделать бекенд))')  
+        Vue.http.post(`${process.env.VUE_APP_API_URL}/channels/${this.currentChannelData.id}/invite`,{email:this.invite_email})
+            .then(res=>{
+                this.REMOVE_USER_FROM_CONTACTS_TO_ADD(res.body.data.user_id);
+                this.SET_CONTACTS_FREE_TO_ADD_SEARCH(this.contactsToAdd.users);
+
+                this.$swal({
+                    toast: true,
+                    position: 'top',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    type: 'success',
+                    title: 'Пользователь приглашен в канал!',
+                    text: data.body.message,
+                });
+            },err=>{
+                console.log(err)
+            })
       }
     },
       

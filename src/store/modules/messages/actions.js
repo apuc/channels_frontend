@@ -41,6 +41,13 @@ export default {
             }
         }
     },
+  /**
+   * Отправить сообщение
+   * @param rootGetters
+   * @param payload
+   * @returns {Promise<void>}
+   * @constructor
+   */
     'SEND_MESSAGE': async ({
         rootGetters
     }, payload) => {
@@ -53,38 +60,79 @@ export default {
             text: payload.text,
             user_id,
             attachments
-        };console.log(JSON.stringify(messageData));
+        };
         await ioSendMessage(messageData);
     },
+
+  /**
+   * Сообщение пришло
+   * @param commit
+   * @param message
+   * @returns {Promise<void>}
+   * @constructor
+   */
     'ON_MESSAGE': async ({
         commit,
     }, message) => {
         commit('SET_MESSAGE', message);
     },
+
+  /**
+   * Пользователь печатает
+   * @param commit
+   * @param user
+   * @param isTyping
+   * @returns {Promise<void>}
+   * @constructor
+   */
     'ON_TYPING': async ({
-        commit,
+        commit
     }, {
         user,
-        isTyping
+        isTyping,
+        users //пользователи текущего канала
     }) => {
-        if (isTyping) {
+        if(users.find(u=>u.user_id == user.id)){
+          if (isTyping) {
             commit('PUSH_TYPING_USER', user);
-        } else {
+          } else {
             commit('SLICE_TYPING_USER', user);
+          } 
         }
     },
+
+  /**
+   * 
+   * @param commit
+   * @returns {Promise<void>}
+   * @constructor
+   */
     'OFF_TYPING': async ({
         commit,
     }) => {
         commit('OFF_TYPING');
     },
+
+  /**
+   * Уведомление
+   * @param commit
+   * @param channel_id
+   * @returns {Promise<void>}
+   * @constructor
+   */
     'SET_CHANNEL_NOTIFICATION': async ({
         commit,
     }, channel_id) => {
         commit('SET_CHANNEL_NOTIFICATION', channel_id);
     },
 
-    // Attachments
+  /**
+   * Добавление атачмента
+   * @param commit
+   * @param attachments
+   * @returns {Promise<void>}
+   * @constructor
+   */
     'ADD_ATTACHMENTS': async ({
         commit,
     }, attachments) => {
@@ -110,6 +158,12 @@ export default {
         }
 
     },
+  /**
+   * Сброс атачментов
+   * @param commit
+   * @returns {Promise<void>}
+   * @constructor
+   */
     'CLEAR_ATTACHMENTS': async ({
         commit
     }) => {

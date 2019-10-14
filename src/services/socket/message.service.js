@@ -7,9 +7,8 @@ export function ioTyping({user, channelId, isTyping}) {
 }
 
 export function ioSendMessage(messageData) {
-  console.log(messageData)
     io.emit('userMessage', messageData);
-    io.emit('messageNotification', messageData.channel_id);
+    io.emit('messageNotification', {channel_id:messageData.channel_id,from:messageData.from});
 }
 
 export function messageEventListenerInit() {
@@ -23,11 +22,13 @@ export function messageEventListenerInit() {
     });
 
     io.on('typing', function ({user, isTyping}) {
-        store.dispatch('messages/ON_TYPING', {user, isTyping})
+        store.dispatch('messages/ON_TYPING', {user, isTyping,users:store.getters['channels/currentChannelUsers']})
     });
 
-    io.on('messageNotification', function (channelId) {
-        store.dispatch('messages/SET_CHANNEL_NOTIFICATION', channelId);
-        notificationAudio.play();
+    io.on('messageNotification', function (data) {
+        if(store.getters['user/currentUserInfo'].user_id !== data.from){
+          store.dispatch('messages/SET_CHANNEL_NOTIFICATION', data.channel_id);
+          notificationAudio.play();
+        }
     })
 }
