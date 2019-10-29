@@ -1,5 +1,7 @@
 <template>
-  <section class="list-group__item" :class="{active: notification}">
+  <section class="list-group__item" 
+           :class="{active: notification, 'list-group__item_active': data.id === currentChannelData.id}"
+  >
     <router-link
       :to="`/${data.slug}`"
       class="list-group__link"
@@ -153,9 +155,11 @@
   .list-group__item {
     background-color: #fff;
   }
+  
   .list-group__item.active {
     position: relative;
   }
+  
   .list-group__item.active:before {
     content: '';
     position: absolute;
@@ -169,6 +173,11 @@
 
   .list-group__item:hover {
     background-color: #f8f9fa;
+  }
+  
+  .list-group__item_active {
+    background-color: rgba(112, 151, 255, 0.4);
+    border-radius: 6px;
   }
 
   .list-group__link {
