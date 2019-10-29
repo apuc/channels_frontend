@@ -1,5 +1,5 @@
 <template>
-  <section class="list-group__item">
+  <section class="list-group__item" :class="{'list-group__item_active': data.id === currentGroupData.id}">
     <router-link :to="`/group/${data.slug}`"
                  class="list-group__link"
                  :title="data.title"
@@ -149,6 +149,11 @@
 
   .list-group__item:hover {
     background-color: #f8f9fa;
+  }
+
+  .list-group__item_active {
+    background-color: rgba(112, 151, 255, 0.4);
+    border-radius: 6px;
   }
 
   .list-group__link {

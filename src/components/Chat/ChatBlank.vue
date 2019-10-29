@@ -1,6 +1,7 @@
 <template>
   <div class="popular-channels">
     <NavSectionChannels v-for="channel in channels"
+                        :key="channel.id"
                         :type="'channel'"
                         :data="channel"
                         :notification="false"
