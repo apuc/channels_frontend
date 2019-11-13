@@ -11,21 +11,28 @@ export default {
     'GET_MESSAGES': async ({
         commit,
         dispatch,
+        state,
         rootGetters
-    }) => {
+    },paginate = false) => {
         const currentDateInSeconds = Math.round(Date.now() / 1000);
         const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
         const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
+        
         if (currentDateInSeconds < tokenExpiresIn) {
             const channelId = rootGetters['channels/currentChannelData'].id;
-            await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/messages`)
+            let url = (paginate === true) ? state.nextPage : `${process.env.VUE_APP_API_URL}/channel/${channelId}/messages`;
+
+            return new Promise((resolve,reject) => {
+                Vue.http.get(url)
                 .then(
                     res => {
-                        commit('SET_MESSAGES', res.body.data);
+                      commit('SET_MESSAGES',{paginationData:res.body,channelId:channelId});
+                       resolve(res) 
                     },
                     err => console.log(err)
                 )
+            });
+            
         } else {
             if (currentDateInSeconds < refreshTokenExpiresIn) {
                 await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {

@@ -6,7 +6,12 @@ const state = {
   messages: [],
   usersTyping: [],
   attachments: [],
-  notifications: []
+  notifications: [],
+  
+  nextPage:null,
+  currentPage:1,
+  lastPage:2,
+  scroll_bottom:true,
 };
 
 export default {

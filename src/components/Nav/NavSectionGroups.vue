@@ -151,9 +151,10 @@
     background-color: #f8f9fa;
   }
 
-  .list-group__item_active {
+  .list-group__item_active,.list-group__item_active:hover {
     background-color: rgba(112, 151, 255, 0.4);
     border-radius: 6px;
+    padding: 3px;
   }
 
   .list-group__link {

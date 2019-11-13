@@ -31,6 +31,7 @@
         over: false
       }
     },
+      
     methods: {
       ...mapMutations('channels', ['SET_CURRENT_CHANNEL_DATA', 'SET_CURRENT_CHANNEL_USERS']),
       ...mapMutations({

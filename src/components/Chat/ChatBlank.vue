@@ -36,7 +36,6 @@
                .then(
                    res => {
                        this.channels = res.body.data;
-                       console.log(this.channels);
                    },
                    err => console.log('err get channels', err)
                )
