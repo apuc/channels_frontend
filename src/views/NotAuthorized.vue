@@ -7,7 +7,7 @@
          v-touch:swipe.left="$_sidebarSlide_hideSidebar"
     >
       <transition name="slide" mode="out-in">
-        <NotAuthorizedSidebarAuth v-if="sidebarVisible" />
+<!--        <NotAuthorizedSidebarAuth />-->
       </transition>
 
       <main class="main">

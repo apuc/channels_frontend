@@ -1,6 +1,10 @@
 export default {
   'SET_MESSAGES': (state, {paginationData,channelId}) => {
     
+    if(paginationData === undefined){
+      return;
+    }
+    
     state.nextPage = paginationData.links.next
     state.currentPage = paginationData.meta.current_page
     state.lastPage = paginationData.meta.last_page
