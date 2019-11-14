@@ -160,7 +160,7 @@
 
       <div class="drop" @dragover.prevent @drop="onDrop">
         <div class="helper"></div>
-        <label v-if="!channelData.avatar.id" class="button">
+        <label v-if="!channelData.avatar" class="button">
           Перетащите или выберите изображение
           <input type="file" name="image" @change="onChange">
         </label>

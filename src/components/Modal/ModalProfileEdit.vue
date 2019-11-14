@@ -48,7 +48,7 @@
 
       <div class="drop" @dragover.prevent @drop="onDrop">
         <div class="helper"></div>
-        <label v-if="!userData.avatar.id" class="button">
+        <label v-if="!userData.avatar" class="button">
           Перетащите или выберите изображение
           <input type="file"
                  name="image" 
@@ -90,7 +90,7 @@
 
     <form v-else
           class="modal__content"
-          @submit.prevet="onSubmitPrivate"
+          @submit.prevent="onSubmitPrivate"
     >
       <div class="row">
         <div class="col">
@@ -146,9 +146,13 @@
 
   export default {
     name: "ModalEditProfile",
+      
+      
     computed: {
       ...mapGetters('user', ['userData', 'imageUploadPercentage'])
     },
+      
+      
     data() {
       return {
         user: {
@@ -166,10 +170,13 @@
         isPrivateSettings: false,
       }
     },
+      
+      
     methods: {
       ...mapMutations({
         SET_USER_INFO: 'user/SET_USER_INFO',
       }),
+        
       ...mapActions('user', [
         'GET_USER_ME',
         'EDIT_GENERAL_USER_DATA',
@@ -177,6 +184,11 @@
         'DELETE_USER',
         'CREATE_USER_AVATAR',
       ]),
+
+        /**
+         * Сабмит общее
+          * @returns {Promise<void>}
+         */ 
       async onSubmitGeneral() {
         await this.SET_USER_INFO(this.user);
 
@@ -197,6 +209,11 @@
           });
         }
       },
+
+        /**
+         * Сабмит личное
+         * @returns {Promise<void>}
+         */
       async onSubmitPrivate() {
         await this.SET_USER_INFO(this.user);
         this.EDIT_PRIVATE_USER_DATA().then(() => this.$swal({
@@ -208,11 +225,13 @@
           title: 'Новые данные сохранены'
         }));
       },
+        
       createFormData(file) {
         let formData = new FormData();
         formData.append('avatar', file);
         this.img = formData;
       },
+        
       onDrop: function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -220,6 +239,7 @@
         this.createImage(files[0]);
         this.createFormData(files[0]);
       },
+        
       onChange(e) {
         this.imgSrc = '';
         const files = e.target.files || e.dataTransfer.files;
@@ -233,6 +253,7 @@
           this.notImage = 'Выберите изображение, пожалуйста'
         }
       },
+        
       createImage(file) {
         const reader = new FileReader();
 
@@ -241,14 +262,18 @@
         };
         reader.readAsDataURL(file);
       },
+        
       removeImage() {
         this.imgSrc = '';
       },
+        
       switchSettings() {
         this.isGeneralSettings = !this.isGeneralSettings;
         this.isPrivateSettings = !this.isPrivateSettings;
       },
     },
+      
+      
     created() {
       this.GET_USER_ME().then(data => {
         this.user.username = data.username;
