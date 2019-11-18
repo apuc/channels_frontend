@@ -55,10 +55,18 @@
             }
         },
         
+        watch:{
+            avatar(val){
+               if(this.imgSrc === ''){
+                   this.imgSrc = val.average;
+               }
+           }
+        },
+        
         created(){
-            if(this.avatar){
-                this.imgSrc = this.avatar.average;
-            }
+           if(this.avatar){
+               this.imgSrc = this.avatar.average; 
+           }  
         },
         
         methods:{

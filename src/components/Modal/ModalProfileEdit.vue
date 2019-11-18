@@ -173,13 +173,6 @@
         SET_USER_INFO: 'user/SET_USER_INFO',
       }),
         
-      ...mapActions('user', [
-        'EDIT_GENERAL_USER_DATA',
-        'EDIT_PRIVATE_USER_DATA',
-        'DELETE_USER',
-        'CREATE_USER_AVATAR',
-      ]),
-        
       ...mapActions('auth',[
           'LOGOUT',
       ]),

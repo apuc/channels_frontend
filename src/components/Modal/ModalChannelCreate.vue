@@ -11,6 +11,7 @@
     <form class="modal__content" @submit.prevent="onSubmit">
       <div class="row">
         <div class="col-6">
+          
           <div class="form-group">
             <label for="title">Название канала</label>
 
@@ -19,6 +20,12 @@
                    class="form-control"
                    v-model="channelData.title"
             >
+
+            <p
+              v-if="errors.hasOwnProperty('title')"
+              v-for="error in errors['title']"
+              style="color:red">{{error}}
+            </p>
           </div>
 
           <div class="form-group">
@@ -29,35 +36,12 @@
                    class="form-control"
                    v-model="channelData.slug"
             >
-          </div>
-          <div class="form-group">
-            <p>Статус канала</p>
 
-            <div class="form-check-inline">
-              <label for="active" class="form-check-label">
-                <input type="radio"
-                       id="active"
-                       class="form-check-input"
-                       value="active"
-                       name="channel-status"
-                       v-model="channelData.status"
-                >
-                <span>Активный</span>
-              </label>
-            </div>
-
-            <div class="form-check-inline">
-              <label for="disable" class="form-check-label">
-                <input type="radio"
-                       id="disable"
-                       class="form-check-input"
-                       value="disable"
-                       name="channel-status"
-                       v-model="channelData.status"
-                >
-                <span>Не активный</span>
-              </label>
-            </div>
+            <p
+              v-if="errors.hasOwnProperty('slug')"
+              v-for="error in errors['slug']"
+              style="color:red">{{error}}
+            </p>
           </div>
 
           <div class="form-group">
@@ -89,18 +73,12 @@
               </label>
             </div>
 
-            <div class="form-check-inline">
-              <label for="dialog" class="form-check-label">
-                <input type="radio"
-                       id="dialog"
-                       class="form-check-input"
-                       value="dialog"
-                       name="channel-type"
-                       v-model="channelData.type"
-                >
-                <span>Диалог</span>
-              </label>
-            </div>
+            <p
+              v-if="errors.hasOwnProperty('type')"
+              v-for="error in errors['type']"
+              style="color:red">{{error}}
+            </p>
+            
           </div>
 
           <div class="form-group">
@@ -131,28 +109,22 @@
                 <span>Публичный</span>
               </label>
             </div>
+
+            <p
+              v-if="errors.hasOwnProperty('private')"
+              v-for="error in errors['private']"
+              style="color:red">{{error}}
+            </p>
           </div>
+          
         </div>
       </div>
 
-      <div class="drop" @dragover.prevent @drop.stop.prevent="onDrop">
-        <div class="helper"></div>
-        <label v-if="!imgSrc" class="button">
-          Перетащите или выберите изображение
-          <input type="file" name="image" @change="onChange">
-        </label>
-        <div class="hidden image" v-else>
-          <img :src="imgSrc" alt="" class="img"/>
-
-          <button class="button button_remove" type="button" @click="removeImage">Удалить</button>
-        </div>
-      </div>
+      <AvatarUploader :avatar="channelData.avatar" v-model="channelData.avatar"/>
 
       <div>
         <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
       </div>
-
-      <p v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</p>
 
       <button type="submit" class="btn btn-primary">Создать</button>
     </form>
@@ -161,25 +133,33 @@
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import AvatarUploader from "../Controls/AvatarUploader";
 
   export default {
     name: "ModalChannelCreate",
+      
+    components:{
+        AvatarUploader
+    },  
+      
     computed: {
       ...mapGetters('channels', ['imageUploadPercentage']),
       ...mapGetters({
         userData: 'user/userData',
       })
     },
+      
+      
     data() {
       return {
-        img: '',
-        imgSrc: '',
-        notImage: '',
         upLoadStarted: false,
+          
+        errors:{},  
+          
         channelData: {
           title: '',
           slug: '',
-          status: '',
+          status: 'active',
           owner_id: null,
           user_ids: [],
           type: '',
@@ -188,68 +168,52 @@
         }
       }
     },
+      
+      
     methods: {
       ...mapMutations({
         SET_MODAL: 'modal/SET_MODAL',
       }),
-      ...mapActions('channels', ['CREATE_CHANNEL', 'CREATE_CHANNEL_AVATAR']),
+        
+      ...mapActions('common',[
+            'MAKE_REQUEST',
+      ]),
+
+        /**
+         * Сабмит
+          * @returns {Promise<void>}
+         */  
       async onSubmit() {
+          
         this.channelData.user_ids = [this.userData.user_id];
         this.channelData.owner_id = this.userData.user_id;
+        this.errors = {};
 
-        if (this.img) {
+        if (this.channelData.avatar) {
           this.upLoadStarted = true;
-          await this.CREATE_CHANNEL_AVATAR(this.img)
+          
+          await this.MAKE_REQUEST({name:'channels/CREATE_CHANNEL_AVATAR',params:this.channelData.avatar})
             .then(id => {
               this.upLoadStarted = false;
               this.channelData.avatar = id;
             });
         }
 
-        this.CREATE_CHANNEL(this.channelData).then(() => this.$swal({
+
+        this.MAKE_REQUEST({name:'channels/CREATE_CHANNEL',params:this.channelData}).then(() => this.$swal({
           toast: true,
           position: 'top-end',
           showConfirmButton: false,
           timer: 4000,
           type: 'success',
           title: 'Канал создан'
-        }));
+        })).catch((err)=>{
+            if(err.status == 422){
+                this.errors = err.body.errors;
+            }
+        });
       },
-      createFormData(file) {
-        let formData = new FormData();
-        formData.append('avatar', file);
-        this.img = formData;
-      },
-      onDrop() {
-        const files = e.dataTransfer.files;
-        this.createImage(files[0]);
-        this.createFormData(files[0]);
-      },
-      onChange(e) {
-        this.imgSrc = '';
-        const files = e.target.files || e.dataTransfer.files;
-        const fileType = files[0].type.split('/');
-
-        if (files.length && fileType[0] === 'image') {
-          this.notImage = '';
-          this.createImage(files[0]);
-          this.createFormData(files[0]);
-        } else {
-          this.notImage = 'Выберите изображение, пожалуйста'
-        }
-      },
-      createImage(file) {
-        const reader = new FileReader();
-
-        reader.onload = e => {
-          this.imgSrc = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      },
-      removeImage() {
-        this.imgSrc = '';
-        this.img = '';
-      },
+        
     },
   }
 </script>

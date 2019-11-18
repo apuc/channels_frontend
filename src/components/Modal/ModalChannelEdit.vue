@@ -21,6 +21,12 @@
               :value="channelData.title"
               @input="SET_CHANNEL_TITLE($event.target.value)"
             >
+
+            <p
+              v-if="errors.hasOwnProperty('title')"
+              v-for="error in errors['title']"
+              style="color:red">{{error}}
+            </p>
           </div>
 
           <div class="form-group">
@@ -33,6 +39,12 @@
               :value="channelData.slug"
               @input="SET_CHANNEL_SLUG($event.target.value)"
             >
+
+            <p
+              v-if="errors.hasOwnProperty('slug')"
+              v-for="error in errors['slug']"
+              style="color:red">{{error}}
+            </p>
           </div>
 
           <div class="form-group">
@@ -105,21 +117,6 @@
                 <span>Стена</span>
               </label>
             </div>
-
-            <div class="form-check-inline">
-              <label for="dialog" class="form-check-label">
-                <input
-                  type="radio"
-                  id="dialog"
-                  class="form-check-input"
-                  value="dialog"
-                  name="channel-type"
-                  v-model="channelData.type"
-                  @input="SET_CHANNEL_TYPE($event.target.value)"
-                >
-                <span>Диалог</span>
-              </label>
-            </div>
           </div>
 
           <div class="form-group">
@@ -158,39 +155,11 @@
         </div>
       </div>
 
-      <div class="drop" @dragover.prevent @drop="onDrop">
-        <div class="helper"></div>
-        <label v-if="!channelData.avatar" class="button">
-          Перетащите или выберите изображение
-          <input type="file" name="image" @change="onChange">
-        </label>
-        
-        <div class="hidden" v-else :class="{ 'image': true }">
-          <img :src="imgSrc"
-               alt=""
-               class="img"
-               v-if="imgSrc"
-          />
-          <v-icon name="spinner"
-                  scale="3"
-                  spin
-                  v-else
-          />
-
-          <button class="button button_remove"
-                  type="button"
-                  @click="removeImage"
-          >
-            Удалить
-          </button>
-        </div>
-      </div>
+      <AvatarUploader :avatar="avatar" v-model="avatar"/>
 
       <div>
         <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
       </div>
-
-      <p v-if="notImage" style="text-align: center; color: red;">{{ notImage }}</p>
 
       <footer class="modal__footer">
         <button type="submit" class="btn btn-primary mb-1">Сохранить</button>
@@ -202,11 +171,14 @@
 
 <script>
   import {mapGetters, mapMutations, mapActions} from "vuex";
+  import AvatarUploader from "../Controls/AvatarUploader";
   import vSelect from "vue-select";
 
   export default {
     name: "ModalChannelEdit",
-    components: {vSelect},
+      
+    components: {vSelect,AvatarUploader},
+      
     computed: {
       ...mapGetters("channels", [
         "channelData",
@@ -216,27 +188,26 @@
         userData: "user/userData"
       })
     },
+      
     data() {
       return {
-        img: "", // form data to send
-        imgSrc: "", // img url
-        notImage: "", // if file in not picture
+        avatar:null, 
         upLoadStarted: false,
-        isSamePicture: true
+        errors:{},  
       };
     },
+      
     created() {
       this.GET_CHANNEL_DATA(this.channelData.id).then(data => {
         this.SET_CHANNEL_DATA(data);
         this.GET_CHANNEL_USERS(this.channelData.id).then(users => {
           this.SET_CHANNEL_USER_IDS(users);
         });
-
-        if (this.isSamePicture && this.channelData.avatar) {
-          this.imgSrc = this.channelData.avatar.average;
-        }
+          
+        this.avatar = this.channelData.avatar;
       });
     },
+      
     beforeDestroy() {
       this.SET_CHANNEL_USERS([]);
       this.SET_CHANNEL_DATA({
@@ -251,6 +222,7 @@
         avatar: undefined
       });
     },
+      
     methods: {
       ...mapMutations("channels", [
         "SET_CHANNEL_DATA",
@@ -265,77 +237,55 @@
         'SET_CONTACTS_TO_ADD_CHANNEL_ID',
         'SET_CONTACTS_FREE_TO_ADD_SEARCH'
       ]),
+        
       ...mapMutations({
         SET_MODAL: "modal/SET_MODAL"
       }),
+        
       ...mapActions("channels", [
         "GET_CHANNEL_DATA",
         "GET_CHANNEL_USERS",
-        "EDIT_CHANNEL",
-        "CREATE_CHANNEL_AVATAR"
       ]),
+
+        ...mapActions('common',[
+            'MAKE_REQUEST',
+        ]),  
 
       setAddUsersModal() {
         this.SET_CONTACTS_TO_ADD_CHANNEL_ID(this.channelData.id);
         this.SET_CONTACTS_FREE_TO_ADD_SEARCH([]);
         this.SET_MODAL({name: "ModalChannelAddUsers"});
       },
+        
       async onSubmit() {
         const owner_id = this.userData.user_id;
         this.SET_CHANNEL_OWNER_ID(owner_id);
+        this.errors = {};
 
-        if (this.img) {
-          this.upLoadStarted = true;
-          await this.CREATE_CHANNEL_AVATAR(this.img).then(
-            () => (this.upLoadStarted = false)
-          );
+        if (this.avatar instanceof  FormData) {
+            await this.MAKE_REQUEST({name:'channels/CREATE_CHANNEL_AVATAR',params:this.avatar})
+                .then(id => {
+                    this.upLoadStarted = false;
+                });
+        }
+        
+        if(!this.avatar && this.channelData.avatar){
+            console.log('delete aavvaaaaa');
         }
 
-        this.EDIT_CHANNEL().then(response => this.$swal({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 4000,
-          type: 'success',
-          title: 'Данные канала изменены'
-        }));
+          this.MAKE_REQUEST({name:'channels/EDIT_CHANNEL',params:null}).then(() => this.$swal({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 4000,
+              type: 'success',
+              title: 'Данные канала изменены'
+          })).catch((err)=>{
+              if(err.status == 422){
+                  this.errors = err.body.errors;
+              }
+          });
       },
-      createFormData(file) {
-        let formData = new FormData();
-        formData.append("avatar", file);
-        this.img = formData;
-      },
-      onDrop: function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        const files = e.dataTransfer.files;
-        this.createImage(files[0]);
-        this.createFormData(files[0]);
-      },
-      onChange(e) {
-        this.imgSrc = "";
-        const files = e.target.files || e.dataTransfer.files;
-        const fileType = files[0].type.split("/");
-
-        if (files.length && fileType[0] === "image") {
-          this.notImage = "";
-          this.createImage(files[0]);
-          this.createFormData(files[0]);
-        } else {
-          this.notImage = "Выберите изображение, пожалуйста";
-        }
-      },
-      createImage(file) {
-        const reader = new FileReader();
-
-        reader.onload = e => {
-          this.imgSrc = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      },
-      removeImage() {
-        this.imgSrc = "";
-      }
     },
   };
 </script>
