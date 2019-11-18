@@ -179,6 +179,11 @@
         SET_MODAL: "modal/SET_MODAL"
       }),
       ...mapActions('groups', ['GET_GROUP_DATA', 'EDIT_GROUP', 'CREATE_GROUP_AVATAR']),
+
+        /**
+         * Сабмит
+          * @returns {Promise<void>}
+         */ 
       async onSubmit() {
         this.SET_GROUP_OWNER_ID(this.userData.user_id);
 
@@ -197,11 +202,13 @@
           title: 'Данные группы изменены'
         }));
       },
+        
       createFormData(file) {
         let formData = new FormData();
         formData.append("avatar", file);
         this.img = formData;
       },
+        
       onDrop: function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -209,6 +216,7 @@
         this.createImage(files[0]);
         this.createFormData(files[0]);
       },
+        
       onChange(e) {
         this.imgSrc = "";
         const files = e.target.files || e.dataTransfer.files;
@@ -222,6 +230,7 @@
           this.notImage = "Выберите изображение, пожалуйста";
         }
       },
+        
       createImage(file) {
         const reader = new FileReader();
 
@@ -230,6 +239,7 @@
         };
         reader.readAsDataURL(file);
       },
+        
       removeImage() {
         this.imgSrc = "";
       }

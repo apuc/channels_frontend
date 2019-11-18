@@ -1,11 +1,10 @@
 <template>
   <div class="modal-inside">
+    
     <header class="modal__header">
+      
       <div class="d-flex align-items-center w-100 mb-3">
-        <img src="../../assets/img/management.png"
-             alt=""
-             class="modal__header-img"
-        >
+        <img src="../../assets/img/management.png" class="modal__header-img">
         <h4 class="modal__title">Редактирование профиля</h4>
       </div>
 
@@ -45,47 +44,18 @@
           </div>
         </div>
       </div>
-
-      <div class="drop" @dragover.prevent @drop="onDrop">
-        <div class="helper"></div>
-        <label v-if="!userData.avatar" class="button">
-          Перетащите или выберите изображение
-          <input type="file"
-                 name="image" 
-                 @change="onChange"
-          >
-        </label>
-
-        <div class="hidden image" v-else>
-          <img :src="imgSrc" 
-               alt=""
-               class="img"
-               v-if="imgSrc"
-          />
-          <v-icon name="spinner"
-                  scale="3"
-                  spin
-                  v-else
-          />
-          <button class="button button_remove" 
-                  type="button"
-                  @click="removeImage"
-          >
-            Удалить
-          </button>
-        </div>
-      </div>
-
+      
+      <AvatarUploader :avatar="user.avatar" v-model="user.avatar"/>
+      
       <div>
         <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
       </div>
-
-      <span v-if="notImage" style="text-align: center; color: red;"> {{ notImage }}</span>
-
+      
       <div class="modal__footer">
         <button type="submit" class="btn btn-primary mr-1 mb-1">Сохранить</button>
         <span class="edit-notice">Изменения вступят в силу после сохранения</span>
       </div>
+      
     </form>
 
     <form v-else
@@ -102,6 +72,13 @@
                    class="form-control"
                    v-model="user.password"
             >
+            
+            <p 
+              v-if="errors.hasOwnProperty('password')" 
+              v-for="error in errors['password']"
+              style="color:red">{{error}}
+            </p>
+            
           </div>
 
           <div class="form-group">
@@ -112,6 +89,12 @@
                    class="form-control"
                    v-model="user.passwordRepeat"
             >
+
+            <p
+              v-if="errors.hasOwnProperty('password_confirmation')"
+              v-for="error in errors['password_confirmation']"
+              style="color:red">{{error}}
+            </p>
           </div>
 
           <div class="form-group">
@@ -122,6 +105,12 @@
                    class="form-control"
                    v-model="user.email"
             >
+
+            <p
+              v-if="errors.hasOwnProperty('email')"
+              v-for="error in errors['email']"
+              style="color:red">{{error}}
+            </p>
           </div>
         </div>
       </div>
@@ -130,7 +119,7 @@
         <button type="submit" class="btn btn-primary mr-1 mb-1">Сохранить</button>
         <button type="submit" 
                 class="btn btn-danger mb-1" 
-                @click="DELETE_USER"
+                @click.prevent="onDeleteProfile"
         >
           Удалить профиль
         </button>
@@ -143,10 +132,14 @@
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import AvatarUploader from "../Controls/AvatarUploader";
 
   export default {
     name: "ModalEditProfile",
       
+    components:{
+        AvatarUploader, 
+    },  
       
     computed: {
       ...mapGetters('user', ['userData', 'imageUploadPercentage'])
@@ -155,17 +148,20 @@
       
     data() {
       return {
+          
         user: {
+          avatar:null,  
           user_id: '',
-          username: '',
           email: '',
+          username: '',
           password: '',
           passwordRepeat: '',
         },
-        img: '',
-        imgSrc: '',
-        notImage: '',
+          
         upLoadStarted: false,
+          
+        errors:{},  
+          
         isGeneralSettings: true,
         isPrivateSettings: false,
       }
@@ -178,35 +174,62 @@
       }),
         
       ...mapActions('user', [
-        'GET_USER_ME',
         'EDIT_GENERAL_USER_DATA',
         'EDIT_PRIVATE_USER_DATA',
         'DELETE_USER',
         'CREATE_USER_AVATAR',
       ]),
+        
+      ...mapActions('auth',[
+          'LOGOUT',
+      ]),
+
+        ...mapActions('common',[
+            'MAKE_REQUEST',
+        ]),  
 
         /**
          * Сабмит общее
           * @returns {Promise<void>}
          */ 
       async onSubmitGeneral() {
-        await this.SET_USER_INFO(this.user);
+       
+          //если поменяли аватар
+        if(this.user.avatar instanceof FormData) {
 
-        if (this.img) {
           this.upLoadStarted = true;
-          await this.CREATE_USER_AVATAR(this.img).then(avatar_id => {
-            this.EDIT_GENERAL_USER_DATA({id: avatar_id, username: this.user.username})
-              .then(userData => this.SET_USER_INFO(userData));
-            this.upLoadStarted = false;
-            this.$swal({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 4000,
-              type: 'success',
-              title: 'Новые данные сохранены'
-            });
-          });
+            
+            return await this.MAKE_REQUEST({name:'user/CREATE_USER_AVATAR', params:this.user.avatar})
+                .then(avatar_id => {
+                    this.MAKE_REQUEST({
+                        name:'user/EDIT_GENERAL_USER_DATA',
+                        params:{id: avatar_id, username: this.user.username}
+                    }).then(userData => this.SET_USER_INFO(userData));
+
+                    this.upLoadStarted = false;
+
+                    this.showAlert()
+                });
+        }
+
+            //если поменяли просто данные без аватара
+        if(this.user.avatar instanceof FormData === false){
+            this.MAKE_REQUEST({
+                     name:'user/EDIT_GENERAL_USER_DATA',
+                     params:{
+                         id: this.userData.avatar ? this.userData.avatar.id : null,
+                         username: this.user.username
+                     }
+                })
+                    .then(userData => {
+                        this.SET_USER_INFO(userData);
+                        this.showAlert();
+                });
+        }
+
+        //если удалили аватар
+        if(this.user.avatar == null && this.userData.avatar){
+            console.log('delete avatar');
         }
       },
 
@@ -215,57 +238,48 @@
          * @returns {Promise<void>}
          */
       async onSubmitPrivate() {
-        await this.SET_USER_INFO(this.user);
-        this.EDIT_PRIVATE_USER_DATA().then(() => this.$swal({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 4000,
-          type: 'success',
-          title: 'Новые данные сохранены'
-        }));
+           this.errors = {};
+           this.MAKE_REQUEST({name:'user/EDIT_PRIVATE_USER_DATA',params:this.user})
+                .then(() => this.showAlert())
+              .catch((err)=>{
+                  if(err.status == 422){
+                      this.errors = err.body.errors;
+                  }
+              });
       },
         
-      createFormData(file) {
-        let formData = new FormData();
-        formData.append('avatar', file);
-        this.img = formData;
-      },
-        
-      onDrop: function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        const files = e.dataTransfer.files;
-        this.createImage(files[0]);
-        this.createFormData(files[0]);
-      },
-        
-      onChange(e) {
-        this.imgSrc = '';
-        const files = e.target.files || e.dataTransfer.files;
-        const fileType = files[0].type.split('/');
+        /**
+         * Удаление профиля
+         */
+      async onDeleteProfile(){
+          const shouldDelete = await this.$swal({
+              title:'Профиль будет удален навсегда!',
+              text:'',
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Подтвердить',
+              cancelButtonText: 'Отмена'
+          });
+          
+          
+          if(shouldDelete.value){
+              this.MAKE_REQUEST({name:'user/DELETE_USER',params:null}).then(()=>this.LOGOUT());
+          }
+      },  
 
-        if (files.length && fileType[0] === 'image') {
-          this.notImage = '';
-          this.createImage(files[0]);
-          this.createFormData(files[0]);
-        } else {
-          this.notImage = 'Выберите изображение, пожалуйста'
-        }
-      },
-        
-      createImage(file) {
-        const reader = new FileReader();
-
-        reader.onload = e => {
-          this.imgSrc = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      },
-        
-      removeImage() {
-        this.imgSrc = '';
-      },
+        /**
+         * Показывает алерт об успешном сохранении
+          */
+        showAlert(){
+          this.$swal({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 4000,
+              type: 'success',
+              title: 'Новые данные сохранены'
+          })
+      },  
         
       switchSettings() {
         this.isGeneralSettings = !this.isGeneralSettings;
@@ -275,98 +289,14 @@
       
       
     created() {
-      this.GET_USER_ME().then(data => {
-        this.user.username = data.username;
-        this.user.email = data.email;
-        this.user.user_id = data.user_id;
-
-        if (data.avatar) {
-          this.imgSrc = data.avatar.average;
-        }
-      });
+        this.user.username = this.userData.username;
+        this.user.email = this.userData.email;
+        this.user.user_id = this.userData.user_id;
+        this.user.avatar = this.userData.avatar;
     }
   }
 </script>
 
 <style scoped>
-  .btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    font-size: 100px;
-    text-align: right;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    outline: none;
-    background: white;
-    cursor: inherit;
-    display: block;
-  }
-
-  .button {
-    position: relative;
-    padding: 15px 35px;
-
-    font-weight: bold;
-    color: #fff;
-
-    background-color: #d3394c;
-    border: 0;
-    cursor: pointer;
-  }
-
-  .button:hover {
-    background-color: #722040;
-  }
-
-  .button_remove {
-    margin-top: 15px;
-    padding: 10px 20px;
-  }
-
-  input[type="file"] {
-    position: absolute;
-    left: 0;
-    z-index: -1;
-
-    opacity: 0;
-  }
-
-  .hidden {
-    display: none;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .hidden.image {
-    display: flex;
-  }
-
-  .img {
-    width: 100%;
-    height: auto;
-  }
-
-  .drop {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 600px;
-    height: 100%;
-    min-height: 100px;
-    margin-bottom: 15px;
-
-    border: 4px dashed #ccc;
-    background-color: #f6f6f6;
-    border-radius: 2px;
-  }
-
-  .drop label {
-    margin-bottom: 0;
-  }
+  
 </style>

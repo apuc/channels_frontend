@@ -10,6 +10,7 @@ export default {
                           dispatch,
                           rootGetters
                         }) => {
+    
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
@@ -37,16 +38,19 @@ export default {
       }
     }
   },
+  
+  
+  
   /**
    * Get channels and groups
    */
-  'GET_NAV': async ({
-                      dispatch
-                    }) => {
+  'GET_NAV': async ({dispatch}) => {
     await dispatch('channels/GET_USER_NAV_BAR', null, {
       root: true
     });
   },
+  
+  
   /**
    * Get user contacts
    */
@@ -65,6 +69,9 @@ export default {
       )
       .catch(error => console.log('FIND_USERS: ', error));
   },
+  
+  
+  
   /**
    * Get user friendship requests
    */
@@ -80,15 +87,17 @@ export default {
       )
       .catch(error => console.log('FIND_USERS: ', error));
   },
+  
+  
+  
   /**
    * Get specific user data and save it to store
    *
    * @param user_id {String || Number}
    */
-  'GET_USER_DATA': async ({
-                            commit,
-                          }, user_id) => {
+  'GET_USER_DATA': async ({commit}, user_id) => {
     commit('SET_USER_DATA_LOADING_FLAG');
+    
     await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/${user_id}`)
       .then(
         res => {
@@ -104,166 +113,96 @@ export default {
         }
       )
       .catch(error => console.log('GET_USER_DATA: ', error))
-
   },
+  
+  
   /**
    * Change general user data - avatar, username
    */
-  'EDIT_GENERAL_USER_DATA': async ({
-                                     getters,
-                                     commit,
-                                     dispatch,
-                                     rootGetters
-                                   }, data) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
-    if (currentDateInSeconds < tokenExpiresIn) {
-      return await Vue.http.put(`${process.env.VUE_APP_API_URL}/user/profile/${getters.userData.user_id}`, {
-        username: data.username,
-        avatar_id: data.id
-      })
-        .then(
-          res => {
-            commit('modal/DELETE_MODAL', null, {
-              root: true
-            });
-            return res.body.data
-          },
-          err => console.log(err)
-        )
-        .catch(error => console.log('EDIT_GENERAL_USER_DATA: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-          root: true
-        })
-          .then(() => {
-            dispatch('EDIT_GENERAL_USER_DATA');
-          })
-      }
-    }
+  'EDIT_GENERAL_USER_DATA': async ({commit,getters},data) => {
+    return await Vue.http.put(`${process.env.VUE_APP_API_URL}/user/profile/${getters.userData.user_id}`, {
+      username: data.username,
+      avatar_id: data.id
+    })
+      .then(
+        res => {
+          commit('modal/DELETE_MODAL', null, {
+            root: true
+          });
+          return res.body.data
+        },
+        err => console.log(err)
+      )
+      .catch(error => console.log('EDIT_GENERAL_USER_DATA: ', error))
   },
+  
+  
   /**
    * Change private user data - password, email
    */
-  'EDIT_PRIVATE_USER_DATA': async ({
-                                     getters,
-                                     commit,
-                                     dispatch,
-                                     rootGetters
-                                   }) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
-    if (currentDateInSeconds < tokenExpiresIn) {
-      return await Vue.http.put(`${process.env.VUE_APP_API_URL}/user/profile/${getters.userDatauserData.user_id}`, {
-        email: getters.userDatauserData.email,
-        password: getters.userDatauserData.password,
-        password_confirmation: getters.userData.passwordRepeat,
-      })
+  'EDIT_PRIVATE_USER_DATA': async ({commit,dispatch,},user) => {
+    return new Promise((resolve,reject)=>{
+      Vue.http.put(`${process.env.VUE_APP_API_URL}/user/${user.user_id}`,user)
         .then(
           res => {
             commit('modal/DELETE_MODAL', null, {
               root: true
             });
-            return res;
+            resolve(res);
           },
-          err => console.log(err)
+          err => {
+            console.log('123456');
+            reject(err)
+          }
         )
-        .catch(error => console.log('EDIT_PRIVATE_USER_DATA: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-          root: true
-        })
-          .then(() => {
-            dispatch('EDIT_PRIVATE_USER_DATA');
-          })
-      }
-    }
+    });
   },
+  
   /**
    * Delete user
    */
-  'DELETE_USER': async ({
-                          getters,
-                          commit,
-                          dispatch,
-                          rootGetters
-                        }) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
-    if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.delete(`${process.env.VUE_APP_API_URL}/user/${getters.userData.user_id}`)
-        .then(
-          res => {
-            commit('modal/SET_MODAL', {name: 'ModalEditProfile'}, {
-              root: true
-            });
-          },
-          err => console.log(err)
-        )
-        .catch(error => console.log('DELETE_USER: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-          root: true
-        })
-          .then(() => {
-            dispatch('DELETE_USER');
-          })
-      }
-    }
+  'DELETE_USER': async ({getters,commit}) => {
+    await Vue.http.delete(`${process.env.VUE_APP_API_URL}/user/${getters.userData.user_id}`)
+      .then(
+        res => {
+          commit('modal/SET_MODAL', {name: 'ModalEditProfile'}, {
+            root: true
+          });
+        },
+        err => console.log(err)
+      )
+      .catch(error => console.log('DELETE_USER: ', error))
   },
+  
+  
   /**
    * Add avatar to the user profile and write avatar_id to the store
    *
    * @param img - image form data
    */
-  'CREATE_USER_AVATAR': async ({
-                                 commit,
-                                 dispatch,
-                                 rootGetters
-                               }, img) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
-    if (currentDateInSeconds < tokenExpiresIn) {
-      return await Vue.http.post(`${process.env.VUE_APP_API_URL}/user/avatar`, img, {
-        headers: {
-          "Content-Type": "multipart/form-data;"
-        },
-        progress(e) {
-          if (e.lengthComputable) {
-            commit('SET_AVATAR_UPLOAD_PROGRESS', e.loaded / e.total * 100);
-          }
+  'CREATE_USER_AVATAR': async ({commit},img) => {
+    return await Vue.http.post(`${process.env.VUE_APP_API_URL}/user/avatar`, img, {
+      headers: {
+        "Content-Type": "multipart/form-data;"
+      },
+      progress(e) {
+        if (e.lengthComputable) {
+          commit('SET_AVATAR_UPLOAD_PROGRESS', e.loaded / e.total * 100);
         }
-      })
-        .then(
-          async res => {
-            commit('SET_AVATAR_UPLOAD_PROGRESS', 0);
-            return res.body.data.id
-          },
-          err => console.log(err)
-        )
-        .catch(error => console.log('CREATE_GROUP_AVATAR: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-          root: true
-        })
-          .then(() => {
-            dispatch('CREATE_USER_AVATAR', img);
-          })
       }
-    }
+    })
+      .then(
+        async res => {
+
+          commit('SET_AVATAR_UPLOAD_PROGRESS', 0);
+          return res.body.data.id
+        },
+        err => console.log(err)
+      )
+      .catch(error => console.log('CREATE_GROUP_AVATAR: ', error))
   },
+  
+  
   /**
    * Global user search
    *
@@ -297,6 +236,8 @@ export default {
         .catch(error => console.log('FIND_USERS: ', error));
     }
   },
+  
+  
   /**
    * Send friendship request
    *
@@ -317,6 +258,8 @@ export default {
       )
       .catch(error => console.log('GET_USER: ', error));
   },
+  
+  
   /**
    * Accept friendship request
    *
@@ -337,6 +280,8 @@ export default {
       )
       .catch(error => console.log('GET_USER: ', error));
   },
+  
+  
   /**
    * Reject friendship request
    *
