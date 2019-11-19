@@ -21,6 +21,12 @@
               :value="groupData.title"
               @input="SET_GROUP_TITLE($event.target.value)"
             >
+
+            <p
+              v-if="errors.hasOwnProperty('title')"
+              v-for="error in errors['title']"
+              style="color:red">{{error}}
+            </p>
           </div>
 
           <div class="form-group">
@@ -33,62 +39,22 @@
               :value="groupData.slug"
               @input="SET_GROUP_SLUG($event.target.value)"
             >
+
+            <p
+              v-if="errors.hasOwnProperty('slug')"
+              v-for="error in errors['slug']"
+              style="color:red">{{error}}
+            </p>
           </div>
         </div>
-
-        <div class="col-6">
-          <div class="form-group">
-            <p>Статус группы</p>
-
-            <div class="form-check-inline">
-              <label for="active" class="form-check-label">
-                <input
-                  type="radio"
-                  id="active"
-                  class="form-check-input"
-                  value="active"
-                  name="group-status"
-                  @input="SET_GROUP_STATUS($event.target.value)"
-                >
-                <span>Активна</span>
-              </label>
-            </div>
-
-            <div class="form-check-inline">
-              <label for="disable" class="form-check-label">
-                <input
-                  type="radio"
-                  id="disable"
-                  class="form-check-input"
-                  value="disable"
-                  name="group-status"
-                  @input="SET_GROUP_STATUS($event.target.value)"
-                >
-                <span>Не активна</span>
-              </label>
-            </div>
-          </div>
-        </div>
+        
       </div>
 
-      <div class="drop" @dragover.prevent @drop="onDrop">
-        <div class="helper"></div>
-        <label v-if="!imgSrc" class="button">
-          Перетащите или выберите изображение
-          <input type="file" name="image" @change="onChange">
-        </label>
-        <div class="hidden" v-else :class="{ 'image': true }">
-          <img :src="imgSrc" alt class="img">
-          
-          <button class="button button_remove" type="button" @click="removeImage">Удалить</button>
-        </div>
-      </div>
+      <AvatarUploader :avatar="avatar" v-model="avatar"/>
 
       <div>
         <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
       </div>
-
-      <p v-if="notImage" style="text-align: center; color: red;">{{ notImage }}</p>
 
       <button type="submit" class="btn btn-primary">Создать</button>
     </form>
@@ -98,24 +64,30 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import vSelect from "vue-select";
+import AvatarUploader from "../Controls/AvatarUploader";
 
 export default {
   name: "ModalGroupCreate",
-  components: { vSelect },
+    
+  components: { vSelect,AvatarUploader },
+    
   computed: {
     ...mapGetters('groups', ['groupData', 'imageUploadPercentage']),
     ...mapGetters({
-      userData: "user/userData",
+        channels: 'channels/channels',
+        userData: "user/userData",
+        addingChannelsData:"groups/addingChannelsData"
     })
   },
+    
   data() {
     return {
-      img: "",
-      imgSrc: "",
-      notImage: "",
+      avatar:null,
+      errors:{},  
       upLoadStarted: false
     };
   },
+    
   methods: {
     ...mapMutations('groups', [
       'SET_GROUP_DATA',
@@ -125,63 +97,56 @@ export default {
       'SET_GROUP_STATUS',
       'SET_GROUP_OWNER_ID',
       'SET_GROUP_USER_IDS',
+      'SET_GROUP_ID_FOR_ADDING_CHANNEL',
+      'SET_AVAILABLE_CHANNELS_TO_ADD',
+      'SET_CHANNELS_TO_SEARCH'  
     ]),
+      
     ...mapActions('groups', ['CREATE_GROUP', 'CREATE_GROUP_AVATAR']),
+
+      ...mapActions('common',[
+          'MAKE_REQUEST',
+      ]),
+
+      ...mapMutations({
+          SET_MODAL: "modal/SET_MODAL"
+      }),
+      
     async onSubmit() {
       this.SET_GROUP_OWNER_ID(this.userData.user_id);
+      this.errors = {};
 
-      if (this.img) {
+      if (this.avatar) {
         this.upLoadStarted = true;
-        await this.CREATE_GROUP_AVATAR(this.img).then(
-          () => (this.upLoadStarted = false)
-        );
+        
+        await this.MAKE_REQUEST({name:'groups/CREATE_GROUP_AVATAR',params:this.avatar})
+            .then(() => this.upLoadStarted = false);
       }
 
-      this.CREATE_GROUP().then(() => this.$swal({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 4000,
-        type: 'success',
-        title: 'Группа создана'
-      }));
+      this.MAKE_REQUEST({name:'groups/CREATE_GROUP',params:null}).then(() => {
+          this.$swal({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 4000,
+              type: 'success',
+              title: 'Группа создана'
+          })
+          
+          this.openChannelsAdding(this.groupData.id);
+      }).catch((err)=>{
+          if(err.status == 422){
+              this.errors = err.body.errors;
+          }
+      });
     },
-    createFormData(file) {
-      let formData = new FormData();
-      formData.append("avatar", file);
-      this.img = formData;
-    },
-    onDrop: function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      const files = e.dataTransfer.files;
-      this.createImage(files[0]);
-      this.createFormData(files[0]);
-    },
-    onChange(e) {
-      this.imgSrc = "";
-      const files = e.target.files || e.dataTransfer.files;
-      const fileType = files[0].type.split("/");
 
-      if (files.length && fileType[0] === "image") {
-        this.notImage = "";
-        this.createImage(files[0]);
-        this.createFormData(files[0]);
-      } else {
-        this.notImage = "Выберите изображение, пожалуйста";
-      }
-    },
-    createImage(file) {
-      const reader = new FileReader();
-
-      reader.onload = e => {
-        this.imgSrc = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    },
-    removeImage() {
-      this.imgSrc = "";
-    }
+      async openChannelsAdding(group_id) {
+          this.SET_MODAL({name: 'ModalGroupAddChannels'});
+          await this.SET_AVAILABLE_CHANNELS_TO_ADD({group_id:group_id, channels: this.channels});
+          this.SET_GROUP_ID_FOR_ADDING_CHANNEL(group_id);
+          this.SET_CHANNELS_TO_SEARCH(this.addingChannelsData.availableChannels);
+      },  
   }
 };
 </script>

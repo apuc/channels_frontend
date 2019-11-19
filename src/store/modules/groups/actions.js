@@ -37,6 +37,9 @@ export default {
       }
     }
   },
+  
+  
+  
   /**
    * Get one group data
    *
@@ -52,90 +55,61 @@ export default {
       )
       .catch(error => console.log('GET_GROUPS: ', error))
   },
+  
+  
+  
   /**
    * Create group and reload groups
    */
-  'CREATE_GROUP': async ({
-    getters,
-    commit,
-    dispatch,
-    rootGetters
-  }) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
-    if (currentDateInSeconds < tokenExpiresIn) {
-      return await Vue.http.post(`${process.env.VUE_APP_API_URL}/group`, getters.groupData)
+  'CREATE_GROUP': async ({getters,commit,}) => {
+    return new Promise(((resolve, reject) => {
+      Vue.http.post(`${process.env.VUE_APP_API_URL}/group`, getters.groupData)
         .then(
           async res => {
-              const createdGroupData = res.body.data;
-              router.push({
-                path: `/group/${createdGroupData.slug}`
-              });
-              commit('modal/SET_MODAL', {name: 'ModalGroupAddChannels'}, {
-                root: true
-              });
-              commit('ADD_CREATED_GROUP', createdGroupData);
-              return res;
-            },
-            err => console.log(err))
+            const createdGroupData = res.body.data;
+            router.push({
+              path: `/group/${createdGroupData.slug}`
+            });
+            commit('modal/DELETE_MODAL', null, {root: true});
+            commit('ADD_CREATED_GROUP', createdGroupData);
+            resolve(res);
+          },
+          err => reject(err)
+        )
         .catch(error => console.log('CREATE_GROUP', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
-          .then(() => {
-            dispatch('CREATE_GROUP');
-          })
-      }
-    }
+    }));
   },
+  
+  
   /**
    * Add avatar to the group and write avatar_id to the store
    *
    * @param img - image form data
    */
-  'CREATE_GROUP_AVATAR': async ({
-    commit,
-    dispatch,
-    rootGetters
-  }, img) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
-    if (currentDateInSeconds < tokenExpiresIn) {
-      await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/avatar`, img, {
-          headers: {
-            "Content-Type": "multipart/form-data;"
-          },
-          progress(e) {
-            if (e.lengthComputable) {
-              commit('SET_AVATAR_UPLOAD_PROGRESS', e.loaded / e.total * 100);
-            }
-          }
-        })
-        .then(
-          async res => {
-              commit('SET_GROUP_AVATAR_ID', res.body.data.id);
-              commit('SET_AVATAR_UPLOAD_PROGRESS', 0);
-            },
-            err => console.log(err)
-        )
-        .catch(error => console.log('CREATE_GROUP_AVATAR: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
-          .then(() => {
-            dispatch('CREATE_GROUP_AVATAR', img);
-          })
+  'CREATE_GROUP_AVATAR': async ({commit}, img) => {
+    await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/avatar`,img, {
+      headers: {
+        "Content-Type": "multipart/form-data;"
+      },
+      progress(e) {
+        if (e.lengthComputable) {
+          commit('SET_AVATAR_UPLOAD_PROGRESS', e.loaded / e.total * 100);
+        }
       }
-    }
+    })
+      .then(
+        async res => {
+          commit('SET_GROUP_AVATAR', res.body.data);
+          commit('SET_AVATAR_UPLOAD_PROGRESS', 0);
+        },
+        err => {
+          console.log(err)
+        }
+      )
+      .catch(error => console.log('CREATE_GROUP_AVATAR: ', error))
   },
+  
+  
   /**
    * Set data of editing group to the store
    *
@@ -148,53 +122,42 @@ export default {
     const editingGroup = await getters.groups.find(group => group.id === groupId);
     await commit('SET_GROUP_DATA', editingGroup);
   },
+  
+  
   /**
    * Edit chosen group
    */
-  'EDIT_GROUP': async ({
-    getters,
-    commit,
-    dispatch,
-    rootGetters
-  }) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-
-    if (currentDateInSeconds < tokenExpiresIn) {
-      return await Vue.http.put(`${process.env.VUE_APP_API_URL}/group/${getters.groupData.id}`, {
-          title: getters.groupData.title,
-          slug: getters.groupData.slug,
-          status: getters.groupData.status,
-          user_ids: [rootGetters['user/userData'].user_id],
-          avatar: getters.groupData.avatar.id,
-          owner_id: getters.groupData.owner_id,
-        })
+  'EDIT_GROUP': async ({getters,commit,rootGetters}) => {
+    return new Promise((resolve, reject)=>{
+      Vue.http.put(`${process.env.VUE_APP_API_URL}/group/${getters.groupData.id}`, {
+        title: getters.groupData.title,
+        slug: getters.groupData.slug,
+        status: getters.groupData.status,
+        user_ids: [rootGetters['user/userData'].user_id],
+        avatar: typeof getters.groupData.avatar == 'number' ? getters.groupData.avatar : null,
+        owner_id: getters.groupData.owner_id,
+      })
         .then(
           async res => {
-              const newGroupData = res.body.data;
-              commit('SET_EDITED_GROUP_DATA', newGroupData);
-              if (newGroupData.id === getters.currentGroupData.id) {
-                commit('SET_CURRENT_GROUP_DATA', newGroupData);
-                commit('SET_CURRENT_GROUP_CHANNELS_TO_SEARCH', newGroupData.channels);
-              }
-              commit('modal/DELETE_MODAL', null, {root: true});
-              return res;
-            },
-            err => console.log(err)
+            const newGroupData = res.body.data;
+            commit('SET_EDITED_GROUP_DATA', newGroupData);
+            if (newGroupData.id === getters.currentGroupData.id) {
+              commit('SET_CURRENT_GROUP_DATA', newGroupData);
+              commit('SET_CURRENT_GROUP_CHANNELS_TO_SEARCH', newGroupData.channels);
+            }
+            commit('modal/DELETE_MODAL', null, {root: true});
+            resolve(res);
+          },
+          err => {
+            reject(err);
+          }
         )
         .catch(error => console.log('EDIT_GROUP: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
-          .then(() => {
-            dispatch('EDIT_GROUP');
-          })
-      }
-    }
+    });
   },
+  
+  
+  
   /**
    * Delete chosen group
    */
@@ -239,6 +202,8 @@ export default {
       }
     }
   },
+  
+  
   /**
    * Add channels to group
    *
@@ -291,6 +256,8 @@ export default {
       }
     }
   },
+  
+  
   /**
    * Delete channel from group
    */

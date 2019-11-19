@@ -2,38 +2,49 @@ export default {
   'USER_GROUPS': (state, groups) => {
     state.groups = groups;
   },
+  
   'SET_GROUP_DATA': (state, data) => {
     state.groupData = data;
   },
+  
   'SET_GROUP_ID': (state, id) => {
     state.groupData.id = id;
   },
+  
   'SET_GROUP_TITLE': (state, title) => {
     state.groupData.title = title;
   },
+  
   'SET_GROUP_SLUG': (state, slug) => {
     state.groupData.slug = slug;
   },
+  
   'SET_GROUP_STATUS': (state, status) => {
     state.groupData.status = status;
   },
+  
   'SET_CURRENT_GROUP_DATA': (state, data) => {
     state.currentGroupData = data;
   },
+  
   'SET_CURRENT_GROUP_CHANNELS_TO_SEARCH': (state, channels) => {
     state.currentGroupData.channelsToSearch = channels;
   },
-  'SET_GROUP_AVATAR_ID': (state, avatar_id) => {
-    state.groupData.avatar.id = avatar_id;
+  
+  'SET_GROUP_AVATAR': (state, avatar) => {
+    state.groupData.avatar = avatar.id;
   },
+  
   'SET_GROUP_USER_IDS': (state, users) => {
     for (let i = 0; i < users.length; i++) {
       state.groupData.user_ids.push(users[i]);
     }
   },
+  
   'SET_GROUP_ID_TO_DELETE': (state, id) => {
     state.groupToDelete = id;
   },
+  
   'SET_GROUP_ID_FOR_ADDING_CHANNEL': (state, group_id) => {
     state.addingChannelsData.id = group_id;
   },
@@ -44,8 +55,14 @@ export default {
    * @param data.channels {Array} - users channels
    */
   'SET_AVAILABLE_CHANNELS_TO_ADD': (state, data) => {
+    
+    if(!data.group_id){
+      state.addingChannelsData.availableChannels = data.channels;
+      return;
+    }
+    
     const group = state.groups.find(group => group.id === data.group_id);
-
+    
     state.addingChannelsData.availableChannels = data.channels.filter(channel => {
       return !group.channels.some(groupChannel => {
         return channel.id === groupChannel.id;
@@ -100,7 +117,8 @@ export default {
   },
   'SET_EDITED_GROUP_DATA': (state, data) => {
     for (let i = 0; i < state.groups.length; i++) {
-      if (state.groups[i].id === data.group_id) {
+      if (state.groups[i].id === data.id) {
+        console.log('updateeeee');
         state.groups[i].title = data.title;
         state.groups[i].slug = data.slug;
         state.groups[i].status = data.status;

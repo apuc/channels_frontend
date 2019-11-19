@@ -9,20 +9,22 @@ export default {
    * @returns {Promise<unknown>}
    * @constructor
    */
-  'MAKE_REQUEST':async ({dispatch,rootGetters},{name,params}) => {
-    
+  'MAKE_REQUEST': async ({dispatch, rootGetters}, {name, params}) => {
+
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
     //если токен не истек то делаем запрос
     if (currentDateInSeconds < tokenExpiresIn) {
-      return new Promise((resolve,reject)=>{
-        dispatch(name,params,{root:true}).then(res =>{
-          resolve(res)
-        }).catch(err =>{
-          reject(err)
-        });
+      return await new Promise((resolve, reject) => {
+         dispatch(name, params, {root: true})
+          .then(res => {
+            resolve(res)
+          })
+          .catch(err => {
+            reject(err)
+          });
       });
     }
 
@@ -31,11 +33,11 @@ export default {
       await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
         root: true
       })
-        .then(() => {
-          return new Promise((resolve,reject)=>{
-            dispatch(name,params,{root:true}).then(res =>{
+        .then(async () => {
+          return await new Promise((resolve, reject) => {
+            dispatch(name, params, {root: true}).then(res => {
               resolve(res)
-            }).catch(err =>{
+            }).catch(err => {
               reject(err)
             });
           });
@@ -44,5 +46,5 @@ export default {
 
     //тут по идее должен быть разлогин если оба токена закончились
   },
-  
+
 };

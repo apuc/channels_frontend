@@ -4,6 +4,7 @@ import mutations from './mutations';
 
 const state = {
   groups: [],
+  
   currentGroupData: {
     id: '',
     channels: [],
@@ -14,21 +15,24 @@ const state = {
     owner_id: '',
     avatar: undefined,
   },
+  
   groupData: {
     id: undefined,
     title: '',
     slug: '',
-    status: '',
+    status: 'active',
     user_ids: [],
     owner_id: '',
     avatar: undefined,
   },
+  
   addingChannelsData: {
     id: '',
     availableChannels: [],
     channelsToSearch: [],
     channelsToAdd: [],
   },
+  
   groupToDelete: '',
   channelToDelete: {},
   isGroupsLoading: false,

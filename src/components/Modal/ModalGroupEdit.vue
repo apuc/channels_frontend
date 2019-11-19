@@ -21,6 +21,12 @@
               :value="groupData.title"
               @input="SET_GROUP_TITLE($event.target.value)"
             >
+
+            <p
+              v-if="errors.hasOwnProperty('title')"
+              v-for="error in errors['title']"
+              style="color:red">{{error}}
+            </p>
           </div>
 
           <div class="form-group">
@@ -30,90 +36,38 @@
               type="text"
               id="slug"
               class="form-control"
-              :value="groupData.title"
+              :value="groupData.slug"
               @input="SET_GROUP_SLUG($event.target.value)"
             >
+
+            <p
+              v-if="errors.hasOwnProperty('slug')"
+              v-for="error in errors['slug']"
+              style="color:red">{{error}}
+            </p>
           </div>
         </div>
 
         <div class="col-6">
           <div class="form-group">
-            <p>Group status</p>
-
-            <div class="form-check-inline">
-              <label for="active" class="form-check-label">
-                <input
-                  type="radio"
-                  id="active"
-                  class="form-check-input"
-                  value="active"
-                  v-model="groupData.status"
-                  @input="SET_GROUP_STATUS($event.target.value)"
-                >
-                <span>active</span>
-              </label>
-            </div>
-
-            <div class="form-check-inline">
-              <label for="disable" class="form-check-label">
-                <input
-                  type="radio"
-                  id="disable"
-                  class="form-check-input"
-                  value="disable"
-                  v-model="groupData.status"
-                  @input="SET_GROUP_STATUS($event.target.value)"
-                >
-                <span>disable</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <p>Add channels</p>
+            <p>Добавить каналы</p>
 
             <button
               type="button"
               class="btn btn-primary"
-              @click="SET_MODAL({name: 'ModalGroupAddChannels'})"
-            >Add channels
+              @click="openChannelsAdding(groupData.id)"
+            >Добавить каналы
             </button>
           </div>
         </div>
       </div>
 
-      <div class="drop" @dragover.prevent @drop="onDrop">
-        <div class="helper"></div>
-        <label v-if="!groupData.avatar" class="button">
-          Перетащите или выберите изображение
-          <input type="file" name="image" @change="onChange">
-        </label>
-        <div class="hidden" v-else :class="{ 'image': true }">
-          <img :src="imgSrc"
-               alt=""
-               class="img"
-               v-if="imgSrc"
-          />
-          <v-icon name="spinner"
-                  scale="3"
-                  spin
-                  v-else
-          />
-
-          <button class="button button_remove" 
-                  type="button" 
-                  @click="removeImage"
-          >
-            Удалить
-          </button>
-        </div>
-      </div>
+      <AvatarUploader :avatar="avatar" v-model="avatar"/>
 
       <div>
         <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
       </div>
 
-      <p v-if="notImage" style="text-align: center; color: red;">{{ notImage }}</p>
 
       <footer class="modal__footer">
         <button type="submit" class="btn btn-primary mb-1">Сохранить</button>
@@ -124,133 +78,136 @@
 </template>
 
 <script>
-  import {mapGetters, mapMutations, mapActions} from "vuex";
-  import vSelect from "vue-select";
+    import {mapGetters, mapMutations, mapActions} from "vuex";
+    import vSelect from "vue-select";
+    import AvatarUploader from "../Controls/AvatarUploader";
 
-  export default {
-    name: "ModalGroupEdit",
-    components: {
-      vSelect
-    },
-    computed: {
-      ...mapGetters('groups', ['groupData', 'imageUploadPercentage']),
-      ...mapGetters({
-        userData: "user/userData",
-      })
-    },
-    created() {
-      this.GET_GROUP_DATA(this.groupData.id).then(response => {
-        this.SET_GROUP_DATA(response);
+    export default {
+        name: "ModalGroupEdit",
 
-        if (response.avatar) {
-          this.imgSrc = response.avatar.average;
-        }
-      });
+        components: {
+            vSelect,
+            AvatarUploader
+        },
 
-    },
-    beforeDestroy() {
-      this.SET_GROUP_DATA({
-        id: "",
-        title: "",
-        slug: "",
-        status: "",
-        user_ids: [],
-        owner_id: "",
-        avatar: undefined
-      });
-    },
-    data() {
-      return {
-        img: "",
-        imgSrc: "",
-        notImage: "",
-        upLoadStarted: false
-      };
-    },
-    methods: {
-      ...mapMutations('groups', [
-        'SET_GROUP_DATA',
-        'SET_GROUP_TITLE',
-        'SET_GROUP_SLUG',
-        'SET_GROUP_OWNER_ID',
-        'SET_GROUP_STATUS',
-      ]),
-      ...mapMutations({
-        SET_MODAL: "modal/SET_MODAL"
-      }),
-      ...mapActions('groups', ['GET_GROUP_DATA', 'EDIT_GROUP', 'CREATE_GROUP_AVATAR']),
+        computed: {
+            ...mapGetters('groups', ['groupData', 'imageUploadPercentage']),
+            ...mapGetters({
+                channels: 'channels/channels',
+                userData: "user/userData",
+                addingChannelsData:"groups/addingChannelsData"
+            })
+        },
 
-        /**
-         * Сабмит
-          * @returns {Promise<void>}
-         */ 
-      async onSubmit() {
-        this.SET_GROUP_OWNER_ID(this.userData.user_id);
+        created() {
+            this.GET_GROUP_DATA(this.groupData.id).then(response => {
+                let groupData = Object.assign({},response);
+                
+                if(groupData.avatar)
+                  groupData.avatar = response.avatar.id;
+                
+                this.SET_GROUP_DATA(groupData);
 
-        if (this.img) {
-          this.upLoadStarted = true;
-          await this.CREATE_GROUP_AVATAR(this.img)
-            .then(() => (this.upLoadStarted = false));
-        }
+                if (response.avatar) {
+                    this.avatar = response.avatar;
+                }
+            });
 
-        this.EDIT_GROUP().then(() => this.$swal({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 4000,
-          type: 'success',
-          title: 'Данные группы изменены'
-        }));
-      },
-        
-      createFormData(file) {
-        let formData = new FormData();
-        formData.append("avatar", file);
-        this.img = formData;
-      },
-        
-      onDrop: function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        const files = e.dataTransfer.files;
-        this.createImage(files[0]);
-        this.createFormData(files[0]);
-      },
-        
-      onChange(e) {
-        this.imgSrc = "";
-        const files = e.target.files || e.dataTransfer.files;
-        const fileType = files[0].type.split("/");
+        },
 
-        if (files.length && fileType[0] === "image") {
-          this.notImage = "";
-          this.createImage(files[0]);
-          this.createFormData(files[0]);
-        } else {
-          this.notImage = "Выберите изображение, пожалуйста";
-        }
-      },
-        
-      createImage(file) {
-        const reader = new FileReader();
+        beforeDestroy() {
+            this.SET_GROUP_DATA({
+                id: "",
+                title: "",
+                slug: "",
+                status: "",
+                user_ids: [],
+                owner_id: "",
+                avatar: undefined
+            });
+        },
 
-        reader.onload = e => {
-          this.imgSrc = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      },
-        
-      removeImage() {
-        this.imgSrc = "";
-      }
-    },
-  };
+        data() {
+            return {
+                errors: {},
+                avatar: null,
+                upLoadStarted: false
+            };
+        },
+
+        methods: {
+            ...mapMutations('groups', [
+                'SET_GROUP_DATA',
+                'SET_GROUP_TITLE',
+                'SET_GROUP_SLUG',
+                'SET_GROUP_OWNER_ID',
+                'SET_GROUP_STATUS',
+                'SET_GROUP_AVATAR',
+                'SET_GROUP_ID_FOR_ADDING_CHANNEL',
+                'SET_AVAILABLE_CHANNELS_TO_ADD',
+                'SET_CHANNELS_TO_SEARCH'
+            ]),
+
+            ...mapActions('common', [
+                'MAKE_REQUEST',
+            ]),
+
+            ...mapMutations({
+                SET_MODAL: "modal/SET_MODAL"
+            }),
+
+            ...mapActions('groups', ['GET_GROUP_DATA', 'EDIT_GROUP', 'CREATE_GROUP_AVATAR']),
+
+            /**
+             * Сабмит
+             * @returns {Promise<void>}
+             */
+            async onSubmit() {
+                this.SET_GROUP_OWNER_ID(this.userData.user_id);
+                this.errors = {};
+
+                if (this.avatar instanceof FormData) {
+                    this.upLoadStarted = true;
+
+                    await this.MAKE_REQUEST({name: 'groups/CREATE_GROUP_AVATAR', params: this.avatar})
+                        .then(() => this.upLoadStarted = false);
+                }
+                
+                if(this.avatar == null){
+                    this.SET_GROUP_AVATAR({id:null});
+                }
+                
+                this.MAKE_REQUEST({name: 'groups/EDIT_GROUP', params: null})
+                    .then(() => this.$swal({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        type: 'success',
+                        title: 'Данные группы изменены'
+                    }))
+                    .catch((err) => {
+                        if (err.status == 422) {
+                            this.errors = err.body.errors;
+                        }
+                    });
+            },
+
+            async openChannelsAdding(group_id) {
+                this.SET_MODAL({name: 'ModalGroupAddChannels'});
+                await this.SET_AVAILABLE_CHANNELS_TO_ADD({group_id:group_id, channels: this.channels});
+                this.SET_GROUP_ID_FOR_ADDING_CHANNEL(group_id);
+                this.SET_CHANNELS_TO_SEARCH(this.addingChannelsData.availableChannels);
+            },
+        },
+    };
 </script>
 
 <style scoped>
   textarea {
     resize: none;
   }
+
   .button {
     position: relative;
     padding: 15px 35px;
