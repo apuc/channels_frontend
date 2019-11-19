@@ -58,10 +58,18 @@
                   v-else
                   @click="SET_MODAL({name: 'ModalEditProfile'})"
           >
-            <img class="user__avatar-img"
-                 :src="userAvatar"
+            <img v-if="userData.avatar"
+                 class="user__avatar-img"
+                 :src="userData.avatar.small"
                  alt=""
             >
+
+            <img v-else
+                 class="user__avatar-img"
+                 src="../../assets/img/no-avatar.png"
+                 alt=""
+            >
+            
             <span class="btn-profile__name">{{userData.username}}</span>
           </button>
 
@@ -127,21 +135,21 @@
 
   export default {
     components: {NavSectionChannels, NavSectionGroups},
+      
     computed: {
       ...mapGetters('user', ['userData', 'isUserLoading', 'friendshipRequests']),
       ...mapGetters('channels', ['channels', 'isChannelsLoading']),
       ...mapGetters('groups', ['groups', 'isGroupsLoading']),
       ...mapGetters('messages', ['notifications']),
-      userAvatar() {
-        return this.userData.avatar ? this.userData.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e9022/hu0wa149Jn0.jpg?ava=1';
-      },
     },
+      
     props: {
       isSidebarVisible: {
         type: Boolean,
         default: true
       }
     },
+      
     data() {
       return {
         info: [
@@ -169,25 +177,36 @@
         },
       }
     },
+      
     methods: {
       ...mapMutations({
         SET_MODAL: 'modal/SET_MODAL',
         SET_GROUP_ID_FOR_ADDING_CHANNEL: 'groups/SET_GROUP_ID_FOR_ADDING_CHANNEL',
       }),
+        
+        
       ...mapActions({
         ADD_CHANNELS_TO_GROUP: 'groups/ADD_CHANNELS_TO_GROUP',
         LOGOUT: 'auth/LOGOUT',
       }),
+        
+        
         isNotificationInChannel(channelId) {
             return !!this.notifications.find(id => channelId === id);
         },
+        
+        
       async handleDrop(group_id, data, event) {
         await this.SET_GROUP_ID_FOR_ADDING_CHANNEL(group_id);
         await this.ADD_CHANNELS_TO_GROUP([data]);
       },
+        
+        
       openRequests() {
         this.SET_MODAL({name: 'ModalUserContacts'})
       },
+        
+        
       isSidebarVisibleHandler(value) {
         this.$emit('input', value);
       }

@@ -12,5 +12,8 @@ export default {
   contactsToAddSearch: state => state.contactsToAdd.searchUsers,
   contactsToAddChannelId: state => state.contactsToAdd.channelId,
   currentChannelUsers: state => state.currentChannelUsers.users,
-  currentChannelSearchUsers: state => state.currentChannelUsers.searchUsers
+  currentChannelSearchUsers: state => state.currentChannelUsers.searchUsers,
+  userInCurrentChannel: state => id => {
+    return state.currentChannelUsers.users.find(user => user.id === id);
+  }
 };

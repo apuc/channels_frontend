@@ -13,24 +13,34 @@
 </template>
 
 <script>
-  import {mapMutations, mapActions} from 'vuex'
+  import {mapMutations, mapActions, mapGetters } from 'vuex'
   import ChatHeader from './ChatHeader';
   import ChatMessages from './ChatMessages';
   import ChatFooter from '../Chat/ChatFooter';
   import Attachment from '../Attachment/Attachment';
 
   export default {
+      
     components: {
       Attachment,
       ChatHeader,
       ChatMessages,
       ChatFooter
     },
+      
     data() {
       return {
         over: false
       }
     },
+      
+    computed:{
+        ...mapGetters({
+            userInCurrentChannel: 'channels/userInCurrentChannel',
+            currentChannelData: 'channels/currentChannelData',
+            currentUserInfo:'user/currentUserInfo',
+        }),
+    },  
       
     methods: {
       ...mapMutations('channels', ['SET_CURRENT_CHANNEL_DATA', 'SET_CURRENT_CHANNEL_USERS']),
@@ -38,16 +48,33 @@
         SET_MESSAGES: 'messages/SET_MESSAGES',
       }),
       ...mapActions({
-        ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENTS'
+        ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENTS',
+        SET_CURRENT_CHANNEL_DATA:'channels/SET_CURRENT_CHANNEL_DATA'  
       }),
+        
       dragSwitcher() {
         this.over = !this.over;
       },
+        
       onDrop(e) {
         this.dragSwitcher();
         this.ADD_ATTACHMENTS(e.dataTransfer.files);
       }
     },
+      
+    created(){
+        let slug = window.location.pathname.replace('/','');
+        
+        if(this.currentChannelData.id === ""){
+            this.SET_CURRENT_CHANNEL_DATA(slug).then(res=>{
+                if(this.currentChannelData.private == 1 && !this.userInCurrentChannel(this.currentUserInfo.user_id)){
+                    this.$router.push('/not-found');
+                }
+            })
+        }
+       
+    },  
+      
     beforeDestroy() {
       this.SET_CURRENT_CHANNEL_DATA({
         id: '',
@@ -60,6 +87,7 @@
         private: '',
         avatar: undefined,
       });
+      
       this.SET_CURRENT_CHANNEL_USERS({
         id: '',
         title: '',
