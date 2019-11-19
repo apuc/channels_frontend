@@ -68,7 +68,7 @@
         if(this.currentChannelData.id === ""){
             this.SET_CURRENT_CHANNEL_DATA(slug).then(res=>{
                 if(this.currentChannelData.private == 1 && !this.userInCurrentChannel(this.currentUserInfo.user_id)){
-                    this.$router.push('/not-found');
+                    //this.$router.push('/not-found');
                 }
             })
         }
