@@ -20,10 +20,17 @@
         <span class="group-info__header-text">Информация о группе</span>
       </header>
 
-      <img
-        :src="currentGroupData.avatar ? currentGroupData.avatar.small : 'https://pp.userapi.com/c846524/v846524878/e3cbe/QHn1Jw-tZfA.jpg'"
-        alt=""
-        class="group-info__img"
+      <img v-if="currentGroupData.avatar"
+           :src="currentGroupData.avatar.small"
+           alt=""
+           class="group-info__img"
+      >
+
+      <img v-else
+           src="../../assets/img/no-avatar.png"
+           alt=""
+           class="group-info__img"
+
       >
 
       <div class="group-info__info">

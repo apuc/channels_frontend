@@ -20,10 +20,17 @@
         <span class="group-info__header-text">Информация о канале</span>
       </header>
 
-      <img
-        :src="currentChannelData.avatar ? currentChannelData.avatar.small : 'https://pp.userapi.com/c846524/v846524878/e3cbe/QHn1Jw-tZfA.jpg'"
-        alt=""
-        class="group-info__img"
+      <img v-if="currentChannelData.avatar"
+           :src="currentChannelData.avatar.small"
+           alt=""
+           class="group-info__img"
+      >
+
+      <img v-else
+           src="../../assets/img/no-avatar.png"
+           alt=""
+           class="group-info__img"
+          
       >
 
       <div class="group-info__info">
@@ -89,40 +96,51 @@
   export default {
     mixins: [commonMethods],
     computed: {
+        
       ...mapGetters({
         currentChannelData: 'channels/currentChannelData',
         userData: 'user/userData',
       }),
+        
       fadeUsers() {
         return this.currentChannelData.count ? 'fade-users_active' : 'fade-users'
       },
+        
       fadePreloader() {
         return this.currentChannelData.count ? 'fade-preloader' : 'fade-preloader_active'
       },
     },
+      
+      
     data() {
       return {
         usersCount: null,
         isChatInfoOpened: false
       }
     },
+      
+      
     methods: {
       ...mapMutations({
         SET_MODAL: 'modal/SET_MODAL',
       }),
+        
       ...mapMutations('channels', [
         'SET_CHANNEL_ID_TO_DELETE',
         'REMOVE_DELETED_CHANNEL_FROM_STORE',
         'SET_CONTACTS_FREE_TO_ADD_SEARCH',
         'SET_CONTACTS_TO_ADD_CHANNEL_ID',
       ]),
+        
       ...mapActions({
         LOGOUT: 'auth/LOGOUT',
       }),
+        
       ...mapActions('channels', [
         'DELETE_USER_FROM_CHANNEL',
         'DELETE_CHANNEL',
       ]),
+        
       status() {
         const statuses = {
           active: 'активный',
@@ -131,6 +149,7 @@
 
         return statuses[this.currentChannelData.status];
       },
+        
       type() {
         const types = {
           wall: 'стена',
@@ -140,6 +159,7 @@
 
         return types[this.currentChannelData.type];
       },
+        
       isPrivate() {
         const types = {
           '0': 'Публичный',

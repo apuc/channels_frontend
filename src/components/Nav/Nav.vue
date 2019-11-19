@@ -4,7 +4,7 @@
       <header class="nav-header">
         <div class="mr-3"
              @mouseover="addMenuVisible = true"
-             @mouseout="addMenuVisible = true"
+             @mouseout="addMenuVisible = false"
         >
           <button class="addButton" type="button">
             <img src="../../assets/img/menu_icon.png" alt="">

@@ -8,7 +8,16 @@
       :title="data.title"
       @click.native="onChannelChangeHandler($event.target, data.id, type)"
     >
-      <img :src="data.avatar ? data.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
+      <img v-if="data.avatar"
+           :src="data.avatar.small"
+           alt=""
+           class="avatar"
+           width="50"
+           height="50"
+      >
+
+      <img v-else="data.avatar"
+           src="../../assets/img/no-avatar.png"
            alt=""
            class="avatar"
            width="50"
@@ -70,7 +79,8 @@
       }
     },
     data() {
-      return {};
+      return {
+      };
     },
     computed: {
       ...mapGetters('channels', ['currentChannelData', 'contactsToAddUsers']),
