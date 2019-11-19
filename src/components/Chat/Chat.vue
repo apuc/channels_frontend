@@ -38,7 +38,8 @@
         ...mapGetters({
             userInCurrentChannel: 'channels/userInCurrentChannel',
             currentChannelData: 'channels/currentChannelData',
-            currentUserInfo:'user/currentUserInfo',
+            userData:'user/userData',
+            currentChannelUsers:'channels/currentChannelUsers',
         }),
     },  
       
@@ -65,14 +66,13 @@
     created(){
         let slug = window.location.pathname.replace('/','');
         
-        if(this.currentChannelData.id === ""){
+        if(!this.currentChannelData.id){
             this.SET_CURRENT_CHANNEL_DATA(slug).then(res=>{
-                if(this.currentChannelData.private == 1 && !this.userInCurrentChannel(this.currentUserInfo.user_id)){
-                    //this.$router.push('/not-found');
+                if(this.currentChannelData.private == 1 && !this.userInCurrentChannel(this.userData.user_id)){
+                    this.$router.push('/not-found');
                 }
             })
         }
-       
     },  
       
     beforeDestroy() {

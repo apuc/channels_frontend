@@ -178,7 +178,7 @@ export default {
       commit('SET_CURRENT_CHANNEL_DATA', data);
     });
 
-    dispatch('GET_CHANNEL_USERS', getters.currentChannelData.id)
+    await dispatch('GET_CHANNEL_USERS', getters.currentChannelData.id)
       .then(data => {
         dispatch('SET_CURRENT_CHANNEL_USERS', data);
 
