@@ -7,14 +7,14 @@
     
     <ChatMessages/>
     
-    <ChatFooter v-if="userInCurrentChannel(userData.user_id)"/>
+    <ChatFooter v-if="showFooterWall && userInCurrentChannel(userData.user_id)"/>
     
     <div v-else class="not-in-channel">
-      Чтобы отправлять сообщения вступите в канал!
+      {{footerText}}
     </div>
     
     <div 
-      v-if="userInCurrentChannel(userData.user_id) && over" 
+      v-if="showFooterWall && userInCurrentChannel(userData.user_id) && over" 
       class="chat__drag-zone"
       @dragover.prevent 
       @drop.prevent.stop="onDrop"
@@ -53,6 +53,35 @@
             userData:'user/userData',
             currentChannelUsers:'channels/currentChannelUsers',
         }),
+
+        /**
+         * Показывать ли футер для канала типа стена
+         * @returns {boolean}
+         */
+        showFooterWall(){
+           let channel = this.$store.getters['channels/currentChannelData'];
+           let currentUser = this.$store.getters['user/userData'].user_id;
+           
+           if(channel.type == 'wall' && currentUser != channel.owner_id){
+               return false;
+           }
+           
+           return true;
+        },
+
+        /**
+         * Текст если отправка сообщений не доступна
+         * @returns {string}
+         */
+        footerText(){
+            let channelType = this.$store.getters['channels/currentChannelData'].type;
+            
+            if(channelType == 'chat'){
+                return 'Чтобы отправлять сообщения вступите в канал!'
+            }
+            
+            return '';
+        }
     },  
       
     methods: {

@@ -21,8 +21,13 @@
       
     computed: {
       ...mapGetters({
-        messages: 'messages/messages'
-      })
+        messages: 'messages/messages',
+        currentChannel: 'channels/currentChannelData',
+      }),
+        
+      lastPage(){
+         return this.$store.state.messages.currentPage == this.$store.state.messages.lastPage; 
+      },  
     },
       
     methods: {
@@ -35,8 +40,14 @@
         *Подгрузка новых сообщений при скроле чата 
         */ 
       onScroll ({ target }) {
-            if (target.scrollTop == 0 && this.$store.state.messages.currentPage != this.$store.state.messages.lastPage) {
+            if (target.scrollTop == 0 && !this.lastPage && this.currentChannel.type !== 'wall') {
                 this.isScroll = true;
+                this.GET_MESSAGES(true).then(res => {});
+            }
+            
+            let isBottom = target.scrollTop + target.clientHeight >= target.scrollHeight;
+            
+            if(isBottom && !this.lastPage && this.currentChannel.type === 'wall'){
                 this.GET_MESSAGES(true).then(res => {});
             }
       },
@@ -62,11 +73,18 @@
           isScroll:false,
       }
     },
-      
-    updated(){
+
+      /**
+       * Скролл при открытии чата
+        */
+      updated(){
         if(this.isScroll){
             this.$el.scrollTo(0,this.getScrollHeight());
             this.isScroll = false;
+            return;
+        }
+        
+        if(this.currentChannel.type == 'wall'){
             return;
         }
         
