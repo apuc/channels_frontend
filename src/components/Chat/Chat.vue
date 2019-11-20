@@ -50,7 +50,7 @@
       }),
       ...mapActions({
         ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENTS',
-        SET_CURRENT_CHANNEL_DATA:'channels/SET_CURRENT_CHANNEL_DATA'  
+        SET_CURRENT_CHANNEL_DATA_ACRION:'channels/SET_CURRENT_CHANNEL_DATA'  
       }),
         
       dragSwitcher() {
@@ -67,7 +67,7 @@
         let slug = window.location.pathname.replace('/','');
         
         if(!this.currentChannelData.id){
-            this.SET_CURRENT_CHANNEL_DATA(slug).then(res=>{
+            this.SET_CURRENT_CHANNEL_DATA_ACRION(slug).then(res=>{
                 if(this.currentChannelData.private == 1 && !this.userInCurrentChannel(this.userData.user_id)){
                     this.$router.push('/not-found');
                 }
@@ -88,14 +88,7 @@
         avatar: undefined,
       });
       
-      this.SET_CURRENT_CHANNEL_USERS({
-        id: '',
-        title: '',
-        slug: '',
-        status: '',
-        owner_id: '',
-        avatar: undefined,
-      });
+      this.SET_CURRENT_CHANNEL_USERS([]);
       this.SET_MESSAGES([]);
     }
   }

@@ -27,7 +27,7 @@
               height="30"
               alt
             >
-            {{channel.slug}}
+            {{channel.title}}
           </router-link>
 
           <input
@@ -53,6 +53,7 @@
 
   export default {
     name: "ModalGroupAddChannels",
+      
     data() {
       return {
         searchValue: '',
@@ -60,16 +61,23 @@
         channelsToAdd: [],
       }
     },
+      
     computed: {
       ...mapGetters({
         addingChannelsData: 'groups/addingChannelsData',
       }),
     },
+      
     methods: {
       ...mapMutations('groups', ['SET_CHANNELS_TO_ADD', 'SET_CHANNELS_TO_SEARCH', 'CLEAR_ADDING_CHANNELS_DATA']),
       ...mapActions({
         ADD_CHANNELS_TO_GROUP: 'groups/ADD_CHANNELS_TO_GROUP',
       }),
+
+        /**
+         * Добавить каналы
+          * @returns {Promise<void>}
+         */ 
       async submitChannels() {
         await this.SET_CHANNELS_TO_ADD(this.channelsToAdd);
         this.ADD_CHANNELS_TO_GROUP().then(() => this.$swal({
@@ -81,10 +89,12 @@
           title: 'Каналы добавлены'
         }));
       },
+        
       findChannel(value) {
         let currentUserName = '';
         let searchValue = value.toLowerCase();
         let searchResult = [];
+        
         for (let i = 0; i < this.addingChannelsData.availableChannels.length; i++) {
           currentUserName = this.addingChannelsData.availableChannels[i].slug.toLowerCase();
           if (currentUserName.includes(searchValue)) {
@@ -93,6 +103,7 @@
         }
         return searchResult;
       },
+        
       searchChannel(value) {
         this.searchValue = value;
         const searchResult = this.findChannel(value);
@@ -105,6 +116,7 @@
         }
       }
     },
+      
     beforeDestroy() {
       this.CLEAR_ADDING_CHANNELS_DATA();
     },

@@ -4,6 +4,7 @@ import mutations from './mutations';
 
 const state = {
   channels: [],
+  
   currentChannelData: {
     id: '',
     title: '',
@@ -15,6 +16,7 @@ const state = {
     private: '',
     avatar: undefined,
   },
+  
   channelData: {
     id: undefined,
     title: '',
@@ -26,15 +28,18 @@ const state = {
     private: '',
     avatar: undefined,
   },
+  
   currentChannelUsers: {
     users: [],
     searchUsers: [],
   },
+  
   contactsToAdd: {
     users: [],
     searchUsers: [],
     channelId: null
   },
+  
   channelUsers: [],
   channelToDelete: '',
   isChannelsLoading: false,
