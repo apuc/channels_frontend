@@ -1,5 +1,5 @@
 <template>
-  <section class="messages" ref="messagesList" v-scroll="scrollData" @scroll="onScroll">
+  <section class="messages" ref="messagesList" @scroll="onScroll">
     <ChatMessage v-for="(message, index) in messages"
                  :messageData="message"
                  :key="index"
@@ -35,16 +35,9 @@
         *Подгрузка новых сообщений при скроле чата 
         */ 
       onScroll ({ target }) {
-            this.scrollData.bottom = false;
-            this.scrollData.top = target.scrollHeight;
-            
             if (target.scrollTop == 0 && this.$store.state.messages.currentPage != this.$store.state.messages.lastPage) {
-                this.GET_MESSAGES(true).then(res => {
-                    this.scrollData.bottom = true;
-                    this.$nextTick(()=>{
-                        target.scrollTo(0,this.getScrollHeight())
-                    })
-                });
+                this.isScroll = true;
+                this.GET_MESSAGES(true).then(res => {});
             }
       },
 
@@ -66,12 +59,19 @@
       
     data() {
       return {
-          scrollData:{
-              top:0,
-              bottom:true,
-          }
+          isScroll:false,
       }
     },
+      
+    updated(){
+        if(this.isScroll){
+            this.$el.scrollTo(0,this.getScrollHeight());
+            this.isScroll = false;
+            return;
+        }
+        
+        this.$el.scrollTo(0,this.$el.scrollHeight);
+    },  
       
     beforeDestroy() {
       this.OFF_TYPING();
