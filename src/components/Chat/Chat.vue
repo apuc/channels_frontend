@@ -4,9 +4,21 @@
        @dragleave.prevent="dragSwitcher"
   >
     <ChatHeader/>
+    
     <ChatMessages/>
-    <ChatFooter/>
-    <div class="chat__drag-zone" v-if="over" @dragover.prevent @drop.prevent.stop="onDrop">
+    
+    <ChatFooter v-if="userInCurrentChannel(userData.user_id)"/>
+    
+    <div v-else class="not-in-channel">
+      Чтобы отправлять сообщения вступите в канал!
+    </div>
+    
+    <div 
+      v-if="userInCurrentChannel(userData.user_id) && over" 
+      class="chat__drag-zone"
+      @dragover.prevent 
+      @drop.prevent.stop="onDrop"
+    >
       <p class="chat__drag-tip">Drop area</p>
     </div>
   </div>
@@ -47,10 +59,10 @@
       ...mapMutations('channels', ['SET_CURRENT_CHANNEL_DATA', 'SET_CURRENT_CHANNEL_USERS']),
       ...mapMutations({
         SET_MESSAGES: 'messages/SET_MESSAGES',
+        CLEAR_MESSAGES: 'messages/CLEAR_MESSAGES',
       }),
       ...mapActions({
         ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENTS',
-        SET_CURRENT_CHANNEL_DATA_ACRION:'channels/SET_CURRENT_CHANNEL_DATA'  
       }),
         
       dragSwitcher() {
@@ -62,18 +74,6 @@
         this.ADD_ATTACHMENTS(e.dataTransfer.files);
       }
     },
-      
-    created(){
-        let slug = window.location.pathname.replace('/','');
-        
-        if(!this.currentChannelData.id){
-            this.SET_CURRENT_CHANNEL_DATA_ACRION(slug).then(res=>{
-                if(this.currentChannelData.private == 1 && !this.userInCurrentChannel(this.userData.user_id)){
-                    this.$router.push('/not-found');
-                }
-            })
-        }
-    },  
       
     beforeDestroy() {
       this.SET_CURRENT_CHANNEL_DATA({
@@ -89,7 +89,7 @@
       });
       
       this.SET_CURRENT_CHANNEL_USERS([]);
-      this.SET_MESSAGES([]);
+      this.CLEAR_MESSAGES();
     }
   }
 
@@ -122,5 +122,10 @@
   .chat__drag-tip {
     font-size: 24px;
     color: #ccc;
+  }
+  
+  .not-in-channel{
+    padding: 30px;
+    text-align: center;
   }
 </style>

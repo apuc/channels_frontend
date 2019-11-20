@@ -4,6 +4,9 @@ import {ioGetUserStatus} from '../services/socket/status.service';
 
 export default {
   methods: {
+    /**
+     * Получает нужные данные при переходе по ссылке
+     */
     $_authGettingData_gettingData() {
       const pathnameArray = location.pathname.split('/');
       const slug = pathnameArray[pathnameArray.length - 1];
@@ -23,13 +26,34 @@ export default {
         router.push('/login');
       }
     },
+
+    /**
+     * Каналы
+     * @param pathnameArray
+     * @param slug
+     * @returns {Promise<void>}
+     */
     async $_authGettingData_getChannelData(pathnameArray, slug) {
       store.commit('user/SET_USER_POSITION', 'channel');
 
       if (slug !== 'login' && slug !== 'registration' && pathnameArray[1] !== 'user') {
-        store.dispatch('channels/SET_CURRENT_CHANNEL_DATA', slug);
+        store.dispatch('channels/SET_CURRENT_CHANNEL_DATA', slug).then(res =>{
+          
+            let privat = store.getters['channels/currentChannelData'].private;
+            let userInChannel = store.getters['channels/userInCurrentChannel'](store.getters['user/userData'].user_id)
+          
+            if(privat == 1 && !userInChannel){
+               router.push('/not-found');
+            }
+        });
       }
     },
+
+    /**
+     * Пользователи
+     * @param slug
+     * @returns {Promise<void>}
+     */
     async $_authGettingData_getUserData(slug) {
       store.commit('user/SET_USER_POSITION', 'user');
       const isAuthenticated = store.getters['auth/isAuthenticated'];
@@ -45,6 +69,12 @@ export default {
         ioGetUserStatus('user/user_id');
       }
     },
+
+    /**
+     * Группы
+     * @param slug
+     * @returns {Promise<void>}
+     */
     async $_authGettingData_getGroupData(slug) {
       const currentGroup = store.getters['groups/groups'].find(channel => channel.slug === slug);
       store.commit('user/SET_USER_POSITION', 'group');

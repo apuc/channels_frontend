@@ -63,12 +63,13 @@
         owner_id: '',
         avatar: undefined,
       });
-      this.SET_MESSAGES([]);
+      this.CLEAR_MESSAGES();
     },
     methods: {
       ...mapMutations('channels', ['SET_CURRENT_CHANNEL_DATA', 'SET_CURRENT_CHANNEL_USERS']),
       ...mapMutations({
         SET_MESSAGES: 'messages/SET_MESSAGES',
+        CLEAR_MESSAGES: 'messages/CLEAR_MESSAGES',
       }),
       ...mapActions({
         ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENTS'

@@ -48,7 +48,7 @@
             </button>
           </li>
 
-          <li class="info__li">
+          <li class="info__li" v-if="userInCurrentChannel(userData.user_id)">
             <button type="button"
                     class="info__users-btn"
                     @click="setAddUsersModal(currentChannelData.id)"
@@ -66,7 +66,7 @@
             </button>
           </li>
           
-          <li class="info__li">
+          <li class="info__li" v-if="userInCurrentChannel(userData.user_id)">
             <button type="button"
                     class="info__users-btn"
                     @click="removeUserFromChannel"
@@ -95,10 +95,12 @@
 
   export default {
     mixins: [commonMethods],
+      
     computed: {
         
       ...mapGetters({
         currentChannelData: 'channels/currentChannelData',
+        userInCurrentChannel: 'channels/userInCurrentChannel',
         userData: 'user/userData',
       }),
         
@@ -169,12 +171,19 @@
         return types[this.currentChannelData.private]
       },
 
+        /**
+         * Открывает модалку добавления пользователя в канал
+         */
         setAddUsersModal(id) {
             this.SET_CONTACTS_TO_ADD_CHANNEL_ID(id);
             this.SET_CONTACTS_FREE_TO_ADD_SEARCH([]);
             this.SET_MODAL({name: "ModalChannelAddUsers"});
-        },  
-        
+        },
+
+        /**
+         * Покинуть канал
+         * @returns {Promise<void>}
+         */
       async removeUserFromChannel() {
         let title = 'Вы действительно хотите покинуть канал?';
         let text = '';

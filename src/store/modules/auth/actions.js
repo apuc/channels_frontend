@@ -94,7 +94,7 @@ export default {
     commit('channels/SET_DEFAULT_CHANNELS_STATE', null, {
       root: true
     });
-    commit('messages/SET_MESSAGES', [], {
+    commit('messages/CLEAR_MESSAGES', [], {
       root: true
     });
     commit('chat/SET_CHAT_DEFAULT_STATE', null, {
