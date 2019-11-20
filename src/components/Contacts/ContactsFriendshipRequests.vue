@@ -45,24 +45,38 @@
 
   export default {
     name: "ContactsFriendshipRequests",
+      
     computed: {
       ...mapGetters('user', ['userData', 'friendshipRequests']),
     },
+      
     methods: {
       ...mapMutations('user', ['REMOVE_USER_REQUEST_FROM_STORE', 'ADD_USER_TO_CONTACTS']),
+        
       ...mapMutations({
         DELETE_MODAL: 'modal/DELETE_MODAL',
       }),
+        
       ...mapActions('user', [
         'ACCEPT_FRIENDSHIP_REQUEST',
         'REJECT_FRIENDSHIP_REQUEST',
         'GET_USER_FRIENDSHIP_REQUESTS',
         'GET_USER_DATA'
       ]),
+
+        /**
+         * Перейти к профилю
+          * @param id
+         */ 
       goToProfile(id) {
         this.GET_USER_DATA(id);
         this.DELETE_MODAL();
       },
+
+        /**
+         * Принять запрос в друзья
+          * @param user
+         */ 
       acceptRequest(user) {
         this.ACCEPT_FRIENDSHIP_REQUEST({
           user_id: user.user_id,
@@ -71,18 +85,47 @@
           .then(() => {
             this.REMOVE_USER_REQUEST_FROM_STORE(user.user_id);
             this.GET_USER_FRIENDSHIP_REQUESTS();
+
+              this.$swal({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 4000,
+                  type: 'success',
+                  title: `Пользователь ${user.username} добавлен в контакты!`
+              })
           });
+        
         if (this.friendshipRequests.length === 0) {
           this.$router.push({path: '/contacts'})
         }
+        
         this.ADD_USER_TO_CONTACTS(user);
       },
-      rejectRequest(id) {
+
+        /**
+         * Отклонить запрос в друзья
+         * @param user
+         */
+        rejectRequest(id) {
+            
         this.REJECT_FRIENDSHIP_REQUEST({
           user_id: this.userData.user_id,
           contact_id: id
         })
-          .then(() => this.REMOVE_USER_REQUEST_FROM_STORE(id));
+          .then(() => {
+              this.REMOVE_USER_REQUEST_FROM_STORE(id)
+
+              this.$swal({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 4000,
+                  type: 'success',
+                  title: `Запрос отклонен!`
+              })
+          });
+        
         if (this.friendshipRequests.length === 0) {
           this.$router.push({path: '/contacts'})
         }

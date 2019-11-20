@@ -34,16 +34,19 @@
 
   export default {
     name: "ContactsSearchUsersResult",
+      
     data() {
       return {
         options: {
           rootMargin: '0px',
           threshold: 1.0
         },
+          
         usersList: this.$refs.usersList,
         observer: {}
       }
     },
+      
     computed: {
       ...mapGetters('user', [
         'userData',
@@ -54,25 +57,50 @@
         'findFriendshipRequest'
       ]),
     },
+      
     methods: {
       ...mapMutations({
         DELETE_MODAL: 'modal/DELETE_MODAL',
       }),
+        
       ...mapActions('user', ['SEND_FRIENDSHIP_REQUEST', 'GET_USER_DATA', 'FIND_USERS']),
+
+        /**
+         * Перейти к профилю
+          * @param id
+         */  
       goToProfile(id) {
         this.GET_USER_DATA(id);
         this.DELETE_MODAL();
       },
+
+        /**
+         * Добавить в друзья
+          * @param target
+         * @param data
+         */  
       makeFriendshipRequest(target, data) {
-        this.SEND_FRIENDSHIP_REQUEST({user_id: data.user_id, contact_id: data.contact_id});
-        target.remove();
+        this.SEND_FRIENDSHIP_REQUEST({user_id: data.user_id, contact_id: data.contact_id}).then(res => {
+            this.$swal({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 4000,
+                type: 'success',
+                title: 'Запрос отправлен!'
+            })    
+        });
+        
+        target.closest('button').remove();
       },
+        
       observerMethod(entries, observer) {
         if (this.searchResultsCurrentPage < this.searchResultsPages) {
           this.FIND_USERS(this.searchResultsCurrentPage + 1)
         }
       }
     },
+      
     mounted() {
       this.observer = new IntersectionObserver(this.observerMethod, this.options);
       this.usersList = this.$refs.usersList;

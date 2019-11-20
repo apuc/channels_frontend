@@ -56,9 +56,11 @@
 
   export default {
     name: "ModalChannelUsersPreview",
+      
     computed: {
       ...mapGetters('channels', ['isChannelUsersLoading', 'currentChannelData', 'currentChannelSearchUsers']),
       ...mapGetters('user', ['userData', 'findUserContact','findFriendshipRequest']),
+        
       calculatePlaceholders() {
         const height = 45;
         if (this.currentChannelData.count < 5 && this.currentChannelData.count > 0) {
@@ -68,32 +70,60 @@
         }
       }
     },
+      
     data() {
       return {}
     },
+      
     methods: {
       ...mapMutations({
         DELETE_MODAL: 'modal/DELETE_MODAL',
       }),
+        
       ...mapActions('user', ['SEND_FRIENDSHIP_REQUEST', 'GET_USER_DATA']),
+        
       ...mapActions({
         DELETE_USER_FROM_CHANNEL: 'channels/DELETE_USER_FROM_CHANNEL',
         GET_CHANNEL_USERS: 'channels/GET_CHANNEL_USERS',
         SET_CURRENT_CHANNEL_USERS: 'channels/SET_CURRENT_CHANNEL_USERS',
       }),
+
+        /**
+         * Перейти к профилю
+          * @param id
+         */ 
       goToProfile(id) {
         this.GET_USER_DATA(id);
         this.DELETE_MODAL();
       },
+
+        /**
+         * Добавить в друзья
+         * @param target
+         * @param data
+         */
       makeFriendshipRequest(target, data) {
-          console.log(data);
         this.SEND_FRIENDSHIP_REQUEST({
           user_id: data.user_id,
           contact_id: data.contact_id
+        }).then(res => {
+            this.$swal({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 4000,
+                type: 'success',
+                title: 'Запрос отправлен!'
+            })
         });
         
         target.closest('button').remove();
       },
+
+        /**
+         * Удалить пользователя из канала
+         * @param userId
+         */
       removeUserFromChannel(userId) {
         this.DELETE_USER_FROM_CHANNEL(userId)
           .then(response => {

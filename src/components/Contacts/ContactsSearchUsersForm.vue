@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="onSubmit" class="form-group">
+  <form @submit.prevent class="form-group">
     <label for="user-search">Поиск пользователей</label>
     <input class="form-control"
            id="user-search"

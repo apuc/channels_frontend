@@ -59,13 +59,16 @@
 
   export default {
     name: "ContactsList",
+      
     components: {Contacts, ContactsSearchUsersResult, ContactsSearchUsersForm, ContactsSearchUsers},
+      
     data() {
       return {
         searchValue: '',
         noUsers: false,
       }
     },
+      
     computed: {
       ...mapGetters('user', [
         'userData',
@@ -74,23 +77,52 @@
         'searchResultsUsers',
       ]),
     },
+      
     methods: {
-      ...mapMutations('user', ['REMOVE_USER_REQUEST_FROM_STORE', 'SET_USER_CONTACTS_SEARCH']),
+      ...mapMutations('user', ['REMOVE_USER_REQUEST_FROM_STORE', 'SET_USER_CONTACTS_SEARCH','REMOVE_USER_FROM_CONTACTS']),
+        
       ...mapMutations({
         DELETE_MODAL: 'modal/DELETE_MODAL',
       }),
+        
       ...mapActions('user', ['REJECT_FRIENDSHIP_REQUEST', 'GET_USER_DATA']),
+        
+      /**
+       * Перейти к профилю
+       */ 
       goToProfile(id) {
         this.GET_USER_DATA(id);
         this.DELETE_MODAL();
       },
+        
+       /**
+        * Удалить юзера из контактов
+        */  
       removeUserFromContacts(id) {
         this.REJECT_FRIENDSHIP_REQUEST({
           user_id: this.userData.user_id,
           contact_id: id
         })
-          .then(() => this.REMOVE_USER_REQUEST_FROM_STORE(id));
+          .then(() => {
+              this.REMOVE_USER_REQUEST_FROM_STORE(id)
+              this.REMOVE_USER_FROM_CONTACTS(id);
+
+              this.$swal({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 4000,
+                  type: 'success',
+                  title: 'Пользователь удален из контактов!'
+              })
+          });
       },
+
+        /**
+         * Поиск по контактам
+          * @param value
+         * @returns {[]}
+         */ 
       findUser(value) {
         let currentUserName = '';
         let searchValue = value.toLowerCase();
@@ -103,6 +135,7 @@
         }
         return searchResult;
       },
+        
       searchUser(value) {
         this.searchValue = value;
         const searchResult = this.findUser(value);
