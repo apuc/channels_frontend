@@ -84,7 +84,7 @@
         
       styleMessageAnother() {
         if (this.messageData) {
-          return this.messageData.from.id !== this.userData.user_id ? 'message_another align-self-end' : '';
+          return this.messageData.from.id === this.userData.user_id ? 'message_another align-self-end' : '';
         }
       },
     },
