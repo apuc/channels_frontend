@@ -16,10 +16,10 @@
     <ul class="channel-list">
       <li
         v-for="(channel, index) in addingChannelsData.channelsToSearch"
-        :key="channel.email"
+        :key="channel.slug"
       >
         <label class="channel-info" :for="channel.slug + index">
-          <router-link :to="`/${channel.user_id}`" class="channel">
+          <router-link :to="`/${channel.slug}`" class="channel">
             <img
               class="img"
               :src="channel.avatar ? channel.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"

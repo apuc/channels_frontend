@@ -200,13 +200,17 @@
         }
 
 
-        this.MAKE_REQUEST({name:'channels/CREATE_CHANNEL',params:this.channelData}).then(() => this.$swal({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 4000,
-          type: 'success',
-          title: 'Канал создан'
+        this.MAKE_REQUEST({name:'channels/CREATE_CHANNEL',params:{
+                channelData:this.channelData,
+                type:'channel'
+            }})
+            .then(() => this.$swal({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 4000,
+                type: 'success',
+                title: 'Канал создан'
         })).catch((err)=>{
             if(err.status == 422){
                 this.errors = err.body.errors;

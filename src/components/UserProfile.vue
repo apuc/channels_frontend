@@ -15,38 +15,63 @@
     </header>
 
     <div class="controls">
-      <button type="button" class="btn btn-primary">Start chat with this user</button>
+      <button type="button" class="btn btn-primary" @click="startDialog">Написать сообщение</button>
     </div>
   </div>
 </template>
 
 <script>
-  import {mapGetters, mapMutations} from 'vuex';
+  import {mapGetters, mapMutations, mapActions} from 'vuex';
 
 
   export default {
     name: "UserProfile",
+      
     computed: {
       ...mapGetters({
         status: 'status/status',
         currentUserInfo: 'user/currentUserInfo',
+        userData: 'user/userData',
       })
     },
+      
     methods: {
       ...mapMutations('user', ['SET_CURRENT_USER_DATA', 'SET_USER_POSITION']),
       ...mapMutations({
         SET_MODAL: 'modal/SET_MODAL',
       }),
-      openModal(e, modalType) {
+        ...mapActions('common',[
+            'MAKE_REQUEST',
+        ]),
+
+        openModal(e, modalType) {
         e.preventDefault();
         this.SET_MODAL({name: modalType});
       },
+
+        /**
+         * Начать диалог с пользователем
+          */
+        startDialog(){
+          
+          let data = {
+            owner_id:this.userData.user_id,
+            to_id:this.currentUserInfo.user_id  
+          };
+          
+          this.MAKE_REQUEST({name:'channels/CREATE_CHANNEL',params:{
+              channelData:data,
+              type:'dialog'    
+          }})
+      }  
     },
+      
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        vm.SET_CURRENT_USER_DATA('user')
+        //vm.SET_CURRENT_USER_DATA('user')
       })
     },
+      
     beforeRouteLeave(to, from, next) {
       this.SET_USER_POSITION({
         avatar: undefined,

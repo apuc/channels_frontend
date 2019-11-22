@@ -5,16 +5,7 @@
                  :title="data.title"
                  @click.native="setData($event, data.id, type)"
     >
-      <img v-if="data.avatar"
-           :src="data.avatar.small"
-           alt=""
-           class="avatar"
-           width="50"
-           height="50"
-      >
-
-      <img v-else="data.avatar"
-           src="../../assets/img/no-avatar.png"
+      <img :src="data.avatar.small"
            alt=""
            class="avatar"
            width="50"

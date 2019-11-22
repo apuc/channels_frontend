@@ -108,23 +108,27 @@ export default {
   /**
    * Create channel and reload channels
    */
-  'CREATE_CHANNEL': async ({commit}, channelData) => {
+  'CREATE_CHANNEL': async ({commit}, {type,channelData}) => {
 
     return new Promise((resolve,reject)=>{
-      Vue.http.post(`${process.env.VUE_APP_API_URL}/channel`, channelData)
+      Vue.http.post(`${process.env.VUE_APP_API_URL}/${type}`, channelData)
         .then(
           res => {
             const createdChannelData = res.body.data;
-            router.push({
-              path: `/${createdChannelData.slug}`
-            });
 
-            commit('modal/SET_MODAL', {name: 'ModalChannelAddUsers'}, {
-              root: true
-            });
+            if(type != 'dialog'){
+              commit('modal/SET_MODAL', {name: 'ModalChannelAddUsers'}, {
+                root: true
+              });
+            }
+            
             commit('SET_CURRENT_CHANNEL_DATA', createdChannelData);
             commit('SET_CONTACTS_TO_ADD_CHANNEL_ID', createdChannelData.id);
             commit('ADD_CREATED_CHANNEL', createdChannelData);
+
+            router.push({
+              path: `/${createdChannelData.slug}`
+            });
             
             resolve(res);
           },

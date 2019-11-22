@@ -8,37 +8,31 @@
       :title="data.title"
       @click.native="onChannelChangeHandler($event.target, data.id, type)"
     >
-      <img v-if="data.avatar"
-           :src="data.avatar.small"
+      <img :src="data.avatar.small"
            alt=""
            class="avatar"
            width="50"
            height="50"
       >
-
-      <img v-else="data.avatar"
-           src="../../assets/img/no-avatar.png"
-           alt=""
-           class="avatar"
-           width="50"
-           height="50"
-      >
-
       <span class="name">{{ data.title }}</span>
     </router-link>
 
-    <div v-if="userData.user_id === data.owner_id" class="control">
-      <button type="button"
+    <div v-if="userData.user_id === data.owner_id || data.channel_type === 'dialog'" class="control">
+      <button
+              type="button"
               class="button tooltip-wrap"
               @click="setAddUsersModal(data.id)"
+              v-if="data.channel_type != 'dialog'"
       >
         <span class="_tooltip">Добавить пользователя</span>
         <img src="../../assets/img/plus.png" alt="">
       </button>
 
-      <button type="button"
+      <button
+              type="button"
               class="button tooltip-wrap"
               @click="editingModal(data.id)"
+              v-if="data.channel_type != 'dialog'"
       >
         <span class="_tooltip">Редактировать</span>
         <img src="../../assets/img/pencil.png" alt="">
