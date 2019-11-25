@@ -1,7 +1,10 @@
 <template>
   <section class="list-group__item" 
-           :class="{active: notification, 'list-group__item_active': data.id === currentChannelData.id}"
+           :class="{active: true, 'list-group__item_active': data.id === currentChannelData.id}"
   >
+    <div class="notification-block" v-if="notifications[data.id]">{{notifications[data.id]}}</div>
+<!--    <div class="notification-block" v-if="!notifications[data.id] && data.unread_count > 0">{{data.unread_count}}b</div>-->
+    
     <router-link
       :to="`/${data.slug}`"
       class="list-group__link"
@@ -54,6 +57,7 @@
 
   export default {
     name: "NavSectionChannels",
+      
     props: {
       // isSidebarVisible
       value: {
@@ -69,17 +73,27 @@
       },
       notification: {
           type: Boolean,
-          required: true
+          required: true,
       }
     },
+      
     data() {
       return {
       };
     },
+      
+    created(){
+        if(this.data.unread_count > 0){
+            this.SET_CHANNEL_NOTIFICATION({channel_id:this.data.id,unread:this.data.unread_count})   
+        }
+    },  
+      
     computed: {
       ...mapGetters('channels', ['currentChannelData', 'contactsToAddUsers']),
       ...mapGetters('user', ['userData', 'userContacts']),
+        ...mapGetters('messages', ['notifications']),
     },
+      
     methods: {
       ...mapMutations('channels', [
         'SET_CHANNEL_ID_TO_DELETE',
@@ -91,12 +105,16 @@
       ...mapMutations({
         SET_USER_POSITION: "user/SET_USER_POSITION",
         SET_MODAL: "modal/SET_MODAL",
-        READ_CHANNEL_MESSAGES: "messages/READ_CHANNEL_MESSAGES"
+        READ_CHANNEL_MESSAGES: "messages/READ_CHANNEL_MESSAGES",
+        SET_CHANNEL_NOTIFICATION: "messages/SET_CHANNEL_NOTIFICATION",
       }),
       ...mapActions({
         SET_CURRENT_CHANNEL_DATA: 'channels/SET_CURRENT_CHANNEL_DATA',
-        GET_MESSAGES: "messages/GET_MESSAGES"
+        GET_MESSAGES: "messages/GET_MESSAGES",
+          MARK_READ: "messages/MARK_READ"
       }),
+        
+        
       /**
        * Записывает данные канала на который переходит пользователь
        *
@@ -108,9 +126,17 @@
         // закрывает сайдбар на маленьких экранах
         if (window.innerWidth < 768) this.$emit('input', false);
         
-        this.SET_CURRENT_CHANNEL_DATA(Number(id));
+        this.SET_CURRENT_CHANNEL_DATA(Number(id)).then(res => {
+            if(this.data.channel_type == 'dialog'){
+                this.MARK_READ(id);   
+            }else{
+                this.READ_CHANNEL_MESSAGES(id);
+            }
+        });
         this.SET_USER_POSITION(type);
       },
+        
+        
       /**
        * Открывает модалку редактирования и устанавливает id канала в state.channelData
        *
@@ -120,6 +146,8 @@
         this.SET_CHANNEL_ID(id);
         this.SET_MODAL({name: "ModalChannelEdit"});
       },
+        
+        
       /**
        * Открывает модалку удаления и устанавливает id канала в state.channelToDelete
        *
@@ -129,6 +157,8 @@
         this.SET_CHANNEL_ID_TO_DELETE(id);
         this.SET_MODAL({name: "ModalChannelDelete"});
       },
+        
+        
       /**
        * Открывает модалку добавления пользователей в канал
        *
@@ -140,9 +170,16 @@
         this.SET_CONTACTS_FREE_TO_ADD_SEARCH([]);
         this.SET_MODAL({name: "ModalChannelAddUsers"});
       },
+
+        
+        /**
+         * При переходе на канал
+          * @param target
+         * @param id
+         * @param type
+         */ 
       onChannelChangeHandler(target, id, type) {
           this.setData(target, id, type);
-          this.READ_CHANNEL_MESSAGES(id)
       }
     }
   };
@@ -160,19 +197,21 @@
     background-color: #fff;
   }
   
-  .list-group__item.active {
+  .list-group__item{
     position: relative;
   }
   
-  .list-group__item.active:before {
-    content: '';
+  .notification-block {
     position: absolute;
     left: 0;
     top: 2px;
-    width: 8px;
-    height: 8px;
+    color: white;
+    width: 18px;
+    height: 18px;
     background-color: red;
     border-radius: 50%;
+    text-align: center;
+    font-size: 12px;
   }
 
   .list-group__item:hover {

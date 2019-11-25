@@ -28,8 +28,12 @@ export function messageEventListenerInit() {
     });
 
     io.on('messageNotification', function (data) {
-        if(store.getters['user/currentUserInfo'].user_id !== data.from){
-          store.dispatch('messages/SET_CHANNEL_NOTIFICATION', data.channel_id);
+        if(store.getters['user/userData'].user_id !== data.from){
+          
+          if(store.getters['channels/currentChannelData'].id != data.channel_id){
+            store.dispatch('messages/SET_CHANNEL_NOTIFICATION', data);
+          }
+          
           notificationAudio.play();
         }
     })

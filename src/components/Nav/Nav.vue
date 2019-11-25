@@ -192,7 +192,7 @@
         
         
         isNotificationInChannel(channelId) {
-            return !!this.notifications.find(id => channelId === id);
+            return true; //!!this.notifications.find(id => channelId === id);
         },
         
         

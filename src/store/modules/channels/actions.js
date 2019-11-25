@@ -191,7 +191,7 @@ export default {
           commit('SET_CONTACTS_FREE_TO_ADD_SEARCH', getters['contactsToAddUsers']);
         }
       });
-    dispatch('messages/GET_MESSAGES', null, {root: true});
+    await dispatch('messages/GET_MESSAGES', null, {root: true});
   },
   
   

@@ -6,7 +6,7 @@ const state = {
   messages: [],
   usersTyping: [],
   attachments: [],
-  notifications: [],
+  notifications: {},
   
   nextPage:null,
   currentPage:1,

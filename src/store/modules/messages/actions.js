@@ -172,5 +172,26 @@ export default {
         commit
     }) => {
         commit('CLEAR_ATTACHMENTS');
-    }
+    },
+
+    'MARK_READ': async ({state,commit,rootState},channelId) => {
+      
+      let ids = state.messages.filter(m => {
+       return m.read == 0 && m.from.id != rootState.user.userData.user_id; 
+      }).map(el => el.id)
+
+      commit('READ_CHANNEL_MESSAGES',channelId);
+      
+      if(ids.length<1){
+        return; 
+      }
+      
+      Vue.http.post(`${process.env.VUE_APP_API_URL}/messages/read`,{message_ids:ids})
+        .then(
+          res => {
+             return res;
+          },
+          err => console.log(err)
+        )
+  }
 };

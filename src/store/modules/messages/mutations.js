@@ -1,5 +1,5 @@
 import channelState from '../channels/channels'
-
+import Vue from "vue";
 
 export default {
   'SET_MESSAGES': (state, {paginationData,channelId}) => {
@@ -49,7 +49,15 @@ export default {
   
   'OFF_TYPING': (state) => state.usersTyping = [],
   
-  'SET_CHANNEL_NOTIFICATION': (state, channel_id) => state.notifications.push(channel_id),
+  'SET_CHANNEL_NOTIFICATION': (state, data) => {
+    
+    if(state.notifications[data.channel_id]){
+      state.notifications[data.channel_id]+= 1;
+      return;
+    }
+
+    Vue.set(state.notifications,data.channel_id,data.unread ? data.unread : 1);
+  },
   
   'ADD_ATTACHMENT': (state, attachment) => state.attachments.push(attachment),
   
@@ -57,5 +65,5 @@ export default {
   
   'REMOVE_ATTACHMENT': (state, url) => state.attachments = state.attachments.filter(attachment => attachment.options.url !== url),
   
-  'READ_CHANNEL_MESSAGES': (state, channelId) => state.notifications = state.notifications.filter(id => channelId !== id),
+  'READ_CHANNEL_MESSAGES': (state, channelId) => Vue.delete(state.notifications,channelId),
 };
