@@ -48,6 +48,7 @@ export default {
             }
         }
     },
+  
   /**
    * Отправить сообщение
    * @param rootGetters
@@ -174,6 +175,15 @@ export default {
         commit('CLEAR_ATTACHMENTS');
     },
 
+  /**
+   * Отметить прочитанные
+   * @param state
+   * @param commit
+   * @param rootState
+   * @param channelId
+   * @returns {Promise<void>}
+   * @constructor
+   */
     'MARK_READ': async ({state,commit,rootState},channelId) => {
       
       let ids = state.messages.filter(m => {
@@ -193,5 +203,57 @@ export default {
           },
           err => console.log(err)
         )
+    },
+
+  /**
+   * Удаление сообщения
+   * @param commit
+   * @param message_id
+   * @returns {Promise<void>}
+   * @constructor
+   */
+  'DELETE_MESSAGE': async ({commit},message_id) => {
+      
+    Vue.http.delete(`${process.env.VUE_APP_API_URL}/message/${message_id}`)
+      .then(
+        res => {
+          commit('REMOVE_MESSAGE',message_id);
+          return res;
+        },
+        err => console.log(err)
+      )
+  },
+
+  /**
+   * Редактирование сообщения
+   * @param commit
+   * @param message_id
+   * @returns {Promise<void>}
+   * @constructor
+   */
+  'EDIT_MESSAGE': async ({commit,getters},text) => {
+
+    let message = Object.assign({},getters.editMessage);
+    message.from = message.from.id;
+    message.channel_id = message.channel;
+    message.text = text;
+    
+    //console.log(message);
+    
+    Vue.http.put(`${process.env.VUE_APP_API_URL}/message/${message.id}`,message)
+      .then(
+        res => {
+          //console.log(res);
+          commit('SET_MESSAGE_TO_EDIT',null);
+          commit('UPDATE_MESSAGE',res.body.data);
+          return res;
+        },
+        err => {
+          console.log(err)
+          commit('SET_MESSAGE_TO_EDIT',null);
+        }
+      )
   }
+  
+  
 };

@@ -11,7 +11,8 @@ const state = {
   nextPage:null,
   currentPage:1,
   lastPage:2,
-  scroll_bottom:true,
+  
+  message_edit:null,
 };
 
 export default {

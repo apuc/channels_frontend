@@ -67,32 +67,65 @@
 
   export default {
     computed: {
-      ...mapGetters('messages', ['usersTyping', 'attachments']),
+      ...mapGetters('messages', ['usersTyping', 'attachments','editMessage']),
       ...mapGetters({
         currentChannel: 'channels/currentChannelData',
         userInfo: 'user/userData',
       })
     },
+      
     components: {Attachment},
+      
     directives: {
       scroll
     },
+      
     data() {
       return {
         input: '',
         timeout: '',
       }
     },
+      
+      watch:{
+        editMessage(message){
+            if(message){
+                this.input = message.text;
+                return;
+            }
+            
+            this.input = '';
+        }
+      },
+      
     methods: {
-      ...mapActions('messages', ['SEND_MESSAGE', 'ADD_ATTACHMENTS', 'CLEAR_ATTACHMENTS']),
+      ...mapActions('messages', ['SEND_MESSAGE', 'ADD_ATTACHMENTS', 'CLEAR_ATTACHMENTS','EDIT_MESSAGE']),
+        
       ioTyping,
+
+        /**
+         * Отправить сообщение
+          * @param text
+         * @param channelId
+         */  
       sendMessage(text, channelId) {
+          
+        if(this.editMessage){
+            this.EDIT_MESSAGE(this.input);
+            return;
+        }  
+          
         if (this.input.trim() !== '' || this.attachments) {
           this.SEND_MESSAGE({text, channelId});
           this.input = '';
           this.CLEAR_ATTACHMENTS();
         }
       },
+
+        /**
+         * Сабмит формы сообщения
+         * @param event
+         */
       onSubmit(event) {
         if (event.shiftKey) {
           event.preventDefault();
@@ -100,8 +133,13 @@
           this.sendMessage(this.input, this.currentChannel.id);
         }
       },
+        
+        /**
+         * Пользователь печатает
+         */
       emitUserTyping() {
         clearTimeout(this.timeout);
+        
         ioTyping({
           user: {
             name: this.userInfo.username,
@@ -110,6 +148,7 @@
           channelId: this.currentChannel.id,
           isTyping: true
         });
+        
         this.timeout = setTimeout(() => {
           ioTyping({
             user: {
@@ -121,10 +160,16 @@
           });
         }, 2000);
       },
+
+        /**
+         * Добавить атачмент
+         * @param files
+         */
       addAttachments(files) {
         this.ADD_ATTACHMENTS(files)
       }
     },
+      
     mounted() {
       this.$refs.textarea.focus();
     }

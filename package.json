@@ -15,6 +15,8 @@
     "socket.io-client": "^2.1.1",
     "vue": "^2.5.17",
     "vue-awesome": "^3.1.3",
+    "vue-context": "^5.0.0",
+    "vue-context-menu": "^2.0.6",
     "vue-drag-drop": "^1.1.4",
     "vue-multilanguage": "^4.0.7",
     "vue-resource": "^1.5.1",
