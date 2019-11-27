@@ -10,8 +10,25 @@
       <b-form-input v-model="name"/>
     </b-form-group>
 
-    <b-form-group :label="field.label" v-for="(field,index) in fields" :key="index">
-      <b-form-input v-model="data[field.name]"/>
+    <b-form-group :label="field.type == 'checkbox' ? '' : field.label" v-for="(field,index) in fields" :key="index">
+      <b-form-select
+        v-if="field.type == 'select'"
+        v-model="data[field.name]"
+        :options="field.select_options"
+      />
+
+      <b-form-input
+        v-if="field.type == 'input'"
+        v-model="data[field.name]"
+        :type="field.input_type"
+      />
+
+      <b-form-checkbox
+        v-if="field.type == 'checkbox'"
+        v-model="data[field.name]"
+      >
+        {{field.label}}
+      </b-form-checkbox>
     </b-form-group>
 
     <b-form-group label="URL для хуков" v-if="showLink">
@@ -25,6 +42,7 @@
     
     
     <b-button variant="primary" @click="create">Создать</b-button>
+    
   </div>
 </template>
 
