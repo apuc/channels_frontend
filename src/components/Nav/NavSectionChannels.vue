@@ -3,7 +3,6 @@
            :class="{active: true, 'list-group__item_active': data.id === currentChannelData.id}"
   >
     <div class="notification-block" v-if="notifications[data.id]">{{notifications[data.id]}}</div>
-<!--    <div class="notification-block" v-if="!notifications[data.id] && data.unread_count > 0">{{data.unread_count}}b</div>-->
     
     <router-link
       :to="`/${data.slug}`"

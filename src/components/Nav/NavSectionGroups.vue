@@ -1,5 +1,13 @@
 <template>
   <section class="list-group__item" :class="{'list-group__item_active': data.id === currentGroupData.id}">
+
+    <div 
+      class="notification-block" 
+      v-if="groupNotifications(groupChannelsIds(data.id)) > 0"  
+    >
+      {{groupNotifications(groupChannelsIds(data.id))}}
+    </div>
+    
     <router-link :to="`/group/${data.slug}`"
                  class="list-group__link"
                  :title="data.title"
@@ -57,13 +65,17 @@
 
   export default {
     name: "NavSectionGroups",
+      
     computed: {
       ...mapGetters('groups', ['currentGroupData', 'groupToEdit', 'addingChannelsData']),
       ...mapGetters({
         channels: 'channels/channels',
         userData: 'user/userData',
+        groupChannelsIds: 'groups/groupChannelsIds',
+        groupNotifications: 'messages/groupNotifications',
       }),
     },
+      
     props: {
       // isSidebarVisible
       value: {
@@ -78,12 +90,14 @@
         required: true
       }
     },
+      
     data() {
       return {
         sectionWidth: 0,
         controlBtnsWidth: 0
       }
     },
+      
     methods: {
       ...mapMutations('groups', [
         'SET_GROUP_DATA',
@@ -95,13 +109,17 @@
         'SET_AVAILABLE_CHANNELS_TO_ADD',
         'SET_CHANNELS_TO_SEARCH'
       ]),
+
+       
       ...mapMutations({
         SET_USER_POSITION: 'user/SET_USER_POSITION',
         SET_MODAL: 'modal/SET_MODAL',
       }),
+        
       ...mapActions({
         GET_GROUP_DATA: 'groups/GET_GROUP_DATA',
       }),
+        
       async setData(e, id, type) {
         // закрывает сайдбар на маленьких экранах
         if (window.innerWidth < 768) this.$emit('input', false);
@@ -113,14 +131,28 @@
         });
 
       },
+        
+      /**
+       * Модалка редактирования группы
+       */ 
       editThis(id) {
         this.SET_MODAL({name: 'ModalGroupEdit'});
         this.SET_GROUP_ID(id);
       },
+        
+        /**
+         * Модалка удаления группы
+         */
       deletingModal(id) {
         this.SET_MODAL({name: 'ModalGroupDelete'});
         this.SET_GROUP_ID_TO_DELETE(id);
       },
+
+        /**
+         * Открывает окно добавления каналов
+          * @param group_id
+         * @returns {Promise<void>}
+         */  
       async openChannelsAdding(group_id) {
         this.SET_MODAL({name: 'ModalGroupAddChannels'});
         await this.SET_AVAILABLE_CHANNELS_TO_ADD({group_id, channels: this.channels});
@@ -141,6 +173,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
   }
 
   .list-group__item {
@@ -206,6 +239,19 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .notification-block {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    color: white;
+    width: 18px;
+    height: 18px;
+    background-color: red;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 12px;
   }
 
   @media (max-width: 576px) {

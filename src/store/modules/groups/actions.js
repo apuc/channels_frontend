@@ -72,7 +72,7 @@ export default {
             });
             commit('modal/DELETE_MODAL', null, {root: true});
             commit('ADD_CREATED_GROUP', createdGroupData);
-            resolve(res);
+            resolve(createdGroupData);
           },
           err => reject(err)
         )

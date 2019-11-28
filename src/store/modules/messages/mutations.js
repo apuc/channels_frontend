@@ -46,7 +46,7 @@ export default {
    * @constructor
    */
   'SET_MESSAGE': (state, message) => {
-    if(message.channel === state.messages[0].channel){
+    if(state.messages.length > 0 && message.channel === state.messages[0].channel){
       let channel = channelState.state.currentChannelData;
       
       if(channel.type == 'wall'){

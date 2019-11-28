@@ -123,7 +123,7 @@ export default {
             .then(() => this.upLoadStarted = false);
       }
 
-      this.MAKE_REQUEST({name:'groups/CREATE_GROUP',params:null}).then(() => {
+      this.MAKE_REQUEST({name:'groups/CREATE_GROUP',params:null}).then((res) => {
           this.$swal({
               toast: true,
               position: 'top-end',
@@ -133,7 +133,7 @@ export default {
               title: 'Группа создана'
           })
           
-          this.openChannelsAdding(this.groupData.id);
+          this.openChannelsAdding(res.id);
       }).catch((err)=>{
           if(err.status == 422){
               this.errors = err.body.errors;
@@ -143,6 +143,7 @@ export default {
 
       async openChannelsAdding(group_id) {
           this.SET_MODAL({name: 'ModalGroupAddChannels'});
+          this.SET_GROUP_ID_FOR_ADDING_CHANNEL(group_id);
           await this.SET_AVAILABLE_CHANNELS_TO_ADD({group_id:group_id, channels: this.channels});
           this.SET_GROUP_ID_FOR_ADDING_CHANNEL(group_id);
           this.SET_CHANNELS_TO_SEARCH(this.addingChannelsData.availableChannels);

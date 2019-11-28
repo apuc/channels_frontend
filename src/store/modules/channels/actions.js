@@ -383,11 +383,14 @@ export default {
             const data = res.body.data;
             const channels = data.filter(item => item.type === 'channel');
             const groups = data.filter(item => item.type === 'group');
-
+            const groupChannels = groups.map(el => el.channels).flat();
+            
+            const channelsToJoin = [...new Set(channels.concat(groupChannels))];
+            
             commit('USER_CHANNELS', channels);
             commit('groups/USER_GROUPS', groups, {root: true});
             commit('SET_CHANNELS_LOADING_FLAG');
-            joinChannels(channels);
+            joinChannels(channelsToJoin);
           },
           err => console.log('get channels', err)
         )

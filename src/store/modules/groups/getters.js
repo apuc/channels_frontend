@@ -9,4 +9,8 @@ export default {
   imageUploadPercentage: state => state.imageUploadPercentage,
   channelToDelete: state => state.channelToDelete,
   groupToEdit: state => id => state.groups.find(group => group.id === id),
+  groupChannelsIds: state => id => {
+    const group = state.groups.find(group => group.id == id);
+    return group.channels.map(channel => channel.id);
+  }
 };
