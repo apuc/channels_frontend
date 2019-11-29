@@ -1,17 +1,17 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import store from '../store/store';
-import AuthLogin from '../components/Auth/AuthLogin';
-import AuthRegistration from '../components/Auth/AuthRegistration';
-import Group from '../components/Group/Group';
-import Chat from '../components/Chat/Chat';
-import ChatBlank from '../components/Chat/ChatBlank';
-import NotFoundComponent from '../views/NotFoundComponent';
-import UserProfile from '../components/UserProfile';
-import Contacts from '../components/Contacts/Contacts';
-import ContactsList from '../components/Contacts/ContactsList';
-import ContactsSearchUsers from '../components/Contacts/ContactsSearchUsers';
-import ContactsFriendshipRequests from '../components/Contacts/ContactsFriendshipRequests';
+const AuthLogin = () => import('../components/Auth/AuthLogin');
+const AuthRegistration = () => import('../components/Auth/AuthRegistration');
+const Group = () => import('../components/Group/Group');
+const Chat = ()  => import('../components/Chat/Chat');
+const ChatBlank = ()  => import('../components/Chat/ChatBlank');
+const NotFoundComponent = () => import('../views/NotFoundComponent');
+const UserProfile = () => import('../components/UserProfile');
+const Contacts = () => import('../components/Contacts/Contacts');
+const ContactsList = () => import('../components/Contacts/ContactsList');
+const ContactsSearchUsers = () => import('../components/Contacts/ContactsSearchUsers');
+const ContactsFriendshipRequests  = () => import('../components/Contacts/ContactsFriendshipRequests');
 import {ioGetUserStatus} from "../services/socket/status.service";
 
 Vue.use(Router);
