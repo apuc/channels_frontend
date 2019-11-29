@@ -140,9 +140,16 @@
        */ 
       onPaste(event){
         
+        console.log('pasteee');
+        
+        for (let item of event.clipboardData.items){
+          console.log(item.type);
+        }
+        
         let item =  event.clipboardData.items[0];
         
         if(item.type.indexOf('image') !== -1){
+          console.log('upload');
           this.addAttachments([item.getAsFile()]);
           return;
         }
