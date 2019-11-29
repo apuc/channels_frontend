@@ -191,6 +191,9 @@ export default {
           commit('SET_CONTACTS_FREE_TO_ADD_SEARCH', getters['contactsToAddUsers']);
         }
       });
+
+    await dispatch('integrations/GET_CHANNEL_INTEGRATIONS', rootGetters['channels/currentChannelData'].id,{root: true})
+    
     await dispatch('messages/GET_MESSAGES', null, {root: true});
   },
   
