@@ -31,6 +31,8 @@
       </b-form-checkbox>
     </b-form-group>
     
+    <p v-if="errors.integration_id" v-for="err in errors.integration_id" style="color:red">{{err}}</p>
+    
     <b-button variant="primary" @click="addIntegration">Добавить</b-button>
   </div>
 </template>
@@ -51,6 +53,8 @@
                 
                 fields:[],
                 data:{},
+              
+                errors:[]
             }
         },
 
@@ -90,6 +94,8 @@
             }),
 
             addIntegration(){
+                this.errors = [];
+              
                 this.CHANNEL_ADD_INTEGRATION({
                     channel_id:this.currentChannelData.id,
                     integration_id:this.integration_id,
@@ -106,7 +112,7 @@
 
                     this.DELETE_MODAL()
                 },err=>{
-                    console.log(err.data.errors)
+                    this.errors = err.data.errors;
                 })
             }
         },

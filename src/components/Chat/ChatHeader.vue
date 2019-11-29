@@ -66,11 +66,12 @@
           <li class="info__li" v-if="currentChannelData.owner_id == userData.user_id">
             <button type="button"
                     class="info__users-btn"
-                    @click="SET_MODAL({name:'ModalAddIntegrationToChannel'})"
+                    @click="SET_MODAL({name:'ModalChannelIntegrations'})"
             >
-              Добавить интеграцию
+              Интеграции
             </button>
           </li>
+          
           
           <li class="info__li" v-if="userInCurrentChannel(userData.user_id) && currentChannelData.type != 'dialog'">
             <button type="button"
@@ -206,8 +207,6 @@
          */
         goToProfile() {
             let id = this.currentChannelUsers.find(el => el.user_id != this.userData.user_id).user_id;
-            
-            console.log(id);
             
             this.GET_USER_DATA(id).then(res =>{
                 this.$router.push('/user/'+id);

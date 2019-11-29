@@ -71,6 +71,18 @@ export default {
   'SET_CHANNEL_USERS': (state, users) => {
     state.channelUsers = users;
   },
+
+  'SET_CHANNEL_INTEGRATIONS': (state, integrations) => {
+    state.channelIntegrations = integrations;
+  },
+
+  'ADD_CHANNEL_INTEGRATION': (state, integration) => {
+    state.channelIntegrations.push(integration);
+  },
+
+  'REMOVE_CHANNEL_INTEGRATION': (state, integration_id) => {
+    state.channelIntegrations = state.channelIntegrations.filter(el => el.id != integration_id);
+  },
   
   'SET_CONTACTS_FREE_TO_ADD': (state, contacts) => {
     state.contactsToAdd.users = contacts.filter(contact => {

@@ -34,6 +34,8 @@ const state = {
     searchUsers: [],
   },
   
+  channelIntegrations:[],
+  
   contactsToAdd: {
     users: [],
     searchUsers: [],

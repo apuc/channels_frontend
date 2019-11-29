@@ -37,6 +37,7 @@
   import ModalAttachmentImage from "./ModalAttachmentImage";
   import ModalCreateIntegration from "./ModalCreateIntegration";
   import ModalAddIntegrationToChannel from "./ModalAddIntegrationToChannel";
+  import ModalChannelIntegrations from "./ModalChannelIntegrations";
 
   export default {
     name: "Modal",
@@ -55,6 +56,7 @@
       ModalAttachmentImage,
       ModalCreateIntegration,
       ModalAddIntegrationToChannel,
+      ModalChannelIntegrations,  
     },
     computed: {
       ...mapGetters({
