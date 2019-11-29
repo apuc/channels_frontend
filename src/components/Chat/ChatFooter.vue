@@ -20,7 +20,7 @@
                          v-model="input"
                          @input="emitUserTyping"
                          @keyup.enter.prevent.native="onSubmit"
-                         @paste="onPaste"
+                         @paste.native="onPaste"
                         
         >
         </b-form-textarea>
