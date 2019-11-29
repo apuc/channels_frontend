@@ -20,6 +20,7 @@
                          v-model="input"
                          @input="emitUserTyping"
                          @keyup.enter.prevent.native="onSubmit"
+                         @paste="onPaste"
         >
         </b-form-textarea>
         
@@ -132,6 +133,21 @@
         } else {
           this.sendMessage(this.input, this.currentChannel.id);
         }
+      },
+      
+      /**
+       * Обработка вставки ссылок и картинок
+       */ 
+      onPaste(event){
+        
+        let item =  event.clipboardData.items[0];
+        
+        if(item.type.indexOf('image') !== -1){
+          this.addAttachments([item.getAsFile()]);
+          return;
+        }
+        
+        console.log('NOT IMAGEEE')
       },
         
         /**

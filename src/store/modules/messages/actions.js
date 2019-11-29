@@ -141,13 +141,15 @@ export default {
     'ADD_ATTACHMENTS': async ({
         commit,
     }, attachments) => {
-        console.log('Message action ADD_ATTACHMENTS: ', attachments);
         for (let i = 0; i < attachments.length; i++) {
+          
             const data = new FormData;
             data.append(`attachment`, attachments[i]);
+            
             Vue.http.post(`${process.env.VUE_APP_API_URL}/attachment/upload`, data)
                 .then(
                     res => {
+                      
                         const attachment = {
                             type:res.body.type,
                             options: {
@@ -156,6 +158,7 @@ export default {
                                 ...res.body
                             }
                         };
+                        
                         commit('ADD_ATTACHMENT', attachment);
                     },
                     err => console.log(err)
