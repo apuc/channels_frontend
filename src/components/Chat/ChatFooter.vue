@@ -20,7 +20,7 @@
                          v-model="input"
                          @input="emitUserTyping"
                          @keyup.enter.prevent.native="onSubmit"
-                         @paste.native="onPaste"
+                         @paste="onPaste"
                         
         >
         </b-form-textarea>
@@ -87,12 +87,6 @@
         input: '',
         timeout: '',
       }
-    },
-    
-    mounted(){
-      document.getElementById('input_message').addEventListener('paste', function (e) {
-        console.log('AAAAAAA PSTE');
-      });
     },
       
       watch:{
