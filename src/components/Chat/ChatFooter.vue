@@ -101,7 +101,7 @@
       },
       
     methods: {
-      ...mapActions('messages', ['SEND_MESSAGE', 'ADD_ATTACHMENTS', 'CLEAR_ATTACHMENTS','EDIT_MESSAGE']),
+      ...mapActions('messages', ['SEND_MESSAGE', 'ADD_ATTACHMENTS', 'CLEAR_ATTACHMENTS','EDIT_MESSAGE','PARSE_LINK']),
         
       ioTyping,
 
@@ -140,28 +140,24 @@
        * Обработка вставки ссылок и картинок
        */ 
       onPaste(event){
-        
-        console.log('pasteee');
-        
-        for (let item of event.clipboardData.items){
-          console.log(item.type);
-        }
-        
         let item =  event.clipboardData.items[0];
         
         if(item.type.indexOf('image') !== -1){
-          console.log('upload');
           this.addAttachments([item.getAsFile()]);
           return;
         }
-        
-        console.log('NOT IMAGEEE')
+
+        item.getAsString((data)=>{
+          this.PARSE_LINK(data);
+        })
+         
       },
         
         /**
          * Пользователь печатает
          */
       emitUserTyping() {
+        
         clearTimeout(this.timeout);
         
         ioTyping({
@@ -174,6 +170,8 @@
         });
         
         this.timeout = setTimeout(() => {
+          this.PARSE_LINK(this.input);
+          
           ioTyping({
             user: {
               name: this.userInfo.username,

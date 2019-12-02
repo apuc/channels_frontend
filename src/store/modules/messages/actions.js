@@ -61,7 +61,7 @@ export default {
     }, payload) => {
         const { user_id } = rootGetters['user/userData'];
         const attachments = rootGetters['messages/attachments'];
-
+        
         const messageData = {
             channel_id: payload.channelId,
             from: user_id,
@@ -69,6 +69,7 @@ export default {
             user_id,
             attachments
         };
+        
         await ioSendMessage(messageData);
     },
 
@@ -241,14 +242,37 @@ export default {
     message.channel_id = message.channel;
     message.text = text;
     
-    //console.log(message);
-    
     Vue.http.put(`${process.env.VUE_APP_API_URL}/message/${message.id}`,message)
       .then(
         res => {
           //console.log(res);
           commit('SET_MESSAGE_TO_EDIT',null);
           commit('UPDATE_MESSAGE',res.body.data);
+          return res;
+        },
+        err => {
+          console.log(err)
+          commit('SET_MESSAGE_TO_EDIT',null);
+        }
+      )
+  },
+
+  'PARSE_LINK': async ({commit,getters},text) => {
+    console.log('sdasdasd',text)
+    Vue.http.post(`${process.env.VUE_APP_API_URL}/text-link`,{link:text})
+      .then(
+        res => {
+          
+          for(let link of res.body.data){
+            
+            const attachment = {
+              type:'link',
+              options: {...link}
+            };
+            
+            commit('ADD_ATTACHMENT', attachment);
+          }
+          
           return res;
         },
         err => {

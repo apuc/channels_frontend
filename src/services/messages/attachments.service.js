@@ -21,6 +21,11 @@ const attachmentsTypes = {
        component: 'Archive',
        icon: ArchiveIcon
      },
+  
+     link:{
+       component: 'Link',
+       icon:null
+     }
 };
 
 export function checkAttachmentType(type) {
