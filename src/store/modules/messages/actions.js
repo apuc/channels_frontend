@@ -190,16 +190,6 @@ export default {
    */
     'MARK_READ': async ({state,commit,rootState},channelId) => {
       
-      // let ids = state.messages.filter(m => {
-      //  return m.read == 0 && m.from.id != rootState.user.userData.user_id; 
-      // }).map(el => el.id)
-      //
-      //
-      //
-      // if(ids.length<1){
-      //   return; 
-      // }
-      
       Vue.http.post(`${process.env.VUE_APP_API_URL}/messages/read`,{channel_id:channelId})
         .then(
           res => {
@@ -259,7 +249,6 @@ export default {
   },
 
   'PARSE_LINK': async ({commit,getters},text) => {
-    console.log('sdasdasd',text)
     Vue.http.post(`${process.env.VUE_APP_API_URL}/text-link`,{link:text})
       .then(
         res => {
@@ -271,7 +260,12 @@ export default {
               options: {...link}
             };
             
-            commit('ADD_ATTACHMENT', attachment);
+            let exists = getters.attachments.find(el =>el.options.url && el.options.url == attachment.options.url);
+            
+            if(exists === undefined){
+              commit('ADD_ATTACHMENT', attachment);
+            }
+            
           }
           
           return res;
