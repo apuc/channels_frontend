@@ -147,9 +147,9 @@
           return;
         }
 
-        item.getAsString((data)=>{
-          this.PARSE_LINK(data);
-        })
+        // item.getAsString((data)=>{
+        //   this.PARSE_LINK(data);
+        // })
          
       },
         

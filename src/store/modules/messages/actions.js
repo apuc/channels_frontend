@@ -190,19 +190,20 @@ export default {
    */
     'MARK_READ': async ({state,commit,rootState},channelId) => {
       
-      let ids = state.messages.filter(m => {
-       return m.read == 0 && m.from.id != rootState.user.userData.user_id; 
-      }).map(el => el.id)
-
-      commit('READ_CHANNEL_MESSAGES',channelId);
+      // let ids = state.messages.filter(m => {
+      //  return m.read == 0 && m.from.id != rootState.user.userData.user_id; 
+      // }).map(el => el.id)
+      //
+      //
+      //
+      // if(ids.length<1){
+      //   return; 
+      // }
       
-      if(ids.length<1){
-        return; 
-      }
-      
-      Vue.http.post(`${process.env.VUE_APP_API_URL}/messages/read`,{message_ids:ids})
+      Vue.http.post(`${process.env.VUE_APP_API_URL}/messages/read`,{channel_id:channelId})
         .then(
           res => {
+             commit('READ_CHANNEL_MESSAGES',channelId);
              return res;
           },
           err => console.log(err)

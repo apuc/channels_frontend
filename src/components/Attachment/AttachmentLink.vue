@@ -1,7 +1,7 @@
 <template>
   <div class="attachment-link">
     <a :href="data.options.url" target="_blank">
-      <div>
+      <div class="icon">
         <img v-if="data.options.icon" :src="data.options.icon" alt="">
       </div>
       <div>
@@ -93,5 +93,9 @@
   
   .attachment-link{
     position: relative;
+  }
+  
+  .icon{
+    padding-right: 10px;
   }
 </style>
