@@ -97,7 +97,15 @@
         controlBtnsWidth: 0
       }
     },
-      
+    
+    created(){
+      for(let channel of this.data.channels){
+        if(channel.unread_count > 0){
+          this.SET_CHANNEL_NOTIFICATION({channel_id:channel.id,unread:channel.unread_count})
+        }
+      }
+    },
+
     methods: {
       ...mapMutations('groups', [
         'SET_GROUP_DATA',
@@ -114,6 +122,7 @@
       ...mapMutations({
         SET_USER_POSITION: 'user/SET_USER_POSITION',
         SET_MODAL: 'modal/SET_MODAL',
+        SET_CHANNEL_NOTIFICATION: "messages/SET_CHANNEL_NOTIFICATION",
       }),
         
       ...mapActions({
@@ -147,6 +156,7 @@
         this.SET_MODAL({name: 'ModalGroupDelete'});
         this.SET_GROUP_ID_TO_DELETE(id);
       },
+      
 
         /**
          * Открывает окно добавления каналов
