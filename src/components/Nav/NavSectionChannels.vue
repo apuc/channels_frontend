@@ -110,7 +110,8 @@
       ...mapActions({
         SET_CURRENT_CHANNEL_DATA: 'channels/SET_CURRENT_CHANNEL_DATA',
         GET_MESSAGES: "messages/GET_MESSAGES",
-          MARK_READ: "messages/MARK_READ"
+          MARK_READ: "messages/MARK_READ",
+          MARK_READ_CHAT: "messages/MARK_READ_CHAT",
       }),
         
         
@@ -129,7 +130,7 @@
             if(this.data.channel_type == 'dialog'){
                 this.MARK_READ(id);   
             }else{
-                this.READ_CHANNEL_MESSAGES(id);
+                this.MARK_READ_CHAT(id);
             }
         });
         this.SET_USER_POSITION(type);

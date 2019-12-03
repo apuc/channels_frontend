@@ -201,6 +201,27 @@ export default {
     },
 
   /**
+   * Отметить прочитанные в чате
+   * @param state
+   * @param commit
+   * @param rootState
+   * @param channelId
+   * @returns {Promise<void>}
+   * @constructor
+   */
+  'MARK_READ_CHAT': async ({state,commit,rootState},channelId) => {
+
+    Vue.http.post(`${process.env.VUE_APP_API_URL}/messages/read/chat`,{channel_id:channelId})
+      .then(
+        res => {
+          commit('READ_CHANNEL_MESSAGES',channelId);
+          return res;
+        },
+        err => console.log(err)
+      )
+  },
+
+  /**
    * Удаление сообщения
    * @param commit
    * @param message_id
@@ -248,6 +269,14 @@ export default {
       )
   },
 
+  /**
+   * Получить мета данные ссылки для превью
+   * @param commit
+   * @param getters
+   * @param text
+   * @returns {Promise<void>}
+   * @constructor
+   */
   'PARSE_LINK': async ({commit,getters},text) => {
     Vue.http.post(`${process.env.VUE_APP_API_URL}/text-link`,{link:text})
       .then(
