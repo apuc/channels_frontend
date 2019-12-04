@@ -110,8 +110,8 @@
         rejectRequest(id) {
             
         this.REJECT_FRIENDSHIP_REQUEST({
-          user_id: this.userData.user_id,
-          contact_id: id
+          user_id: id,
+          contact_id: this.userData.user_id
         })
           .then(() => {
               this.REMOVE_USER_REQUEST_FROM_STORE(id)

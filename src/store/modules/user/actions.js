@@ -1,6 +1,10 @@
 import Vue from "vue";
 import router from "../../../routers/router";
 
+import {
+  ioFriendRequest
+} from '../../../services/socket/users.service';
+
 export default {
   /**
    * Get user data
@@ -245,14 +249,14 @@ export default {
    * @param data.user_id {Number} - user which sending request
    * @param data.contact_id {Number} - user that will receive request
    */
-  'SEND_FRIENDSHIP_REQUEST': async ({}, data) => {
+  'SEND_FRIENDSHIP_REQUEST': async ({getters}, data) => {
     await Vue.http.post(`${process.env.VUE_APP_API_URL}/user/add-contact`, {
       user_id: data.user_id,
       contact_id: data.contact_id
     })
       .then(
-        async res => {
-          // console.log(res);
+        res => {
+          ioFriendRequest({to:data.contact_id,from:getters.userData});
         },
         err => console.log('err login', err)
       )

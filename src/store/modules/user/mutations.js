@@ -80,6 +80,10 @@ export default {
   'SET_USER_FRIENDSHIP_REQUESTS': (state, requests) => {
     state.friendshipRequests = requests;
   },
+
+  'ADD_USER_FRIENDSHIP_REQUEST': (state, request) => {
+    state.friendshipRequests.toMeRequests.push(request);
+  },
   
   'REMOVE_USER_REQUEST_FROM_STORE': (state, user_id) => {
     const requests = state.friendshipRequests;
