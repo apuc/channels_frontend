@@ -4,6 +4,10 @@ import {
   joinChannels
 } from '../../../services/socket/channels.service';
 
+import {
+  ioAddTochannel
+} from '../../../services/socket/channels.service';
+
 export default {
   /**
    * Get logined user channels
@@ -333,6 +337,7 @@ export default {
                        dispatch,
                        rootGetters
                      }, data) => {
+    
     const currentDateInSeconds = Math.round(Date.now() / 1000);
     const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
     const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
@@ -344,6 +349,8 @@ export default {
       })
         .then(
           res => {
+            ioAddTochannel(data.user_id,data.channel_id);
+
             dispatch('GET_CHANNEL_USERS', data.channel_id)
               .then(users => {
                 if (data.channel_id === getters.currentChannelData.id) {
