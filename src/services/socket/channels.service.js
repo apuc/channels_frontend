@@ -23,6 +23,7 @@ export function ioAddTochannel(user_id,channel_id) {
 
 export function channelsEventListenerInit() {
   io.on('addToChannel', function (channel) {
+     joinChannel(channel.id)
      store.commit('channels/ADD_CREATED_CHANNEL',channel)
      notificationAudio.play();
   });
