@@ -171,6 +171,7 @@
     methods: {
       ...mapMutations({
         SET_USER_INFO: 'user/SET_USER_INFO',
+        SET_USER_DATA_AVATAR:'user/SET_USER_DATA_AVATAR'
       }),
         
       ...mapActions('auth',[
@@ -205,6 +206,11 @@
                 });
         }
 
+          //если удалили аватар
+          if(this.user.avatar == null && this.userData.avatar){
+            this.SET_USER_DATA_AVATAR(null);
+          }
+
             //если поменяли просто данные без аватара
         if(this.user.avatar instanceof FormData === false){
             this.MAKE_REQUEST({
@@ -218,11 +224,6 @@
                         this.SET_USER_INFO(userData);
                         this.showAlert();
                 });
-        }
-
-        //если удалили аватар
-        if(this.user.avatar == null && this.userData.avatar){
-            console.log('delete avatar');
         }
       },
 

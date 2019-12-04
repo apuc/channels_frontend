@@ -235,7 +235,8 @@
         "SET_CHANNEL_PRIVATE",
         "SET_CHANNEL_USERS",
         'SET_CONTACTS_TO_ADD_CHANNEL_ID',
-        'SET_CONTACTS_FREE_TO_ADD_SEARCH'
+        'SET_CONTACTS_FREE_TO_ADD_SEARCH',
+        'SET_CHANNEL_AVATAR_ID',
       ]),
         
       ...mapMutations({
@@ -270,7 +271,7 @@
         }
         
         if(!this.avatar && this.channelData.avatar){
-            console.log('delete aavvaaaaa');
+            this.SET_CHANNEL_AVATAR_ID(null);
         }
 
           this.MAKE_REQUEST({name:'channels/EDIT_CHANNEL',params:null}).then(() => this.$swal({
