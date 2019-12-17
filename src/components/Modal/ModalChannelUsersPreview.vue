@@ -18,7 +18,9 @@
             <router-link :to="`/user/${user.user_id}`"
                          @click.native="goToProfile(user.user_id)"
             >
-              {{user.username}} <span v-if="user.user_id === currentChannelData.owner_id" class="owner">(создатель канала)</span>
+              {{user.username}} 
+              <span v-if="user.user_id === currentChannelData.owner_id" class="owner">(создатель канала)</span>
+              <span v-if="user.is_bot" class="owner">(бот)</span>
             </router-link>
           </div>
         </div>
@@ -29,12 +31,13 @@
                 class="btn btn-sm btn-primary mr10"
                 title="Добавить в друзья"
                 @click="makeFriendshipRequest($event.target, {user_id: userData.user_id, contact_id: user.user_id})"
-                v-if="userData.user_id !== user.user_id && !findUserContact(user.user_id) && !findFriendshipRequest(user.user_id)"
+                v-if="userData.user_id !== user.user_id && !findUserContact(user.user_id) && !findFriendshipRequest(user.user_id) && !user.is_bot"
         >
           <v-icon scale="1" class="icon" name="user-plus"/>
         </button>
 
-        <button v-if="userData.user_id === currentChannelData.owner_id && user.user_id !== currentChannelData.owner_id"
+        <button v-if="userData.user_id === currentChannelData.owner_id 
+                     && user.user_id !== currentChannelData.owner_id"
                 type="button"
                 class="btn btn-sm btn-danger"
                 title="Удалить из канала"

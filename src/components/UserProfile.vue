@@ -15,7 +15,7 @@
     </header>
 
     <div class="controls">
-      <button type="button" class="btn btn-primary" @click="startDialog">Написать сообщение</button>
+      <button v-if="!currentUserInfo.is_bot" type="button" class="btn btn-primary" @click="startDialog">Написать сообщение</button>
     </div>
   </div>
 </template>
