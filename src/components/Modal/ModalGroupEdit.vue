@@ -49,7 +49,7 @@
         </div>
 
         <div class="col-6">
-          <div class="form-group">
+          <div class="form-group add">
             <p>Добавить каналы</p>
 
             <button
@@ -203,7 +203,7 @@
     };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   textarea {
     resize: none;
   }
@@ -223,4 +223,26 @@
   .button:hover {
     background-color: #722040;
   }
+  @media(max-width: 420px){
+    .row{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    .col-6{
+      margin: 0 auto;
+      padding: 0;
+      flex: 0 0 100%;
+      width: 80%;
+      max-width: 80%;
+    }
+    .form-group.add{
+      text-align: center;
+      margin-bottom: 5px;
+      p{
+        display: none;
+      }
+    }
+  }
+  
 </style>

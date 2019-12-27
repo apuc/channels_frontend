@@ -26,8 +26,13 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .header__desc {
     color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    padding: 0;
+    @media (max-width: 450px){
+      display: none;
+    }
   }
 </style>

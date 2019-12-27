@@ -162,11 +162,11 @@
 </script>
 
 <style scoped>
+
   .form-group {
     position: relative;
     z-index: 1;
-
-    padding-bottom: 10px;
+    padding-bottom: 5px;
   }
 
   .valid {

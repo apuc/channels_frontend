@@ -6,7 +6,7 @@
              @mouseover="addMenuVisible = true"
              @mouseout="addMenuVisible = false"
         >
-          <button class="addButton" type="button">
+          <button class="addButton" type="button" @click="addMenuVisible = !addMenuVisible">
             <img src="../../assets/img/menu_icon.png" alt="">
           </button>
 

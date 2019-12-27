@@ -71,7 +71,7 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .backdrop {
     position: absolute;
     top: 0;
@@ -112,7 +112,6 @@
   .modal__wrap {
     width: 500px;
     max-height: 90vh;
-
     overflow: auto;
   }
 

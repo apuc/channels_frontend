@@ -1,6 +1,6 @@
 <template>
-  <div class="page-wrapper">
-    <Header />
+  <div class="page-wrapper notAuth">
+    <Header v-model="isSidebarVisible"/>
 
     <div class="container home"
          v-touch:swipe.right="$_sidebarSlide_showSidebar"
@@ -79,5 +79,5 @@
 </script>
 
 <style scoped>
-  
+
 </style>

@@ -1,7 +1,6 @@
 <template>
   <div class="page-wrapper">
-    <Header/>
-
+    <Header v-model="isSidebarVisible"/>
     <div class="container home p-0"
          v-touch:swipe.right="$_sidebarSlide_showSidebar"
          v-touch:swipe.left="$_sidebarSlide_hideSidebar"
