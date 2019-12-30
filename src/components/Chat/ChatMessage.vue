@@ -78,7 +78,9 @@
       },
       
       messageTemplates(){
-        return this.messageData.text.replace('{{username}}',this.userData.username)
+        return this.messageData.text 
+          ? this.messageData.text.replace('{{username}}',this.userData.username)
+          : '';
       },
         
       userName() {

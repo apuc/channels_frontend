@@ -36,7 +36,8 @@ export default {
       Vue.http.post(`${process.env.VUE_APP_API_URL}/integrations`,payload)
         .then(
           res => {
-            resolve(res.body.data)
+            commit('ADD_INTEGRATION_TO_TYPE',res.body.data);
+            resolve(res.body.data);
           },
           err => {
             reject(err)

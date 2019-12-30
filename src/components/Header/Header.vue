@@ -1,14 +1,14 @@
 <template>
   <header class="header" :class="{header_auth: isAuthLayout, header_main: isMainLayout}">
     <div class="container d-flex align-items-center" :class="{'justify-content-center': isAuthLayout, 'flex-column': isAuthLayout}">
+      <div v-if="isMainLayout"
+           class="burger" :class="{'active': value}"
+           @click="$emit('input', !value)">
+        <hr>
+        <hr>
+        <hr>
+      </div>
       <router-link to="/" class="d-flex align-items-center" :class="{'py-3': isAuthLayout}">
-        <div v-if="isMainLayout"
-             class="burger" :class="{'active': value}"
-             @click="$emit('input', !value)">
-          <hr>
-          <hr>
-          <hr>
-        </div>
         <img src="../../assets/img/logo.png"
              alt=""
              class="header__logo"

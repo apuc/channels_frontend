@@ -110,7 +110,7 @@
   }
 
   .modal__wrap {
-    width: 500px;
+    min-width: 500px;
     max-height: 90vh;
     overflow: auto;
   }
