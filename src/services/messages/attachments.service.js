@@ -25,7 +25,12 @@ const attachmentsTypes = {
      link:{
        component: 'Link',
        icon:null
-     }
+     }, 
+  
+     reply:{
+       component: 'ReplyMessage',
+       icon:null
+     },
 };
 
 export function checkAttachmentType(type) {

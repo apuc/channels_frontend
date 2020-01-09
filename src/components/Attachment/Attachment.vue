@@ -13,11 +13,12 @@
   import AttachmentDocument  from './AttachmentDocument';
   import AttachmentArchive  from './AttachmentArchive';
   import AttachmentLink  from './AttachmentLink';
+  import AttachmentReplyMessage  from './AttachmentReplyMessage';
   import DocumentIcon from '../../assets/img/attachment-document-icon.png';
   import { checkAttachmentType } from '../../services/messages/attachments.service'
 
   export default {
-    components: {AttachmentImage, AttachmentDocument, AttachmentArchive,AttachmentLink},
+    components: {AttachmentImage, AttachmentDocument, AttachmentArchive,AttachmentLink,AttachmentReplyMessage},
     props: {
       attachment: {
         required: true,

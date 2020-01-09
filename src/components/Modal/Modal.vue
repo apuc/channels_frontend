@@ -138,6 +138,7 @@
   @media (max-width: 576px) {
     .modal__wrap {
       width: 95vw;
+      min-width: initial;
     }
   }
 </style>
