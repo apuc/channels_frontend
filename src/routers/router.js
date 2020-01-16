@@ -12,6 +12,8 @@ const Contacts = () => import('../components/Contacts/Contacts');
 const ContactsList = () => import('../components/Contacts/ContactsList');
 const ContactsSearchUsers = () => import('../components/Contacts/ContactsSearchUsers');
 const ContactsFriendshipRequests  = () => import('../components/Contacts/ContactsFriendshipRequests');
+const Bots = () => import('../components/Bots/Bots');
+const BotsList = () => import('../components/Bots/BotsList');
 import {ioGetUserStatus} from "../services/socket/status.service";
 
 Vue.use(Router);
@@ -80,6 +82,22 @@ export default new Router({
         next();
       }
     },
+    {
+      path: '/bots',
+      component: Bots,
+      children: [
+        {
+          path: '',
+          component: BotsList,
+          name: 'bots',
+          meta: {
+            requiresAuth: true,
+            layout: 'main'
+          },
+        }
+      ],
+    },
+    
     {
       path: '/not-found',
       name: 'not_found',

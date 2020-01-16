@@ -92,8 +92,6 @@ export default {
       .catch(error => console.log('FIND_USERS: ', error));
   },
   
-  
-  
   /**
    * Get specific user data and save it to store
    *

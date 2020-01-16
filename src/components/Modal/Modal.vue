@@ -34,10 +34,14 @@
   import ModalGroupAddChannels from "./ModalGroupAddChannels";
   import ModalSessionExpired from "./ModalSessionExpired";
   import ModalChannelAddUsers from "./ModalChannelAddUsers";
+  import ModalAddBotToChannel from "./ModalAddBotToChannel";
+  import ModalAddBotToUser from "./ModalAddBotToUser";
   import ModalAttachmentImage from "./ModalAttachmentImage";
   import ModalCreateIntegration from "./ModalCreateIntegration";
   import ModalAddIntegrationToChannel from "./ModalAddIntegrationToChannel";
   import ModalChannelIntegrations from "./ModalChannelIntegrations";
+  import ModalBotEdit from "./ModalBotEdit";
+  import ModalBotDelete from "./ModalBotDelete";
 
   export default {
     name: "Modal",
@@ -56,7 +60,11 @@
       ModalAttachmentImage,
       ModalCreateIntegration,
       ModalAddIntegrationToChannel,
-      ModalChannelIntegrations,  
+      ModalChannelIntegrations,
+      ModalAddBotToChannel,
+      ModalAddBotToUser,
+      ModalBotEdit,
+      ModalBotDelete,
     },
     computed: {
       ...mapGetters({

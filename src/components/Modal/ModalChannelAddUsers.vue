@@ -1,7 +1,7 @@
 <template>
   <div class="modal-inside">
 
-    <h4 class="modal__title mb-3 ml-0">Добавить пользователя канал</h4>
+    <h4 class="modal__title mb-3 ml-0">Добавить пользователя в канал</h4>
     
     <div class="add-user mb-3">
       <label for="add-user" style="margin-right: 10px">Пригласить по email</label>
