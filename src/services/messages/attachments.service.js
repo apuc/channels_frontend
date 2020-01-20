@@ -31,6 +31,11 @@ const attachmentsTypes = {
        component: 'ReplyMessage',
        icon:null
      },
+  
+     rss:{
+       component: 'Rss',
+       icon:null
+     }
 };
 
 export function checkAttachmentType(type) {
