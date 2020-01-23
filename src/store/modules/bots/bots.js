@@ -8,7 +8,6 @@ const state = {
   currentBotData: {
     username: "",
     webhook:"",
-    index:"",
     id:""
   },
 

@@ -1,4 +1,4 @@
-export default {
+ export default {
 
   'SET_USER_BOTS': (state, bots) => {
     state.botsList = bots;
@@ -49,7 +49,7 @@ export default {
     state.botsList[data.index].webhook = data.webhook;
   },
 
-  'DELETE_USER_BOT': (state, index) =>{
-    state.botsList.splice(index, 1);
+  'DELETE_USER_BOT': (state, bot_id) =>{
+    state.botsList = state.botsList.filter(el => el.id != bot_id);
   }
 };

@@ -47,16 +47,18 @@
             </p>
           </div>
 
-          <div class="add_buttons">
+          <div class="add_button">
             <button type="button" class="btn btn-primary" @click="setAddUsersModal">
               Добавить пользователей
             </button>
-
+          </div>
+            
+          <div class="add_button">
             <button type="button" class="btn btn-primary" @click="setAddBotsModal">
               Добавить бота
             </button>
           </div>
-        
+
           <div class="form-group">
             <p>Статус канала</p>
 
@@ -318,13 +320,7 @@
   .button:hover {
     background-color: #722040;
   }
-  .add_buttons{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    button{
-      margin: 5px;
-    }
+  .add_button{
+    margin-bottom: 5px;
   }
 </style>

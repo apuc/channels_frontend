@@ -11,7 +11,7 @@ export default {
       const pathnameArray = location.pathname.split('/');
       const slug = pathnameArray[pathnameArray.length - 1];
 
-      if (pathnameArray[1] === 'contacts') {
+      if (pathnameArray[1] === 'contacts' || pathnameArray[1] === 'bots') {
         const isAuthenticated = store.getters['auth/isAuthenticated'];
         if (!isAuthenticated) {
           router.push('/login');

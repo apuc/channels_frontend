@@ -35,6 +35,7 @@ const state = {
   },
   
   channelIntegrations:[],
+  channelBots:[],
   
   contactsToAdd: {
     users: [],

@@ -8,6 +8,7 @@ export default {
   imageUploadPercentage: state => state.imageUploadPercentage,
   channelUsers: state => state.channelUsers,
   channelIntegrations: state => state.channelIntegrations,
+  channelBots: state => state.channelBots,
   contactsToAdd: state => state.contactsToAdd,
   contactsToAddUsers: state => state.contactsToAdd.users,
   contactsToAddSearch: state => state.contactsToAdd.searchUsers,
