@@ -21,15 +21,7 @@ export default {
       Vue.http.post(`${process.env.VUE_APP_API_URL}/bot`, {
         owner_id: getters.createdBotData.owner_id,
         name: getters.createdBotData.name,
-        /*Как же, не нужна вторая строка.
-        В ответе от сервера никакого hook_url и в помине нет,
-        но для создания бота он обязателен. То есть,
-        если убрать webhook - ответ будет пустым, убрать hook_url - сервер тупо пошлёт. 
-        А прописывать каждый раз https для тестирования мне было просто влом 
-        */
-        //hook_url: "https://"+getters.createdBotData.hook_url,
-        /*Есть подозрения, что поменялись настройки сервера - начал принимать пустой hook_url*/
-        webhook: getters.createdBotData.hook_url
+        webhook: getters.createdBotData.webhook
       })
         .then(
           async res => {
@@ -43,17 +35,11 @@ export default {
         .catch(error => console.log('CREATE_BOT', error))
     }));
   },
-
-
-  /*Изменение бота*/
-  /*По ТЗ должно быть два изменяемых поля: имя и webhook,
-  но изменение webhook запрещено со стороны сервера*/
+  
   'UPDATE_BOT': async ({commit, getters}) => {
     return new Promise(((resolve, reject) => {
       Vue.http.put(`${process.env.VUE_APP_API_URL}/bot/${getters.currentBotData.id}`,{
         username: getters.currentBotData.username,
-        /*hook_url: getters.currentBotData.webhook,
-        webhook: getters.currentBotData.webhook*/
       })
         .then(
           async res => {
@@ -85,23 +71,4 @@ export default {
         )
         .catch(error => console.log('DELETE_BOT: ', error))
   },
-
-//Сделано как в интеграциях, но сильно сомневаюсь, что заработает - API не выдали, взято наугад.
-//Геттер и мутации в каналы добавил
-  'CHANNEL_ADD_BOT':({commit},payload) => {
-    return new Promise((resolve,reject)=>{
-      Vue.http.post(`${process.env.VUE_APP_API_URL}/channels/${payload.channel_id}/bots`, payload)
-        .then(
-          res => {
-            commit('channels/ADD_CHANNEL_BOT',res.body.data,{root:true})
-            resolve(res)
-          },
-          err => {
-            reject(err)
-          }
-        )
-    });
-  },
-
- 
 }

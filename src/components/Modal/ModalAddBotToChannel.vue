@@ -40,18 +40,15 @@
                 'GET_USER_BOTS',
                 'CHANNEL_ADD_BOT'
             ]),
+          ...mapActions('channels', ['ADD_USER']),
             ...mapMutations({
                 DELETE_MODAL: 'modal/DELETE_MODAL',
             }),
 
             addBot(){
-                this.data = this.botsList.filter(el => el.id == this.bot_id);
-                this.DELETE_MODAL();
-                //Метод потенциально рабочий, однако не обрабатывается со стороны сервера, возвращает ошибку 404. Закономерно - API под него не выдали
-                /*this.CHANNEL_ADD_BOT({
+               this.ADD_USER({
                     channel_id:this.currentChannelData.id,
-                    bot_id:this.integration_id,
-                    data: this.data[0],
+                    user_id:this.bot_id,
                 }).then(res =>{
                     this.$swal({
                         toast: true,
@@ -64,7 +61,7 @@
                     this.DELETE_MODAL();
                 },err=>{
                     this.errors = err.data.errors;
-                })*/
+                })
             }
         },
     }

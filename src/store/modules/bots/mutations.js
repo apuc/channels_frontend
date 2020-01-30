@@ -24,16 +24,19 @@
   'SET_CREATED_BOT': (state, data) =>{
     state.createdBotData.owner_id = data.owner_id;
     state.createdBotData.name = data.name;
-    state.createdBotData.hook_url = data.hook_url;
+    state.createdBotData.webhook = data.webhook;
   },
+   
   'SET_CREATED_BOT_OWNER': (state, owner_id) =>{
     state.createdBotData.owner_id = owner_id;
   },
+   
   'SET_CREATED_BOT_NAME': (state, name) =>{
     state.createdBotData.name = name;
   },
+   
   'SET_CREATED_BOT_HOOK': (state, hook_url) =>{
-    state.createdBotData.hook_url = hook_url;
+    state.createdBotData.webhook = hook_url;
   },
 
   'ADD_USER_BOT': (state, data) =>{

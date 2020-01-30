@@ -10,12 +10,12 @@
     </div>
 
     <div v-else class="bots_table">
-      <b-table small :items="botsList" :fields="fields">
+      <b-table responsive :items="botsList" :fields="fields">
 
         <template v-slot:cell(actions)="row">
           <b-button-group>
 
-            <b-button variant="light" size="sm" @click="setBotEdit(row.item)">
+            <b-button variant="light" size="sm" @click="setBotEdit(row.item,row.index)">
               <img src="../../assets/img/pencil.png" alt="edit">
             </b-button>
 
@@ -41,18 +41,20 @@
     
     data(){
       return{
-        fields:[{
-          key:"username",
-          label: "Имя бота"
-        },
-        {
-          key: "webhook",
-          label: "Webhook url"
-        },
-        {
-          key: "actions",
-          label: ""
-        }]
+        fields:[
+          {
+            key:"username",
+            label: "Имя бота"
+          },
+          {
+            key: "webhook",
+            label: "Webhook url"
+          },
+          {
+            key: "actions",
+            label: ""
+          }
+        ]
       }
     },
 
@@ -75,11 +77,12 @@
         SET_MODAL: "modal/SET_MODAL"
       }),
         
-      setBotEdit(data) {
+      setBotEdit(data,index) {
         this.SET_CURRENT_BOT({
           username: data.username,
           webhook: data.webhook,
           id: data.id,
+          index:index,
         });
         this.$router.push({path: "bots/edit"});
       },
@@ -112,7 +115,7 @@
     text-align: left;
     //Я честно пытался исправить косяки данной таблицы, а именно ломка вёрстки при слишком длинном имени бота/вебхука и отображения на узких дисплеях, но плевать эта бутстраповская гадина хотела на стили. Почему обязательно её юзать? Прошлая была красивше и ГОРАЗДО проще настраивалась
     table{
-      max-width: 100%;
+      max-width: 100% !important;
       /*Она это даже не видит, а не переопределяет, в правилах элементов пусто. Хз почему.
       Однако на table действует
       td{

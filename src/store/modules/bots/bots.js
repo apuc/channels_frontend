@@ -14,7 +14,7 @@ const state = {
   createdBotData: {
     owner_id: "",
     name: "",
-    hook_url: ""
+    webhook: ""
   },
 };
 

@@ -32,7 +32,7 @@
                class="form-control add-bot__input"
                type="text"
                placeholder="Введите webhook url"
-               :value="createdBotData.hook_url"
+               :value="createdBotData.webhook"
                @input="SET_CREATED_BOT_HOOK($event.target.value)"
         >
       </div>
