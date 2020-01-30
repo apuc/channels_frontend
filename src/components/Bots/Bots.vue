@@ -22,6 +22,8 @@
 
 <style scoped lang="scss">
   .bots {
+    width: 100%;
+    max-width: 100vw;
     padding: 30px;
     position: relative;
     text-align: center;
