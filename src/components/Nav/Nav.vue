@@ -3,10 +3,9 @@
     <div class="wrap">
       <header class="nav-header">
         <div class="mr-3"
-             @mouseover="addMenuVisible = true"
-             @mouseout="addMenuVisible = false"
+             @click="addMenuVisible = !addMenuVisible"
         >
-          <button class="addButton" type="button" @click="addMenuVisible = !addMenuVisible">
+          <button class="addButton" type="button">
             <img src="../../assets/img/menu_icon.png" alt="">
           </button>
 
