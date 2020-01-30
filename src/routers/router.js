@@ -12,6 +12,10 @@ const Contacts = () => import('../components/Contacts/Contacts');
 const ContactsList = () => import('../components/Contacts/ContactsList');
 const ContactsSearchUsers = () => import('../components/Contacts/ContactsSearchUsers');
 const ContactsFriendshipRequests  = () => import('../components/Contacts/ContactsFriendshipRequests');
+const Bots = () => import('../components/Bots/Bots');
+const BotsList = () => import('../components/Bots/BotsList');
+const BotsCreate = () => import('../components/Bots/BotsCreate');
+const BotsEdit = () => import('../components/Bots/BotsEdit');
 import {ioGetUserStatus} from "../services/socket/status.service";
 
 Vue.use(Router);
@@ -80,6 +84,44 @@ export default new Router({
         next();
       }
     },
+    {
+      path: '/bots',
+      component: Bots,
+      children: [
+        {
+          path: '',
+          component: BotsList,
+          name: 'bots',
+          meta: {
+            requiresAuth: true,
+            layout: 'main'
+          },
+        },
+        {
+          path: 'create',
+          component: BotsCreate,
+          name: 'botsCreate',
+          meta: {
+            requiresAuth: true,
+            layout: 'main'
+          },
+        },
+        {
+          path: 'edit',
+          component: BotsEdit,
+          name: 'botsEdit',
+          meta: {
+            requiresAuth: true,
+            layout: 'main'
+          },
+        }
+      ],
+      beforeEnter: (to, from, next) => {
+        store.commit('user/SET_USER_POSITION', 'bots');
+        next();
+      }
+    },
+    
     {
       path: '/not-found',
       name: 'not_found',

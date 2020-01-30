@@ -47,10 +47,18 @@
             </p>
           </div>
 
-          <div class="form-group">
-            <button type="button" class="btn btn-primary" @click="setAddUsersModal">Добавить пользователей</button>
+          <div class="add_button">
+            <button type="button" class="btn btn-primary" @click="setAddUsersModal">
+              Добавить пользователей
+            </button>
           </div>
-        
+            
+          <div class="add_button">
+            <button type="button" class="btn btn-primary" @click="setAddBotsModal">
+              Добавить бота
+            </button>
+          </div>
+
           <div class="form-group">
             <p>Статус канала</p>
 
@@ -257,6 +265,9 @@
         this.SET_CONTACTS_FREE_TO_ADD_SEARCH([]);
         this.SET_MODAL({name: "ModalChannelAddUsers"});
       },
+      setAddBotsModal() {
+        this.SET_MODAL({name: "ModalAddBotToChannel"});
+      },
         
       async onSubmit() {
         const owner_id = this.userData.user_id;
@@ -291,7 +302,7 @@
   };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 
   .button {
@@ -308,5 +319,8 @@
 
   .button:hover {
     background-color: #722040;
+  }
+  .add_button{
+    margin-bottom: 5px;
   }
 </style>

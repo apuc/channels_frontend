@@ -83,6 +83,18 @@ export default {
   'REMOVE_CHANNEL_INTEGRATION': (state, integration_id) => {
     state.channelIntegrations = state.channelIntegrations.filter(el => el.id != integration_id);
   },
+
+  'SET_CHANNEL_BOTS': (state, bots) => {
+    state.channelBots= bots;
+  },
+
+  'ADD_CHANNEL_BOT': (state, bot) => {
+    state.channelBots.push(bot);
+  },
+
+  'REMOVE_CHANNEL_BOT': (state, bot_id) => {
+    state.channelBots = state.channelBots.filter(el => el.id != bot_id);
+  },
   
   'SET_CONTACTS_FREE_TO_ADD': (state, contacts) => {
     state.contactsToAdd.users = contacts.filter(contact => {
