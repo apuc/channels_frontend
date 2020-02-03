@@ -3,7 +3,12 @@
     <h4 class="modal_title">Создать интеграцию</h4>
     
     <b-form-group label="Тип итеграции">
-      <b-form-select :options="creatableIntegrations" text-field="title" value-field="id" v-model="type"/>
+      <b-form-select :options="creatableIntegrations" 
+                     text-field="title" 
+                     value-field="id" 
+                     v-model="type"
+                     options-field="groups"
+                     />
     </b-form-group>
 
     <b-form-group label="Название итеграции">

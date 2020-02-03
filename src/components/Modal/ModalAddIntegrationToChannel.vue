@@ -3,7 +3,13 @@
     <h4 class="modal_title">Добавить интеграцию в канал</h4>
 
     <b-form-group label="Тип итеграции">
-      <b-form-select :options="allIntegrations" text-field="title" value-field="id" v-model="type_id"/>
+      <b-form-select 
+        :options="allIntegrations" 
+        text-field="title" 
+        value-field="id" 
+        v-model="type_id"  
+        options-field="groups"
+      />
     </b-form-group>
 
     <b-form-group label="Выберите интеграцию" v-if="integration_type && integration_type.user_can_create">
@@ -84,7 +90,7 @@
 
         computed:{
             ...mapGetters('integrations',['allIntegrations']),
-            ...mapGetters('channels',['currentChannelData'])
+            ...mapGetters('channels',['currentChannelData']),
         },
 
         methods: {

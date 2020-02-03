@@ -1,7 +1,6 @@
 <template>
   <div class="modal-inside">
     <h4 class="modal_title">Добавить бота в канал</h4>
-    <p>Ввиду отсутствия корректного API кнопка "Добавить" просто закроет модалку</p>
     <b-form-group label="Выберите бота">
       <b-form-select :options="botsList"
                      text-field="username"
