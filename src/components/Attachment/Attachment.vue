@@ -15,11 +15,20 @@
   import AttachmentLink  from './AttachmentLink';
   import AttachmentReplyMessage  from './AttachmentReplyMessage';
   import AttachmentRss  from './AttachmentRss';
+  import AttachmentGitHub  from './AttachmentGitHub';
   import DocumentIcon from '../../assets/img/attachment-document-icon.png';
   import { checkAttachmentType } from '../../services/messages/attachments.service'
 
   export default {
-    components: {AttachmentImage, AttachmentDocument, AttachmentArchive,AttachmentLink,AttachmentReplyMessage,AttachmentRss},
+    components: {
+      AttachmentImage, 
+      AttachmentDocument, 
+      AttachmentArchive,
+      AttachmentLink,
+      AttachmentReplyMessage,
+      AttachmentRss,
+      AttachmentGitHub,
+    },
     props: {
       attachment: {
         required: true,

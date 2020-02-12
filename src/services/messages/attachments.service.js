@@ -35,7 +35,12 @@ const attachmentsTypes = {
      rss:{
        component: 'Rss',
        icon:null
-     }
+     },
+
+    github:{
+      component: 'GitHub',
+      icon:null
+    }
 };
 
 export function checkAttachmentType(type) {
