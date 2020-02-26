@@ -13,7 +13,8 @@ import { register } from 'register-service-worker'
     cached () {
       console.log('Content has been cached for offline use.')
     },
-    updated () {
+    updated (registration) {
+      registration.waiting.postMessage({action:'skipWaiting'})
       console.log('New content is available; please refresh.')
     },
     offline () {
@@ -24,3 +25,10 @@ import { register } from 'register-service-worker'
     }
   })
 // }
+
+var refresh;
+navigator.serviceWorker.addEventListener('controllerchange',()=>{
+  if(refresh) return;
+  window.location.reload()
+  refresh = true
+})
