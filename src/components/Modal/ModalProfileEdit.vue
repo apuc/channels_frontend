@@ -2,131 +2,128 @@
   <div class="modal-inside">
     
     <header class="modal__header">
-      
       <div class="d-flex align-items-center w-100 mb-3">
         <img src="../../assets/img/management.png" class="modal__header-img">
         <h4 class="modal__title">Редактирование профиля</h4>
       </div>
-
-      <nav>
-        <button type="button"
-                class="btn mr10"
-                :class="{'btn-outline-primary': isGeneralSettings}"
-                @click="switchSettings"
-        >
-          Общее
-        </button>
-
-        <button type="button"
-                class="btn"
-                :class="{'btn-outline-primary': isPrivateSettings}"
-                @click="switchSettings"
-        >
-          Личное
-        </button>
-      </nav>
     </header>
 
-    <form v-if="isGeneralSettings"
-          class="modal__content"
-          @submit.prevent="onSubmitGeneral"
-    >
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <label for="username">Псевдоним</label>
+    <b-tabs pills>
+      
+      <!--ВКЛАДКА ОБЩЕЕ-->
+      <b-tab  title="Общее">
+        <form class="modal__content" @submit.prevent="onSubmitGeneral">
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="username">Псевдоним</label>
 
-            <input type="text"
-                   id="username"
-                   class="form-control"
-                   v-model="user.username"
-            >
-          </div>
-        </div>
-      </div>
-      
-      <AvatarUploader :avatar="user.avatar" v-model="user.avatar"/>
-      
-      <div>
-        <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
-      </div>
-      
-      <div class="modal__footer">
-        <button type="submit" class="btn btn-primary mr-1 mb-1">Сохранить</button>
-        <span class="edit-notice">Изменения вступят в силу после сохранения</span>
-      </div>
-      
-    </form>
-
-    <form v-else
-          class="modal__content"
-          @submit.prevent="onSubmitPrivate"
-    >
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <label for="password">Новый пароль</label>
-
-            <input type="password"
-                   id="password"
-                   class="form-control"
-                   v-model="user.password"
-            >
-            
-            <p 
-              v-if="errors.hasOwnProperty('password')" 
-              v-for="error in errors['password']"
-              style="color:red">{{error}}
-            </p>
-            
+                <input type="text"
+                       id="username"
+                       class="form-control"
+                       v-model="user.username"
+                >
+              </div>
+            </div>
           </div>
 
-          <div class="form-group">
-            <label for="password-repeat">Повторите пароль</label>
+          <AvatarUploader :avatar="user.avatar" v-model="user.avatar"/>
 
-            <input type="password"
-                   id="password-repeat"
-                   class="form-control"
-                   v-model="user.passwordRepeat"
-            >
-
-            <p
-              v-if="errors.hasOwnProperty('password_confirmation')"
-              v-for="error in errors['password_confirmation']"
-              style="color:red">{{error}}
-            </p>
+          <div>
+            <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
           </div>
 
-          <div class="form-group">
-            <label for="email">Email</label>
-
-            <input type="text"
-                   id="email"
-                   class="form-control"
-                   v-model="user.email"
-            >
-
-            <p
-              v-if="errors.hasOwnProperty('email')"
-              v-for="error in errors['email']"
-              style="color:red">{{error}}
-            </p>
+          <div class="modal__footer">
+            <button type="submit" class="btn btn-primary mr-1 mb-1">Сохранить</button>
+            <span class="edit-notice">Изменения вступят в силу после сохранения</span>
           </div>
-        </div>
-      </div>
 
-      <div class="modal__footer">
-        <button type="submit" class="btn btn-primary mr-1 mb-1">Сохранить</button>
-        <button type="submit" 
-                class="btn btn-danger mb-1" 
-                @click.prevent="onDeleteProfile"
-        >
-          Удалить профиль
-        </button>
-        <span class="edit-notice">Изменения вступят в силу после сохранения</span>
-      </div>
+        </form>
+      </b-tab>
 
-    </form>
+      <!--ВКЛАДКА ЛИЧНОЕ-->
+      <b-tab title="Личное">
+        <form class="modal__content" @submit.prevent="onSubmitPrivate">
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="password">Новый пароль</label>
+
+                <input type="password"
+                       id="password"
+                       class="form-control"
+                       v-model="user.password"
+                >
+
+                <p
+                  v-if="errors.hasOwnProperty('password')"
+                  v-for="error in errors['password']"
+                  style="color:red">{{error}}
+                </p>
+
+              </div>
+
+              <div class="form-group">
+                <label for="password-repeat">Повторите пароль</label>
+
+                <input type="password"
+                       id="password-repeat"
+                       class="form-control"
+                       v-model="user.passwordRepeat"
+                >
+
+                <p
+                  v-if="errors.hasOwnProperty('password_confirmation')"
+                  v-for="error in errors['password_confirmation']"
+                  style="color:red">{{error}}
+                </p>
+                
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+
+                <input type="text"
+                       id="email"
+                       class="form-control"
+                       v-model="user.email"
+                >
+
+                <p
+                  v-if="errors.hasOwnProperty('email')"
+                  v-for="error in errors['email']"
+                  style="color:red">{{error}}
+                </p>
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="modal__footer">
+            <button type="submit" class="btn btn-primary mr-1 mb-1">Сохранить</button>
+            <button type="submit"
+                    class="btn btn-danger mb-1"
+                    @click.prevent="onDeleteProfile"
+            >
+              Удалить профиль
+            </button>
+            <span class="edit-notice ml-2">Изменения вступят в силу после сохранения</span>
+          </div>
+
+        </form>
+      </b-tab>
+
+      <!--ВКЛАДКА УВЕДОМЛЕНИЯ-->
+      <b-tab  title="Уведомления">
+          <p class="mt-3">
+            <b-button variant="primary" @click="subscribeToPush">Подписаться</b-button>
+          </p>
+          <p>
+            <b-button variant="danger" @click="unsubscribeFromPush">Отписаться</b-button>
+          </p>
+      </b-tab>
+      
+    </b-tabs>
   </div>
 </template>
 
@@ -193,7 +190,7 @@
 
           this.upLoadStarted = true;
             
-            return await this.MAKE_REQUEST({name:'user/CREATE_USER_AVATAR', params:this.user.avatar})
+            return  this.MAKE_REQUEST({name:'user/CREATE_USER_AVATAR', params:this.user.avatar})
                 .then(avatar_id => {
                     this.MAKE_REQUEST({
                         name:'user/EDIT_GENERAL_USER_DATA',
@@ -264,21 +261,76 @@
         /**
          * Показывает алерт об успешном сохранении
           */
-        showAlert(){
+        showAlert(message = null){
           this.$swal({
               toast: true,
               position: 'top-end',
               showConfirmButton: false,
               timer: 4000,
               type: 'success',
-              title: 'Новые данные сохранены'
+              title: message ? message :'Новые данные сохранены'
           })
-      },  
-        
-      switchSettings() {
-        this.isGeneralSettings = !this.isGeneralSettings;
-        this.isPrivateSettings = !this.isPrivateSettings;
       },
+
+      /**
+       * Подписаться на пуш уведомления
+       */
+      subscribeToPush(){
+        navigator.serviceWorker.ready.then((reg)=> {
+          
+          reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey:process.env.VUE_APP_PUSH_SERVER_KEY
+          })
+            .then((subscription)=> {
+               this.MAKE_REQUEST({name:'user/PUSH_SUBSCRIPTION', params:{
+                 subscription:subscription,
+                 action:"subscribe"  
+               }})
+                .then(res => {
+                  if(res.body.success){
+                    this.showAlert("Уведомления подключены!")
+                    return
+                  }
+
+                  alert(res.body.error)
+                });
+            })
+            .catch(function(e) {
+              if (Notification.permission === 'denied') {
+                console.log('Permission for Notifications was denied');
+              } else {
+                console.log('Unable to subscribe to push.', e);
+              }
+            });
+        });
+      },
+
+      /**
+       * Отписаться от пуш уведомлений
+       */
+      unsubscribeFromPush(){
+        navigator.serviceWorker.ready.then((reg)=> {
+          reg.pushManager.getSubscription().then((subscription)=> {
+            subscription.unsubscribe().then((successful)=> {
+              this.MAKE_REQUEST({name:'user/PUSH_SUBSCRIPTION', params:{
+                  subscription:subscription,
+                  action:"unsubscribe"
+                }})
+                .then(res => {
+                  if(res.body.success){
+                    this.showAlert("Уведомления отключены!")
+                    return
+                  }
+                  
+                  alert(res.body.error)
+                });
+            }).catch(function(e) {
+              console.log('Unsubscription failed',e);
+            })
+          })
+        });
+      }
     },
       
       

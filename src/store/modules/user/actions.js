@@ -301,4 +301,29 @@ export default {
       )
       .catch(error => console.log('GET_USER: ', error));
   },
+
+
+  /**
+   * Подписка/отписка на пуш уведомления
+   * @param commit
+   * @param subscription
+   * @returns {Promise<unknown>}
+   * @constructor
+   */
+  'PUSH_SUBSCRIPTION':({commit,getters},{subscription,action}) => {
+    return new Promise((resolve,reject)=>{
+      Vue.http.post(`${process.env.VUE_APP_API_URL}/user/${getters.userData.user_id}/push-${action}`,{
+        endpoint:JSON.stringify(subscription)
+      }).then(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      )
+    });
+  },
+  
+  
 };

@@ -17,14 +17,27 @@ self.addEventListener('activate', (event) => {
  * Запрос к серверу
  */
 self.addEventListener('fetch', (event) => {
-  console.log('Происходит запрос на сервер',event);
+  //console.log('Происходит запрос на сервер',event);
 });
 
 /**
  * Запрос от сервера к нам
  */
 self.addEventListener('push', (event) => {
-  console.log('Push',event);
+  let data = event.data.json()
+  console.log('Push',data);
+
+  event.waitUntil(
+    // Показываем уведомление с заголовком и телом сообщения.
+    self.registration.showNotification('New message',{
+      body: data.text
+    }).then(res=>{
+      console.log('norm',res)
+    }).catch(err=>{
+      console.log('fail',err)
+    })
+  );
+  
 });
 
 /**

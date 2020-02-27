@@ -1,6 +1,6 @@
 <template>
     <div>
-      <b-card no-body class="mb-1" v-for="(commit,index) in data.options.commits">
+      <b-card no-body class="mb-1" v-for="(commit,index) in data.options.commits" :key="index">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block href="#" v-b-toggle="`accordion-${index}`" variant="info">
             <div class="d-flex justify-content-between">
@@ -15,7 +15,7 @@
             <b-card-text>
               <b-link target="_blank" :href="commit.url">Посмотреть на GitHub</b-link>
             </b-card-text>
-            <b-card-text v-for="file in commit.modified">{{file}}</b-card-text>
+            <b-card-text v-for="(file,index) in commit.modified" :key="index">{{file}}</b-card-text>
           </b-card-body>
         </b-collapse>
       </b-card>
