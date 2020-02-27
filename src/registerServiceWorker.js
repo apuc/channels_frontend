@@ -26,12 +26,12 @@ import { register } from 'register-service-worker'
   })
 // }
 
-var refresh;
-navigator.serviceWorker.addEventListener('controllerchange',()=>{
-  if(refresh) return;
-  window.location.reload()
-  refresh = true
-})
+// var refresh;
+// navigator.serviceWorker.addEventListener('controllerchange',()=>{
+//   if(refresh) return;
+//   window.location.reload()
+//   refresh = true
+// })
 
 
 
