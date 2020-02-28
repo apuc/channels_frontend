@@ -29,8 +29,9 @@ self.addEventListener('push', (event) => {
 
   event.waitUntil(
     // Показываем уведомление с заголовком и телом сообщения.
-    self.registration.showNotification('New message',{
-      body: data.text
+    self.registration.showNotification(data.title,{
+      body: data.body,
+      vibrate:[200, 100, 200]
     }).then(res=>{
       console.log('norm',res)
     }).catch(err=>{

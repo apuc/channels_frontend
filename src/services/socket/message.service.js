@@ -8,7 +8,14 @@ export function ioTyping({user, channelId, isTyping}) {
 
 export function ioSendMessage(messageData) {
     io.emit('userMessage', messageData);
-    io.emit('messageNotification', {channel_id:messageData.channel_id,from:messageData.from});
+    io.emit('messageNotification', {
+      channel_id:messageData.channel_id,
+      from:messageData.from,
+      notification_data:{
+        body:messageData.text,
+        title:store.getters['channels/currentChannelData'].title 
+      }
+    });
 }
 
 export function messageEventListenerInit() {
