@@ -11,7 +11,8 @@
     <b-tabs pills>
       
       <!--ВКЛАДКА ОБЩЕЕ-->
-      <b-tab  title="Общее">
+      <b-tab  title="Общее"  nav-wrapper-class="nav-tabs"    
+      >
         <form class="modal__content" @submit.prevent="onSubmitGeneral">
           <div class="row">
             <div class="col">
@@ -343,6 +344,8 @@
   }
 </script>
 
-<style scoped>
-  
+<style>
+  .tabs .nav{
+   position: static !important;
+  }
 </style>
