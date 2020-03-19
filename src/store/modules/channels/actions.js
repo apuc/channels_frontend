@@ -182,23 +182,34 @@ export default {
                                        dispatch,
                                        rootGetters
                                      }, channelId) => {
-    await dispatch('GET_CHANNEL_DATA', channelId).then(data => {
-      commit('SET_CURRENT_CHANNEL_DATA', data);
-    });
 
-    await dispatch('GET_CHANNEL_USERS', getters.currentChannelData.id)
-      .then(data => {
-        dispatch('SET_CURRENT_CHANNEL_USERS', data);
-
-        if (rootGetters['user/userData'].user_id) {
-          commit('SET_CONTACTS_FREE_TO_ADD', rootGetters['user/userContacts']);
-          commit('SET_CONTACTS_FREE_TO_ADD_SEARCH', getters['contactsToAddUsers']);
-        }
-      });
-
-    await dispatch('integrations/GET_CHANNEL_INTEGRATIONS', rootGetters['channels/currentChannelData'].id,{root: true})
     
-    await dispatch('messages/GET_MESSAGES', null, {root: true});
+      await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/full`)
+        .then(
+          res => {
+            
+            let channelData = Object.assign({}, res.body.data);
+            delete channelData.users
+            delete channelData.integrations
+            
+            commit('SET_CURRENT_CHANNEL_DATA', res.body.data)
+
+            commit('SET_CHANNEL_USERS_LOADED');
+            dispatch('SET_CURRENT_CHANNEL_USERS', res.body.data.users);
+
+            if (rootGetters['user/userData'].user_id) {
+              commit('SET_CONTACTS_FREE_TO_ADD', rootGetters['user/userContacts']);
+              commit('SET_CONTACTS_FREE_TO_ADD_SEARCH', getters['contactsToAddUsers']);
+            }
+
+            commit('channels/SET_CHANNEL_INTEGRATIONS',res.body.data.integrations,{root:true})
+            
+          },
+          err => {}
+        )
+        .catch(error => console.log(error))
+    
+        await dispatch('messages/GET_MESSAGES', null, {root: true});
   },
   
   

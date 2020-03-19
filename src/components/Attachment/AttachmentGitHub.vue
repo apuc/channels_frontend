@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="data.options">
       <b-card no-body class="mb-1" v-for="(commit,index) in data.options.commits" :key="index">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block href="#" v-b-toggle="`accordion-${index}`" variant="info">

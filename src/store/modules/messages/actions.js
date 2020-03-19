@@ -282,6 +282,10 @@ export default {
       .then(
         res => {
           
+          if(!res.body.data){
+            return res;
+          }
+          
           for(let link of res.body.data){
             
             const attachment = {
@@ -300,7 +304,6 @@ export default {
           return res;
         },
         err => {
-          console.log(err)
           commit('SET_MESSAGE_TO_EDIT',null);
         }
       )

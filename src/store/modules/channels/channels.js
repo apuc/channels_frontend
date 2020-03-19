@@ -45,6 +45,7 @@ const state = {
   
   channelUsers: [],
   channelToDelete: '',
+  isChannelLoading:false,
   isChannelsLoading: false,
   isChannelUsersLoading: true,
   imageUploadPercentage: 0,

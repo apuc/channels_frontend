@@ -3,6 +3,11 @@
        @dragenter.prevent="dragSwitcher"
        @dragleave.prevent="dragSwitcher"
   >
+    
+    <div class="chat-preloader" v-if="$store.state['channels'].isChannelLoading">
+      <b-spinner label="Spinning" variant="primary"></b-spinner>
+    </div>
+    
     <ChatHeader/>
     
     <ChatMessages/>
@@ -129,6 +134,19 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
+  }
+  
+  .chat-preloader{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .chat__drag-zone {

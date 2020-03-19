@@ -3,6 +3,10 @@ export default {
     state.channels = channels;
   },
   
+  'TOGGLE_CHANNEL_LOADING':(state, channels) => {
+    state.isChannelLoading = ! state.isChannelLoading
+  },
+  
   'SET_CHANNEL_DATA': (state, data) => {
     state.channelData.id = data.id;
     state.channelData.title = data.title;

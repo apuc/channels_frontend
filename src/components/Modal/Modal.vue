@@ -114,8 +114,8 @@
   }
 
   .modal__wrap {
-    min-width: 500px;
-    max-height: 90vh;
+    max-width: 95vh;
+    max-height: 95vh;
     overflow: auto;
   }
 
