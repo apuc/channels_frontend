@@ -46,15 +46,18 @@ export default {
    * @constructor
    */
   'SET_MESSAGE': (state, message) => {
-    if(state.messages.length > 0 && message.channel === state.messages[0].channel){
       let channel = channelState.state.currentChannelData;
+      
+      if(message.channel != channel.id){
+        return;
+      }
       
       if(channel.type == 'wall'){
         state.messages.unshift(message);
       }else{
         state.messages.push(message);
       }
-    }
+    
   },
 
   /**

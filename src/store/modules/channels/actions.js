@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import router from '../../../routers/router';
 import {
+  joinChannel,
   joinChannels
 } from '../../../services/socket/channels.service';
 
@@ -131,6 +132,8 @@ export default {
             
             dispatch('SET_CURRENT_CHANNEL_DATA',createdChannelData.id)
 
+            joinChannel(createdChannelData.id)
+            
             router.push({
               path: `/${createdChannelData.slug}`
             });
