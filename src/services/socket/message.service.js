@@ -25,6 +25,7 @@ export function messageEventListenerInit() {
     });
 
     io.on('userMessage', function (data) {
+        console.log('Сообщение пришло',data);
         store.dispatch('messages/ON_MESSAGE', data);
     });
 

@@ -112,7 +112,7 @@ export default {
   /**
    * Create channel and reload channels
    */
-  'CREATE_CHANNEL': async ({commit}, {type,channelData}) => {
+  'CREATE_CHANNEL': async ({commit,dispatch}, {type,channelData}) => {
 
     return new Promise((resolve,reject)=>{
       Vue.http.post(`${process.env.VUE_APP_API_URL}/${type}`, channelData)
@@ -126,9 +126,10 @@ export default {
               });
             }
             
-            commit('SET_CURRENT_CHANNEL_DATA', createdChannelData);
             commit('SET_CONTACTS_TO_ADD_CHANNEL_ID', createdChannelData.id);
             commit('ADD_CREATED_CHANNEL', createdChannelData);
+            
+            dispatch('SET_CURRENT_CHANNEL_DATA',createdChannelData.id)
 
             router.push({
               path: `/${createdChannelData.slug}`
