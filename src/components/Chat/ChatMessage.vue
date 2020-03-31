@@ -171,6 +171,8 @@
     width: 100%;
     padding: 7px;
     padding-left: 0;
+    white-space: pre-line;
+    word-break: break-all;
     margin: 0;
   }
 

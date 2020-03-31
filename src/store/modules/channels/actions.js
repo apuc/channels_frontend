@@ -29,8 +29,8 @@ export default {
           res => {
             const channels = res.body.data;
             commit('USER_CHANNELS', channels);
+            commit('SET_ALL_CHANNELS', channels);
             commit('SET_CHANNELS_LOADING_FLAG');
-            joinChannels(channels);
           },
           err => console.log('get channels', err)
         )
@@ -413,9 +413,9 @@ export default {
             const channelsToJoin = [...new Set(channels.concat(groupChannels))];
             
             commit('USER_CHANNELS', channels);
+            commit('SET_ALL_CHANNELS', channelsToJoin);
             commit('groups/USER_GROUPS', groups, {root: true});
             commit('SET_CHANNELS_LOADING_FLAG');
-            joinChannels(channelsToJoin);
           },
           err => console.log('get channels', err)
         )

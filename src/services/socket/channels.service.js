@@ -2,15 +2,34 @@ import { io } from './socket.service';
 import store from '../../store/store';
 import { notificationAudio } from '../../helpers/notifications';
 
+/**
+ * Подключиться к нескольким каналам
+ * @param channels
+ */
 export function joinChannels(channels) {
     const channelsIds = channels.map(channel => channel.id);
+    
+    if(channelsIds.length < 1){
+      console.error('No channels to join!')
+      return;
+    }
+    
     io.emit('joinChannels', channelsIds);
 }
 
+/**
+ * Подключиться к 1 каналу
+ * @param channelId
+ */
 export function joinChannel(channelId) {
     io.emit('joinChannel', channelId);
 }
 
+/**
+ * Отправить событие добавление в кнал
+ * @param user_id
+ * @param channel_id
+ */
 export function ioAddTochannel(user_id,channel_id) {
 
   const data = {
@@ -21,6 +40,9 @@ export function ioAddTochannel(user_id,channel_id) {
   io.emit('addToChannel', data);
 }
 
+/**
+ *Обработать событие добавление в кнал
+ */
 export function channelsEventListenerInit() {
   io.on('addToChannel', function (channel) {
      joinChannel(channel.id)

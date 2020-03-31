@@ -2,6 +2,10 @@ export default {
   'USER_CHANNELS': (state, channels) => {
     state.channels = channels;
   },
+
+  'SET_ALL_CHANNELS': (state, channels) => {
+    state.allChannels = channels;
+  },
   
   'TOGGLE_CHANNEL_LOADING':(state, channels) => {
     state.isChannelLoading = ! state.isChannelLoading

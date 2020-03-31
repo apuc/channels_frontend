@@ -73,7 +73,7 @@
                     }
                   });
                 
-                this.GET_NAV().then(() => this.$_authGettingData_gettingData());
+                await this.GET_NAV().then(() => this.$_authGettingData_gettingData());
                 this.GET_INTEGRATION_TYPES()
                 this.GETTING_TOKEN_AND_DATA();
                   

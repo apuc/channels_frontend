@@ -3,7 +3,12 @@ import actions from './actions';
 import mutations from './mutations';
 
 const state = {
+  
+  //каналы которые без группы
   channels: [],
+  
+  //все каналы юзера
+  allChannels:[],
   
   currentChannelData: {
     id: '',

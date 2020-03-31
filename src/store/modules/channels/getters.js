@@ -1,5 +1,6 @@
 export default {
   channels: state => state.channels,
+  allChannels: state => state.allChannels,
   currentChannelData: state => state.currentChannelData,
   channelData: state => state.channelData,
   channelToDelete: state => state.channelToDelete,
