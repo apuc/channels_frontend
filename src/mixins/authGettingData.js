@@ -44,7 +44,7 @@ export default {
             let privat = store.getters['channels/currentChannelData'].private;
             let userInChannel = store.getters['channels/userInCurrentChannel'](store.getters['user/userData'].user_id)
           
-            if(privat == 1 && !userInChannel){
+            if(privat === 1 && !userInChannel){
                router.push('/not-found');
             }
         });

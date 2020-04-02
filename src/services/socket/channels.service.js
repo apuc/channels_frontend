@@ -17,6 +17,19 @@ export function joinChannels(channels) {
     io.emit('joinChannels', channelsIds);
 }
 
+export function leaveChannels(channels) {
+  const channelsIds = channels.map(channel => channel.id);
+
+  if(channelsIds.length < 1){
+    console.error('No channels to leave!')
+    return;
+  }
+  
+  for(let channel of channelsIds){
+    io.emit('leaveChannel', channel);
+  }
+}
+
 /**
  * Подключиться к 1 каналу
  * @param channelId

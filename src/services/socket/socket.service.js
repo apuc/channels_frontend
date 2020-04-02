@@ -1,5 +1,5 @@
 import socketIo from 'socket.io-client';
-import {channelsEventListenerInit, joinChannels} from './channels.service'
+import {channelsEventListenerInit, joinChannels, leaveChannels} from './channels.service'
 import {messageEventListenerInit} from './message.service'
 import {statusEventListenerInit} from './status.service'
 import {usersEventListenerInit} from './users.service'
@@ -14,7 +14,11 @@ export function connectSocket(token, user_id) {
 
         io.on('connect', () => {
             console.log('event_connect')
-            joinChannels(store.getters['channels/allChannels']);
+          
+            let channels = store.getters['channels/allChannels'];
+
+            leaveChannels(channels);
+            joinChannels(channels);
             socketEventListenerInit();
             resolve(io)
         });
