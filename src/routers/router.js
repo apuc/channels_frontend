@@ -3,6 +3,8 @@ import Router from 'vue-router';
 import store from '../store/store';
 const AuthLogin = () => import('../components/Auth/AuthLogin');
 const AuthRegistration = () => import('../components/Auth/AuthRegistration');
+const AuthPasswordResetRequest = () => import('../components/Auth/AuthPasswordResetRequest');
+const AuthPasswordReset = () => import('../components/Auth/AuthPasswordReset');
 const Group = () => import('../components/Group/Group');
 const Chat = ()  => import('../components/Chat/Chat');
 const ChatBlank = ()  => import('../components/Chat/ChatBlank');
@@ -37,6 +39,18 @@ export default new Router({
       name: 'registration',
       meta: {layout: 'auth'},
       component: AuthRegistration,
+    },
+    {
+      path: '/password/request-reset',
+      name: 'reset-request',
+      meta: {layout: 'auth'},
+      component: AuthPasswordResetRequest,
+    },
+    {
+      path: '/password/reset/:token',
+      name: 'reset',
+      meta: {layout: 'auth'},
+      component: AuthPasswordReset,
     },
     {
       path: '/',

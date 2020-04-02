@@ -27,11 +27,54 @@ export default {
             reject(err)
           }
         )
-        // .catch(err => {
-        //   return new Promise((resolve,reject) => reject(err));
-        // });
     });
   },
+
+  /**
+   * Запрос на востановление пароля
+   * @param commit
+   * @param email
+   * @returns {Promise<unknown>}
+   * @constructor
+   */
+  'REQUEST_RESET': ({commit,}, email) => {
+    commit('LOADING');
+    return new Promise((resolve,reject)=>{
+      Vue.http.post(`${process.env.VUE_APP_API_URL}/request-reset`, {email:email})
+        .then(
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        )
+    });
+  },
+
+  /**
+   * Сброс пароля
+   * @param commit
+   * @param resetData
+   * @returns {Promise<unknown>}
+   * @constructor
+   */
+  'RESET_PASSWORD': ({commit,}, resetData) => {
+    commit('LOADING');
+    return new Promise((resolve,reject)=>{
+      Vue.http.post(`${process.env.VUE_APP_API_URL}/reset`, resetData)
+        .then(
+          res => {
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        )
+    });
+  },
+
+
   /**
    * Get token and log in user
    *

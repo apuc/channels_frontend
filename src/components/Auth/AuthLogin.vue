@@ -24,18 +24,13 @@
 
           <p v-if="isWrongData" class="wrong-data">Неверная пара логин пароль</p>
 
-          <div class="form-check" v-if="false">
-            <input id="alien-computer"
-                   class="form-check-input"
-                   type="checkbox"
-                   v-model="isSession"
-            >
-            <label for="alien-computer">Чужой компьютер?</label>
-          </div>
-
-          <div class="d-flex justify-content-between">
+          <div class="d-flex justify-content-between mb-3">
             <button type="submit" class="btn btn-primary flex-fill mr-3">Войти</button>
             <router-link class="btn btn-warning" to="registration">Регистрация</router-link>
+          </div>
+
+          <div class="d-flex justify-content-center">
+            <router-link :to="{name:'reset-request'}">Забыли пароль?</router-link>
           </div>
 
         </form>
@@ -64,7 +59,7 @@
             isValid: false,
           },
           password: {
-            label: 'Пароль <br> <span class="small">пароль должен содержать не менее 5 символов, одна заглавная, одна строчная буквы, цифра</span>',
+            label: 'Пароль',
             name: 'password',
             type: 'password',
             value: '',
@@ -92,6 +87,7 @@
       ...mapActions({
         GET_TOKEN: 'auth/GET_TOKEN',
       }),
+      
       test(e, index) {
         const value = e.target.value;
         this.data[index].value = value;
@@ -99,12 +95,13 @@
 
         this.data[index].isValid = this.data[index].pattern.test(value);
 
-        if (this.data[index].isValid) {
-          this.data[index].class = 'valid';
-        } else {
+        if (!this.data[index].isValid) {
           this.data[index].class = 'invalid';
-        }
+        }else{
+          this.data[index].class = '';
+        } 
       },
+      
       async login() {
         if (this.data.password.isValid && this.data.email.isValid) {
           localStorage.setItem('isSession', this.isSession.toString());

@@ -132,8 +132,8 @@
         this.SET_CURRENT_CHANNEL_DATA(Number(id)).then(res => {
 
             this.TOGGLE_CHANNEL_LOADING();
-          
-            if(this.data.channel_type == 'dialog'){
+            
+            if(this.data.channel_type == 'dialog' || this.data.type == 'dialog'){
                 this.MARK_READ(id);   
             }else{
                 this.MARK_READ_CHAT(id);

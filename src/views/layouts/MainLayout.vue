@@ -52,7 +52,12 @@
     },
       
     created() {
-        
+
+      if (!this.isAuthenticated) {
+        this.$_authGettingData_gettingData();
+        return;
+      }
+      
       if (!this.gettingTokenAndData) {
           
         this.GETTING_TOKEN_AND_DATA();
@@ -91,11 +96,6 @@
           })
           .catch(error => console.log(error));
       }
-      
-      if (!this.isAuthenticated) {
-        this.$_authGettingData_gettingData();
-      }
-      
     },
   }
 </script>

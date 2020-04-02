@@ -35,8 +35,10 @@ export default {
      */
     async $_authGettingData_getChannelData(pathnameArray, slug) {
       store.commit('user/SET_USER_POSITION', 'channel');
-
-      if (slug !== 'login' && slug !== 'registration' && pathnameArray[1] !== 'user') {
+      
+      let notChannels = ['login','registration','password','user'];
+      
+      if (notChannels.indexOf(pathnameArray[1]) === -1) {
         store.dispatch('channels/SET_CURRENT_CHANNEL_DATA', slug).then(res =>{
           
             let privat = store.getters['channels/currentChannelData'].private;
