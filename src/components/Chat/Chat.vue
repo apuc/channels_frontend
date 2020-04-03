@@ -56,7 +56,6 @@
             userInCurrentChannel: 'channels/userInCurrentChannel',
             currentChannelData: 'channels/currentChannelData',
             userData:'user/userData',
-            currentChannelUsers:'channels/currentChannelUsers',
         }),
 
         /**

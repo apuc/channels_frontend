@@ -14,7 +14,7 @@
                    :class="field.class"
                    :id="field.name"
                    :value="field.value"
-                   @input="test($event, index)"
+                   @input="validate($event, index)"
             />
 
             <span :class="!field.isActive || field.isValid ? 'hidden' : 'invalid'">
@@ -41,7 +41,8 @@
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
-
+  import {connectSocket} from "../../services/socket/socket.service";
+  
   export default {
     name: 'Login',
     data() {
@@ -77,6 +78,7 @@
     computed: {
       ...mapGetters({
         isWrongData: 'auth/isWrongData',
+        userData: 'user/userData',
       })
     },
     methods: {
@@ -88,7 +90,10 @@
         GET_TOKEN: 'auth/GET_TOKEN',
       }),
       
-      test(e, index) {
+      /**
+       * Валидация
+       */
+      validate(e, index) {
         const value = e.target.value;
         this.data[index].value = value;
         this.data[index].isActive = true;
@@ -101,7 +106,11 @@
           this.data[index].class = '';
         } 
       },
-      
+
+      /**
+       * Авторизация
+       * @returns {Promise<void>}
+       */
       async login() {
         if (this.data.password.isValid && this.data.email.isValid) {
           localStorage.setItem('isSession', this.isSession.toString());
@@ -117,6 +126,7 @@
               password: this.data.password.value
             })
               .then(async data => {
+                
                 if (data.body.message) {
                   this.$swal({
                     toast: true,
@@ -128,11 +138,20 @@
                     text: data.body.message,
                   });
                 }
+                
                 if (!this.isWrongData) {
                   await this.GET_USER_ME()
                     .then(async () => {
+                      
                       this.$router.push('/');
+                      
                       await this.GET_NAV();
+                      
+                      await connectSocket(this.token, this.userData.user_id)
+                        .then(() => {
+                          console.log('Socket connected from login!');
+                        });
+                      
                       this.$swal({
                         toast: true,
                         position: 'top',
@@ -143,6 +162,7 @@
                       });
                     })
                 }
+                
               });
           }
         } else {

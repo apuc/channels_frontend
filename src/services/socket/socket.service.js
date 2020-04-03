@@ -10,16 +10,24 @@ export let io = null;
 export function connectSocket(token, user_id) {
     return new Promise((resolve, reject) => {
 
-        io = socketIo(process.env.VUE_APP_SOCKET_URL, {query: {token, user_id}}); // пробуем подключится к ноду
+        io = socketIo(process.env.VUE_APP_SOCKET_URL, {
+          query: {token, user_id},
+          //reconnection:false,
+          transports: ['websocket'],
+        }); // пробуем подключится к ноду
 
+        
+      
+        io.once('connect', () => {
+          console.log('event_connect_once')
+          socketEventListenerInit();
+          resolve(io)
+        });
+      
         io.on('connect', () => {
             console.log('event_connect')
-          
             let channels = store.getters['channels/allChannels'];
-
-            leaveChannels(channels);
             joinChannels(channels);
-            socketEventListenerInit();
             resolve(io)
         });
 

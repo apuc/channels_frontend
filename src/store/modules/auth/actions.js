@@ -140,9 +140,8 @@ export default {
     commit('messages/CLEAR_MESSAGES', [], {
       root: true
     });
-    // commit('chat/SET_CHAT_DEFAULT_STATE', null, {
-    //   root: true
-    // });
+   
+    commit('GETTING_TOKEN_AND_DATA');
     commit('LOGOUT');
     localStorage.clear();
     commit('SET_TOKEN', '');
