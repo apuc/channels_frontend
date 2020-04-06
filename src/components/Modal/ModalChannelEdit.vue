@@ -5,7 +5,7 @@
            alt=""
            class="modal__header-img"
       >
-      <h4 class="modal__title">Редактировать канал</h4>
+      <h4 class="modal__title">Редактировать канал (ID {{channelData.id}})</h4>
     </header>
 
     <form class="modal__content" @submit.prevent="onSubmit">

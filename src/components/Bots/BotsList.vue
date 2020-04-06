@@ -12,6 +12,11 @@
     <div v-else class="bots_table">
       <b-table responsive :items="botsList" :fields="fields">
 
+        <template v-slot:cell(username)="row">
+          {{row.value}}<br>
+          <span style="font-size: 15px"><b>ID {{row.item.id}}</b></span>
+        </template>
+        
         <template v-slot:cell(actions)="row">
           <b-button-group>
 

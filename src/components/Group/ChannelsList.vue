@@ -12,28 +12,30 @@
 
     <p v-if="noChannels">К сожалению в данной группе нет канала с таким названием.</p>
 
-    <div class="d-flex" v-for="channel in currentGroupData.channelsToSearch" :key="channel.id">
-      <NavSectionChannels
-        style="width: 100%"
-                          :type="'channel'"
-                          :data="channel"
-                          :notification="false"
-      />
-
-     
-      <button 
-              type="button"
-              class="btn btn-remove-from-channel btn-sm"
-              @click="removeChannel(channel.id)"
-      >
-        <img src="../../assets/img/error.svg"
-             alt=""
-             width="18"
-             height="18"
-             v-b-tooltip="'Удалить канал из группы!'"
+    <div class="group-channels">
+      <div class="d-flex" v-for="channel in currentGroupData.channelsToSearch" :key="channel.id">
+        <NavSectionChannels
+          style="width: 100%"
+                            :type="'channel'"
+                            :data="channel"
+                            :notification="false"
+        />
+  
+       
+        <button 
+                type="button"
+                class="btn btn-remove-from-channel btn-sm"
+                @click="removeChannel(channel.id)"
         >
-      </button>
-      
+          <img src="../../assets/img/error.svg"
+               alt=""
+               width="18"
+               height="18"
+               v-b-tooltip="'Удалить канал из группы!'"
+          >
+        </button>
+        
+      </div>
     </div>
     
   </section>
@@ -132,35 +134,12 @@
     padding: 30px;
     display: flex;
     flex-direction: column;
+    
   }
 
-  .channels-list {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-
-    list-style: none;
-  }
-
-  .channels-list__channel {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 31px;
-    margin-bottom: 15px;
-    padding: 0;
-    transition: background-color 0.2s;
-  }
-
-  .channels-list__channel:hover {
-    background-color: #dddddd;
-    transition: background-color 0.2s;
-  }
-
-  .channel-avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+  .group-channels{
+    overflow-y: auto;
+    max-height: 600px;
   }
   
   .btn-remove-from-channel{

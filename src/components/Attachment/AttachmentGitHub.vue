@@ -2,7 +2,7 @@
     <div v-if="data.options">
       <b-card no-body class="mb-1" v-for="(commit,index) in data.options.commits" :key="index">
         <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block href="#" v-b-toggle="`accordion-${index}`" variant="info">
+          <b-button block href="#" v-b-toggle="`accordion-${commit.id}`" variant="info">
             <div class="d-flex justify-content-between">
               <span>{{commit.message}}</span>
               <span>{{getDate(commit.timestamp)}}</span>
@@ -10,7 +10,7 @@
           </b-button>
         </b-card-header>
         
-        <b-collapse :id="`accordion-${index}`" accordion="my-accordion" role="tabpanel">
+        <b-collapse :id="`accordion-${commit.id}`" accordion="my-accordion" role="tabpanel">
           <b-card-body>
             <b-card-text>
               <b-link target="_blank" :href="commit.url">Посмотреть на GitHub</b-link>
