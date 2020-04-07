@@ -21,6 +21,11 @@
         created(){
             this.GET_USER_BOTS();
         },
+      
+        props:{
+          payload:Object
+        },
+      
         data(){
             return {
                errors:{},
@@ -46,7 +51,7 @@
 
             addBot(){
                this.ADD_USER({
-                    channel_id:this.currentChannelData.id,
+                    channel_id:this.payload.channel,
                     user_id:this.bot_id,
                 }).then(res =>{
                     this.$swal({

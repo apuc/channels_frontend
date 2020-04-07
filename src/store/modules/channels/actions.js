@@ -187,7 +187,8 @@ export default {
                                        rootGetters
                                      }, channelId) => {
 
-    
+      commit('messages/OFF_TYPING',null,{root:true});
+      
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/full`)
         .then(
           res => {

@@ -266,7 +266,7 @@
         this.SET_MODAL({name: "ModalChannelAddUsers"});
       },
       setAddBotsModal() {
-        this.SET_MODAL({name: "ModalAddBotToChannel"});
+        this.SET_MODAL({name: "ModalAddBotToChannel",channel:this.channelData.id});
       },
         
       async onSubmit() {
