@@ -1,7 +1,7 @@
 <template>
     <div>
       <b-row>
-        <b-col>
+        <b-col v-if="showImage">
           <img :src="data.options.enclosure" class="img-thumbnail">
         </b-col>
         
@@ -49,6 +49,18 @@
         computed:{
           postText(){
             return this.showFull ? this.data.options.full_text : this.data.options.description;
+          },
+          
+          showImage(){
+            if(!this.data.options.enclosure){
+              return false;
+            }
+            
+            if(this.data.options.enclosure.includes('video')){
+              return false;
+            }
+            
+            return true;
           }
         },
 

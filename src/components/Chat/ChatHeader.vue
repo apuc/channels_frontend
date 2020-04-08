@@ -63,7 +63,7 @@
             </button>
           </li>
 
-          <li class="info__li" v-if="currentChannelData.owner_id == userData.user_id">
+          <li class="info__li">
             <button type="button"
                     class="info__users-btn"
                     @click="SET_MODAL({name:'ModalChannelIntegrations'})"

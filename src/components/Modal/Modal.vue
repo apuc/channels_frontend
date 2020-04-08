@@ -23,24 +23,26 @@
 
 <script>
   import {mapGetters, mapMutations} from 'vuex';
-  import ModalGroupCreate from './ModalGroupCreate';
-  import ModalGroupEdit from './ModalGroupEdit';
-  import ModalChannelCreate from './ModalChannelCreate';
-  import ModalChannelEdit from './ModalChannelEdit';
-  import ModalGroupDelete from './ModalGroupDelete';
-  import ModalChannelDelete from './ModalChannelDelete';
-  import ModalEditProfile from './ModalProfileEdit';
-  import ModalChannelUsers from "./ModalChannelUsers";
-  import ModalGroupAddChannels from "./ModalGroupAddChannels";
-  import ModalSessionExpired from "./ModalSessionExpired";
-  import ModalChannelAddUsers from "./ModalChannelAddUsers";
-  import ModalAddBotToChannel from "./ModalAddBotToChannel";
-  import ModalAttachmentImage from "./ModalAttachmentImage";
-  import ModalCreateIntegration from "./ModalCreateIntegration";
-  import ModalAddIntegrationToChannel from "./ModalAddIntegrationToChannel";
-  import ModalChannelIntegrations from "./ModalChannelIntegrations";
-  import ModalBotDelete from "./ModalBotDelete";
-
+  
+  const ModalGroupCreate = () => import('./ModalGroupCreate');
+  const ModalGroupEdit = () => import('./ModalGroupEdit');
+  const ModalChannelCreate = () => import('./ModalChannelCreate');
+  const ModalChannelEdit = () => import('./ModalChannelEdit');
+  const ModalGroupDelete = () => import('./ModalGroupDelete');
+  const ModalChannelDelete = () => import('./ModalChannelDelete');
+  const ModalEditProfile = () => import('./ModalProfileEdit');
+  const ModalChannelUsers = () => import('./ModalChannelUsers');
+  const ModalGroupAddChannels = () => import('./ModalGroupAddChannels');
+  const ModalSessionExpired = () => import('./ModalSessionExpired');
+  const ModalChannelAddUsers = () => import('./ModalChannelAddUsers');
+  const ModalAddBotToChannel = () => import('./ModalAddBotToChannel');
+  const ModalAttachmentImage = () => import('./ModalAttachmentImage');
+  const ModalCreateIntegration = () => import('./ModalCreateIntegration');
+  const ModalAddIntegrationToChannel = () => import('./ModalAddIntegrationToChannel'); 
+  const ModalChannelIntegrations = () => import('./ModalChannelIntegrations');
+  const ModalBotDelete = () => import('./ModalBotDelete');
+  const ModalResendMessages = () => import('./ModalResendMessages');
+  
   export default {
     name: "Modal",
     components: {
@@ -61,6 +63,7 @@
       ModalChannelIntegrations,
       ModalAddBotToChannel,
       ModalBotDelete,
+      ModalResendMessages,
     },
     computed: {
       ...mapGetters({

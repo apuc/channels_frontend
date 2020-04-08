@@ -37,11 +37,13 @@
       <li @click="SET_MESSAGE_TO_EDIT(messageData)">Редактировать</li>
       <li @click="deleteMessage(messageData.id)">Удалить</li>
       <li @click="replyMessage(messageData)">Ответить</li>
+      <li @click="resendMessage(messageData)">Переслать</li>
     </context-menu>
 
     <!-- Меню для чужого сообщения -->
     <context-menu id="context-menu-another" ref="ctxMenuAnother">
       <li @click="replyMessage(messageData)">Ответить</li>
+      <li @click="resendMessage(messageData)">Переслать</li>
     </context-menu>
   </div>
 </template>
@@ -128,6 +130,7 @@
             SET_MESSAGE_TO_EDIT: 'messages/SET_MESSAGE_TO_EDIT',
             ADD_ATTACHMENT: 'messages/ADD_ATTACHMENT',
             CLEAR_ATTACHMENTS: 'messages/CLEAR_ATTACHMENTS',
+            SET_MODAL: 'modal/SET_MODAL',
         }), 
         
       deleteMessage(id){
@@ -148,6 +151,10 @@
         this.CLEAR_ATTACHMENTS();
         this.ADD_ATTACHMENT(attachment);
       },
+      
+      resendMessage(message){
+        this.SET_MODAL({name:'ModalResendMessages',message:message});
+      }
     }
   }
 </script>

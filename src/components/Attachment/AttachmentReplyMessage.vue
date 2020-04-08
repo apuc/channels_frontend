@@ -50,15 +50,11 @@
   
   .close-btn {
     position: absolute;
-    right: 5px;
+    right: -35px;
     top: 0;
     z-index: 1;
-
-    display: none;
-
     font-size: 0;
     cursor: pointer;
-
     background-color: transparent;
     border: none;
   }
@@ -72,7 +68,7 @@
   }
 
   .icon{
-    padding-right: 10px;
+    width: 25px;
   }
 
   blockquote{
