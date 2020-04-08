@@ -338,6 +338,7 @@
 
   .modal-inside {
     max-height: 90%;
+    min-width: 450px;
     padding: 30px;
     overflow: auto;
   }

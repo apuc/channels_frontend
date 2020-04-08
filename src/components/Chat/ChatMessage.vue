@@ -36,6 +36,7 @@
     <context-menu id="context-menu" ref="ctxMenu">
       <li @click="SET_MESSAGE_TO_EDIT(messageData)">Редактировать</li>
       <li @click="deleteMessage(messageData.id)">Удалить</li>
+      <li @click="replyMessage(messageData)">Ответить</li>
     </context-menu>
 
     <!-- Меню для чужого сообщения -->
