@@ -11,7 +11,14 @@
       </b-row>
 
       <p class="mt-3">{{postText}}</p>
-      <b-button size="sm" @click="showFull = !showFull" variant="primary">Полный текст</b-button>
+      
+      <b-button
+        v-if="data.options.full_text" 
+        @click="showFull = !showFull"
+        size="sm"
+        variant="primary"
+      >Полный текст
+      </b-button>
       
       <div class="d-flex justify-content-between rss-footer mt-3">
         <p>Категория: {{data.options.category}}</p>
