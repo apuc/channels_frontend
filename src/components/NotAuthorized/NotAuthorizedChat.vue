@@ -1,18 +1,27 @@
 <template>
   <div class="chat">
-    <NotAuthorizedChatChatHeader/>
-    <NotAuthorizedChatChatMessages/>
+    <div class="chat-preloader" v-if="$store.state['channels'].isChannelLoading">
+      <b-spinner label="Spinning" variant="primary"></b-spinner>
+    </div>
+
+    <ChatHeader/>
+
+    <ChatMessages/>
   </div>
 </template>
 
 <script>
   import NotAuthorizedChatChatHeader from './NotAuthorizedChatHeader';
   import NotAuthorizedChatChatMessages from './NotAuthorizedChatMessages';
+  import ChatHeader from '../Chat/ChatHeader';
+  import ChatMessages from '../Chat/ChatMessages';
 
   export default {
     components: {
       NotAuthorizedChatChatHeader,
       NotAuthorizedChatChatMessages,
+      ChatHeader,
+      ChatMessages,
     },
     data() {
       return {

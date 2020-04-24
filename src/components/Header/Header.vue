@@ -38,8 +38,10 @@
       isAuthLayout() {
         return this.$route.meta.layout === 'auth';
       },
+      
       isMainLayout() {
-        return this.$route.meta.layout === 'main';
+        return true;
+        //return this.$route.meta.layout === 'main';
       },
     },
   }

@@ -11,7 +11,7 @@
         :class="field.class"
         :id="field.name"
         :value="field.value"
-        @input="test($event, index)"
+        @input="validate($event, index)"
       >
       
       <span :class="!field.isActive || field.isValid ? 'hidden' : 'invalid'">{{field.errorMessage}}</span>
@@ -26,15 +26,16 @@
 
     <div class="d-flex justify-content-between">
       <button type="submit" class="btn btn-primary flex-fill mr-3">Войти</button>
-      
-      <button class="btn btn-warning" type="button" @click="switchBetweenLoginAndReg">Регистрация</button>
+
+      <router-link to="registration" class="btn btn-warning">Регистрация</router-link>
     </div>
   </form>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+  import {mapGetters,mapActions,mapMutations} from "vuex";
 import authGettingData from "../../mixins/authGettingData";
+import {connectSocket} from "../../services/socket/socket.service";
 
 export default {
   name: "Login",
@@ -43,29 +44,28 @@ export default {
     return {
       data: {
         email: {
-          label: "Email",
-          name: "email",
-          type: "email",
-          value: "",
-          pattern: new RegExp(
-            '^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$'
-          ),
-          class: "",
-          errorMessage: "Введите корректный email.",
+          label: 'Email',
+          name: 'email',
+          type: 'email',
+          value: '',
+          pattern: new RegExp('^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$'),
+          class: '',
+          errorMessage: 'Введите корректный email.',
           isActive: false,
-          isValid: false
+          isValid: false,
         },
         password: {
-          label: 'Пароль <br> <span class="small">пароль должен содержать не менее 5 символов, одна заглавная, одна строчная буквы, цифра</span>',
-          name: "password",
-          type: "password",
-          value: "",
+          label: 'Пароль',
+          name: 'password',
+          type: 'password',
+          value: '',
           pattern: new RegExp('(?=.*[a-zA-Z])(?=.*[0-9])(?=.{5,})'),
-          class: "",
-          errorMessage: "Введите корректный пароль.",
+          pattern: new RegExp('.'),
+          class: '',
+          errorMessage: 'Введите корректный пароль.',
           isActive: false,
-          isValid: false
-        }
+          isValid: false,
+        },
       },
       isSession: false
     };
@@ -76,45 +76,99 @@ export default {
     })
   },
   methods: {
-    ...mapActions('user', ['GET_USER_ME', 'GET_NAV']),
-    test(e, index) {
+    ...mapActions('auth', ['GET_TOKEN']),
+    ...mapActions('user', ['GET_USER_ME', 'GET_NAV', 'GET_USER_CONTACTS', 'GET_USER_FRIENDSHIP_REQUESTS']),
+    ...mapMutations({
+      GETTING_TOKEN_AND_DATA: 'auth/GETTING_TOKEN_AND_DATA',
+    }),
+
+    /**
+     * Валидация
+     */
+    validate(e, index) {
       const value = e.target.value;
       this.data[index].value = value;
       this.data[index].isActive = true;
 
       this.data[index].isValid = this.data[index].pattern.test(value);
 
-      if (this.data[index].isValid) {
-        this.data[index].class = "valid";
-      } else {
-        this.data[index].class = "invalid";
+      if (!this.data[index].isValid) {
+        this.data[index].class = 'invalid';
+      }else{
+        this.data[index].class = '';
       }
     },
+
+    /**
+     * Авторизация
+     * @returns {Promise<void>}
+     */
     async login() {
       if (this.data.password.isValid && this.data.email.isValid) {
-        localStorage.setItem("isSession", this.isSession.toString());
-        await this.GET_TOKEN({
-          grant_type: "password",
-          client_id: process.env.VUE_APP_CLIENT_ID,
-          client_secret: process.env.VUE_APP_CLIENT_SECRET,
-          username: this.data.email.value,
-          password: this.data.password.value
-        }).then(async () => {
-          this.GET_USER_ME().then(() => {
-            this.GET_NAV();
-            this.$_authGettingData_gettingData();
-          });
-          // this.$router.push('/');
-        });
+        localStorage.setItem('isSession', this.isSession.toString());
+
+        if (!this.gettingTokenAndData) {
+          this.GETTING_TOKEN_AND_DATA();
+
+          await this.GET_TOKEN({
+            grant_type: 'password',
+            client_id: process.env.VUE_APP_CLIENT_ID,
+            client_secret: process.env.VUE_APP_CLIENT_SECRET,
+            username: this.data.email.value,
+            password: this.data.password.value
+          })
+            .then(async data => {
+
+              if (data.body.message) {
+                this.$swal({
+                  toast: true,
+                  position: 'top',
+                  showConfirmButton: false,
+                  timer: 4000,
+                  type: 'error',
+                  title: 'Произошла ошибка авторизации',
+                  text: data.body.message,
+                });
+              }
+
+              if (!this.isWrongData) {
+                await this.GET_USER_ME()
+                  .then(async (res) => {
+                    await this.GET_NAV();
+
+                    this.GET_USER_CONTACTS();
+                    this.GET_USER_FRIENDSHIP_REQUESTS();
+                    
+                    await connectSocket(this.token, res.user_id)
+                      .then(() => {
+                        console.log('Socket connected from login!');
+                      });
+
+                    this.$router.push('/');
+
+                    this.$swal({
+                      toast: true,
+                      position: 'top',
+                      showConfirmButton: false,
+                      timer: 4000,
+                      type: 'success',
+                      title: 'Вы успешно авторизовались'
+                    });
+                  })
+              }
+
+            });
+        }
       } else {
         for (let key in this.data) {
           if (!this.data[key].isValid) {
             this.data[key].isActive = true;
-            this.data[key].class = "invalid";
+            this.data[key].class = 'invalid';
           }
         }
       }
     },
+    
     switchBetweenLoginAndReg() {
       this.$emit("switch", "Registration");
     }

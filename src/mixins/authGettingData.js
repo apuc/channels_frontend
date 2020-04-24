@@ -39,15 +39,15 @@ export default {
       let notChannels = ['login','registration','password','user'];
       
       if (notChannels.indexOf(pathnameArray[1]) === -1) {
-        store.dispatch('channels/SET_CURRENT_CHANNEL_DATA', slug).then(res =>{
-          
+        store.dispatch('channels/SET_CURRENT_CHANNEL_DATA', slug)
+          .then(res =>{
             let privat = store.getters['channels/currentChannelData'].private;
             let userInChannel = store.getters['channels/userInCurrentChannel'](store.getters['user/userData'].user_id)
           
             if(privat === 1 && !userInChannel){
                router.push('/not-found');
             }
-        });
+          })
       }
     },
 

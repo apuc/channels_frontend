@@ -10,7 +10,7 @@
         <div class="user-info">
           <div class="image-wrap">
             <img class="img"
-                 :src="user.avatar ? user.avatar.small : 'https://pp.userapi.com/c846218/v846218892/e901b/c09P-QuYY18.jpg'"
+                 :src="user.avatar.small"
                  width="30" height="30" alt="">
           </div>
 
@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <div>
+      <div v-if="isAuthenticated">
         <button type="button"
                 class="btn btn-sm btn-primary mr10"
                 title="Добавить в друзья"
@@ -46,6 +46,7 @@
           <v-icon scale="1" class="icon" name="user-minus"/>
         </button>
       </div>
+      </div>
     </li>
   </ul>
 </template>
@@ -63,6 +64,7 @@
     computed: {
       ...mapGetters('channels', ['isChannelUsersLoading', 'currentChannelData', 'currentChannelSearchUsers']),
       ...mapGetters('user', ['userData', 'findUserContact','findFriendshipRequest']),
+      ...mapGetters('auth', ['isAuthenticated']),
         
       calculatePlaceholders() {
         const height = 45;

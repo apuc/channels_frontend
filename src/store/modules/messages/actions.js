@@ -14,39 +14,20 @@ export default {
         state,
         rootGetters
     },paginate = false) => {
-        const currentDateInSeconds = Math.round(Date.now() / 1000);
-        const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-        const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
-        
-        if (currentDateInSeconds < tokenExpiresIn) {
-            const channelId = rootGetters['channels/currentChannelData'].id;
-            let url = (paginate === true) ? state.nextPage : `${process.env.VUE_APP_API_URL}/channel/${channelId}/messages`;
+      
+      const channelId = rootGetters['channels/currentChannelData'].id;
+      let url = (paginate === true) ? state.nextPage : `${process.env.VUE_APP_API_URL}/channel/${channelId}/messages`;
 
-            return new Promise((resolve,reject) => {
-                Vue.http.get(url)
-                .then(
-                    res => {
-                      commit('SET_MESSAGES',{paginationData:res.body,channelId:channelId});
-                       resolve(res) 
-                    },
-                    err => console.log(err)
-                )
-            });
-            
-        } else {
-            if (currentDateInSeconds < refreshTokenExpiresIn) {
-                await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-                        root: true
-                    })
-                    .then(() => {
-                        dispatch('GET_MESSAGES');
-                    })
-            } else {
-                commit('modal/SET_MODAL', {name: 'ModalSessionExpired'}, {
-                    root: true
-                });
-            }
-        }
+      return new Promise((resolve,reject) => {
+        Vue.http.get(url)
+          .then(
+            res => {
+              commit('SET_MESSAGES',{paginationData:res.body,channelId:channelId});
+              resolve(res) 
+            },
+            err => console.log(err)
+          )
+      });
     },
   
   /**

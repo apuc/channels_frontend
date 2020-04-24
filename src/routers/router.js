@@ -6,7 +6,7 @@ const AuthRegistration = () => import('../components/Auth/AuthRegistration');
 const AuthPasswordResetRequest = () => import('../components/Auth/AuthPasswordResetRequest');
 const AuthPasswordReset = () => import('../components/Auth/AuthPasswordReset');
 const Group = () => import('../components/Group/Group');
-const Chat = ()  => import('../components/Chat/Chat');
+const ChatLayout = ()  => import('../views/ChatLayout');
 const ChatBlank = ()  => import('../components/Chat/ChatBlank');
 const NotFoundComponent = () => import('../views/NotFoundComponent');
 const UserProfile = () => import('../components/UserProfile');
@@ -172,7 +172,7 @@ export default new Router({
     {
       path: '/:id',
       name: 'chat',
-      component: Chat,
+      component: ChatLayout,
       meta: {
         layout: 'main'
       },

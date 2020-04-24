@@ -7,12 +7,11 @@
          v-touch:swipe.left="$_sidebarSlide_hideSidebar"
     >
       <transition name="slide" mode="out-in">
-<!--        <NotAuthorizedSidebarAuth />-->
+        <NotAuthorizedSidebarAuth />
       </transition>
 
       <main class="main">
-        <component :is="`NotAuthorizedChat${chooseChat}`" v-if="currentChannelData.id"></component>
-        <ChatMessages />
+        <router-view></router-view>
       </main>
     </div>
   </div>
@@ -28,21 +27,25 @@
   import Header from "../components/Header/Header";
   import ChatMessages from "../components/Chat/ChatMessages";
   import sideBarSlide from "../mixins/sideBarSlide";
+  import Chat from "../components/Chat/Chat";
 
   export default {
     name: "NotAuthorized",
+    
     components: {
+      Chat,
       ChatMessages,
-      Header, NotAuthorizedSidebarInfo, NotAuthorizedSidebarAuth,NotAuthorizedChat, NotAuthorizedChatPrivate},
+      Header, NotAuthorizedSidebarInfo, NotAuthorizedSidebarAuth,NotAuthorizedChat, NotAuthorizedChatPrivate
+    },
+    
     mixins: [authGettingData, sideBarSlide],
+    
     computed: {
       ...mapGetters({
         currentChannelData: 'channels/currentChannelData',
       }),
-      chooseChat() {
-        return this.currentChannelData.private ? 'Private' : '';
-      }
     },
+    
     beforeDestroy() {
       this.SET_CURRENT_CHANNEL_DATA({
         id: '',
@@ -55,16 +58,10 @@
         private: '',
         avatar: undefined,
       });
-      this.SET_CURRENT_CHANNEL_USERS({
-        id: '',
-        title: '',
-        slug: '',
-        status: '',
-        owner_id: '',
-        avatar: undefined,
-      });
+      this.SET_CURRENT_CHANNEL_USERS([]);
       this.CLEAR_MESSAGES();
     },
+    
     methods: {
       ...mapMutations('channels', ['SET_CURRENT_CHANNEL_DATA', 'SET_CURRENT_CHANNEL_USERS']),
       ...mapMutations({

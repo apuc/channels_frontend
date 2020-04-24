@@ -191,7 +191,7 @@ export default {
       
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/${channelId}/full`)
         .then(
-          res => {
+          async res => {
             
             let channelData = Object.assign({}, res.body.data);
             delete channelData.users
@@ -208,13 +208,16 @@ export default {
             }
 
             commit('channels/SET_CHANNEL_INTEGRATIONS',res.body.data.integrations,{root:true})
-            
+
+            await dispatch('messages/GET_MESSAGES', null, {root: true});
           },
-          err => {}
+          err => {
+            if(err.status === 403){
+               router.push('/not-found')
+            }
+          }
         )
-        .catch(error => console.log(error))
-    
-        await dispatch('messages/GET_MESSAGES', null, {root: true});
+        .catch(error => console.log('catch',error))
   },
   
   
