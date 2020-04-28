@@ -10,11 +10,11 @@ export default {
    * @constructor
    */
   'SET_MESSAGES': (state, {paginationData,channelId}) => {
-    
+
     state.nextPage = paginationData.links.next
     state.currentPage = paginationData.meta.current_page
     state.lastPage = paginationData.meta.last_page
-   
+
     if(state.messages.length < 1 || channelId != state.messages[0].channel){
       state.messages = channelState.state.currentChannelData.type == 'wall' 
         ? paginationData.data 
@@ -27,7 +27,7 @@ export default {
       state.messages = state.messages.concat(paginationData.data);
       return;
     }
-    
+
     state.messages = paginationData.data.reverse().concat(state.messages);
   },
 

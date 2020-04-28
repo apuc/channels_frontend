@@ -346,6 +346,6 @@
 
 <style>
   .tabs .nav{
-   position: static !important;
+    position: static !important;
   }
 </style>

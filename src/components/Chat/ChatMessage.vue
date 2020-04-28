@@ -179,8 +179,9 @@
     width: 100%;
     padding: 7px;
     padding-left: 0;
+    text-align: justify;
     white-space: pre-line;
-    word-break: break-all;
+    word-break: normal;
     margin: 0;
   }
 
