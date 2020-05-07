@@ -95,7 +95,7 @@
         CLEAR_MESSAGES: 'messages/CLEAR_MESSAGES',
       }),
       ...mapActions({
-        ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENTS',
+        ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENT',
       }),
         
       dragSwitcher() {

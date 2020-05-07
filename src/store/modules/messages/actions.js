@@ -116,37 +116,46 @@ export default {
   /**
    * Добавление атачмента
    * @param commit
-   * @param attachments
+   * @param payload
+   * @param attachment
    * @returns {Promise<void>}
    * @constructor
    */
-    'ADD_ATTACHMENTS': async ({
+    'ADD_ATTACHMENT': async ({
         commit,
-    }, attachments) => {
-        for (let i = 0; i < attachments.length; i++) {
-          
-            const data = new FormData;
-            data.append(`attachment`, attachments[i]);
-            
-            Vue.http.post(`${process.env.VUE_APP_API_URL}/attachment/upload`, data)
-                .then(
-                    res => {
-                      
-                        const attachment = {
-                            type:res.body.type,
-                            options: {
-                                name: attachments[i].name,
-                                size: formatBytes(attachments[i].size),
-                                ...res.body
-                            }
-                        };
-                        
-                        commit('ADD_ATTACHMENT', attachment);
-                    },
-                    err => console.log(err)
-                )
-        }
+    },payload) => {
 
+    return new Promise((resolve,reject) => {
+      const data = new FormData;
+      data.append(`attachment`,payload.attachment);
+
+      Vue.http.post(`${process.env.VUE_APP_API_URL}/attachment/upload`,data,{
+        progress(e) {
+          payload.onProgress(e);
+        }
+      })
+        .then(
+          res => {
+
+            const attachment = {
+              type: res.body.type,
+              options: {
+                name: payload.attachment.name,
+                size: formatBytes(payload.attachment.size),
+                ...res.body
+              }
+            };
+
+            commit('ADD_ATTACHMENT',attachment);
+            
+            resolve(res)
+          },
+          err => {
+            console.log('Upload attachment err',err)
+            reject(res)
+          }
+        )
+    })
     },
   /**
    * Сброс атачментов

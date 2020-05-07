@@ -58,6 +58,10 @@
         </b-btn>
       </b-input-group-append>
     </div>
+
+    <div class="attachment-progress">
+      <b-progress v-if="showProgress" :value="attachmentProgress" :max="100" show-progress animated></b-progress>
+    </div>
   </div>
 </template>
 
@@ -68,14 +72,6 @@
   import {scroll} from '../../directives/scroll';
 
   export default {
-    computed: {
-      ...mapGetters('messages', ['usersTyping', 'attachments','editMessage']),
-      ...mapGetters({
-        currentChannel: 'channels/currentChannelData',
-        userInfo: 'user/userData',
-      })
-    },
-      
     components: {Attachment},
       
     directives: {
@@ -86,6 +82,7 @@
       return {
         input: '',
         timeout: '',
+        attachmentProgress:0,
       }
     },
       
@@ -99,9 +96,31 @@
             this.input = '';
         }
       },
+
+    computed: {
+      ...mapGetters('messages', ['usersTyping', 'attachments','editMessage']),
+      ...mapGetters({
+        currentChannel: 'channels/currentChannelData',
+        userInfo: 'user/userData',
+      }),
+
+      showProgress() {
+        if (this.attachmentProgress === 0 || this.attachmentProgress === 100) {
+          return false;
+        }
+
+        return true;
+      }
+    },
       
     methods: {
-      ...mapActions('messages', ['SEND_MESSAGE', 'ADD_ATTACHMENTS', 'CLEAR_ATTACHMENTS','EDIT_MESSAGE','PARSE_LINK']),
+      ...mapActions('messages', [
+        'SEND_MESSAGE', 
+        'ADD_ATTACHMENT', 
+        'CLEAR_ATTACHMENTS',
+        'EDIT_MESSAGE',
+        'PARSE_LINK']
+      ),
         
       ioTyping,
 
@@ -143,7 +162,7 @@
         let item =  event.clipboardData.items[0];
         
         if(item.type.indexOf('image') !== -1){
-          this.addAttachments([item.getAsFile()]);
+          this.addAttachments([item.getAsFile()])
           return;
         }
 
@@ -187,8 +206,14 @@
          * Добавить атачмент
          * @param files
          */
-      addAttachments(files) {
-        this.ADD_ATTACHMENTS(files)
+      async addAttachments(files) {
+          for (let i = 0; i < files.length; i++) {
+            await this.ADD_ATTACHMENT({attachment:files[i], onProgress: (e)=>{
+                if (e.lengthComputable) {
+                  this.attachmentProgress = e.loaded / e.total * 100;
+                }
+            }})
+          }
       }
     },
       
@@ -249,8 +274,9 @@
     display: none;
   }
 
-  .attach-file input {
-    display: none;
+  .attachment-progress{
+    padding-top: 10px;
+    width: 200px;
   }
 
   .message-attachment {

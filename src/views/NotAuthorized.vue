@@ -68,9 +68,6 @@
         SET_MESSAGES: 'messages/SET_MESSAGES',
         CLEAR_MESSAGES: 'messages/CLEAR_MESSAGES',
       }),
-      ...mapActions({
-        ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENTS'
-      }),
     }
   }
 </script>
