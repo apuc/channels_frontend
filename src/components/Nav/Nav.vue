@@ -1,5 +1,5 @@
 <template>
-  <aside class="nav d-flex flex-column p-md-3 p-1">
+  <aside v-if="sidebarIsOpened" class="nav d-flex flex-column p-md-3 p-1">
     <div class="wrap">
       <header class="nav-header">
         <div class="mr-3"
@@ -104,8 +104,7 @@
             <NavSectionChannels v-if="filters.channelsVisible && !isChannelsLoading"
                                 :type="'channel'"
                                 :data="channel"
-                                :value="isSidebarVisible"
-                                @input="isSidebarVisibleHandler"
+                                :value="sidebarIsOpened"
                                 :notification="isNotificationInChannel(channel.id)"
             />
           </drag>
@@ -124,8 +123,7 @@
             <NavSectionGroups v-if="filters.groupsVisible && !isGroupsLoading"
                               :type="'group'"
                               :data="group"
-                              :value="isSidebarVisible"
-                              @input="isSidebarVisibleHandler"
+                              :value="sidebarIsOpened"
             />
           </drop>
         </div>
@@ -149,14 +147,10 @@
       ...mapGetters('channels', ['channels', 'isChannelsLoading']),
       ...mapGetters('groups', ['groups', 'isGroupsLoading']),
       ...mapGetters('messages', ['notifications']),
+      ...mapGetters('nav', ['sidebarIsOpened'])
     },
-      
-    props: {
-      isSidebarVisible: {
-        type: Boolean,
-        default: true
-      }
-    },
+
+
       
     data() {
       return {
@@ -186,18 +180,18 @@
       ...mapMutations({
         SET_MODAL: 'modal/SET_MODAL',
         SET_GROUP_ID_FOR_ADDING_CHANNEL: 'groups/SET_GROUP_ID_FOR_ADDING_CHANNEL',
+        OPEN_SIDEBAR: 'nav/OPEN_SIDEBAR',
+        CLOSE_SIDEBAR: 'nav/CLOSE_SIDEBAR',
       }),
-        
         
       ...mapActions({
         ADD_CHANNELS_TO_GROUP: 'groups/ADD_CHANNELS_TO_GROUP',
         LOGOUT: 'auth/LOGOUT',
-      }),
+      }),        
         
-        
-        isNotificationInChannel(channelId) {
-            return true; //!!this.notifications.find(id => channelId === id);
-        },
+      isNotificationInChannel(channelId) {
+          return true; //!!this.notifications.find(id => channelId === id);
+      },
         
         
       async handleDrop(group_id, data, event) {
@@ -209,11 +203,6 @@
       openRequests() {
         this.SET_MODAL({name: 'ModalUserContacts'})
       },
-        
-        
-      isSidebarVisibleHandler(value) {
-        this.$emit('input', value);
-      }
     },
 
   }
@@ -436,5 +425,11 @@
     width: 100%;
     height: 100px;
     border: 1px solid;
+  }
+
+  @media screen and (max-width: 360px) {
+    aside {
+      width: 100%;
+    }
   }
 </style>

@@ -10,7 +10,7 @@
 
     <form class="modal__content" @submit.prevent="onSubmit">
       <div class="row">
-        <div class="col-6">
+        <div class="col-9">
           <div class="form-group">
             <label for="title">Название группы</label>
             

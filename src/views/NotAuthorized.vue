@@ -3,8 +3,8 @@
     <Header v-model="isSidebarVisible"/>
 
     <div class="container home"
-         v-touch:swipe.right="$_sidebarSlide_showSidebar"
-         v-touch:swipe.left="$_sidebarSlide_hideSidebar"
+         v-touch:swipe.right="OPEN_SIDEBAR()"
+         v-touch:swipe.left="CLOSE_SIDEBAR()"
     >
       <transition name="slide" mode="out-in">
         <NotAuthorizedSidebarAuth />
@@ -26,7 +26,6 @@
   import {mapGetters, mapMutations, mapActions} from 'vuex';
   import Header from "../components/Header/Header";
   import ChatMessages from "../components/Chat/ChatMessages";
-  import sideBarSlide from "../mixins/sideBarSlide";
   import Chat from "../components/Chat/Chat";
 
   export default {
@@ -38,7 +37,7 @@
       Header, NotAuthorizedSidebarInfo, NotAuthorizedSidebarAuth,NotAuthorizedChat, NotAuthorizedChatPrivate
     },
     
-    mixins: [authGettingData, sideBarSlide],
+    mixins: [authGettingData],
     
     computed: {
       ...mapGetters({
@@ -67,6 +66,8 @@
       ...mapMutations({
         SET_MESSAGES: 'messages/SET_MESSAGES',
         CLEAR_MESSAGES: 'messages/CLEAR_MESSAGES',
+        OPEN_SIDEBAR: 'nav/OPEN_SIDEBAR',
+        CLOSE_SIDEBAR: 'nav/CLOSE_SIDEBAR',
       }),
     }
   }

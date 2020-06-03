@@ -125,7 +125,6 @@
        */
       setData(target, id, type) {
         // закрывает сайдбар на маленьких экранах
-        if (window.innerWidth < 768) this.$emit('input', false);
         
         this.TOGGLE_CHANNEL_LOADING();
         

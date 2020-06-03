@@ -120,6 +120,7 @@
     max-width: 95vh;
     max-height: 95vh;
     overflow: auto;
+    overflow-x: hidden;
   }
 
   .close {
@@ -144,8 +145,18 @@
   
   @media (max-width: 576px) {
     .modal__wrap {
-      width: 95vw;
+      width: 85vw;
       min-width: initial;
+      overflow-x: hidden;
+    }
+    .modal__container {
+      border-radius: 12px;
+    }
+    .close {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      right: 0;
     }
   }
 </style>

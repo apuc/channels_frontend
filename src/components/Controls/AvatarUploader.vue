@@ -177,8 +177,8 @@
   }
 
   .img {
-    width: 100%;
-    height: auto;
+    width: 200px;
+    height: 200px;
   }
 
   .drop {
@@ -198,5 +198,12 @@
 
   .drop label {
     margin-bottom: 0;
+  }
+
+  @media screen and (max-width: 400px) {
+      .img {
+        width: 100px;
+        height: 100px;
+      }
   }
 </style>

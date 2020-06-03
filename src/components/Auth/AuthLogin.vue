@@ -24,12 +24,12 @@
 
           <p v-if="isWrongData" class="wrong-data">Неверная пара логин пароль</p>
 
-          <div class="d-flex justify-content-between mb-3">
-            <button type="submit" class="btn btn-primary flex-fill mr-3">Войти</button>
-            <router-link class="btn btn-warning" to="registration">Регистрация</router-link>
+          <div class="auth-buttons">
+            <button type="submit" class="btn btn-primary auth-buttons__sign-in">Войти</button>
+            <router-link class="btn btn-warning auth-buttons__sign-up" to="registration">Регистрация</router-link>
           </div>
 
-          <div class="d-flex justify-content-center">
+          <div class="d-flex justify-content-center reset-password">
             <router-link :to="{name:'reset-request'}">Забыли пароль?</router-link>
           </div>
 
@@ -178,7 +178,7 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 
   .form-group {
     position: relative;
@@ -220,5 +220,31 @@
 
   .wrong-data {
     color: red;
+  }
+
+  .auth-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    &__sign-in {
+      width: 40%;
+      margin: 0 1rem 0 0;
+    }
+  }
+
+  .reset-password {
+    margin-top: 1rem;
+  }
+
+  @media screen and (max-width: 320px) {
+    .auth-buttons {
+      flex-direction: column;
+
+      &__sign-in {
+        width: 100%;
+        margin: 1rem 0;
+      }
+    }
   }
 </style>

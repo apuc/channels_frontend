@@ -32,7 +32,7 @@
         ref="searchInput"
         :value="searchValue"
         @input="searchUser($event.target.value)"
-        placeholder="Введите логин пользователя или email"
+        placeholder="Введите логин или email"
       >
     </header>
 
