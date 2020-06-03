@@ -10,7 +10,7 @@
     </div>
 
     <div v-else class="integrations_table">
-    <div class="integrations_table__category" v-for="type in this.integrationsTypes" :key="type">
+    <div class="integrations_table__category" v-for="type in integrationsTypes" :key="type">
       <div class="integrations_table__type">{{type}}</div>
       <div class="integrations_table__item" v-for="integration in integrationsList" :key="integration.name">
         <span v-if="integration.type.title === type">{{integration.name}}</span>
@@ -29,20 +29,18 @@
     name: "IntegrationsList",
     
     data(){
-      return{
-        fields:[
-          {
-            key:"title",
-            label: "Тип интеграции"
-          }
-        ]
-      }
+      return{}
     },
 
     components: {Integrations},
       
     computed: {
-      ...mapGetters('integrations', ['integrationsList', 'integrationsTypes', 'creatableIntegrations']),
+      integrationsTypes(){
+        const integrationsTypes = this.integrationsList.map(el => el.type.title);
+        const uniqueTypes = [...new Set(integrationsTypes)];
+        return uniqueTypes;
+      },
+      ...mapGetters('integrations', ['integrationsList', 'creatableIntegrations']),
     },
       
     methods: {
