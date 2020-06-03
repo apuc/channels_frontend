@@ -20,6 +20,11 @@
                 <router-link class="btn btn-link settings__link" to="/bots">Боты</router-link>
               </li>
 
+              <li class="settings__el">
+                <router-link class="btn btn-link settings__link" to="/integrations">Интеграции</router-link>
+              </li>
+
+
               <li v-for="(elem, index) in info"
                   :key="index"
                   class="settings__el"
@@ -167,11 +172,7 @@
           {
             name: 'Редактировать профиль',
             modalTrigger: 'ModalEditProfile'
-          },
-          {
-            name: 'Создать интеграцию',
-            modalTrigger: 'ModalCreateIntegration'
-          },   
+          }  
         ],
         addMenuVisible: false,
         filters: {

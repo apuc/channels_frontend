@@ -3,7 +3,8 @@ import actions from './actions';
 import mutations from './mutations';
 
 const state = {
-  integrations_types:[]
+  integrations_types:[],
+  integrationsList: [],
 };
 
 export default {

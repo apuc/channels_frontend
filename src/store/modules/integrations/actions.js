@@ -3,6 +3,23 @@ import router from '../../../routers/router';
 
 export default {
 
+  'GET_USER_INTEGRATIONS': async ({commit, rootGetters}) => {
+    const userData = rootGetters['user/userData'];
+    const currentUser = rootGetters['user/currentUserInfo'];
+    const user_id = userData.user_id || currentUser.user_id;
+    return await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/${user_id}/integrations`)
+      .then(
+        async res => {
+          const data = res.body.data;
+          console.log('data', data)
+          commit('SET_USER_INTEGRATIONS', data);
+          return data;
+        },
+        err => console.log('err login', err)
+      )
+      .catch(error => console.log('GET_INTEGRATIONS: ', error));
+  },
+
   /**
    * Получить типы интеграций
    * @param commit
@@ -45,6 +62,8 @@ export default {
         )
     });
   },
+
+  
 
   /**
    * Добавить интеграцию в канал

@@ -18,6 +18,11 @@ const Bots = () => import('../components/Bots/Bots');
 const BotsList = () => import('../components/Bots/BotsList');
 const BotsCreate = () => import('../components/Bots/BotsCreate');
 const BotsEdit = () => import('../components/Bots/BotsEdit');
+
+const Integrations = () => import('../components/Integrations/Integrations');
+const IntegrationsList = () => import('../components/Integrations/IntegrationsList');
+const IntegrationsCreate = () => import('../components/Integrations/IntegrationsCreate');
+
 import {ioGetUserStatus} from "../services/socket/status.service";
 
 Vue.use(Router);
@@ -132,6 +137,35 @@ export default new Router({
       ],
       beforeEnter: (to, from, next) => {
         store.commit('user/SET_USER_POSITION', 'bots');
+        next();
+      }
+    },
+
+    {
+      path: '/integrations',
+      component: Integrations,
+      children: [
+        {
+          path: '',
+          component: IntegrationsList,
+          name: 'integrations',
+          meta: {
+            requiresAuth: true,
+            layout: 'main'
+          },
+        },
+        {
+          path: 'create',
+          component: IntegrationsCreate,
+          name: 'integrationsCreate',
+          meta: {
+            requiresAuth: true,
+            layout: 'main'
+          },
+        }
+      ],
+      beforeEnter: (to, from, next) => {
+        store.commit('user/SET_USER_POSITION', 'integrations');
         next();
       }
     },
