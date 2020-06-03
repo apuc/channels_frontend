@@ -2,8 +2,8 @@
   <header class="header" :class="{header_auth: isAuthLayout, header_main: isMainLayout}">
     <div class="container d-flex align-items-center" :class="{'justify-content-center': isAuthLayout, 'flex-column': isAuthLayout}">
       <div v-if="isMainLayout"
-           class="burger" :class="{'active': value}"
-           @click="$emit('input', !value)">
+           class="burger" :class="{'active': sidebarIsOpened}"
+           @click="sidebarIsOpened ? CLOSE_SIDEBAR() : OPEN_SIDEBAR()">
         <hr>
         <hr>
         <hr>
@@ -14,7 +14,7 @@
              class="header__logo"
              :class="{header__logo_auth: isAuthLayout, header__logo_main: isMainLayout}"
         >
-        <p class="header__name"  :class="{header__name_auth: isAuthLayout, header__name_main: isMainLayout}">CHANNELS</p>
+        <p class="header__name"  :class="{header__name_auth: isAuthLayout, header__name_main: isMainLayout}">DUCT</p>
       </router-link>
 
       <!--Необходимость в выводе данного сообщения крайне сомнительна-->
@@ -26,24 +26,31 @@
 </template>
 
 <script>
+  import {mapGetters, mapMutations} from 'vuex';
   export default {
-    name: "Header",
-    props: {
-      //isSidebarVisible
-      value: {
-        type: Boolean
-      }
+    name: "Header"
+    ,data() {
+      return{
+      };
     },
     computed: {
+      ...mapGetters('nav', ['sidebarIsOpened']),
       isAuthLayout() {
         return this.$route.meta.layout === 'auth';
       },
       
+      
       isMainLayout() {
-        return true;
-        //return this.$route.meta.layout === 'main';
+        //return true;
+        return this.$route.meta.layout === 'main';
       },
     },
+    methods: {
+      ...mapMutations({
+        OPEN_SIDEBAR: 'nav/OPEN_SIDEBAR',
+        CLOSE_SIDEBAR: 'nav/CLOSE_SIDEBAR',
+      }),
+    }
   }
 </script>
 
@@ -86,7 +93,7 @@
   }
 
   .header {
-    padding: 30px 0;
+    padding: 10px 0 !important;
     background-color: #125092;
     &_auth{
       padding: 5px 0;

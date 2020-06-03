@@ -323,4 +323,10 @@
   .add_button{
     margin-bottom: 5px;
   }
+
+  @media screen and (max-width: 300px) {
+    .add_button button {
+      font-size: .75rem !important;
+    }
+  }
 </style>

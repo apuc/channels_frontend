@@ -50,7 +50,7 @@
                     class="info__users-btn"
                     @click="SET_MODAL({name: 'ModalChannelUsers'})"
             >
-              Кол-во пользователей {{currentChannelData.count}}
+              Пользователей: {{currentChannelData.count}}
             </button>
           </li>
 
@@ -59,7 +59,7 @@
                     class="info__users-btn"
                     @click="setAddUsersModal(currentChannelData.id)"
             >
-              Пригласить в канал
+              Пригласить
             </button>
           </li>
 

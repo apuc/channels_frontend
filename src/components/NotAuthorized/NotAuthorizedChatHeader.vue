@@ -37,7 +37,7 @@
                     class="info__users-btn"
                     @click="SET_MODAL({name: 'ModalChannelUsers'})"
             >
-              Кол-во пользователей {{currentChannelData.count}}
+              Пользователей: {{currentChannelData.count}}
             </button>
           </li>
         </ul>

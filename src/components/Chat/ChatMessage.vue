@@ -224,12 +224,7 @@
     }
   }
 
-  @media (max-width: 576px) {
-    .message {
-      width: 100%;
-      max-width: 100%;
-    }
-  }
+ 
   
   .ctx-menu li{
     padding: 5px;

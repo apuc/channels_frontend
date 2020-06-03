@@ -43,6 +43,7 @@
     methods: {
       ...mapMutations({
         GETTING_TOKEN_AND_DATA: 'auth/GETTING_TOKEN_AND_DATA',
+        OPEN_SIDEBAR: 'nav/OPEN_SIDEBAR',
       }),
         
       ...mapActions('user', ['GET_USER_ME', 'GET_NAV', 'GET_USER_CONTACTS', 'GET_USER_FRIENDSHIP_REQUESTS', 'FIND_USERS']),
@@ -81,7 +82,6 @@
                 await this.GET_NAV().then(() => this.$_authGettingData_gettingData());
                 this.GET_INTEGRATION_TYPES()
                 this.GETTING_TOKEN_AND_DATA();
-                  
               }
             }
 
@@ -93,6 +93,7 @@
               });
             
               ioGetUserStatus(this.userData.user_id);
+              this.OPEN_SIDEBAR();
           })
           .catch(error => console.log(error));
       }

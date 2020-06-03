@@ -11,6 +11,7 @@ export default {
   searchResultsIsLoading: state => state.searchResults.isLoading,
   userContacts: state => state.userContacts,
   findUserContact: state => id => state.userContacts.find(contact => contact.user_id === id),
+  currentUserId: (_, getters) => getters.currentUserInfo.user_id || userData.user_id,
 
   /**
    * Проверяет что у рользователя нет запросов к переданому пользователю

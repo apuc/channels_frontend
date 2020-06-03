@@ -1,5 +1,5 @@
 <template>
-  <main class="mt-5">
+  <main class="mt-2">
     <div class="container">
       <div class="row justify-content-center">
         <form @submit.prevent="registration" class="col-md-7 col-12 pt-lg-3">
@@ -23,17 +23,11 @@
             </span>
           </div>
 
-          <div class="form-group">
-            <template v-for="field in errors">
-                <span v-for="err in field" style="color:red">
-                   {{err}}
-                </span>
-            </template>
-          </div>
 
-          <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary flex-fill mr-3">Зарегистрироваться</button>
-            <router-link class="btn btn-warning" to="login">Вход</router-link>
+
+          <div class="auth-buttons">
+            <button type="submit" class="btn btn-primary auth-buttons__sign-in">Войти</button>
+            <router-link class="btn btn-warning auth-buttons__sign-up" to="registration">Регистрация</router-link>
           </div>
         </form>
       </div>
@@ -74,7 +68,7 @@
             isValid: false,
           },
           password: {
-            label: 'Пароль <br> <span class="small">пароль должен содержать не менее 5 символов, одна заглавная, одна строчная буквы, цифра</span>',
+            label: 'Пароль <br> <span class="small">должен содержать не менее 5 символов, одна заглавная, одна строчная буквы, цифра</span>',
             name: 'password',
             type: 'password',
             value: '',
@@ -165,7 +159,7 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
   .form-group {
     position: relative;
     z-index: 1;
@@ -204,4 +198,47 @@
   .hidden {
     display: none;
   }
+
+  .auth-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    &__sign-in {
+    width: 40%;
+    margin: 0 1rem 0 0;
+    }
+    }
+
+    .reset-password {
+    margin-top: 1rem;
+    }
+
+  @media screen and (max-width: 320px) {
+    .auth-buttons {
+      flex-direction: column;
+
+      &__sign-in {
+      width: 100%;
+      margin: 1rem 0;
+      }
+    }
+
+    .form-group {
+      margin-bottom: .3rem;
+    }
+
+    main div.form-group label {
+      margin-bottom: .3rem;
+      font-size: .9rem;
+    }
+  
+    main input.form-control {
+      padding: .15rem .5rem;
+    }
+
+    
+  }
+
+
 </style>

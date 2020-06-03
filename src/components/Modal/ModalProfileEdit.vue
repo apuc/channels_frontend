@@ -8,11 +8,17 @@
       </div>
     </header>
 
-    <b-tabs pills>
-      
-      <!--ВКЛАДКА ОБЩЕЕ-->
-      <b-tab  title="Общее"  nav-wrapper-class="nav-tabs"    
+    <div class="pills">
+      <div v-for="pill in pills" class="pill" 
+        :class="{'pill--selected': pill.id===pillSelected}"  
+        :key="pill.title"
+        @click="selectPill(pill.id)"
       >
+        {{pill.title}}
+      </div>
+    </div>
+
+    <div v-if="pillSelected===1">
         <form class="modal__content" @submit.prevent="onSubmitGeneral">
           <div class="row">
             <div class="col">
@@ -40,10 +46,10 @@
           </div>
 
         </form>
-      </b-tab>
+      </div>
 
       <!--ВКЛАДКА ЛИЧНОЕ-->
-      <b-tab title="Личное">
+      <div v-if="pillSelected===2">
         <form class="modal__content" @submit.prevent="onSubmitPrivate">
           <div class="row">
             <div class="col">
@@ -112,19 +118,17 @@
           </div>
 
         </form>
-      </b-tab>
+      </div>
 
       <!--ВКЛАДКА УВЕДОМЛЕНИЯ-->
-      <b-tab  title="Уведомления">
+      <div v-if="pillSelected===3">
           <p class="mt-3">
             <b-button variant="primary" @click="subscribeToPush">Подписаться</b-button>
           </p>
           <p>
             <b-button variant="danger" @click="unsubscribeFromPush">Отписаться</b-button>
           </p>
-      </b-tab>
-      
-    </b-tabs>
+      </div>
   </div>
 </template>
 
@@ -134,7 +138,7 @@
 
   export default {
     name: "ModalEditProfile",
-      
+
     components:{
         AvatarUploader, 
     },  
@@ -146,7 +150,22 @@
       
     data() {
       return {
-          
+        pills: {
+          1: {
+            id: 1,
+            title: "Общее"
+          },
+          2: {
+            id: 2,
+            title: "Личное"
+          },
+          3: {
+            id: 3,
+            title: "Уведомления"
+          },
+        },
+        pillSelected: 1,
+
         user: {
           avatar:null,  
           user_id: '',
@@ -179,7 +198,9 @@
         ...mapActions('common',[
             'MAKE_REQUEST',
         ]),  
-
+      selectPill(id) {
+        this.pillSelected = id;
+      },
         /**
          * Сабмит общее
           * @returns {Promise<void>}
@@ -344,8 +365,44 @@
   }
 </script>
 
-<style>
+<style scoped lang='scss'>
   .tabs .nav{
    position: static !important;
+  }
+
+  .pills {
+    width: 100%;
+    margin: .5rem;
+    display: flex;
+
+    .pill {
+      padding: .4rem .8rem;
+      background-color: #fff;
+      color: #0069d9;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &--selected {
+        background-color: #0069d9;
+        color: #fff;
+      }
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .pill {
+      font-size: .8rem;
+    }
+  }
+
+  @media screen and (max-width: 320px) {
+    .pills {
+      flex-direction: column;
+
+      .pill {
+        width: 85%;
+        text-align: center;
+      }
+    }
   }
 </style>
