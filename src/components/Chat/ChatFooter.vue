@@ -9,10 +9,6 @@
     </span>
 
     <div class="input_message-group">
-      <label class="attach-file--inside">
-        <input type="file" multiple @change="addAttachments($event.target.files)">
-        <img src="../../assets/img/add_folder.png" alt="">
-      </label>
       <div class="d-flex align-items-center mb-3 w-100">
         
         <b-form-textarea id="input_message"
@@ -29,6 +25,7 @@
         >
         </b-form-textarea>
         
+        <div class='mobile_sendBtn-wrapper'>
         <button type="button"
                 class="footer_sendBtn"
                 @click="sendMessage(input, currentChannel.id)"
@@ -39,6 +36,11 @@
                height="15"
           >
         </button>
+        <label class="attach-file--inside">
+          <input type="file" multiple @change="addAttachments($event.target.files)">
+          <img src="../../assets/img/add_folder.png" alt="">
+        </label>
+        </div>
       </div>
 
       <div class="message-attachment" v-scroll v-if="attachments">
@@ -300,8 +302,14 @@
 
 
   @media (max-width: 992px) {
-    .footer_sendBtn {
-      display: initial;
+
+    .mobile_sendBtn-wrapper {
+      display: flex;
+      flex-direction: column;
+
+      .footer_sendBtn {
+        display: initial;
+      }
     }
     
     .input_message {
@@ -316,10 +324,7 @@
 
       &--inside {
         display: block;
-        position: absolute;
-        top: 50px;
-        left: 10px;
-        
+                
         img {
           width: 20px;
           height: 20px;
