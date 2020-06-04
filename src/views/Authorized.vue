@@ -2,8 +2,8 @@
   <div class="page-wrapper">
     <Header v-model="this.sidebarIsOpened"/>
     <div class="container home p-0"
-         v-touch:swipe.right="OPEN_SIDEBAR"
-         v-touch:swipe.left="CLOSE_SIDEBAR"
+         v-touch:swipe.right="swipeSidebar('open')"
+         v-touch:swipe.left="swipeSidebar('close')"
     >
       <transition name="slide" mode="out-in">
         <Nav v-if="this.sidebarIsOpened"/>
@@ -44,6 +44,20 @@
         const width = window.innerWidth;
         if(width >= 768) {
           this.OPEN_SIDEBAR();
+        }
+      },
+      swipeSidebar(mode) {
+        if(!this.deviceIsMobile) {
+          return;
+        }
+        switch(mode) {
+          case 'open': 
+            this.OPEN_SIDEBAR();
+            break;
+          case 'close':
+            this.CLOSE_SIDEBAR();
+            break;
+          default: return;
         }
       },
     }
