@@ -3,8 +3,8 @@
     <Header v-model="isSidebarVisible"/>
 
     <div class="container home"
-         v-touch:swipe.right="OPEN_SIDEBAR()"
-         v-touch:swipe.left="CLOSE_SIDEBAR()"
+         v-touch:swipe.right="OPEN_SIDEBAR"
+         v-touch:swipe.left="CLOSE_SIDEBAR"
     >
       <transition name="slide" mode="out-in">
         <NotAuthorizedSidebarAuth />
@@ -41,7 +41,7 @@
     
     computed: {
       ...mapGetters({currentChannelData: 'channels/currentChannelData',}),
-      ...mapGetters({isSidebarVisible: 'nav/isSidebarVisible',}),
+      ...mapGetters({isSidebarVisible: 'nav/sidebarIsOpened',}),
     },
     
     beforeDestroy() {
