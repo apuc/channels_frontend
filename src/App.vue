@@ -14,10 +14,16 @@
 
 <script>
   import Modal from './components/Modal/Modal';
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapMutations} from 'vuex';
 
   export default {
     components: {Modal},
+    methods: {
+      ...mapMutations({
+        SET_MOBILE: 'common/SET_MOBILE',
+        SET_MOBILE_FALSE: 'common/SET_MOBILE_FALSE',
+      })
+    },
     computed: {
       ...mapGetters({
         modalStatus: 'modal/modalStatus'
@@ -28,6 +34,11 @@
     },
     mounted() {
       window.scrollTo(0,1);
+      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        this.SET_MOBILE();
+      } else {
+        this.SET_MOBILE_FALSE();
+      }
     }
   }
 </script>

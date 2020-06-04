@@ -40,9 +40,8 @@
     mixins: [authGettingData],
     
     computed: {
-      ...mapGetters({
-        currentChannelData: 'channels/currentChannelData',
-      }),
+      ...mapGetters({currentChannelData: 'channels/currentChannelData',}),
+      ...mapGetters({isSidebarVisible: 'nav/isSidebarVisible',}),
     },
     
     beforeDestroy() {
