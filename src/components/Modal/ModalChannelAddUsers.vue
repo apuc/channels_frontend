@@ -207,7 +207,6 @@
     margin-top: 10px;
     padding: 0;
     overflow-y: auto;
-    overflow-x: hidden;
   }
 
   .user {

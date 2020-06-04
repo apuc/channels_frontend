@@ -120,7 +120,6 @@
     max-width: 95vh;
     max-height: 95vh;
     overflow: auto;
-    overflow-x: hidden;
   }
 
   .close {
@@ -147,7 +146,6 @@
     .modal__wrap {
       width: 85vw;
       min-width: initial;
-      overflow-x: hidden;
     }
     .modal__container {
       border-radius: 12px;
@@ -157,6 +155,11 @@
       z-index: 1;
       top: 0;
       right: 0;
+    }
+  }
+  @media screen and (max-width:400px) {
+    .modal__container {
+      margin-top: 10%;
     }
   }
 </style>
