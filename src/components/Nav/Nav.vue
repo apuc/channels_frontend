@@ -12,15 +12,15 @@
           <div class="dropdown" v-if="addMenuVisible">
             <p class="info-message text-uppercase">Внутреннее меню</p>
             <ul class="settings">
-              <li class="settings__el">
+              <li class="settings__el" @click="closeSidebarOnMobile()">
                 <router-link class="btn btn-link settings__link" to="/contacts">Контакты</router-link>
               </li>
 
-              <li class="settings__el">
+              <li class="settings__el" @click="closeSidebarOnMobile()">
                 <router-link class="btn btn-link settings__link" to="/bots">Боты</router-link>
               </li>
 
-              <li class="settings__el">
+              <li class="settings__el" @click="closeSidebarOnMobile()">
                 <router-link class="btn btn-link settings__link" to="/integrations">Интеграции</router-link>
               </li>
 
@@ -37,10 +37,9 @@
                 </button>
               </li>
 
-              <li class="settings__el">
+              <li class="settings__el" @click="closeSidebarOnMobile()">
                 <router-link class="btn btn-link settings__link"
                              to="/contacts/search"
-                             @click="LOGOUT"
                 >
                   Поиск
                 </router-link>
@@ -147,7 +146,8 @@
       ...mapGetters('channels', ['channels', 'isChannelsLoading']),
       ...mapGetters('groups', ['groups', 'isGroupsLoading']),
       ...mapGetters('messages', ['notifications']),
-      ...mapGetters('nav', ['sidebarIsOpened'])
+      ...mapGetters('nav', ['sidebarIsOpened']),
+      ...mapGetters('device', ['deviceIsMobile']),
     },
 
 
@@ -182,6 +182,14 @@
         SET_GROUP_ID_FOR_ADDING_CHANNEL: 'groups/SET_GROUP_ID_FOR_ADDING_CHANNEL',
         OPEN_SIDEBAR: 'nav/OPEN_SIDEBAR',
         CLOSE_SIDEBAR: 'nav/CLOSE_SIDEBAR',
+        SET_MOBILE: 'device/SET_MOBILE',
+        SET_MOBILE_FALSE: 'device/SET_MOBILE_FALSE',
+
+        closeSidebarOnMobile() {
+          if(this.deviceIsMobile) {
+            this.CLOSE_SIDEBAR();
+          }
+        }
       }),
         
       ...mapActions({
@@ -208,7 +216,7 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
   .placeholder {
     width: 100%;
     height: 180px;
@@ -428,6 +436,9 @@
   }
 
   @media screen and (max-width: 360px) {
+    .wrap {
+      padding-left: 10px;
+    }
     aside {
       width: 100%;
     }

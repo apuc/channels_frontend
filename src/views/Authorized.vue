@@ -2,8 +2,8 @@
   <div class="page-wrapper">
     <Header v-model="this.sidebarIsOpened"/>
     <div class="container home p-0"
-         v-touch:swipe.right="this.OPEN_SIDEBAR"
-         v-touch:swipe.left="this.CLOSE_SIDEBAR"
+         v-touch:swipe.right="OPEN_SIDEBAR"
+         v-touch:swipe.left="CLOSE_SIDEBAR"
     >
       <transition name="slide" mode="out-in">
         <Nav v-if="this.sidebarIsOpened"/>
@@ -33,6 +33,7 @@
     },
     computed: {
       ...mapGetters('nav', ['sidebarIsOpened']),
+      ...mapGetters('common', ['deviceIsMobile']),
     },
     methods: {
       ...mapMutations({

@@ -90,7 +90,8 @@
     computed: {
       ...mapGetters('channels', ['currentChannelData', 'contactsToAddUsers']),
       ...mapGetters('user', ['userData', 'userContacts']),
-        ...mapGetters('messages', ['notifications']),
+      ...mapGetters('messages', ['notifications']),
+      ...mapGetters('common', ['deviceIsMobile']),
     },
       
     methods: {
@@ -107,6 +108,7 @@
         SET_MODAL: "modal/SET_MODAL",
         READ_CHANNEL_MESSAGES: "messages/READ_CHANNEL_MESSAGES",
         SET_CHANNEL_NOTIFICATION: "messages/SET_CHANNEL_NOTIFICATION",
+        CLOSE_SIDEBAR: "nav/CLOSE_SIDEBAR",
       }),
       ...mapActions({
         SET_CURRENT_CHANNEL_DATA: 'channels/SET_CURRENT_CHANNEL_DATA',
@@ -187,6 +189,9 @@
       onChannelChangeHandler(target, id, type) {
           if(id !== this.currentChannelData.id && !this.$store.state['channels'].isChannelLoading){
             this.setData(target, id, type); 
+            if(this.deviceIsMobile) {
+              this.CLOSE_SIDEBAR();
+            }
           }
       }
     }

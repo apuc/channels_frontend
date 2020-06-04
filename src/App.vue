@@ -14,10 +14,16 @@
 
 <script>
   import Modal from './components/Modal/Modal';
-  import {mapGetters} from 'vuex';
+  import {mapGetters, mapMutations} from 'vuex';
 
   export default {
     components: {Modal},
+    methods: {
+      ...mapMutations({
+        SET_MOBILE: 'common/SET_MOBILE',
+        SET_MOBILE_FALSE: 'common/SET_MOBILE_FALSE',
+      })
+    },
     computed: {
       ...mapGetters({
         modalStatus: 'modal/modalStatus'
@@ -26,6 +32,14 @@
         return (this.$route.meta.layout || 'main') + '-layout'
       },
     },
+    mounted() {
+      window.scrollTo(0,1);
+      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        this.SET_MOBILE();
+      } else {
+        this.SET_MOBILE_FALSE();
+      }
+    }
   }
 </script>
 
@@ -521,10 +535,9 @@
   }
   @media screen and (max-width: 480px) {
     .modal-inside {
+      min-width: 240px;
       padding: 15px;
-      min-width: 200px;
       max-width: 400px;
-      overflow-x: hidden;
     }
     .modal__title {
       font-size: 1rem;
@@ -538,6 +551,10 @@
 
     .modal__header-img {
       display: none;
+    }
+
+    .drop {
+      max-width: 300px;
     }
   }
 </style>
