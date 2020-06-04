@@ -90,7 +90,8 @@
     computed: {
       ...mapGetters('channels', ['currentChannelData', 'contactsToAddUsers']),
       ...mapGetters('user', ['userData', 'userContacts']),
-        ...mapGetters('messages', ['notifications']),
+      ...mapGetters('messages', ['notifications']),
+      ...mapGetters('common', ['deviceIsMobile']),
     },
       
     methods: {
@@ -188,7 +189,9 @@
       onChannelChangeHandler(target, id, type) {
           if(id !== this.currentChannelData.id && !this.$store.state['channels'].isChannelLoading){
             this.setData(target, id, type); 
-            this.CLOSE_SIDEBAR();
+            if(this.deviceIsMobile) {
+              this.CLOSE_SIDEBAR();
+            }
           }
       }
     }
