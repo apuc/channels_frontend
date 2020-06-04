@@ -12,15 +12,15 @@
           <div class="dropdown" v-if="addMenuVisible">
             <p class="info-message text-uppercase">Внутреннее меню</p>
             <ul class="settings">
-              <li class="settings__el">
+              <li class="settings__el" @click="CLOSE_SIDEBAR()">
                 <router-link class="btn btn-link settings__link" to="/contacts">Контакты</router-link>
               </li>
 
-              <li class="settings__el">
+              <li class="settings__el" @click="CLOSE_SIDEBAR()">
                 <router-link class="btn btn-link settings__link" to="/bots">Боты</router-link>
               </li>
 
-              <li class="settings__el">
+              <li class="settings__el" @click="CLOSE_SIDEBAR()">
                 <router-link class="btn btn-link settings__link" to="/integrations">Интеграции</router-link>
               </li>
 
@@ -37,10 +37,9 @@
                 </button>
               </li>
 
-              <li class="settings__el">
+              <li class="settings__el" @click="CLOSE_SIDEBAR()">
                 <router-link class="btn btn-link settings__link"
                              to="/contacts/search"
-                             @click="LOGOUT"
                 >
                   Поиск
                 </router-link>
@@ -208,7 +207,7 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
   .placeholder {
     width: 100%;
     height: 180px;
@@ -428,6 +427,9 @@
   }
 
   @media screen and (max-width: 360px) {
+    .wrap {
+      padding-left: 10px;
+    }
     aside {
       width: 100%;
     }

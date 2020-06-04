@@ -9,6 +9,10 @@
     </span>
 
     <div class="input_message-group">
+      <label class="attach-file--inside">
+        <input type="file" multiple @change="addAttachments($event.target.files)">
+        <img src="../../assets/img/add_folder.png" alt="">
+      </label>
       <div class="d-flex align-items-center mb-3 w-100">
         
         <b-form-textarea id="input_message"
@@ -223,7 +227,7 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
   .chat-footer {
     padding: 20px;
     flex-shrink: 0;
@@ -233,6 +237,8 @@
     display: flex;
     align-items: flex-start;
     flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
   }
 
   .input_message {
@@ -268,6 +274,10 @@
     margin-right: 10px;
 
     cursor: pointer;
+
+    &--inside {
+      display: none;
+    }
   }
   
   .attach-file_device {
@@ -298,9 +308,23 @@
       margin-right: 20px;
     }
 
-    .input_message-button,
+    .input_message-button {
+      display: none;
+    }
     .attach-file {
       display: none;
+
+      &--inside {
+        display: block;
+        position: absolute;
+        top: 50px;
+        left: 10px;
+        
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
     }
 
     .attach-file_device {

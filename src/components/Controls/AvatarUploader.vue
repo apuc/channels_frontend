@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="drop-wrapper">
     <div class="drop" @dragover.prevent @drop="onDrop">
       <div class="helper"></div>
       <label v-if="!avatar || imgSrc ===null" class="button">
@@ -136,8 +136,7 @@
 
 <style scoped>
   .button {
-    position: relative;
-    padding: 15px 35px;
+    padding: 15px 15px;
 
     font-weight: bold;
     color: #fff;
@@ -181,6 +180,11 @@
     height: 200px;
   }
 
+  .drop-wrapper {
+    width: 100%;
+    max-width: 600px;
+  }
+
   .drop {
     display: flex;
     justify-content: center;
@@ -204,6 +208,14 @@
       .img {
         width: 100px;
         height: 100px;
+      }
+
+        .drop-wrapper {
+          max-width: 300px;
+        }
+
+      .drop {
+        max-width: 300px;
       }
   }
 </style>

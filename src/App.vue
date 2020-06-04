@@ -26,6 +26,9 @@
         return (this.$route.meta.layout || 'main') + '-layout'
       },
     },
+    mounted() {
+      window.scrollTo(0,1);
+    }
   }
 </script>
 
@@ -521,10 +524,9 @@
   }
   @media screen and (max-width: 480px) {
     .modal-inside {
+      min-width: 240px;
       padding: 15px;
-      min-width: 200px;
       max-width: 400px;
-      overflow-x: hidden;
     }
     .modal__title {
       font-size: 1rem;
@@ -538,6 +540,10 @@
 
     .modal__header-img {
       display: none;
+    }
+
+    .drop {
+      max-width: 300px;
     }
   }
 </style>
