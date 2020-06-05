@@ -1,17 +1,7 @@
 <template>
   <header class="chat-header">
-    <button type="button"
-            class="info-btn"
-            @click="isChatInfoOpened = true"
-    >
-      <img src="../../assets/img/info.png"
-           alt=""
-           class="mr-3"
-      >
-      <span>Информация о группе</span>
-    </button>
 
-    <div class="group-info" v-if="isChatInfoOpened">
+    <div class="group-info" v-if="groupInfoIsOpened">
       <header class="group-info__header">
         <img src="../../assets/img/menu_channel.png"
              alt=""
@@ -19,8 +9,8 @@
         >
         <span class="group-info__header-text">Информация о группе</span>
       </header>
-
-      <img :src="currentGroupData.avatar.small"
+      
+      <img v-if="currentGroupData.avatar" :src="currentGroupData.avatar.small"
            alt=""
            class="group-info__img"
       >
@@ -35,9 +25,8 @@
 
       <button type="button"
               class="group-info__close"
-              @click="isChatInfoOpened = false"
+              @click="CLOSE_GROUP_INFO()"
       >
-        <span class="group-info__close-text">Скрыть информацию</span>
         <v-icon name="chevron-up"></v-icon>
       </button>
     </div>
@@ -45,20 +34,24 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
+  import {mapGetters, mapActions, mapMutations} from 'vuex';
 
   export default {
     computed: {
       ...mapGetters({
-        currentGroupData: 'groups/currentGroupData'
+        currentGroupData: 'groups/currentGroupData',
+        groupInfoIsOpened: 'groups/groupInfoIsOpened',
       })
     },
     data() {
       return {
-        isChatInfoOpened: false,
       }
     },
     methods: {
+      ...mapMutations('groups', [
+        'OPEN_GROUP_INFO',
+        'CLOSE_GROUP_INFO',
+      ]),
       ...mapActions({
         LOGOUT: 'auth/LOGOUT',
       }),

@@ -22,7 +22,7 @@
       ...mapMutations({
         SET_MOBILE: 'common/SET_MOBILE',
         SET_MOBILE_FALSE: 'common/SET_MOBILE_FALSE',
-      })
+      }),
     },
     computed: {
       ...mapGetters({
@@ -33,12 +33,14 @@
       },
     },
     mounted() {
-      window.scrollTo(0,1);
-      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+      console.log('aaaaaa nahui');
+      if( window.innerWidth < 600 ) {
         this.SET_MOBILE();
       } else {
         this.SET_MOBILE_FALSE();
       }
+    },
+    beforeDestroy() {
     }
   }
 </script>
@@ -242,7 +244,7 @@
     grid-row: 1 / 3;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
     padding: 4px;
 

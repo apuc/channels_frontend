@@ -149,8 +149,6 @@
       ...mapGetters('nav', ['sidebarIsOpened']),
       ...mapGetters('common', ['deviceIsMobile']),
     },
-
-
       
     data() {
       return {
@@ -183,7 +181,6 @@
         OPEN_SIDEBAR: 'nav/OPEN_SIDEBAR',
         CLOSE_SIDEBAR: 'nav/CLOSE_SIDEBAR',
         SET_MOBILE: 'common/SET_MOBILE',
-        SET_MOBILE_FALSE: 'common/SET_MOBILE_FALSE',
 
         closeSidebarOnMobile() {
           if(this.deviceIsMobile) {

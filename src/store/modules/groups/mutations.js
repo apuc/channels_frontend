@@ -159,5 +159,13 @@ export default {
     state.groupToDelete = '';
     state.isGroupsLoading = false;
     state.imageUploadPercentage = 0;
-  }
+  },
+
+  'OPEN_GROUP_INFO': state => {
+    state.groupInfoIsOpened = true;
+  },
+  
+  'CLOSE_GROUP_INFO': state => {
+    state.groupInfoIsOpened = false;
+  },
 };
