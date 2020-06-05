@@ -33,7 +33,6 @@
       },
     },
     mounted() {
-      console.log('aaaaaa nahui');
       if( window.innerWidth < 600 ) {
         this.SET_MOBILE();
       } else {
