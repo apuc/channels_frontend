@@ -18,5 +18,6 @@ export default {
   currentChannelSearchUsers: state => state.currentChannelUsers.searchUsers,
   userInCurrentChannel: state => id => {
     return state.currentChannelUsers.users.find(user => user.user_id === id);
-  }
+  },
+  channelInfoIsOpened: state => state.channelInfoIsOpened,
 };

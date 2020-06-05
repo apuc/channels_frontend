@@ -226,5 +226,12 @@ export default {
     state.isChannelsLoading = false;
     state.isChannelUsersLoading = true;
     state.imageUploadPercentage = 0;
-  }
+  },
+
+  'OPEN_CHANNEL_INFO': state => {
+    state.channelInfoIsOpened = true;
+  },
+  'CLOSE_CHANNEL_INFO': state => {
+    state.channelInfoIsOpened = false;
+  },
 };

@@ -12,5 +12,6 @@ export default {
   groupChannelsIds: state => id => {
     const group = state.groups.find(group => group.id == id);
     return group.channels.map(channel => channel.id);
-  }
+  },
+  groupInfoIsOpened: state => state.groupInfoIsOpened,
 };

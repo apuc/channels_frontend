@@ -73,6 +73,7 @@
         userData: 'user/userData',
         groupChannelsIds: 'groups/groupChannelsIds',
         groupNotifications: 'messages/groupNotifications',
+        deviceIsMobile: 'common/deviceIsMobile',
       }),
     },
       
@@ -118,21 +119,23 @@
         'SET_CHANNELS_TO_SEARCH'
       ]),
 
-       
+      
       ...mapMutations({
         SET_USER_POSITION: 'user/SET_USER_POSITION',
         SET_MODAL: 'modal/SET_MODAL',
         SET_CHANNEL_NOTIFICATION: "messages/SET_CHANNEL_NOTIFICATION",
+        OPEN_SIDEBAR: 'nav/OPEN_SIDEBAR',
+        CLOSE_SIDEBAR: 'nav/CLOSE_SIDEBAR',
       }),
         
       ...mapActions({
         GET_GROUP_DATA: 'groups/GET_GROUP_DATA',
       }),
         
-      async setData(e, id, type) {
-        // закрывает сайдбар на маленьких экранах
-        if (window.innerWidth < 768) this.$emit('input', false);
-        
+      async setData(e, id, type) {       
+        if(this.deviceIsMobile) {
+          this.CLOSE_SIDEBAR();
+        }
         this.SET_USER_POSITION(type);
         await this.GET_GROUP_DATA(Number(id)).then(data => {
           this.SET_CURRENT_GROUP_DATA(data);

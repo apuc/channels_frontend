@@ -1,15 +1,5 @@
 <template>
   <header class="chat-header">
-    <button type="button"
-            class="info-btn"
-            @click="isChatInfoOpened = true"
-    >
-      <img src="../../assets/img/info.png"
-           alt=""
-           class="mr-3"
-      >
-      <span>Информация о канале</span>
-    </button>
 
     <div class="group-info" v-if="isChatInfoOpened">
       <header class="group-info__header">
@@ -19,12 +9,6 @@
         >
         <span class="group-info__header-text">Информация о канале</span>
       </header>
-
-      <img
-        :src="currentChannelData.avatar ? currentChannelData.avatar.small : 'https://pp.userapi.com/c846524/v846524878/e3cbe/QHn1Jw-tZfA.jpg'"
-        alt=""
-        class="group-info__img"
-      >
 
       <div class="group-info__info">
         <h2 class="info__title">{{currentChannelData.title}}</h2>
@@ -45,9 +29,8 @@
 
       <button type="button"
               class="group-info__close"
-              @click="isChatInfoOpened = false"
+              @click="CLOSE_CHANNEL_INFO()"
       >
-        <span class="group-info__close-text">Скрыть информацию</span>
         <v-icon name="chevron-up"></v-icon>
       </button>
     </div>

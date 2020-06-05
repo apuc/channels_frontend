@@ -1,17 +1,7 @@
 <template>
   <header class="chat-header">
-    <button type="button"
-            class="info-btn"
-            @click="isChatInfoOpened = true"
-    >
-      <img src="../../assets/img/info.png"
-           alt=""
-           class="mr-3"
-      >
-      <span>Информация о канале</span>
-    </button>
 
-    <div class="group-info" v-if="isChatInfoOpened">
+    <div class="group-info" v-if="channelInfoIsOpened">
       <header class="group-info__header">
         <img src="../../assets/img/menu_channel.png"
              alt=""
@@ -20,7 +10,8 @@
         <span class="group-info__header-text">Информация о канале</span>
       </header>
 
-      <img :src="currentChannelData.avatar.small"
+      
+      <img v-if="currentChannelData.avatar" :src="currentChannelData.avatar.small"
            alt=""
            class="group-info__img"
       >
@@ -87,9 +78,8 @@
 
       <button type="button"
               class="group-info__close"
-              @click="isChatInfoOpened = false"
+              @click="CLOSE_CHANNEL_INFO()"
       >
-        <span class="group-info__close-text">Скрыть информацию</span>
         <v-icon name="chevron-up"></v-icon>
       </button>
     </div>
@@ -110,6 +100,7 @@
         currentChannelUsers: 'channels/currentChannelUsers',
         userInCurrentChannel: 'channels/userInCurrentChannel',
         userData: 'user/userData',
+        channelInfoIsOpened: 'channels/channelInfoIsOpened',
       }),
         
       dialogUserId(){
@@ -149,6 +140,8 @@
         'REMOVE_DELETED_CHANNEL_FROM_STORE',
         'SET_CONTACTS_FREE_TO_ADD_SEARCH',
         'SET_CONTACTS_TO_ADD_CHANNEL_ID',
+        'OPEN_CHANNEL_INFO',
+        'CLOSE_CHANNEL_INFO',
       ]),
 
         ...mapMutations({

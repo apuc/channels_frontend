@@ -37,6 +37,8 @@ const state = {
   channelToDelete: {},
   isGroupsLoading: false,
   imageUploadPercentage: 0,
+
+  groupInfoIsOpened: false,
 };
 
 export default {

@@ -54,6 +54,8 @@ const state = {
   isChannelsLoading: false,
   isChannelUsersLoading: true,
   imageUploadPercentage: 0,
+
+  channelInfoIsOpened: false,
 };
 
 export default {
