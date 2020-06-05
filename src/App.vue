@@ -32,15 +32,7 @@
         return (this.$route.meta.layout || 'main') + '-layout'
       },
     },
-    mounted() {
-      if( window.innerWidth < 600 ) {
-        this.SET_MOBILE();
-      } else {
-        this.SET_MOBILE_FALSE();
-      }
-    },
-    beforeDestroy() {
-    }
+    
   }
 </script>
 
