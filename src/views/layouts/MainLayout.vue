@@ -44,6 +44,8 @@
       ...mapMutations({
         GETTING_TOKEN_AND_DATA: 'auth/GETTING_TOKEN_AND_DATA',
         OPEN_SIDEBAR: 'nav/OPEN_SIDEBAR',
+        SET_MOBILE: 'common/SET_MOBILE',
+        SET_MOBILE_FALSE: 'common/SET_MOBILE_FALSE',
       }),
         
       ...mapActions('user', ['GET_USER_ME', 'GET_NAV', 'GET_USER_CONTACTS', 'GET_USER_FRIENDSHIP_REQUESTS', 'FIND_USERS']),
@@ -53,6 +55,12 @@
     },
       
     created() {
+
+      if( window.innerWidth < 600 ) {
+        this.SET_MOBILE();
+      } else {
+        this.SET_MOBILE_FALSE();
+      }
 
       if (!this.isAuthenticated) {
         this.$_authGettingData_gettingData();
