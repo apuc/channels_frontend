@@ -147,7 +147,7 @@
       ...mapGetters('groups', ['groups', 'isGroupsLoading']),
       ...mapGetters('messages', ['notifications']),
       ...mapGetters('nav', ['sidebarIsOpened']),
-      ...mapGetters('device', ['deviceIsMobile']),
+      ...mapGetters('common', ['deviceIsMobile']),
     },
 
 
@@ -182,8 +182,8 @@
         SET_GROUP_ID_FOR_ADDING_CHANNEL: 'groups/SET_GROUP_ID_FOR_ADDING_CHANNEL',
         OPEN_SIDEBAR: 'nav/OPEN_SIDEBAR',
         CLOSE_SIDEBAR: 'nav/CLOSE_SIDEBAR',
-        SET_MOBILE: 'device/SET_MOBILE',
-        SET_MOBILE_FALSE: 'device/SET_MOBILE_FALSE',
+        SET_MOBILE: 'common/SET_MOBILE',
+        SET_MOBILE_FALSE: 'common/SET_MOBILE_FALSE',
 
         closeSidebarOnMobile() {
           if(this.deviceIsMobile) {
