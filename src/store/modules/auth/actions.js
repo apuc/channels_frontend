@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import router from '../../../routers/router';
+import {io} from "../../../services/socket/socket.service"; 
 
 export default {
   /**
@@ -140,12 +141,14 @@ export default {
     commit('messages/CLEAR_MESSAGES', [], {
       root: true
     });
-   
-    commit('GETTING_TOKEN_AND_DATA');
+    
     commit('LOGOUT');
     localStorage.clear();
     commit('SET_TOKEN', '');
     commit('SET_REFRESH_TOKEN', '');
+    
+    io.disconnect();
+    
     router.push('/login');
   },
 };
