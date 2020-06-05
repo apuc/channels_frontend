@@ -11,7 +11,7 @@ module.exports = {
   devServer: {
      proxy: {
        '^/(v1|socket.io)': {
-         target: 'https://mychannels.gq/',
+         target: 'https://duct.su/',
          ws: true,
          changeOrigin: true
        },
