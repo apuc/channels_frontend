@@ -41,7 +41,7 @@
         CLOSE_SIDEBAR: 'nav/CLOSE_SIDEBAR',
       }),
       resizeHandler() { 
-        if(window.innerWidth >= 768) {
+        if(window.innerWidth >= 768 && !this.sidebarIsOpened) {
           this.OPEN_SIDEBAR();
         }
       },

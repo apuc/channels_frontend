@@ -153,7 +153,7 @@
       },
       
       resendMessage(message){
-        this.SET_MODAL({name:'ModalResendMessages',message:message});
+        this.SET_MODAL({name:'ModalResendMessages', message});
       }
     }
   }
@@ -180,7 +180,7 @@
     padding: 7px;
     padding-left: 0;
     white-space: pre-line;
-    word-break: break-all;
+    word-break: break-word;
     margin: 0;
   }
 

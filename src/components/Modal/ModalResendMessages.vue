@@ -52,19 +52,24 @@
     },
       
     computed: {
-      ...mapGetters({
-        allChannels: 'channels/allChannels',
-      }),
-      
+      ...mapGetters('channels', [
+        'currentChannelData',
+        'allChannels',
+      ]),
+
       search(){
+
+        const otherChannels = this.allChannels.filter(channel => {
+          return channel.id !== this.currentChannelData.id;
+        })
         
         if(!this.searchValue){
-          return this.allChannels
+          return otherChannels;
         }
         
-        return this.allChannels.filter(channel =>{
-          return channel.title.includes(this.searchValue) || 
-            channel.slug.includes(this.searchValue)
+        return otherChannels.filter(channel =>{
+          return (channel.title.includes(this.searchValue) || 
+            channel.slug.includes(this.searchValue))
         })
       }
     },
@@ -93,9 +98,18 @@
           }
         };
 
+        const resendAttachments = this.payload.message.attachments;
+
         this.CLEAR_ATTACHMENTS();
         this.ADD_ATTACHMENT(attachment);
+        this.addAttachments(resendAttachments);
+        
         this.DELETE_MODAL();
+      },
+      addAttachments(attachments) {
+          for (let i = 0; i < attachments.length; i++) {
+            this.ADD_ATTACHMENT(attachments[i]);
+          }
       }
     }
   }

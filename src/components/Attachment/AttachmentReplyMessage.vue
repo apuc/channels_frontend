@@ -37,6 +37,10 @@
      
     },
 
+    mounted() {
+      console.log('text',this.data.options.text);
+    },
+
     methods: {
       ...mapMutations({
         REMOVE_ATTACHMENT: 'messages/REMOVE_ATTACHMENT',
