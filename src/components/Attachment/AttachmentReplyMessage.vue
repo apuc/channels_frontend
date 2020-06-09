@@ -1,15 +1,20 @@
 <template>
   <div class="attachment-link">
-    <blockquote>{{data.options.text}}</blockquote>
+    <img v-if="data.options.attachments && data.options.attachments[0].type==='image'" :src="data.options.attachments[0].options.url" />
     
-    <div class="message-info d-flex justify-content-between">
-      <p>{{data.options.from}}</p>
-      <p>{{data.options.created}}</p>
+    <div class="message-info d-flex">
+      
+      <div class="d-flex justify-content-between align-items-baseline">
+        <p>{{data.options.from}}</p>
+        <button class="close-btn" @click="REMOVE_ATTACHMENT(data.options.url)" v-if="deleteButton">
+          <v-icon scale="1" class="icon" name="times-circle"/>
+        </button>
+      </div>
+      <div class="d-flex justify-content-between align-items-baseline">
+        <blockquote>{{data.options.text}}</blockquote>
+        <p>{{data.options.created}}</p>
+      </div>
     </div>
-
-    <button class="close-btn" @click="REMOVE_ATTACHMENT(data.options.url)" v-if="deleteButton">
-      <v-icon scale="1" class="icon" name="times-circle"/>
-    </button>
   </div>
 </template>
 
@@ -33,14 +38,6 @@
       }
     },
 
-    computed:{
-     
-    },
-
-    mounted() {
-      console.log('text',this.data.options.text);
-    },
-
     methods: {
       ...mapMutations({
         REMOVE_ATTACHMENT: 'messages/REMOVE_ATTACHMENT',
@@ -50,17 +47,26 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
   
   .close-btn {
     position: absolute;
-    right: -35px;
+    right: -15px;
     top: 0;
     z-index: 1;
     font-size: 0;
     cursor: pointer;
     background-color: transparent;
     border: none;
+  }
+
+  .attachment-link {
+    display: flex;
+    overflow-x: hidden;
+
+    img {
+      width: 20%;
+    }
   }
 
   .attachment-link:hover .close-btn {
@@ -78,12 +84,37 @@
   blockquote{
     font-family: Arial;
     font-style: italic;
-    margin-bottom: 2px;
   }
   
   .message-info{
     padding: 0px 5px;
-    min-width: 200px;
+    min-width: 140px;
     font-size: 13px;
+    flex-direction: column;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    * {
+      margin: .1rem .3rem;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .attachment-link img {
+      min-width: 100px;
+      width: 25%;
+    }
+  }
+
+  @media screen and (max-width: 320px) {
+    .attachment-link img {
+      min-width: 60px;
+      width: 35%;
+      max-height: 50px;
+    }
+
+    .message-info p {
+      font-size: 11px;
+    }
   }
 </style>
