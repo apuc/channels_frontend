@@ -1,6 +1,6 @@
 <template>
   <div class="attachment-link">
-    <img v-if="data.options.attachments && data.options.attachments[0].type==='image'" :src="data.options.attachments[0].options.url" />
+    <img v-if="data.options.attachments && data.options.attachments[0] && data.options.attachments[0].type==='image'" :src="data.options.attachments[0].options.url" />
     
     <div class="message-info d-flex">
       

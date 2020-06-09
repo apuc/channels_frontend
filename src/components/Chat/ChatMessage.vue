@@ -175,6 +175,7 @@
 
     &__ctx-menu {
       position: absolute;
+      top: 4px;
       right: 10px;
     }
   }
