@@ -158,6 +158,8 @@
           event.preventDefault();
         } else {
           this.sendMessage(this.input, this.currentChannel.id);
+          this.input = '';
+          this.CLEAR_ATTACHMENTS();
         }
       },
       

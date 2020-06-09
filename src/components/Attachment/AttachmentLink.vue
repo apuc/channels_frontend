@@ -93,7 +93,7 @@
   
   .attachment-link{
     position: relative;
-    word-break: break-all;
+    word-break: break-word;
   }
   
   .icon{

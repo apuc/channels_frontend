@@ -136,7 +136,6 @@ export default {
       })
         .then(
           res => {
-
             const attachment = {
               type: res.body.type,
               options: {
