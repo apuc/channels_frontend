@@ -10,10 +10,8 @@
           <v-icon scale="1" class="icon" name="times-circle"/>
         </button>
       </div>
-      <div class="d-flex justify-content-between align-items-baseline">
-        <blockquote>{{data.options.text}}</blockquote>
-        <p>{{data.options.created}}</p>
-      </div>
+      <blockquote>{{data.options.text}}</blockquote>
+      <p>{{data.options.created}}</p>
     </div>
   </div>
 </template>
