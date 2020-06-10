@@ -10,6 +10,7 @@
 
 <script>
   import AttachmentImage from './AttachmentImage';
+  import AttachmentYoutube from './AttachmentYoutube';
   import AttachmentDocument  from './AttachmentDocument';
   import AttachmentArchive  from './AttachmentArchive';
   import AttachmentLink  from './AttachmentLink';
@@ -22,6 +23,7 @@
   export default {
     components: {
       AttachmentImage, 
+      AttachmentYoutube,
       AttachmentDocument, 
       AttachmentArchive,
       AttachmentLink,

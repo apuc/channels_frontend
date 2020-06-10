@@ -52,8 +52,17 @@
       </div>
 
       <label class="attach-file">
-        <input type="file" multiple @change="addAttachments($event.target.files)">
-        <img src="../../assets/img/add_folder.png" alt="">
+        <div class="attach-file__tooltip">
+          <div class="attach-file__option">
+            <input id="attach-photo" type="file" accept="image/*" multiple @change="addAttachments($event.target.files)">
+            <label for="attach-photo">Фото</label>
+          </div>
+          <div class="attach-file__option">
+            <input id="attach-file" type="file" multiple @change="addAttachments($event.target.files)">
+            <label for="attach-file">Файл</label>
+          </div>
+        </div>
+        <img class="attach-file__icon" src="../../assets/img/add_folder.png" alt="">
       </label>
 
       <b-input-group-append class="input_message-button">
@@ -168,14 +177,19 @@
        */ 
       onPaste(event){
         let item =  event.clipboardData.items[0];
-        
+
         if(item.type.indexOf('image') !== -1){
           this.addAttachments([item.getAsFile()])
           return;
         }
 
         item.getAsString((data)=>{
-          this.PARSE_LINK(data);
+          const youtubeId = this.getYoutubeId(data);
+          if(data.includes(youtubeId)) {
+            this.PARSE_LINK({text: data, youtubeId});
+          } else {
+            this.PARSE_LINK(data);
+          }
         })
          
       },
@@ -222,6 +236,10 @@
                 }
             }})
           }
+      },
+
+      getYoutubeId (url) {
+        return this.$youtube.getIdFromUrl(url)
       }
     },
       
@@ -269,18 +287,45 @@
   }
 
   .attach-file {
+    position: relative;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 40px;
     height: 40px;
-    margin-right: 10px;
+    margin: 0 1.5rem;
+    z-index: 100;
 
     cursor: pointer;
 
     &--inside {
       display: none;
+    }
+
+    &__tooltip {
+      display: none;
+    }
+
+    &__option {
+      padding: .1rem 1rem;
+      &:hover {
+        cursor: pointer;
+        background-color: rgba(4, 35, 69, 0.15);
+      }
+    }
+
+    &:hover {
+      .attach-file__tooltip {
+        cursor: pointer;
+        height: 9rem;
+        display: initial;
+        position: absolute;
+        top:-70px;
+        left: -15px;
+        background-color: #fff;
+        z-index: -1;
+      }
     }
   }
   
@@ -297,7 +342,7 @@
     flex: 1 0 65%;
     display: flex;
     flex-wrap: wrap;
-    max-height: 150px;
+    max-height: 100px;
     overflow: auto;
     margin-right: 20px;
   }
