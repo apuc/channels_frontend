@@ -15,6 +15,9 @@ import VueResource from 'vue-resource';
 import VueDragDrop from 'vue-drag-drop';
 import VueSweetalert2 from 'vue-sweetalert2';
 import Vue2TouchEvents from 'vue2-touch-events';
+import VueYoutube from 'vue-youtube'
+ 
+
 
 Vue.config.productionTip = process.env.NODE_ENV === 'production';
 Vue.use(VueResource);
@@ -22,6 +25,7 @@ Vue.use(BootstrapVue);
 Vue.use(VueDragDrop);
 Vue.use(VueSweetalert2);
 Vue.use(Vue2TouchEvents);
+Vue.use(VueYoutube);
 
 Vue.component('v-icon', Icon);
 Vue.component('main-layout', MainLayout);

@@ -39,15 +39,17 @@
       
       computed:{
         documentIcon(){
-            let mime =  this.data.options.mimeType.split('/')[1];
-            
-            for(let type in this.icon){
-                if(type == mime){
-                    return this.icon[type]
-                }
+            if(this.data.options.mimeType) {
+              let mime = this.data.options.mimeType.split('/')[1];
+              
+              for(let type in this.icon){
+                  if(type == mime){
+                      return this.icon[type]
+                  }
+              }
+
+              return this.icon.default;
             }
-            
-            return this.icon.default;
         }
       },
    

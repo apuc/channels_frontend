@@ -8,6 +8,11 @@ const attachmentsTypes = {
        component: 'Image',
        icon:null
      },
+
+     youtube:{
+      component: 'Youtube',
+      icon:null
+    },
   
      document:{
        component: 'Document',

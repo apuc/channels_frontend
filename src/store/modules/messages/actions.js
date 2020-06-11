@@ -266,7 +266,7 @@ export default {
    * @returns {Promise<void>}
    * @constructor
    */
-  'PARSE_LINK': async ({commit,getters},text) => {
+  'PARSE_LINK': async ({commit,getters},{text, youtubeId}) => {
     Vue.http.post(`${process.env.VUE_APP_API_URL}/text-link`,{link:text})
       .then(
         res => {
@@ -276,9 +276,8 @@ export default {
           }
           
           for(let link of res.body.data){
-            
             const attachment = {
-              type:'link',
+              type: youtubeId ? 'youtube' : 'link',
               options: {...link}
             };
             
