@@ -188,7 +188,7 @@
           if(data.includes(youtubeId)) {
             this.PARSE_LINK({text: data, youtubeId});
           } else {
-            this.PARSE_LINK(data);
+            this.PARSE_LINK({ text: data });
           }
         })
          
@@ -211,7 +211,7 @@
         });
         
         this.timeout = setTimeout(() => {
-          this.PARSE_LINK(this.input);
+          this.PARSE_LINK({ text: this.input });
           
           ioTyping({
             user: {
@@ -292,7 +292,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
     height: 40px;
     margin: 0 1.5rem;
     z-index: 100;
