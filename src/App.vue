@@ -26,7 +26,7 @@
     },
     computed: {
       ...mapGetters({
-        modalStatus: 'modal/modalStatus'
+        modalStatus: 'modal/modalStatus',
       }),
       layout() {
         return (this.$route.meta.layout || 'main') + '-layout'
