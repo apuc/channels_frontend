@@ -60,6 +60,11 @@
       },
       show(url) {
         const index = this.images.findIndex(image => image.options.url === url)
+        console.log({
+          index,
+          'propsURL': url,
+          'searchURL': image.options.url
+        });
         this.$viewer.view(index)
       }
     },
