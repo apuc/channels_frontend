@@ -59,12 +59,16 @@
         this.$viewer = viewer
       },
       show(url) {
-        const index = this.images.findIndex(image => image.options.url === url)
-        console.log({
-          index,
-          'propsURL': url,
-          'searchURL': image.options.url
+        const index = this.images.findIndex(image => {
+          console.log({
+            'propsURL': url,
+            'searchURL': image.options.url
+          });
+          return image.options.url === url
         });
+
+        console.log('index',index);
+        
         this.$viewer.view(index)
       }
     },
