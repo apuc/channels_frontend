@@ -1,6 +1,6 @@
 <template>
   <div v-if="data.options" :class="(big) ? 'attachment-image-big mr-2' : 'attachment-image mr-2'" >
-    <img :src="data.options.url" alt="attachment image" @click="show()">
+    <img :src="data.options.url" alt="attachment image" @click="show(data.options.url)">
     <button class="close-btn" @click="REMOVE_ATTACHMENT(data.options.url)" v-if="deleteButton">
       <v-icon scale="1" class="icon" name="times-circle"/>
     </button>
@@ -8,7 +8,7 @@
             class="viewer" ref="viewer"
             @inited="inited"
     >
-      <img v-for="src in images" :src="src" :key="src" class="image">
+      <img v-for="img in images" :src="img.options.url" :key="img.options.url" class="image">
     </viewer>
   </div>
 </template>
@@ -40,15 +40,12 @@
       attachmentImages() {
         return this.attachments
           .filter(att => att.options.type === 'image')
-          .map(att => att.options.url);
       },
       chatImages() {
         return this.messages
           .map(message => message.attachments)
           .flat(2)
           .filter(attachment => attachment.type === 'image')
-          .map(att => att.options.url);
-
       },
       images() {
         return this.big?this.chatImages:this.attachmentImages
@@ -61,9 +58,9 @@
       inited (viewer) {
         this.$viewer = viewer
       },
-      show() {
-        this.$viewer.view()
-        //this.$viewer.show()
+      show(url) {
+        const index = this.images.findIndex(image => image.options.url === url)
+        this.$viewer.view(index)
       }
     },
   }
