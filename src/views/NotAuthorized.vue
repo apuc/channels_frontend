@@ -2,10 +2,7 @@
   <div class="page-wrapper notAuth">
     <Header v-model="sidebarIsOpened"/>
 
-    <div class="container home"
-         v-touch:swipe.right="swipeSidebar('open')"
-         v-touch:swipe.left="swipeSidebar('close')"
-    >
+    <div class="container home">
       <transition name="slide" mode="out-in">
         <NotAuthorizedSidebarAuth />
       </transition>
