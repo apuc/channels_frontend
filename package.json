@@ -15,6 +15,7 @@
     "sass": "^1.24.0",
     "sass-loader": "^8.0.0",
     "socket.io-client": "^2.1.1",
+    "v-viewer": "^1.5.1",
     "vue": "^2.5.17",
     "vue-awesome": "^3.1.3",
     "vue-context": "^5.0.0",

@@ -1,18 +1,23 @@
 <template>
   <div v-if="data.options" :class="(big) ? 'attachment-image-big mr-2' : 'attachment-image mr-2'" >
-    <img :src="data.options.url" alt="attachment image" @click="SET_MODAL({name: 'ModalAttachmentImage', src: data.options.url})">
+    <img :src="data.options.url" alt="attachment image" @click="show()">
     <button class="close-btn" @click="REMOVE_ATTACHMENT(data.options.url)" v-if="deleteButton">
       <v-icon scale="1" class="icon" name="times-circle"/>
     </button>
+    <viewer :images="images"           
+            class="viewer" ref="viewer"
+            @inited="inited"
+    >
+      <img v-for="src in images" :src="src" :key="src" class="image">
+    </viewer>
   </div>
 </template>
 
 <script>
-  import {mapMutations} from 'vuex';
+  import {mapMutations, mapGetters} from 'vuex';
 
   export default {
     name: 'AttachmentImage',
-   
     props: {
       data: {
         required: true,
@@ -26,16 +31,49 @@
           default:false
       }  
     },
-    methods: {
+    computed: {
+      ...mapGetters({
+        messages: 'messages/messages',
+        attachments: 'messages/attachments',
+        viewerStatus: 'viewer/viewerStatus',
+      }),
+      attachmentImages() {
+        return this.attachments
+          .filter(att => att.options.type === 'image')
+          .map(att => att.options.url);
+      },
+      chatImages() {
+        return this.messages
+          .map(message => message.attachments)
+          .flat(2)
+          .filter(attachment => attachment.type === 'image')
+          .map(att => att.options.url);
+
+      },
+      images() {
+        return this.big?this.chatImages:this.attachmentImages
+      }
+    },methods: {
       ...mapMutations({
         REMOVE_ATTACHMENT: 'messages/REMOVE_ATTACHMENT',
-        SET_MODAL: "modal/SET_MODAL"
+        SET_MODAL: "modal/SET_MODAL",
       }),
+      inited (viewer) {
+        this.$viewer = viewer
+      },
+      show() {
+        this.$viewer.view()
+        //this.$viewer.show()
+      }
     },
   }
 </script>
 
 <style>
+  .image{
+    display: none !important
+  }
+
   .attachment-image {
     position: relative;
     width: 70px;
