@@ -12,17 +12,18 @@
     
     <ChatMessages/>
     
-    <ChatFooter v-if="showFooterWall && userInCurrentChannel(userData.user_id)"/>
+    <ChatFooter v-if="showFooterWall && userInCurrentChannel(userData.user_id)" ref="chatFooter" />
     
     <div v-else class="not-in-channel">
       {{footerText}}
     </div>
     
     <div 
-      v-if="showFooterWall && userInCurrentChannel(userData.user_id) && over" 
-      class="chat__drag-zone"
-      @dragover.prevent 
-      @drop.prevent.stop="onDrop"
+      v-if="showFooterWall && userInCurrentChannel(userData.user_id)"
+      :class="over?'chat__drag-zone':'chat__drag-zone--invisible'"
+      @dragenter.prevent="onDragEnter"
+      @dragover.prevent="onDragOver"
+      @drop.prevent="onDrop"
     >
       <p class="chat__drag-tip">Drop area</p>
     </div>
@@ -95,17 +96,22 @@
         CLEAR_MESSAGES: 'messages/CLEAR_MESSAGES',
       }),
       ...mapActions({
-        ADD_ATTACHMENTS: 'messages/ADD_ATTACHMENT',
+        ADD_ATTACHMENT: 'messages/ADD_ATTACHMENT',
       }),
         
       dragSwitcher() {
         this.over = !this.over;
       },
+      onDragOver(e) {
         
-      onDrop(e) {
+      },
+      onDragEnter(e) {
+        
+      },        
+      async onDrop(e) {
         this.dragSwitcher();
-        this.ADD_ATTACHMENTS(e.dataTransfer.files);
-      }
+        await this.$refs.chatFooter.addAttachments(e.dataTransfer.files);
+      },
     },
       
     beforeDestroy() {
@@ -163,6 +169,10 @@
     background: rgba(255,255,255, 0.6);
     border: 2px dashed #ccc;
     border-radius: 5px;
+  }
+
+  .chat__drag-zone--invisible {
+    display: none;
   }
   
   .chat__drag-tip {
