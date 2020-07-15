@@ -38,13 +38,14 @@
 
 <script>
     import {mapGetters, mapMutations, mapActions} from "vuex";
+    import { BButton } from 'bootstrap-vue';
     import AvatarUploader from "../Controls/AvatarUploader";
     import vSelect from "vue-select";
 
     export default {
         name: "ModalChannelIntegrations",
 
-        components: {vSelect},
+        components: {vSelect, BButton},
 
         computed: {
            ...mapGetters('channels',['channelIntegrations','currentChannelData']),

@@ -134,13 +134,15 @@
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import { BButton } from 'bootstrap-vue';
   import AvatarUploader from "../Controls/AvatarUploader";
 
   export default {
     name: "ModalEditProfile",
 
     components:{
-        AvatarUploader, 
+      BButton,
+      AvatarUploader, 
     },  
       
     computed: {

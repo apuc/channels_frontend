@@ -67,6 +67,7 @@
 
 <script>
   import {mapGetters, mapMutations, mapActions} from "vuex";
+  import 'vue-awesome/icons/user-plus';
 
   export default {
     name: "Advertisings",

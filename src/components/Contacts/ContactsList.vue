@@ -56,6 +56,7 @@
   import ContactsSearchUsersResult from "./ContactsSearchUsersResult";
   import ContactsSearchUsers from "./ContactsSearchUsers";
   import Contacts from "./Contacts";
+  import 'vue-awesome/icons/user-minus';
 
   export default {
     name: "ContactsList",

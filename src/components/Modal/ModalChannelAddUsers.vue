@@ -84,6 +84,8 @@
 <script>
   import {mapGetters, mapMutations, mapActions} from "vuex";
   import Vue from "vue";
+  import 'vue-awesome/icons/plus-square';
+  import 'vue-awesome/icons/user-plus';
 
   export default {
     name: "ModalChannelAddUsers",

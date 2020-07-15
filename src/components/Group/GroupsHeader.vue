@@ -35,6 +35,7 @@
 
 <script>
   import {mapGetters, mapActions, mapMutations} from 'vuex';
+  import 'vue-awesome/icons/chevron-up';
 
   export default {
     computed: {

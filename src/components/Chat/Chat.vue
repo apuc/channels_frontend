@@ -31,7 +31,8 @@
 </template>
 
 <script>
-  import {mapMutations, mapActions, mapGetters } from 'vuex'
+  import {mapMutations, mapActions, mapGetters } from 'vuex';
+    import { BSpinner } from 'bootstrap-vue';
   import ChatHeader from './ChatHeader';
   import ChatMessages from './ChatMessages';
   import ChatFooter from '../Chat/ChatFooter';
@@ -40,6 +41,7 @@
   export default {
       
     components: {
+      BSpinner,
       Attachment,
       ChatHeader,
       ChatMessages,

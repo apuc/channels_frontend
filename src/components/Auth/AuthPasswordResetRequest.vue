@@ -38,9 +38,13 @@
 
 <script>
   import {mapActions, mapGetters, mapMutations} from "vuex";
+  import { BAlert } from 'bootstrap-vue';
 
   export default {
-        name: "AuthPasswordReset",
+      name: "AuthPasswordReset",
+      components: {
+        BAlert
+      },
       data() {
         return {
           data: {

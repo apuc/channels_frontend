@@ -64,6 +64,8 @@
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import { BFormGroup, BFormSelect, BFormInput, 
+    BFormCheckbox, BInputGroupAppend, BButton } from 'bootstrap-vue';
   import Integrations from "./Integrations";
 
   export default {
@@ -80,7 +82,15 @@
       }
     },
 
-    components: {Integrations},
+    components: { 
+      BFormGroup, 
+      BFormSelect, 
+      BFormInput, 
+      BFormCheckbox, 
+      BInputGroupAppend, 
+      BButton, 
+      Integrations
+    },
       
     computed: {
       ...mapGetters('integrations', ['creatableIntegrations']),
