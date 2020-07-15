@@ -38,6 +38,7 @@
 </template>
 
 <script>
+    import 'vue-awesome/icons/spinner';
     export default {
         name: "AvatarUploader",
         

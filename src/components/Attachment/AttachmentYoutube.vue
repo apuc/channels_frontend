@@ -18,6 +18,7 @@
 
 <script>
   import {mapMutations} from 'vuex';
+  import 'vue-awesome/icons/times-circle';
 
   import AttachmentLink from './AttachmentLink';
 

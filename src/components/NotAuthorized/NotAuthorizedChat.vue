@@ -11,6 +11,7 @@
 </template>
 
 <script>
+  import { BSpinner } from 'bootstrap-vue';
   import NotAuthorizedChatChatHeader from './NotAuthorizedChatHeader';
   import NotAuthorizedChatChatMessages from './NotAuthorizedChatMessages';
   import ChatHeader from '../Chat/ChatHeader';
@@ -18,6 +19,7 @@
 
   export default {
     components: {
+      BSpinner,
       NotAuthorizedChatChatHeader,
       NotAuthorizedChatChatMessages,
       ChatHeader,

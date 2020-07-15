@@ -29,10 +29,13 @@
 
 <script>
     import {mapMutations} from "vuex";
+    import { BButton, BRow, BCol } from 'bootstrap-vue';
 
     export default {
         name: "AttachmentRss.vue",
-      
+        components: {
+          BButton, BRow, BCol
+        },
         data(){
           return {
             showFull:false

@@ -50,8 +50,12 @@
 
 <script>
   import {mapActions,mapGetters,mapMutations} from 'vuex';
+  import { BButton } from 'bootstrap-vue';
   export default {
     name: "ModalAddBotToUser",
+    components: {
+      BButton
+    },
     data(){
       return{
         errors: {}

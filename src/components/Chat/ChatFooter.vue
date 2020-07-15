@@ -66,11 +66,11 @@
       </label>
 
       <b-input-group-append class="input_message-button">
-        <b-btn @click="sendMessage(input, currentChannel.id)"
+        <b-button @click="sendMessage(input, currentChannel.id)"
                variant="primary"
         >
           {{$ml.get('Chat.btnSend')}}
-        </b-btn>
+        </b-button>
       </b-input-group-append>
     </div>
 
@@ -81,13 +81,14 @@
 </template>
 
 <script>
-  import {ioTyping} from '../../services/socket/message.service'
-  import {mapGetters, mapActions} from 'vuex'
-  import Attachment from '../../components/Attachment/Attachment'
+  import {ioTyping} from '../../services/socket/message.service';
+  import {mapGetters, mapActions} from 'vuex';
+  import { BFormTextarea, BInputGroupAppend, BProgress, BButton } from 'bootstrap-vue';
+  import Attachment from '../../components/Attachment/Attachment';
   import {scroll} from '../../directives/scroll';
 
   export default {
-    components: {Attachment},
+    components: {BFormTextarea, BInputGroupAppend, BProgress, BButton, Attachment},
       
     directives: {
       scroll
@@ -151,7 +152,7 @@
             return;
         }  
           
-        if (this.input.trim() !== '' || this.attachments) {
+        if (this.input.trim() !== '' || this.attachments.length > 0) {
           this.SEND_MESSAGE({text, channelId});
           this.input = '';
           this.CLEAR_ATTACHMENTS();

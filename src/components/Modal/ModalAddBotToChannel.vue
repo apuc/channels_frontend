@@ -14,10 +14,13 @@
 
 <script>
     import {mapActions,mapGetters,mapMutations} from 'vuex';
+    import { BFormGroup, BFormSelect, BButton } from 'bootstrap-vue';
 
     export default {
         name: "ModalAddBotToChannel",
-
+        components: {
+            BFormGroup, BFormSelect, BButton
+        },
         created(){
             this.GET_USER_BOTS();
         },

@@ -45,10 +45,13 @@
 
 <script>
     import {mapActions,mapGetters,mapMutations} from 'vuex';
+    import { BFormGroup, BFormSelect, BFormInput, BFormCheckbox, BButton } from 'bootstrap-vue';
 
     export default {
         name: "ModalAddIntegrationToChannel",
-
+        components: {
+          BFormGroup, BFormSelect, BFormInput, BFormCheckbox, BButton
+        },
         data(){
             return {
                 type_id:null,

@@ -96,7 +96,7 @@
         </div>
 
         <div class="mt-3">
-          <drag v-for="channel in channels"
+          <div v-for="channel in channels"
                 :transfer-data="channel.id"
                 :key="channel.id"
           >
@@ -106,7 +106,7 @@
                                 :value="sidebarIsOpened"
                                 :notification="isNotificationInChannel(channel.id)"
             />
-          </drag>
+          </div>
         </div>
 
         <div class="d-flex align-items-center mt-3">

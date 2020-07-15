@@ -15,7 +15,8 @@
 
 <script>
   import {mapMutations, mapGetters} from 'vuex';
-
+  import 'vue-awesome/icons/times-circle';
+  
   export default {
     name: 'AttachmentImage',
     props: {

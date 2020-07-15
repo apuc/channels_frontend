@@ -39,11 +39,11 @@
 
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import { BButton, BTable } from 'bootstrap-vue';
   import Bots from "./Bots";
 
   export default {
     name: "BotsList",
-    
     data(){
       return{
         fields:[
@@ -67,7 +67,7 @@
       this.GET_USER_BOTS();
     },
 
-    components: {Bots},
+    components: {Bots, BButton, BTable},
       
     computed: {
       ...mapGetters('bots', ['botsList', 'currentBotData']),

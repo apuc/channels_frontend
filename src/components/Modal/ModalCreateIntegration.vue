@@ -53,10 +53,20 @@
 
 <script>
     import {mapActions,mapGetters,mapMutations} from 'vuex';
+    import { BFormGroup, BFormSelect, BFormInput, BFormCheckbox, 
+      BInputGroup, BInputGroupAppend, BButton } from 'bootstrap-vue';
   
     export default {
         name: "ModalCreateIntegration",
-
+        components: {
+          BFormGroup, 
+          BFormSelect,
+          BFormInput, 
+          BFormCheckbox, 
+          BInputGroup, 
+          BInputGroupAppend, 
+          BButton
+        },
         data(){
             return {
                 type:null,

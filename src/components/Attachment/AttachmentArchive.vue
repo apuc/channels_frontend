@@ -20,6 +20,7 @@
 
 <script>
   import {mapMutations} from 'vuex';
+  import 'vue-awesome/icons/times-circle';
 
   export default {
     name: 'AttachmentDocument',

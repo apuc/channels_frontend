@@ -52,11 +52,9 @@
 </template>
 
 <script>
-  import {
-    mapGetters,
-    mapMutations,
-    mapActions
-  } from 'vuex';
+  import { mapGetters, mapMutations, mapActions } from 'vuex';
+  import 'vue-awesome/icons/user-plus';
+  import 'vue-awesome/icons/user-minus';
 
   export default {
     name: "ModalChannelUsersPreview",

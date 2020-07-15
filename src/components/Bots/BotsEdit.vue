@@ -52,9 +52,12 @@
 
 <script>
   import {mapActions,mapGetters,mapMutations} from 'vuex';
+  import { BButton } from 'bootstrap-vue';
   export default {
     name: "BotEdit",
-
+    components: {
+      BButton
+    },
     data(){
       return{
         errors: {}

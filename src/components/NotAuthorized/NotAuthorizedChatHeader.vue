@@ -40,6 +40,7 @@
 <script>
   import {mapGetters, mapMutations} from 'vuex';
   import commonMethods from "../../mixins/commonMethods";
+  import 'vue-awesome/icons/chevron-up';
 
   export default {
     mixins: [commonMethods],

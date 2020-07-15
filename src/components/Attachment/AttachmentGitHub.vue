@@ -25,9 +25,14 @@
 <script>
     import {mapMutations} from "vuex";
     import { formatDate } from "../../services/common.service";
+    import { BButton, BCard, BLink } from 'bootstrap-vue';
 
     export default {
-        name: "AttachmentGitHub",
+      name: "AttachmentGitHub",
+
+      components: {
+        BButton, BCard, BLink
+      },
 
       data(){
         return {
