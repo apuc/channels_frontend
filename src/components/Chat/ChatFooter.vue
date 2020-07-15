@@ -101,16 +101,16 @@
       }
     },
       
-      watch:{
-        editMessage(message){
-            if(message){
-                this.input = message.text;
-                return;
-            }
-            
-            this.input = '';
-        }
-      },
+    watch:{
+      editMessage(message){
+          if(message){
+              this.input = message.text;
+              return;
+          }
+          
+          this.input = '';
+      }
+    },
 
     computed: {
       ...mapGetters('messages', ['usersTyping', 'attachments','editMessage']),
