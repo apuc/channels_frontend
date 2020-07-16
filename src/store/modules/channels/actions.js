@@ -18,12 +18,9 @@ export default {
                                 dispatch,
                                 rootGetters
                               }) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+                                
     commit('SET_CHANNELS_LOADING_FLAG');
 
-    if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel`)
         .then(
           res => {
@@ -35,16 +32,7 @@ export default {
           err => console.log('get channels', err)
         )
         .catch(error => console.log('GET_CHANNELS: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-          root: true
-        })
-          .then(() => {
-            dispatch('GET_USER_CHANNELS');
-          })
-      }
-    }
+  
   },
   
   
@@ -278,11 +266,7 @@ export default {
                              dispatch
                            }) => {
     const id = getters.channelToDelete;
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
-    if (currentDateInSeconds < tokenExpiresIn) {
       return await Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/${id}`)
         .then(
           res => {
@@ -297,14 +281,7 @@ export default {
           err => console.log(err)
         )
         .catch(error => console.log('DELETE_CHANNEL: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-          root: true
-        })
-          .then(() => dispatch('DELETE_CHANNEL'))
-      }
-    }
+    
   },
   
   
@@ -319,11 +296,7 @@ export default {
                                        dispatch,
                                        rootGetters
                                      }, userId) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
-    if (currentDateInSeconds < tokenExpiresIn) {
       new Promise((resolve, reject) => {
         Vue.http.delete(`${process.env.VUE_APP_API_URL}/channel/delete-user?channel_id=${getters.currentChannelData.id}&user_id=${userId}`)
           .then(
@@ -332,14 +305,7 @@ export default {
           )
           .catch(error => console.log('DELETE_USER_FROM_CHANNEL: ', error))
       });
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-          root: true
-        })
-          .then(() => dispatch('DELETE_USER_FROM_CHANNEL', userId));
-      }
-    }
+  
   },
   
   
@@ -356,12 +322,7 @@ export default {
                        dispatch,
                        rootGetters
                      }, data) => {
-    
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
-    if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.post(`${process.env.VUE_APP_API_URL}/channel/add-user`, {
         user_id: data.user_id,
         channel_id: data.channel_id
@@ -381,16 +342,7 @@ export default {
           err => console.log(err)
         )
         .catch(error => console.log('ADD_USER_TO_CHANNEL: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-          root: true
-        })
-          .then(() => {
-            dispatch('ADD_USER', data);
-          })
-      }
-    }
+
   },
   
   
@@ -400,12 +352,10 @@ export default {
                                dispatch,
                                rootGetters
                              }) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+                               
     commit('SET_CHANNELS_LOADING_FLAG');
 
-    if (currentDateInSeconds < tokenExpiresIn) {
+    
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/channel/service/left-side-bar`)
         .then(
           res => {
@@ -424,15 +374,6 @@ export default {
           err => console.log('get channels', err)
         )
         .catch(error => console.log('GET_CHANNELS: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-          root: true
-        })
-          .then(() => {
-            dispatch('GET_USER_CHANNELS');
-          })
-      }
-    }
+    
   }
 }

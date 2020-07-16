@@ -14,12 +14,7 @@ export default {
                           dispatch,
                           rootGetters
                         }) => {
-    
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
-    if (currentDateInSeconds < tokenExpiresIn) {
       commit('SET_USER_DATA_LOADING_FLAG');
       return await Vue.http.get(`${process.env.VUE_APP_API_URL}/user/me`)
         .then(
@@ -31,16 +26,7 @@ export default {
           err => console.log('err login', err)
         )
         .catch(error => console.log('GET_USER: ', error));
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-          root: true
-        })
-          .then(() => {
-            dispatch('GET_USER_ME');
-          })
-      }
-    }
+    
   },
   
   

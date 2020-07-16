@@ -42,6 +42,7 @@
   const ModalChannelIntegrations = () => import('./ModalChannelIntegrations');
   const ModalBotDelete = () => import('./ModalBotDelete');
   const ModalResendMessages = () => import('./ModalResendMessages');
+  const ModalMeetings = () => import('./ModalMeetings');
   
   export default {
     name: "Modal",
@@ -64,6 +65,7 @@
       ModalAddBotToChannel,
       ModalBotDelete,
       ModalResendMessages,
+      ModalMeetings,
     },
     computed: {
       ...mapGetters({
