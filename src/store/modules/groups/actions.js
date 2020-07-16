@@ -10,12 +10,9 @@ export default {
     dispatch,
     rootGetters
   }) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+    
     commit('SET_GROUPS_LOADING_FLAG');
 
-    if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.get(`${process.env.VUE_APP_API_URL}/group`)
         .then(
           res => {
@@ -26,16 +23,7 @@ export default {
           err => console.log('get groups', err)
         )
         .catch(error => console.log('GET_GROUPS: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
-          .then(() => {
-            dispatch('GET_USER_GROUPS');
-          })
-      }
-    }
+  
   },
   
   
@@ -168,11 +156,7 @@ export default {
     rootGetters
   }) => {
     const id = getters.groupToDelete;
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
-    if (currentDateInSeconds < tokenExpiresIn) {
       return await Vue.http.delete(`${process.env.VUE_APP_API_URL}/group/${id}`)
         .then(
           res => {
@@ -191,16 +175,7 @@ export default {
           }
         )
         .catch(error => console.log('DELETE_GROUP: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
-          .then(() => {
-            dispatch('DELETE_GROUP');
-          })
-      }
-    }
+  
   },
   
   
@@ -215,11 +190,7 @@ export default {
     dispatch,
     rootGetters
   }) => {
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
-    if (currentDateInSeconds < tokenExpiresIn) {
       return await Vue.http.post(`${process.env.VUE_APP_API_URL}/group/${getters.addingChannelsData.id}/channels`, {
           channel_ids: getters.addingChannelsData.channelsToAdd
         })
@@ -245,16 +216,7 @@ export default {
             console.log(err);
           }
         )
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
-          .then(() => {
-            dispatch('ADD_CHANNELS_TO_GROUP');
-          })
-      }
-    }
+  
   },
   
   
@@ -269,11 +231,7 @@ export default {
   }) => {
     const group_id = getters.currentGroupData.id;
     const channel_id = getters.channelToDelete.id;
-    const currentDateInSeconds = Math.round(Date.now() / 1000);
-    const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
-    const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
 
-    if (currentDateInSeconds < tokenExpiresIn) {
       await Vue.http.delete(`${process.env.VUE_APP_API_URL}/group/${group_id}/delete-channel?channel_id=${channel_id}`)
         .then(
           res => {
@@ -282,15 +240,6 @@ export default {
           err => console.log('get groups', err)
         )
         .catch(error => console.log('GET_GROUPS: ', error))
-    } else {
-      if (currentDateInSeconds < refreshTokenExpiresIn) {
-        await dispatch('auth/GET_TOKEN', rootGetters['auth/refreshTokenBody'], {
-            root: true
-          })
-          .then(() => {
-            dispatch('REMOVE_CHANNEL_FROM_GROUP');
-          })
-      }
-    }
+
   },
 };

@@ -25,13 +25,18 @@
 <script>
     import {mapMutations} from "vuex";
     import { formatDate } from "../../services/common.service";
-    import { BButton, BCard, BLink } from 'bootstrap-vue';
+    import { BButton, BCard, BCardHeader, BCardBody, 
+      BCardText, BCollapse, BLink, VBToggle } from 'bootstrap-vue';
 
     export default {
       name: "AttachmentGitHub",
 
       components: {
-        BButton, BCard, BLink
+        BButton, BCard,BCardHeader, BCardBody, 
+        BCardText, BCollapse, BLink
+      },
+      directives: {
+        'b-toggle': VBToggle
       },
 
       data(){

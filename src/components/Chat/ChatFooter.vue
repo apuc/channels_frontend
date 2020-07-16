@@ -61,6 +61,9 @@
             <input id="attach-file" type="file" multiple @change="addAttachments($event.target.files)">
             <label for="attach-file">Файл</label>
           </div>
+          <div class="attach-file__option" @click="SET_MODAL({name:'ModalMeetings'})">
+            <label>Конференция</label>
+          </div>
         </div>
         <img class="attach-file__icon" src="../../assets/img/add_folder.png" alt="">
       </label>
@@ -82,7 +85,7 @@
 
 <script>
   import {ioTyping} from '../../services/socket/message.service';
-  import {mapGetters, mapActions} from 'vuex';
+  import {mapGetters, mapActions, mapMutations} from 'vuex';
   import { BFormTextarea, BInputGroupAppend, BProgress, BButton } from 'bootstrap-vue';
   import Attachment from '../../components/Attachment/Attachment';
   import {scroll} from '../../directives/scroll';
@@ -137,6 +140,9 @@
         'EDIT_MESSAGE',
         'PARSE_LINK']
       ),
+      ...mapMutations({
+          SET_MODAL: 'modal/SET_MODAL',
+      }),
         
       ioTyping,
 
@@ -308,7 +314,7 @@
     }
 
     &__option {
-      padding: .1rem 1rem;
+      padding: 0 1rem;
       &:hover {
         cursor: pointer;
         background-color: rgba(4, 35, 69, 0.15);
@@ -318,11 +324,11 @@
     &:hover {
       .attach-file__tooltip {
         cursor: pointer;
-        height: 9rem;
-        display: initial;
+        height: 10rem;
+        display: block;
         position: absolute;
-        top:-70px;
-        left: -15px;
+        top:-90px;
+        left: -80px;
         background-color: #fff;
         z-index: -1;
       }
