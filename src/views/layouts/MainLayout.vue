@@ -19,8 +19,7 @@
     mixins: [authGettingData],
       
     computed: {
-      ...mapGetters('auth', ['token', 'isAuthenticated', 'gettingTokenAndData']),
-        
+      ...mapGetters('auth', ['token', 'isAuthenticated', 'gettingTokenAndData', 'refreshTokenBody']),
       ...mapGetters({
         userData: 'user/userData',
         channels: 'channels/channels',
@@ -49,12 +48,23 @@
       }),
         
       ...mapActions('user', ['GET_USER_ME', 'GET_NAV', 'GET_USER_CONTACTS', 'GET_USER_FRIENDSHIP_REQUESTS', 'FIND_USERS']),
+      ...mapActions('auth', ['GET_TOKEN']),
         ...mapActions({
             GET_INTEGRATION_TYPES: 'integrations/GET_INTEGRATION_TYPES',
         }),
+
+        async checkTokenRefresh() {
+          const currentDateInSeconds = Math.round(Date.now() / 1000);
+          const tokenExpiresIn = Number(localStorage.getItem('T_expires_at'));
+          const refreshTokenExpiresIn = Number(localStorage.getItem('RT_expires_at'));
+          if (currentDateInSeconds >= tokenExpiresIn) {
+            await this.GET_TOKEN( this.refreshTokenBody );
+          }
+        }
+        
     },
       
-    created() {
+    async created() {
 
       if( window.innerWidth < 600 ) {
         this.SET_MOBILE();
@@ -66,6 +76,8 @@
         this.$_authGettingData_gettingData();
         return;
       }
+
+      await this.checkTokenRefresh();
       
       if (!this.gettingTokenAndData) {
           
