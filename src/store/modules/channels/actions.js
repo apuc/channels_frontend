@@ -196,6 +196,7 @@ export default {
             }
 
             commit('channels/SET_CHANNEL_INTEGRATIONS',res.body.data.integrations,{root:true})
+            commit('channels/SET_CHANNEL_MEETINGS',res.body.data.meetings,{root:true})
 
             await dispatch('messages/GET_MESSAGES', null, {root: true});
           },
@@ -374,6 +375,20 @@ export default {
           err => console.log('get channels', err)
         )
         .catch(error => console.log('GET_CHANNELS: ', error))
-    
-  }
+  },
+
+  'CHANNEL_ADD_MEETING':({commit},payload) => {
+    return new Promise((resolve,reject)=>{
+      Vue.http.post(`${process.env.VUE_APP_API_URL}/meeting`,payload)
+        .then(
+          res => {
+            commit('channels/ADD_CHANNEL_MEETING',res.body.data,{root:true})
+            resolve(res)
+          },
+          err => {
+            reject(err)
+          }
+        )
+    });
+  },
 }

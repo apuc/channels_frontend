@@ -45,7 +45,6 @@
         methods: {
             ...mapActions('bots',[
                 'GET_USER_BOTS',
-                'CHANNEL_ADD_BOT'
             ]),
           ...mapActions('channels', ['ADD_USER']),
             ...mapMutations({
