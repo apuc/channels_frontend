@@ -40,6 +40,7 @@ const state = {
   },
   
   channelIntegrations:[],
+  channelMeetings: [],
   channelBots:[],
   
   contactsToAdd: {

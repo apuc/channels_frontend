@@ -4,8 +4,9 @@
       <div class="icon">
         <img v-if="data.options.icon" :src="data.options.icon" alt="">
       </div>
-      <div>
-        <p class="title">{{title}}</p>
+      <div class="attachment-link__main">
+        <p v-if="data.options.meetingTitle">{{data.options.meetingTitle}}</p>
+        <p v-else class="title">{{title}}</p>
         <p>{{data.options.base}}</p>
       </div>
     </a>
@@ -96,8 +97,19 @@
     position: relative;
     word-break: break-word;
   }
+
+  .attachment-link__main{
+    margin-bottom: 1rem;
+  }
+
+  .attachment-link p{
+    line-height: 1.3;
+    margin-bottom: .3rem;
+  }
+
+  
   
   .icon{
-    padding-right: 10px;
+    margin-right: 10px;
   }
 </style>

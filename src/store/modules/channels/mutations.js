@@ -103,6 +103,14 @@ export default {
   'REMOVE_CHANNEL_BOT': (state, bot_id) => {
     state.channelBots = state.channelBots.filter(el => el.id != bot_id);
   },
+
+  'SET_CHANNEL_MEETINGS': (state, bots) => {
+    state.channelMeetings= bots;
+  },
+
+  'ADD_CHANNEL_MEETING': (state, meeting) => {
+    state.channelMeetings.push(meeting);
+  },
   
   'SET_CONTACTS_FREE_TO_ADD': (state, contacts) => {
     state.contactsToAdd.users = contacts.filter(contact => {

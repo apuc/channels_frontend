@@ -272,7 +272,7 @@
 
   .input_message {
     resize: none;
-    min-height: 41px;
+    min-height: 78px;
   }
 
   .footer_sendBtn {

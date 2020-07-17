@@ -266,7 +266,7 @@ export default {
    * @returns {Promise<void>}
    * @constructor
    */
-  'PARSE_LINK': async ({commit,getters},{text, youtubeId}) => {
+  'PARSE_LINK': async ({commit,getters},{text, youtubeId, meetingTitle}) => {
     Vue.http.post(`${process.env.VUE_APP_API_URL}/text-link`,{link:text})
       .then(
         res => {
@@ -278,9 +278,12 @@ export default {
           for(let link of res.body.data){
             const attachment = {
               type: youtubeId ? 'youtube' : 'link',
-              options: {...link}
+              options: {
+                ...link,
+                meetingTitle: meetingTitle || null,
+              },
             };
-            
+
             let exists = getters.attachments.find(el =>el.options.url && el.options.url == attachment.options.url);
             
             if(exists === undefined){
