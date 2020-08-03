@@ -1,5 +1,7 @@
 export default {
-  channels: state => state.channels,
+  channels: state =>  [...state.channels].sort((ch1,ch2) => {
+      return ch2.unread_count-ch1.unread_count;
+  }),
   allChannels: state => state.allChannels,
   currentChannelData: state => state.currentChannelData,
   channelData: state => state.channelData,
