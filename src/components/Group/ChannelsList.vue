@@ -13,7 +13,7 @@
     <p v-if="noChannels">К сожалению в данной группе нет канала с таким названием.</p>
 
     <div class="group-channels">
-      <div class="d-flex" v-for="channel in currentGroupData.channelsToSearch" :key="channel.id">
+      <div class="d-flex" v-for="channel in groupSortedChannels" :key="channel.id">
         <NavSectionChannels
           style="width: 100%"
                             :type="'channel'"
@@ -44,6 +44,7 @@
 <script>
   import {mapGetters, mapMutations, mapActions} from 'vuex'
   import NavSectionChannels from "../Nav/NavSectionChannels";
+  import { VBTooltip } from 'bootstrap-vue'
 
   export default {
     name: "ChannelsList",
@@ -53,7 +54,7 @@
     },  
       
     computed: {
-      ...mapGetters('groups', ['currentGroupData', 'channelToDelete']),
+      ...mapGetters('groups', ['currentGroupData', 'channelToDelete', 'groupSortedChannels']),
       ...mapGetters({
         userData: 'user/userData',
       })

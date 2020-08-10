@@ -115,7 +115,7 @@
         </div>
 
         <div class="mt-3">
-          <drop v-for="group in groups"
+          <div v-for="group in groups"
                 @drop="handleDrop(group.id, ...arguments)"
                 :key="group.id"
           >
@@ -124,7 +124,7 @@
                               :data="group"
                               :value="sidebarIsOpened"
             />
-          </drop>
+          </div>
         </div>
       </nav>
 
@@ -186,7 +186,7 @@
           if(this.deviceIsMobile) {
             this.CLOSE_SIDEBAR();
           }
-        }
+        },
       }),
         
       ...mapActions({
@@ -209,7 +209,6 @@
         this.SET_MODAL({name: 'ModalUserContacts'})
       },
     },
-
   }
 </script>
 

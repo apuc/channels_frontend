@@ -1,6 +1,9 @@
 export default {
   groups: state => state.groups,
   currentGroupData: state => state.currentGroupData,
+  groupSortedChannels: state => [...state.currentGroupData.channelsToSearch].sort( (ch1, ch2) => {
+    return ch2.unread_count - ch1.unread_count;
+  }),
   groupData: state => state.groupData,
   groupToDelete: state => state.groupToDelete,
   addingChannelsData: state => state.addingChannelsData,
