@@ -163,7 +163,7 @@
         </div>
       </div>
 
-      <AvatarUploader :avatar="avatar" v-model="avatar"/>
+      <AvatarUploader v-if="channelData.type !== 'dialog'" :avatar="avatar" v-model="avatar"/>
 
       <div>
         <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>

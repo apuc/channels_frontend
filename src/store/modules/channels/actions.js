@@ -361,15 +361,10 @@ export default {
         .then(
           res => {
             const data = res.body.data;
-            const channels = data.filter(item => item.type === 'channel');
-            const groups = data.filter(item => item.type === 'group');
-            const groupChannels = groups.map(el => el.channels).flat();
             
-            const channelsToJoin = [...new Set(channels.concat(groupChannels))];
-            
-            commit('USER_CHANNELS', channels);
-            commit('SET_ALL_CHANNELS', channelsToJoin);
-            commit('groups/USER_GROUPS', groups, {root: true});
+            commit('USER_CHANNELS', data.channels.filter((el)=> el.group_id === null));
+            commit('SET_ALL_CHANNELS', data.channels);
+            commit('groups/USER_GROUPS', data.groups, {root: true});
             commit('SET_CHANNELS_LOADING_FLAG');
           },
           err => console.log('get channels', err)
@@ -390,5 +385,9 @@ export default {
           }
         )
     });
+  },
+
+  'SORT_CHANNELS':({commit},payload) => {
+    
   },
 }

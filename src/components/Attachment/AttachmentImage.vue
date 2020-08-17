@@ -71,10 +71,6 @@
 </script>
 
 <style>
-  .image{
-    display: none !important
-  }
-
   .attachment-image {
     position: relative;
     width: 70px;
