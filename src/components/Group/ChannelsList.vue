@@ -52,6 +52,10 @@
     components:{
         NavSectionChannels
     },  
+    
+    directives:{
+      'b-tooltip':VBTooltip,
+    },
       
     computed: {
       ...mapGetters('groups', ['currentGroupData', 'channelToDelete', 'groupSortedChannels']),

@@ -3,7 +3,6 @@
            :class="{active: true, 'list-group__item_active': data.id === currentChannelData.id}"
   >
     <div class="notification-block" v-if="notifications[data.id]">{{notifications[data.id]}}</div>
-    
     <router-link
       :to="`/${data.slug}`"
       class="list-group__link"
@@ -82,7 +81,8 @@
     },
       
     created(){
-        if(this.data.unread_count > 0){
+      //@TODO надо что-то сделать с этим жутким костылем))
+        if(this.data.unread_count > 0 && !this.$parent.hasOwnProperty('noChannels')){
             this.SET_CHANNEL_NOTIFICATION({channel_id:this.data.id,unread:this.data.unread_count})   
         }
     },  

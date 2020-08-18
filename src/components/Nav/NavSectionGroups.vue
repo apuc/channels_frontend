@@ -138,7 +138,7 @@
         }
         this.SET_USER_POSITION(type);
         await this.GET_GROUP_DATA(Number(id)).then(data => {
-          this.SET_CURRENT_GROUP_DATA(data);
+          this.SET_CURRENT_GROUP_DATA(data)
           this.SET_CURRENT_GROUP_CHANNELS_TO_SEARCH(data.channels);
         });
 

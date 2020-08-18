@@ -6,6 +6,15 @@ export default {
   'SET_ALL_CHANNELS': (state, channels) => {
     state.allChannels = channels;
   },
+
+  'INCREMENT_UNREAD': (state, payload) => {
+    let channel = state.channels.find(el => el.id === payload.channel_id);
+    
+    if(channel !== undefined){
+      channel.unread_count += 1;
+    }
+    
+  },
   
   'TOGGLE_CHANNEL_LOADING':(state, channels) => {
     state.isChannelLoading = ! state.isChannelLoading

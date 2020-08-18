@@ -1,35 +1,35 @@
 import Vue from "vue";
 import {
-    ioSendMessage
+  ioSendMessage
 } from '../../../services/socket/message.service';
-import { formatBytes } from '../../../services/common.service'
+import {formatBytes} from '../../../services/common.service'
 
 export default {
-    /**
-     * Get channel messages
-     */
-    'GET_MESSAGES': async ({
-        commit,
-        dispatch,
-        state,
-        rootGetters
-    },paginate = false) => {
-      
-      const channelId = rootGetters['channels/currentChannelData'].id;
-      let url = (paginate === true) ? state.nextPage : `${process.env.VUE_APP_API_URL}/channel/${channelId}/messages`;
+  /**
+   * Get channel messages
+   */
+  'GET_MESSAGES': async ({
+                           commit,
+                           dispatch,
+                           state,
+                           rootGetters
+                         },paginate = false) => {
 
-      return new Promise((resolve,reject) => {
-        Vue.http.get(url)
-          .then(
-            res => {
-              commit('SET_MESSAGES',{paginationData:res.body,channelId:channelId});
-              resolve(res) 
-            },
-            err => console.log(err)
-          )
-      });
-    },
-  
+    const channelId = rootGetters['channels/currentChannelData'].id;
+    let url = (paginate === true) ? state.nextPage : `${process.env.VUE_APP_API_URL}/channel/${channelId}/messages`;
+
+    return new Promise((resolve,reject) => {
+      Vue.http.get(url)
+        .then(
+          res => {
+            commit('SET_MESSAGES',{paginationData: res.body,channelId: channelId});
+            resolve(res)
+          },
+          err => console.log(err)
+        )
+    });
+  },
+
   /**
    * Отправить сообщение
    * @param rootGetters
@@ -37,22 +37,22 @@ export default {
    * @returns {Promise<void>}
    * @constructor
    */
-    'SEND_MESSAGE': async ({
-        rootGetters
-    }, payload) => {
-        const { user_id } = rootGetters['user/userData'];
-        const attachments = rootGetters['messages/attachments'];
-        
-        const messageData = {
-            channel_id: payload.channelId,
-            from: user_id,
-            text: payload.text,
-            user_id,
-            attachments
-        };
-        
-        await ioSendMessage(messageData);
-    },
+  'SEND_MESSAGE': async ({
+                           rootGetters
+                         },payload) => {
+    const {user_id} = rootGetters['user/userData'];
+    const attachments = rootGetters['messages/attachments'];
+
+    const messageData = {
+      channel_id: payload.channelId,
+      from: user_id,
+      text: payload.text,
+      user_id,
+      attachments
+    };
+
+    await ioSendMessage(messageData);
+  },
 
   /**
    * Сообщение пришло
@@ -61,11 +61,11 @@ export default {
    * @returns {Promise<void>}
    * @constructor
    */
-    'ON_MESSAGE': async ({
-        commit,
-    }, message) => {
-        commit('SET_MESSAGE', message);
-    },
+  'ON_MESSAGE': async ({
+                         commit,
+                       },message) => {
+    commit('SET_MESSAGE',message);
+  },
 
   /**
    * Пользователь печатает
@@ -75,43 +75,45 @@ export default {
    * @returns {Promise<void>}
    * @constructor
    */
-    'ON_TYPING': async ({
-        commit
-    }, {
-        user,
-        isTyping,
-    }) => {
-      if (isTyping) {
-        commit('PUSH_TYPING_USER', user);
-      } else {
-        commit('SLICE_TYPING_USER', user);
-      }
+  'ON_TYPING': async ({
+                        commit
+                      },{
+                        user,
+                        isTyping,
+                      }) => {
+    if (isTyping) {
+      commit('PUSH_TYPING_USER',user);
+    } else {
+      commit('SLICE_TYPING_USER',user);
+    }
   },
 
   /**
-   * 
+   *
    * @param commit
    * @returns {Promise<void>}
    * @constructor
    */
-    'OFF_TYPING': async ({
-        commit,
-    }) => {
-        commit('OFF_TYPING');
-    },
+  'OFF_TYPING': async ({
+                         commit,
+                       }) => {
+    commit('OFF_TYPING');
+  },
 
   /**
    * Уведомление
    * @param commit
+   * @param payload
    * @param channel_id
    * @returns {Promise<void>}
    * @constructor
    */
-    'SET_CHANNEL_NOTIFICATION': async ({
-        commit,
-    }, channel_id) => {
-        commit('SET_CHANNEL_NOTIFICATION', channel_id);
-    },
+  'SET_CHANNEL_NOTIFICATION': async ({
+                                       commit,rootState
+                                     },payload) => {
+    commit('channels/INCREMENT_UNREAD',payload,{root: true});
+    commit('SET_CHANNEL_NOTIFICATION',payload);
+  },
 
   /**
    * Добавление атачмента
@@ -121,9 +123,9 @@ export default {
    * @returns {Promise<void>}
    * @constructor
    */
-    'ADD_ATTACHMENT': async ({
-        commit,
-    },payload) => {
+  'ADD_ATTACHMENT': async ({
+                             commit,
+                           },payload) => {
 
     return new Promise((resolve,reject) => {
       const data = new FormData;
@@ -146,7 +148,7 @@ export default {
             };
 
             commit('ADD_ATTACHMENT',attachment);
-            
+
             resolve(res)
           },
           err => {
@@ -155,18 +157,18 @@ export default {
           }
         )
     })
-    },
+  },
   /**
    * Сброс атачментов
    * @param commit
    * @returns {Promise<void>}
    * @constructor
    */
-    'CLEAR_ATTACHMENTS': async ({
-        commit
-    }) => {
-        commit('CLEAR_ATTACHMENTS');
-    },
+  'CLEAR_ATTACHMENTS': async ({
+                                commit
+                              }) => {
+    commit('CLEAR_ATTACHMENTS');
+  },
 
   /**
    * Отметить прочитанные
@@ -177,17 +179,17 @@ export default {
    * @returns {Promise<void>}
    * @constructor
    */
-    'MARK_READ': async ({state,commit,rootState},channelId) => {
-      
-      Vue.http.post(`${process.env.VUE_APP_API_URL}/messages/read`,{channel_id:channelId})
-        .then(
-          res => {
-             commit('READ_CHANNEL_MESSAGES',channelId);
-             return res;
-          },
-          err => console.log(err)
-        )
-    },
+  'MARK_READ': async ({state,commit,rootState},channelId) => {
+
+    Vue.http.post(`${process.env.VUE_APP_API_URL}/messages/read`,{channel_id: channelId})
+      .then(
+        res => {
+          commit('READ_CHANNEL_MESSAGES',channelId);
+          return res;
+        },
+        err => console.log(err)
+      )
+  },
 
   /**
    * Отметить прочитанные в чате
@@ -200,7 +202,7 @@ export default {
    */
   'MARK_READ_CHAT': async ({state,commit,rootState},channelId) => {
 
-    Vue.http.post(`${process.env.VUE_APP_API_URL}/messages/read/chat`,{channel_id:channelId})
+    Vue.http.post(`${process.env.VUE_APP_API_URL}/messages/read/chat`,{channel_id: channelId})
       .then(
         res => {
           commit('READ_CHANNEL_MESSAGES',channelId);
@@ -218,7 +220,7 @@ export default {
    * @constructor
    */
   'DELETE_MESSAGE': async ({commit},message_id) => {
-      
+
     Vue.http.delete(`${process.env.VUE_APP_API_URL}/message/${message_id}`)
       .then(
         res => {
@@ -242,7 +244,7 @@ export default {
     message.from = message.from.id;
     message.channel_id = message.channel;
     message.text = text;
-    
+
     Vue.http.put(`${process.env.VUE_APP_API_URL}/message/${message.id}`,message)
       .then(
         res => {
@@ -266,16 +268,16 @@ export default {
    * @returns {Promise<void>}
    * @constructor
    */
-  'PARSE_LINK': async ({commit,getters},{text, youtubeId, meetingTitle}) => {
-    Vue.http.post(`${process.env.VUE_APP_API_URL}/text-link`,{link:text})
+  'PARSE_LINK': async ({commit,getters},{text,youtubeId,meetingTitle}) => {
+    Vue.http.post(`${process.env.VUE_APP_API_URL}/text-link`,{link: text})
       .then(
         res => {
-          
-          if(!res.body.data){
+
+          if (!res.body.data) {
             return res;
           }
-          
-          for(let link of res.body.data){
+
+          for (let link of res.body.data) {
             const attachment = {
               type: youtubeId ? 'youtube' : 'link',
               options: {
@@ -284,14 +286,14 @@ export default {
               },
             };
 
-            let exists = getters.attachments.find(el =>el.options.url && el.options.url == attachment.options.url);
-            
-            if(exists === undefined){
-              commit('ADD_ATTACHMENT', attachment);
+            let exists = getters.attachments.find(el => el.options.url && el.options.url == attachment.options.url);
+
+            if (exists === undefined) {
+              commit('ADD_ATTACHMENT',attachment);
             }
-            
+
           }
-          
+
           return res;
         },
         err => {
@@ -299,6 +301,6 @@ export default {
         }
       )
   }
-  
-  
+
+
 };
