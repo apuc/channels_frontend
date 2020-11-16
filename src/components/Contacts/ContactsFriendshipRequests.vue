@@ -142,6 +142,7 @@
     margin-top: 10px;
     padding: 0;
     overflow: auto;
+    height: calc(100vh - 238px);
   }
 
   .user {
