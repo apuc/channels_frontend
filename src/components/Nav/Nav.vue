@@ -63,7 +63,7 @@
           <button type="button"
                   class="btn-profile"
                   v-else
-                  @click="SET_MODAL({name: 'ModalEditProfile'})"
+                  @click="$router.push('/edit_profile')"
           >
             <img v-if="userData.avatar"
                  class="user__avatar-img"

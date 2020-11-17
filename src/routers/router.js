@@ -18,6 +18,7 @@ const Bots = () => import('../components/Bots/Bots');
 const BotsList = () => import('../components/Bots/BotsList');
 const BotsCreate = () => import('../components/Bots/BotsCreate');
 const BotsEdit = () => import('../components/Bots/BotsEdit');
+const EditProfile =()=>import('../components/Modal/ModalProfileEdit')
 
 const Integrations = () => import('../components/Integrations/Integrations');
 const IntegrationsList = () => import('../components/Integrations/IntegrationsList');
@@ -33,6 +34,12 @@ export default new Router({
   base: process.env.BASE_URL,
   mode: 'history',
   routes: [
+    {
+      path: '/edit_profile',
+      name: 'edit_profile',
+      component : EditProfile,
+
+    },
     {
       path: '/login',
       name: 'login',

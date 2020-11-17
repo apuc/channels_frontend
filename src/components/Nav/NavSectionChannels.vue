@@ -203,7 +203,7 @@ export default {
 
 <style scoped>
 .point_text{
-  font-size: 9px;
+  font-size: 11px;
 }
 .list-group__item,
 .control {
@@ -225,8 +225,8 @@ export default {
   left: 0;
   top: 2px;
   color: white;
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   background-color: red;
   border-radius: 50%;
   text-align: center;

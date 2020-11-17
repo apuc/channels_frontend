@@ -24,17 +24,15 @@
             <div class="col">
               <div class="form-group">
                 <label for="username">Псевдоним</label>
-
                 <input type="text"
                        id="username"
                        class="form-control"
-                       v-model="user.username"
+                       v-model="userData.username"
                 >
               </div>
             </div>
           </div>
-
-          <AvatarUploader :avatar="user.avatar" v-model="user.avatar"/>
+          <AvatarUploader :avatar="userData.avatar" v-model="userData.avatar"/>
 
           <div>
             <progress v-if="upLoadStarted" max="100" :value="imageUploadPercentage"></progress>
@@ -59,7 +57,7 @@
                 <input type="password"
                        id="password"
                        class="form-control"
-                       v-model="user.password"
+                       v-model="userData.password"
                 >
 
                 <p
@@ -76,7 +74,7 @@
                 <input type="password"
                        id="password-repeat"
                        class="form-control"
-                       v-model="user.passwordRepeat"
+                       v-model="userData.passwordRepeat"
                 >
 
                 <p
@@ -93,7 +91,7 @@
                 <input type="text"
                        id="email"
                        class="form-control"
-                       v-model="user.email"
+                       v-model="userData.email"
                 >
 
                 <p
@@ -167,16 +165,6 @@
           },
         },
         pillSelected: 1,
-
-        user: {
-          avatar:null,  
-          user_id: '',
-          email: '',
-          username: '',
-          password: '',
-          passwordRepeat: '',
-        },
-          
         upLoadStarted: false,
           
         errors:{},  
@@ -210,15 +198,15 @@
       async onSubmitGeneral() {
        
           //если поменяли аватар
-        if(this.user.avatar instanceof FormData) {
+        if(this.userData.avatar instanceof FormData) {
 
           this.upLoadStarted = true;
             
-            return  this.MAKE_REQUEST({name:'user/CREATE_USER_AVATAR', params:this.user.avatar})
+            return  this.MAKE_REQUEST({name:'user/CREATE_USER_AVATAR', params:this.userData.avatar})
                 .then(avatar_id => {
                     this.MAKE_REQUEST({
                         name:'user/EDIT_GENERAL_USER_DATA',
-                        params:{id: avatar_id, username: this.user.username}
+                        params:{id: avatar_id, username: this.userData.username}
                     }).then(userData => this.SET_USER_INFO(userData));
 
                     this.upLoadStarted = false;
@@ -228,17 +216,17 @@
         }
 
           //если удалили аватар
-          if(this.user.avatar == null && this.userData.avatar){
+          if(this.userData.avatar == null && this.userData.avatar){
             this.SET_USER_DATA_AVATAR(null);
           }
 
             //если поменяли просто данные без аватара
-        if(this.user.avatar instanceof FormData === false){
+        if(this.userData.avatar instanceof FormData === false){
             this.MAKE_REQUEST({
                      name:'user/EDIT_GENERAL_USER_DATA',
                      params:{
                          id: this.userData.avatar ? this.userData.avatar.id : null,
-                         username: this.user.username
+                         username: this.userData.username
                      }
                 })
                     .then(userData => {
@@ -356,14 +344,6 @@
         });
       }
     },
-      
-      
-    created() {
-        this.user.username = this.userData.username;
-        this.user.email = this.userData.email;
-        this.user.user_id = this.userData.user_id;
-        this.user.avatar = this.userData.avatar;
-    }
   }
 </script>
 
