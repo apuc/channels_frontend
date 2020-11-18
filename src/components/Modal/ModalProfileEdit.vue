@@ -364,7 +364,7 @@ export default {
       this.user.email = this.userData.email;
       this.user.user_id = this.userData.user_id;
       this.user.avatar = this.userData.avatar;
-    },)
+    },600)
 
   }
 }
