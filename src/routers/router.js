@@ -38,7 +38,7 @@ export default new Router({
       path: '/edit_profile',
       name: 'edit_profile',
       component : EditProfile,
-
+      meta: {layout: 'main'},
     },
     {
       path: '/login',

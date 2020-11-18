@@ -146,7 +146,8 @@ export default {
   },
 
   computed: {
-    ...mapGetters('user', ['userData', 'imageUploadPercentage'])
+    ...mapGetters('user', ['userData', 'imageUploadPercentage']),
+    user: (vm)=>JSON.parse(JSON.stringify(vm.$store.state.user.userData)),
   },
 
 
@@ -168,14 +169,6 @@ export default {
       },
       pillSelected: 1,
 
-      user: {
-        avatar:null,
-        user_id: '',
-        email: '',
-        username: '',
-        password: '',
-        passwordRepeat: '',
-      },
 
       upLoadStarted: false,
 
@@ -358,15 +351,6 @@ export default {
   },
 
 
-  created() {
-    setTimeout(()=>{
-      this.user.username = this.userData.username;
-      this.user.email = this.userData.email;
-      this.user.user_id = this.userData.user_id;
-      this.user.avatar = this.userData.avatar;
-    },600)
-
-  }
 }
 </script>
 
