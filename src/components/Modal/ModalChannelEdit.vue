@@ -206,6 +206,7 @@
     },
       
     created() {
+      this.SET_CHANNEL_ID(this.$route.params.id)
       this.GET_CHANNEL_DATA(this.channelData.id).then(data => {
         this.SET_CHANNEL_DATA(data);
         this.GET_CHANNEL_USERS(this.channelData.id).then(users => {
@@ -235,6 +236,7 @@
       ...mapMutations("channels", [
         "SET_CHANNEL_DATA",
         "SET_CHANNEL_TITLE",
+        'SET_CHANNEL_ID',
         "SET_CHANNEL_SLUG",
         "SET_CHANNEL_STATUS",
         "SET_CHANNEL_USER_IDS",

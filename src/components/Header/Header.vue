@@ -189,6 +189,7 @@
     }
     &__current-channel {
       display: flex;
+      cursor: pointer;
     }
     &__channel-title {
       color: #fff;
