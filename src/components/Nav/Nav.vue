@@ -31,9 +31,8 @@
               >
                 <button type="button"
                         class="btn btn-link settings__link"
-                        @click="SET_MODAL({name: elem.modalTrigger})"
                 >
-                  {{elem.name}}
+                  <router-link class="link" active-class="active__link" :to="{name: elem.to}">{{elem.name}}</router-link>
                 </button>
               </li>
 
@@ -155,15 +154,18 @@
         info: [
           {
             name: 'Создать канал',
-            modalTrigger: 'ModalChannelCreate'
+            // modalTrigger: 'ModalChannelCreate'
+            to: 'channel_create'
           },
           {
             name: 'Создать группу',
-            modalTrigger: 'ModalGroupCreate'
+            // modalTrigger: 'ModalGroupCreate'
+            to: 'group_create'
           },
           {
             name: 'Редактировать профиль',
-            modalTrigger: 'ModalEditProfile'
+            // modalTrigger: 'ModalEditProfile'
+            to: 'edit_profile'
           }  
         ],
         addMenuVisible: false,
@@ -213,6 +215,15 @@
 </script>
 
 <style scoped lang='scss'>
+.active{
+  &__link{
+    color: #125092 !important;
+  }
+}
+.link{
+  color: black;
+}
+
   .placeholder {
     width: 100%;
     height: 180px;

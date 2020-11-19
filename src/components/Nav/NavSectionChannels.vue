@@ -38,7 +38,7 @@
         @click="editingModal(data.id)"
         v-if="data.channel_type != 'dialog'"
       >
-        <span class="_tooltip">Редактировать</span>
+        <span class="_tooltip">Редактировать!!</span>
         <img src="../../assets/img/pencil.png" alt="">
       </button>
 
@@ -112,12 +112,16 @@ export default {
       READ_CHANNEL_MESSAGES: "messages/READ_CHANNEL_MESSAGES",
       SET_CHANNEL_NOTIFICATION: "messages/SET_CHANNEL_NOTIFICATION",
       CLOSE_SIDEBAR: "nav/CLOSE_SIDEBAR",
+      SET_CHANNEL_USER_IDS: 'channels/SET_CHANNEL_USER_IDS',
+      SET_CHANNEL_DATA:"channels/SET_CHANNEL_DATA",
     }),
     ...mapActions({
       SET_CURRENT_CHANNEL_DATA: 'channels/SET_CURRENT_CHANNEL_DATA',
       GET_MESSAGES: "messages/GET_MESSAGES",
       MARK_READ: "messages/MARK_READ",
       MARK_READ_CHAT: "messages/MARK_READ_CHAT",
+      GET_CHANNEL_DATA:"channels/GET_CHANNEL_DATA",
+      GET_CHANNEL_USERS: "channels/GET_CHANNEL_USERS",
     }),
 
 
@@ -155,7 +159,13 @@ export default {
      */
     editingModal(id) {
       this.SET_CHANNEL_ID(id);
-      this.SET_MODAL({name: "ModalChannelEdit"});
+      this.GET_CHANNEL_DATA(id).then(data => {
+        this.SET_CHANNEL_DATA(data);
+        this.GET_CHANNEL_USERS(id).then(users => {
+          this.SET_CHANNEL_USER_IDS(users);
+        });
+      });
+      this.$router.push(`/channel_edit/${id}`)
     },
 
 

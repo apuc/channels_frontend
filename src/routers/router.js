@@ -1,67 +1,89 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import store from '../store/store';
-const AuthLogin = () => import('../components/Auth/AuthLogin');
-const AuthRegistration = () => import('../components/Auth/AuthRegistration');
-const AuthPasswordResetRequest = () => import('../components/Auth/AuthPasswordResetRequest');
-const AuthPasswordReset = () => import('../components/Auth/AuthPasswordReset');
-const Group = () => import('../components/Group/Group');
-const ChatLayout = ()  => import('../views/ChatLayout');
-const ChatBlank = ()  => import('../components/Chat/ChatBlank');
-const NotFoundComponent = () => import('../views/NotFoundComponent');
-const UserProfile = () => import('../components/UserProfile');
-const Contacts = () => import('../components/Contacts/Contacts');
-const ContactsList = () => import('../components/Contacts/ContactsList');
-const ContactsSearchUsers = () => import('../components/Contacts/ContactsSearchUsers');
-const ContactsFriendshipRequests  = () => import('../components/Contacts/ContactsFriendshipRequests');
-const Bots = () => import('../components/Bots/Bots');
-const BotsList = () => import('../components/Bots/BotsList');
-const BotsCreate = () => import('../components/Bots/BotsCreate');
-const BotsEdit = () => import('../components/Bots/BotsEdit');
-const EditProfile =()=>import('../components/Modal/ModalProfileEdit')
+import Vue from 'vue'
+import Router from 'vue-router'
+import store from '../store/store'
 
-const Integrations = () => import('../components/Integrations/Integrations');
-const IntegrationsList = () => import('../components/Integrations/IntegrationsList');
-const IntegrationsCreate = () => import('../components/Integrations/IntegrationsCreate');
+const AuthLogin = () => import('../components/Auth/AuthLogin')
+const AuthRegistration = () => import('../components/Auth/AuthRegistration')
+const AuthPasswordResetRequest = () => import('../components/Auth/AuthPasswordResetRequest')
+const AuthPasswordReset = () => import('../components/Auth/AuthPasswordReset')
+const Group = () => import('../components/Group/Group')
+const ChatLayout = () => import('../views/ChatLayout')
+const ChatBlank = () => import('../components/Chat/ChatBlank')
+const NotFoundComponent = () => import('../views/NotFoundComponent')
+const UserProfile = () => import('../components/UserProfile')
+const Contacts = () => import('../components/Contacts/Contacts')
+const ContactsList = () => import('../components/Contacts/ContactsList')
+const ContactsSearchUsers = () => import('../components/Contacts/ContactsSearchUsers')
+const ContactsFriendshipRequests = () => import('../components/Contacts/ContactsFriendshipRequests')
+const Bots = () => import('../components/Bots/Bots')
+const BotsList = () => import('../components/Bots/BotsList')
+const BotsCreate = () => import('../components/Bots/BotsCreate')
+const BotsEdit = () => import('../components/Bots/BotsEdit')
+const EditProfile = () => import('../components/Modal/ModalProfileEdit')
+const ChannelCreate = () => import('../components/Modal/ModalChannelCreate')
+const GroupCreate = () => import('../components/Modal/ModalGroupCreate')
+const ChannelEdit = () => import('../components/Modal/ModalChannelEdit')
 
-import {ioGetUserStatus} from "../services/socket/status.service";
+const Integrations = () => import('../components/Integrations/Integrations')
+const IntegrationsList = () => import('../components/Integrations/IntegrationsList')
+const IntegrationsCreate = () => import('../components/Integrations/IntegrationsCreate')
 
-Vue.use(Router);
-const pathnameArray = location.pathname.split('/');
-const slug = pathnameArray[pathnameArray.length - 1];
+import {ioGetUserStatus} from "../services/socket/status.service"
+
+Vue.use(Router)
+const pathnameArray = location.pathname.split('/')
+const slug = pathnameArray[pathnameArray.length - 1]
 
 export default new Router({
   base: process.env.BASE_URL,
   mode: 'history',
   routes: [
     {
+      path: '/channel_edit/:id',
+      name: 'channel_edit',
+      component: ChannelEdit,
+      meta: { layout: 'main' }
+    },
+    {
+      path: '/channel_create',
+      name: 'channel_create',
+      component: ChannelCreate,
+      meta: { layout: 'main' }
+    },
+    {
+      path: '/group_create',
+      name: 'group_create',
+      component: GroupCreate,
+      meta: { layout: 'main' }
+    },
+    {
       path: '/edit_profile',
       name: 'edit_profile',
-      component : EditProfile,
-      meta: {layout: 'main'},
+      component: EditProfile,
+      meta: { layout: 'main' },
     },
     {
       path: '/login',
       name: 'login',
-      meta: {layout: 'auth'},
+      meta: { layout: 'auth' },
       component: AuthLogin,
     },
     {
       path: '/registration',
       name: 'registration',
-      meta: {layout: 'auth'},
+      meta: { layout: 'auth' },
       component: AuthRegistration,
     },
     {
       path: '/password/request-reset',
       name: 'reset-request',
-      meta: {layout: 'auth'},
+      meta: { layout: 'auth' },
       component: AuthPasswordResetRequest,
     },
     {
       path: '/password/reset/:token',
       name: 'reset',
-      meta: {layout: 'auth'},
+      meta: { layout: 'auth' },
       component: AuthPasswordReset,
     },
     {
@@ -106,8 +128,8 @@ export default new Router({
         }
       ],
       beforeEnter: (to, from, next) => {
-        store.commit('user/SET_USER_POSITION', 'contacts');
-        next();
+        store.commit('user/SET_USER_POSITION', 'contacts')
+        next()
       }
     },
     {
@@ -143,8 +165,8 @@ export default new Router({
         }
       ],
       beforeEnter: (to, from, next) => {
-        store.commit('user/SET_USER_POSITION', 'bots');
-        next();
+        store.commit('user/SET_USER_POSITION', 'bots')
+        next()
       }
     },
 
@@ -172,18 +194,18 @@ export default new Router({
         }
       ],
       beforeEnter: (to, from, next) => {
-        store.commit('user/SET_USER_POSITION', 'integrations');
-        next();
+        store.commit('user/SET_USER_POSITION', 'integrations')
+        next()
       }
     },
-    
+
     {
       path: '/not-found',
       name: 'not_found',
       component: NotFoundComponent,
       beforeEnter: (to, from, next) => {
-        store.commit('user/SET_USER_POSITION', 'not-found');
-        next();
+        store.commit('user/SET_USER_POSITION', 'not-found')
+        next()
       }
     },
     {
@@ -194,8 +216,8 @@ export default new Router({
         layout: 'main'
       },
       beforeEnter: (to, from, next) => {
-        store.commit('user/SET_USER_POSITION', 'group');
-        next();
+        store.commit('user/SET_USER_POSITION', 'group')
+        next()
       }
     },
     {
@@ -206,8 +228,8 @@ export default new Router({
         layout: 'main'
       },
       beforeEnter: (to, from, next) => {
-        store.commit('user/SET_USER_POSITION', 'user');
-        next();
+        store.commit('user/SET_USER_POSITION', 'user')
+        next()
       }
     },
     {
@@ -218,9 +240,9 @@ export default new Router({
         layout: 'main'
       },
       beforeEnter: (to, from, next) => {
-        store.commit('user/SET_USER_POSITION', 'channel');
-        next();
+        store.commit('user/SET_USER_POSITION', 'channel')
+        next()
       }
     },
   ],
-});
+})
