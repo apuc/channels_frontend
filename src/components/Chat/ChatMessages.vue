@@ -105,6 +105,7 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 20px;
+    max-height: calc(100vh - 292px);
   }
   
   @media (max-width: 768px) {
