@@ -4,12 +4,12 @@
     <button class="close-btn" @click="REMOVE_ATTACHMENT(data.options.url)" v-if="deleteButton">
       <v-icon scale="1" class="icon" name="times-circle"/>
     </button>
-    <viewer :images="images"           
-            class="viewer" ref="viewer"
-            @inited="inited"
-    >
-      <img v-for="img in images" :src="img.options.url" :key="img.options.url" class="image">
-    </viewer>
+<!--    <viewer :images="images"           -->
+<!--            class="viewer" ref="viewer"-->
+<!--            @inited="inited"-->
+<!--    >-->
+<!--      <img v-for="img in images" :src="img.options.url" :key="img.options.url" class="image">-->
+<!--    </viewer>-->
   </div>
 </template>
 

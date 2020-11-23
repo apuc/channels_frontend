@@ -9,37 +9,34 @@
     </span>
 
     <div class="input_message-group">
-      <div class="d-flex align-items-center mb-3 w-100">
-        
+      <div class="d-flex align-items-center mb-3 w-100 actions__container">
+        <div class="test">
+          <VEmojiPicker @select="selectEmoji" ref="emoji_picker" style="display: none;" emojiSize="24"/>
+          <img @click="setEmojiPicker($event,true)" class="attach-file__icon" src="../../assets/img/emoticon-outline.svg" alt="">
+            <img src="../../assets/img/send-button.svg"
+                 alt=""
+                 width="15"
+                 height="15"
+                 class="attach-file__icon send_btn"
+                 @click="sendMessage(input, currentChannel.id)"
+            />
+            <label class="attach-file--inside attach-file__icon file_btn">
+              <input type="file" multiple @change="addAttachments($event.target.files)">
+              <img src="../../assets/img/add_folder.png" alt="">
+            </label>
         <b-form-textarea id="input_message"
-                         class="input_message"
-                         :rows="1"
-                         :max-rows="3"
-                         :placeholder="$ml.get('Chat.textareaPlaceholder')"
-                         ref="textarea"
-                         v-model="input"
-                         @input="emitUserTyping"
-                         @keyup.enter.prevent.native="onSubmit"
-                         @paste.native="onPaste"
+           class="input_message"
+           :rows="1"
+           :max-rows="3"
+           :placeholder="$ml.get('Chat.textareaPlaceholder')"
+           ref="textarea"
+           v-model="input"
+           @input="emitUserTyping"
+           @keyup.enter.prevent.native="onSubmit"
+           @paste.native="onPaste"
                         
         >
         </b-form-textarea>
-        
-        <div class='mobile_sendBtn-wrapper'>
-        <button type="button"
-                class="footer_sendBtn"
-                @click="sendMessage(input, currentChannel.id)"
-        >
-          <img src="../../assets/img/send-button.svg" 
-               alt=""
-               width="15"
-               height="15"
-          >
-        </button>
-        <label class="attach-file--inside">
-          <input type="file" multiple @change="addAttachments($event.target.files)">
-          <img src="../../assets/img/add_folder.png" alt="">
-        </label>
         </div>
       </div>
 
@@ -50,10 +47,9 @@
                     :deleteButton="true"
         />
       </div>
-
       <label class="attach-file">
         <div class="attach-file__tooltip">
-          <div class="attach-file__option">
+          <div class="attach-file__option ">
             <input id="attach-photo" type="file" accept="image/*" multiple @change="addAttachments($event.target.files)">
             <label for="attach-photo">Фото</label>
           </div>
@@ -84,6 +80,7 @@
 </template>
 
 <script>
+import { VEmojiPicker, emojisDefault, categoriesDefault } from "v-emoji-picker";
   import {ioTyping} from '../../services/socket/message.service';
   import {mapGetters, mapActions, mapMutations} from 'vuex';
   import { BFormTextarea, BInputGroupAppend, BProgress, BButton } from 'bootstrap-vue';
@@ -91,7 +88,7 @@
   import {scroll} from '../../directives/scroll';
 
   export default {
-    components: {BFormTextarea, BInputGroupAppend, BProgress, BButton, Attachment},
+    components: {BFormTextarea, BInputGroupAppend, BProgress, BButton, Attachment,VEmojiPicker},
       
     directives: {
       scroll
@@ -133,6 +130,13 @@
     },
       
     methods: {
+      setEmojiPicker(){
+        this.$refs.emoji_picker.$el.style.display === 'none' ? this.$refs.emoji_picker.$el.style.display = 'block' : this.$refs.emoji_picker.$el.style.display = 'none'
+      },
+      selectEmoji(emoji) {
+        console.log(emoji)
+        this.input +=emoji.data
+      },
       ...mapActions('messages', [
         'SEND_MESSAGE', 
         'ADD_ATTACHMENT', 
@@ -257,9 +261,58 @@
 </script>
 
 <style scoped lang='scss'>
+.test{
+  width: 100%;
+  position: relative;
+  img{
+    position: absolute;
+    right: 25px;
+    bottom: 45px;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+}
+
+#EmojiPicker{
+  margin-left: 50%;
+  display: none;
+}
+@media (min-width: 993px){
+  .send_btn{
+display: none;
+  }
+}
+@media(min-width: 320px) and ( max-width: 1200px){
+  #EmojiPicker
+  {
+    margin-left: 0 !important;
+  }
+  .send_btn{
+    right: 5px !important;
+    margin-bottom: 5px;
+  }
+  .file_btn img{
+    right: 50px;
+    margin-bottom: 2px;
+  }
+}
+
+@media(max-width: 550px){
+  .actions__container{
+    margin-bottom: 0 !important;
+  }
+  .chat-footer{
+    padding-bottom: 0 !important;
+  }
+}
+
   .chat-footer {
     padding: 20px;
     flex-shrink: 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
 
   .input_message-group {

@@ -38,7 +38,7 @@
         @click="editingModal(data.id)"
         v-if="data.channel_type != 'dialog'"
       >
-        <span class="_tooltip">Редактировать!!</span>
+        <span class="_tooltip">Редактировать</span>
         <img src="../../assets/img/pencil.png" alt="">
       </button>
 
