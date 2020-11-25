@@ -113,6 +113,8 @@
               });
             
               ioGetUserStatus(this.userData.user_id);
+              if(window.innerWidth>768)
+                this.OPEN_SIDEBAR();
           })
           .catch(error => console.log(error));
       }
