@@ -113,7 +113,6 @@
               });
             
               ioGetUserStatus(this.userData.user_id);
-              this.OPEN_SIDEBAR();
           })
           .catch(error => console.log(error));
       }

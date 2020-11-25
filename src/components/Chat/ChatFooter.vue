@@ -12,7 +12,7 @@
       <div class="d-flex align-items-center mb-3 w-100 actions__container">
         <div class="test">
           <VEmojiPicker @select="selectEmoji" ref="emoji_picker" style="display: none;" emojiSize="24"/>
-          <img @click="setEmojiPicker($event,true)" class="attach-file__icon" src="../../assets/img/emoticon-outline.svg" alt="">
+          <img @click="setEmojiPicker($event,true)" class="attach-file__icon emoticon__icon" src="../../assets/img/emoticon-outline.svg" alt="">
             <img src="../../assets/img/send-button.svg"
                  alt=""
                  width="15"
@@ -256,6 +256,15 @@ import { VEmojiPicker, emojisDefault, categoriesDefault } from "v-emoji-picker";
       
     mounted() {
       this.$refs.textarea.focus();
+      
+      let container = document.querySelector('.emoticon__icon')
+      window.addEventListener('click',(e)=>{
+        if (container!==e.target){
+          if(this.$refs.emoji_picker.$el.style.display==='block'){
+            this.$refs.emoji_picker.$el.style.display='none'
+          }
+        }
+      })
     }
   }
 </script>
