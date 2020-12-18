@@ -1,15 +1,14 @@
 <template>
   <div v-if="data.options" :class="(big) ? 'attachment-image-big mr-2' : 'attachment-image mr-2'" >
-    <img :src="data.options.url" alt="attachment image" @click="show(data.options.url)">
     <button class="close-btn" @click="REMOVE_ATTACHMENT(data.options.url)" v-if="deleteButton">
       <v-icon scale="1" class="icon" name="times-circle"/>
     </button>
-<!--    <viewer :images="images"           -->
-<!--            class="viewer" ref="viewer"-->
-<!--            @inited="inited"-->
-<!--    >-->
-<!--      <img v-for="img in images" :src="img.options.url" :key="img.options.url" class="image">-->
-<!--    </viewer>-->
+    <viewer :images="images"           
+            class="viewer" ref="viewer"
+            @inited="inited"
+    >
+      <img  :src="data.options.url" :key="data.options.url" class="image">
+    </viewer>
   </div>
 </template>
 
@@ -59,13 +58,6 @@
       inited (viewer) {
         this.$viewer = viewer
       },
-      show(url) {
-        const index = this.images.findIndex(image => {
-          return image.options.url === url
-        });
-        
-        this.$viewer.view(index)
-      }
     },
   }
 </script>
